@@ -6,6 +6,10 @@ const (
 	// UusdcDenom is the precomputed denom for IBC Micro USDC.
 	UusdcDenom         = "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5"
 	UusdcDenomExponent = -6
+
+	// WethWeiDenom is the precomputed denom for IBC Wrapped Ethereum
+	WethWeiDenom = "ibc/EA1D43981D5C9A1C4AAEA9C23BB1D4FA126BA9BC7020A25E0AE4AA841EA25DC5"
+	WethWeiDenomExponent = -18
 )
 
 var (
@@ -17,6 +21,15 @@ var (
 		HasMarket:        false,
 		AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 	}
+
+	AssetEth Asset = Asset{
+		Id:               1,
+		Symbol:           "ETH",
+		DenomExponent:    WethWeiDenomExponent,
+		Denom:            WethWeiDenom,
+		HasMarket:        false,
+		AtomicResolution: lib.QuoteCurrencyAtomicResolution, // TODO: This needs to be price adjusted. 
+	}
 )
 
 // DefaultGenesis returns the default Capability genesis state
@@ -24,6 +37,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Assets: []Asset{
 			AssetUsdc,
+			AssetEth,
 		},
 	}
 }
@@ -39,6 +53,11 @@ func (gs GenesisState) Validate() error {
 	// The first asset should always be USDC.
 	if gs.Assets[0] != AssetUsdc {
 		return ErrUsdcMustBeAssetZero
+	}
+
+	// The second asset should always be ETH
+	if gs.Assets[1] != AssetEth {
+		return ErrEthMustBeAssetOne
 	}
 
 	// Provided assets should not contain duplicated asset ids, and denoms.

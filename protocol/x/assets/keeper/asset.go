@@ -33,6 +33,7 @@ func (k Keeper) CreateAsset(
 		)
 	}
 
+	// Ensure USDC Invariants
 	if assetId == types.AssetUsdc.Id {
 		// Ensure assetId zero is always USDC. This is a protocol-wide invariant.
 		if denom != types.AssetUsdc.Denom {
@@ -55,6 +56,19 @@ func (k Keeper) CreateAsset(
 	// Ensure USDC is not created with a non-zero assetId. This is a protocol-wide invariant.
 	if assetId != types.AssetUsdc.Id && denom == types.AssetUsdc.Denom {
 		return types.Asset{}, types.ErrUsdcMustBeAssetZero
+	}
+
+	// Ensure ETH invariants
+	if assetId == types.AssetEth.Id {
+		
+		// Ensure assetId one is always ETH. This is a protocol-wide invariant.
+		if denom != types.AssetEth.Denom {
+			return types.Asset{}, types.ErrEthMustBeAssetOne
+		}	
+	}
+
+	if assetId != types.AssetEth.Id && denom == types.AssetEth.Denom {
+		return types.Asset{}, types.ErrEthMustBeAssetOne
 	}
 
 	// Ensure the denom is unique versus existing assets.
@@ -81,7 +95,7 @@ func (k Keeper) CreateAsset(
 		if _, err := k.pricesKeeper.GetMarketPrice(ctx, marketId); err != nil {
 			return asset, err
 		}
-	} else if marketId > 0 {
+	} else if marketId > 1 {
 		return asset, errorsmod.Wrapf(
 			types.ErrInvalidMarketId,
 			"Market ID: %v",
@@ -110,6 +124,7 @@ func (k Keeper) CreateAsset(
 	return asset, nil
 }
 
+// TODO: See AST-1.
 func (k Keeper) ModifyAsset(
 	ctx sdk.Context,
 	id uint32,
