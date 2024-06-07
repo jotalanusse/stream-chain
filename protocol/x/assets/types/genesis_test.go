@@ -29,6 +29,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               2,
 						Symbol:           "BTC",
 						Denom:            "btc-denom",
 						HasMarket:        true,
@@ -44,7 +52,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			expectedErr: types.ErrNoAssetInGenesis,
 		},
-		"asset[0] not usdc": {
+		"asset[0] not usdc. HasMarket and MarketId incorrect.": {
 			genState: &types.GenesisState{
 				Assets: []types.Asset{
 					{
@@ -56,11 +64,19 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         0,
 						AtomicResolution: int32(-6),
 					},
+					{
+						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
 				},
 			},
 			expectedErr: types.ErrUsdcMustBeAssetZero,
 		},
-		"asset[0] is modified usdc": {
+		"asset[0] is modified usdc. HasMarket incorrect.": {
 			genState: &types.GenesisState{
 				Assets: []types.Asset{
 					{
@@ -71,9 +87,64 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        true,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 					},
+					{
+						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
 				},
 			},
 			expectedErr: types.ErrUsdcMustBeAssetZero,
+		},
+		"asset[1] not eth. HasMarket and MarketId incorrect.": {
+			genState: &types.GenesisState{
+				Assets: []types.Asset{
+					{
+						Id:               0,
+						Symbol:           types.AssetUsdc.Symbol,
+						Denom:            types.AssetUsdc.Denom,
+						DenomExponent:    types.AssetUsdc.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        true,
+						MarketId:         0,
+						AtomicResolution: int32(-6),
+					},
+				},
+			},
+			expectedErr: types.ErrEthMustBeAssetOne,
+		},
+		"asset[1] is modified eth. HasMarket incorrect.": {
+			genState: &types.GenesisState{
+				Assets: []types.Asset{
+					{
+						Id:               0,
+						Symbol:           types.AssetUsdc.Symbol,
+						Denom:            types.AssetUsdc.Denom,
+						DenomExponent:    types.AssetUsdc.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        true,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+				},
+			},
+			expectedErr: types.ErrEthMustBeAssetOne,
 		},
 		"duplicated asset id": {
 			genState: &types.GenesisState{
@@ -83,6 +154,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetUsdc.Symbol,
 						Denom:            types.AssetUsdc.Denom,
 						DenomExponent:    types.AssetUsdc.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
 						HasMarket:        false,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 					},
@@ -110,6 +189,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               2,
 						Symbol:           types.AssetUsdc.Symbol,
 						Denom:            types.AssetUsdc.Denom,
 						DenomExponent:    types.AssetUsdc.DenomExponent,
@@ -133,7 +220,15 @@ func TestGenesisState_Validate(t *testing.T) {
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 					},
 					{
-						Id:               2,
+						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               3,
 						Denom:            "BTC",
 						HasMarket:        true,
 						MarketId:         0,
@@ -156,6 +251,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Id:               1,
+						Symbol:           types.AssetEth.Symbol,
+						Denom:            types.AssetEth.Denom,
+						DenomExponent:    types.AssetEth.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+					},
+					{
+						Id:               2,
 						Denom:            "USDT",
 						HasMarket:        false,
 						MarketId:         1,
