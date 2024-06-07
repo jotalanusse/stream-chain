@@ -28,7 +28,7 @@ var (
 		DenomExponent:    WethWeiDenomExponent,
 		Denom:            WethWeiDenom,
 		HasMarket:        false,
-		AtomicResolution: lib.QuoteCurrencyAtomicResolution, // TODO: This needs to be price adjusted. 
+		AtomicResolution: lib.EthAtomicResolution, // TODO: This needs to be price adjusted. 
 	}
 )
 
