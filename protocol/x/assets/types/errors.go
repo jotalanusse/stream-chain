@@ -24,4 +24,5 @@ var (
 	// Errors for Not Implemented
 	ErrNotImplementedMulticollateral = errorsmod.Register(ModuleName, 401, "Not Implemented: Multi-Collateral")
 	ErrNotImplementedMargin          = errorsmod.Register(ModuleName, 402, "Not Implemented: Margin-Trading of Assets")
+	ErrNotImplementedAssetAsCollateral = errorsmod.Register(ModuleName, 403, "Not Implemented: Multi-Collateral with this specific asset.")
 )

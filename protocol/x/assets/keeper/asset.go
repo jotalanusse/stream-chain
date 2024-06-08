@@ -208,7 +208,7 @@ func (k Keeper) GetNetCollateral(
 	err error,
 ) {
 	if id == types.AssetUsdc.Id {
-		return new(big.Int).Set(bigQuantums), nil
+		return getUsdcCollateralValueInQuantums(bigQuantums), nil
 	}
 
 	// Get asset
@@ -223,14 +223,50 @@ func (k Keeper) GetNetCollateral(
 	}
 
 	// Balance is positive.
-	// TODO(DEC-581): add multi-collateral support.
 	if bigQuantums.Sign() == 1 {
-		return big.NewInt(0), types.ErrNotImplementedMulticollateral
+		if id == types.AssetEth.Id {
+			return getEthCollateralValueInQuantums(bigQuantums), nil
+		}
+		return big.NewInt(0), types.ErrNotImplementedAssetAsCollateral
 	}
 
 	// Balance is negative.
 	// TODO(DEC-582): add margin-trading support.
 	return big.NewInt(0), types.ErrNotImplementedMargin
+}
+
+
+func (k Keeper) getUsdcCollateralValueInQuantums(
+	bigQuantums *big.Int,	
+) (
+	bigNetCollateralQuoteQuantums *big.Int,
+) {
+	return new(big.Int).Set(bigQuantums)
+}
+
+
+// TODO: AST-2 Check whether the assumptions here.
+func (k Keeper) getEthCollateralValueInQuantums(
+	ctx sdk.Context,
+	bigBaseQuantums *big.Int,
+) (
+	bigNetCollateralQuoteQuantums *big.Int,
+	err error,
+) {
+	ethUsdMarketId := AssetEth.MarketId
+	ethUsdMarketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, ethUsdMarketId)
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	bigQuoteQuantums = lib.BaseToQuoteQuantums(
+		bigBaseQuantums, 
+		AssetEth.BaseAtomicResolution, 
+		ethUsdMarketPrice.Price, 
+		ethUsdMarketPrice.Exponent
+	)
+
+	return bigQuoteQuantums
 }
 
 // GetMarginRequirements returns the initial and maintenance margin-
