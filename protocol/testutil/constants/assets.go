@@ -37,7 +37,7 @@ func BigNegMaxUint64() *big.Int {
 
 var (
 	BtcUsd = &asstypes.Asset{
-		Id:               1,
+		Id:               2,
 		Symbol:           "BTC",
 		Denom:            "btc-denom",
 		DenomExponent:    int32(-8),
@@ -55,4 +55,15 @@ var (
 		MarketId:         uint32(0),
 		AtomicResolution: int32(-6),
 	}
+
+	Eth = &asstypes.Asset{
+		Id:               1,
+		Symbol:           "ETH",
+		Denom:            asstypes.AssetEth.Denom,
+		DenomExponent:    asstypes.AssetEth.DenomExponent,
+		HasMarket:        asstypes.AssetEth.HasMarket,
+		MarketId:         asstypes.AssetEth.MarketId,
+		AtomicResolution: asstypes.AssetEth.AtomicResolution,
+	}
+
 )

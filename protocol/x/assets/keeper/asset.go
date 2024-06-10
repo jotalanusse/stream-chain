@@ -60,11 +60,19 @@ func (k Keeper) CreateAsset(
 
 	// Ensure ETH invariants
 	if assetId == types.AssetEth.Id {
-		
 		// Ensure assetId one is always ETH. This is a protocol-wide invariant.
 		if denom != types.AssetEth.Denom {
 			return types.Asset{}, types.ErrEthMustBeAssetOne
-		}	
+		}
+
+		if denomExponent != types.AssetEth.DenomExponent {
+			return types.Asset{}, errorsmod.Wrapf(
+				types.ErrUnexpectedEthDenomExponent,
+				"expected = %v, actual = %v",
+				types.AssetEth.DenomExponent,
+				denomExponent,
+			)
+		}
 	}
 
 	if assetId != types.AssetEth.Id && denom == types.AssetEth.Denom {
@@ -95,7 +103,7 @@ func (k Keeper) CreateAsset(
 		if _, err := k.pricesKeeper.GetMarketPrice(ctx, marketId); err != nil {
 			return asset, err
 		}
-	} else if marketId > 1 {
+	} else if marketId > 0 { // TODO: This needs to be changed for ETH markets.
 		return asset, errorsmod.Wrapf(
 			types.ErrInvalidMarketId,
 			"Market ID: %v",
@@ -208,7 +216,7 @@ func (k Keeper) GetNetCollateral(
 	err error,
 ) {
 	if id == types.AssetUsdc.Id {
-		return getUsdcCollateralValueInQuantums(bigQuantums), nil
+		return k.getUsdcCollateralValueInQuantums(bigQuantums), nil
 	}
 
 	// Get asset
@@ -225,7 +233,11 @@ func (k Keeper) GetNetCollateral(
 	// Balance is positive.
 	if bigQuantums.Sign() == 1 {
 		if id == types.AssetEth.Id {
-			return getEthCollateralValueInQuantums(bigQuantums), nil
+			collateralValue, err := k.getEthCollateralValueInQuantums(ctx, bigQuantums)
+			if err != nil {
+				return big.NewInt(0), err
+			}
+			return collateralValue, err
 		}
 		return big.NewInt(0), types.ErrNotImplementedAssetAsCollateral
 	}
@@ -253,20 +265,20 @@ func (k Keeper) getEthCollateralValueInQuantums(
 	bigNetCollateralQuoteQuantums *big.Int,
 	err error,
 ) {
-	ethUsdMarketId := AssetEth.MarketId
+	ethUsdMarketId := types.AssetEth.MarketId
 	ethUsdMarketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, ethUsdMarketId)
 	if err != nil {
 		return big.NewInt(0), err
 	}
 
-	bigQuoteQuantums = lib.BaseToQuoteQuantums(
+	bigQuoteQuantums := lib.BaseToQuoteQuantums(
 		bigBaseQuantums, 
-		AssetEth.BaseAtomicResolution, 
+		types.AssetEth.AtomicResolution, 
 		ethUsdMarketPrice.Price, 
-		ethUsdMarketPrice.Exponent
+		ethUsdMarketPrice.Exponent,
 	)
 
-	return bigQuoteQuantums
+	return bigQuoteQuantums, nil
 }
 
 // GetMarginRequirements returns the initial and maintenance margin-

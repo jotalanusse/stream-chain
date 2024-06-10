@@ -19,6 +19,7 @@ var (
 	ErrAssetAlreadyExists           = errorsmod.Register(ModuleName, 12, "Asset already exists")
 	ErrUnexpectedUsdcDenomExponent  = errorsmod.Register(ModuleName, 13, "USDC denom exponent is unexpected")
 	ErrEthMustBeAssetOne			= errorsmod.Register(ModuleName, 14, "ETH must be asset 1 (must be asset at position 1 in asset list)")
+	ErrUnexpectedEthDenomExponent   = errorsmod.Register(ModuleName, 15, "ETH denom exponent is unexpected")
 
 
 	// Errors for Not Implemented
