@@ -233,7 +233,7 @@ func (k Keeper) GetNetCollateral(
 	// Balance is positive.
 	if bigQuantums.Sign() == 1 {
 		if id == types.AssetEth.Id {
-			collateralValue, err := k.getEthCollateralValueInQuantums(ctx, bigQuantums)
+			collateralValue, err := k.getEthCollateralValueInQuoteQuantums(ctx, bigQuantums)
 			if err != nil {
 				return big.NewInt(0), err
 			}
@@ -258,7 +258,7 @@ func (k Keeper) getUsdcCollateralValueInQuantums(
 
 
 // TODO: AST-2 Check whether the assumptions here.
-func (k Keeper) getEthCollateralValueInQuantums(
+func (k Keeper) getEthCollateralValueInQuoteQuantums(
 	ctx sdk.Context,
 	bigBaseQuantums *big.Int,
 ) (

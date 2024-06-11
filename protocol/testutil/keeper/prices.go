@@ -146,6 +146,48 @@ func CreateNMarkets(t *testing.T, ctx sdk.Context, keeper *keeper.Keeper, n int)
 	return items
 }
 
+
+// Creates N + 1 market. The first one is a ETH-USD market.
+func CreateNMarketsWithSpecialEthMarket(
+	t *testing.T, 
+	ctx sdk.Context, 
+	keeper *keeper.Keeper, 
+	n int) []types.MarketParamPrice {
+
+	items := make([]types.MarketParamPrice, n + 1)
+	numExistingMarkets := GetNumMarkets(t, ctx, keeper)
+	for i := range items {
+		items[i].Param.Id = uint32(i) + numExistingMarkets
+		items[i].Param.ExchangeConfigJson = ""
+		items[i].Param.MinExchanges = uint32(1)
+		items[i].Price.Price = uint64(1_000 + i)
+		items[i].Price.Id = uint32(i) + numExistingMarkets
+		items[i].Param.MinPriceChangePpm = uint32(i + 1)
+		items[i].Param.ExchangeConfigJson = "{}" // Use empty, valid JSON for testing.
+		if i == 0 {
+			items[i].Param.Pair = "ETH-USD"
+			items[i].Param.Exponent = int32(-6)
+			items[i].Price.Exponent = int32(-6)
+		} else {
+			items[i].Param.Pair = fmt.Sprintf("%v", i)
+			items[i].Param.Exponent = int32(i)
+			items[i].Price.Exponent = int32(i)
+		}
+
+		_, err := keeper.CreateMarket(
+			ctx,
+			items[i].Param,
+			items[i].Price,
+		)
+		require.NoError(t, err)
+		items[i].Price, err = keeper.GetMarketPrice(ctx, items[i].Param.Id)
+		require.NoError(t, err)
+	}
+
+	return items
+}
+
+
 // AssertPriceUpdateEventsInIndexerBlock verifies that the market update has a corresponding price update
 // event included in the Indexer block message.
 func AssertPriceUpdateEventsInIndexerBlock(

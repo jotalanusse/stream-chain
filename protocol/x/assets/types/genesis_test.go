@@ -32,7 +32,8 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 					{
@@ -69,7 +70,8 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 				},
@@ -92,14 +94,15 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 				},
 			},
 			expectedErr: types.ErrUsdcMustBeAssetZero,
 		},
-		"asset[1] not eth. HasMarket and MarketId incorrect.": {
+		"asset[1] not eth. MarketId incorrect.": {
 			genState: &types.GenesisState{
 				Assets: []types.Asset{
 					{
@@ -116,7 +119,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
 						HasMarket:        true,
-						MarketId:         0,
+						MarketId:         1,
 						AtomicResolution: int32(-6),
 					},
 				},
@@ -139,7 +142,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        true,
+						HasMarket:        false,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 				},
@@ -162,7 +165,8 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 					{
@@ -192,7 +196,8 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 					{
@@ -224,7 +229,8 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 					{
@@ -254,7 +260,8 @@ func TestGenesisState_Validate(t *testing.T) {
 						Symbol:           types.AssetEth.Symbol,
 						Denom:            types.AssetEth.Denom,
 						DenomExponent:    types.AssetEth.DenomExponent,
-						HasMarket:        false,
+						HasMarket:        true,
+						MarketId:		  types.AssetEth.MarketId,
 						AtomicResolution: lib.EthAtomicResolution,
 					},
 					{

@@ -14,7 +14,8 @@ const (
 	MaxPriceChangePpm = uint32(10_000)
 	// 10^6 quantums == 1 USD.
 	QuoteCurrencyAtomicResolution = int32(-6)
-	EthAtomicResolution = QuoteCurrencyAtomicResolution
+	EthAtomicResolution = int32(-18)
+	EthMarketId = 0
 
 	ZeroUint64 = uint64(0)
 

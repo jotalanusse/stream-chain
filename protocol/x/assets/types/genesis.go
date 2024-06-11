@@ -27,7 +27,8 @@ var (
 		Symbol:           "ETH",
 		DenomExponent:    WethWeiDenomExponent,
 		Denom:            WethWeiDenom,
-		HasMarket:        false,
+		HasMarket:        true,
+		MarketId:		  lib.EthMarketId,
 		AtomicResolution: lib.EthAtomicResolution, // TODO: This needs to be price adjusted. 
 	}
 )

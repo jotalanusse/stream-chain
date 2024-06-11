@@ -1,9 +1,9 @@
 package keeper_test
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
+	"fmt"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
@@ -22,7 +22,77 @@ import (
 const (
 	// firstValidAssetId is the first valid asset ID after the reserved `assetId=0` for USDC and `assetId=1` for Eth.
 	firstValidAssetId = uint32(2)
+	firstValidAssetIdInt = 2
 )
+
+
+func createNAssetsAndUsdcAndEth(
+	t *testing.T,
+	ctx sdk.Context,
+	keeper *keeper.Keeper,
+	pricesKeeper *priceskeeper.Keeper,
+	n int,
+) ([]types.Asset, error) {
+	items := make([]types.Asset, n + firstValidAssetIdInt)
+	keepertest.CreateNMarketsWithSpecialEthMarket(t, ctx, pricesKeeper, n)
+
+	// create USDC asset
+	assetUsdc, errUsdc := keeper.CreateAsset(
+		ctx,
+		types.AssetUsdc.Id,
+		types.AssetUsdc.Symbol,
+		types.AssetUsdc.Denom,
+		types.AssetUsdc.DenomExponent,
+		types.AssetUsdc.HasMarket,
+		types.AssetUsdc.MarketId,
+		types.AssetUsdc.AtomicResolution,
+	)
+
+	require.NoError(t, errUsdc)
+	items[0] = assetUsdc
+
+
+	// create ETH asset
+	assetEth, errEth := keeper.CreateAsset(
+		ctx,
+		types.AssetEth.Id,
+		types.AssetEth.Symbol,
+		types.AssetEth.Denom,
+		types.AssetEth.DenomExponent,
+		types.AssetEth.HasMarket,
+		types.AssetEth.MarketId,
+		types.AssetEth.AtomicResolution,
+	)
+
+	require.NoError(t, errEth)
+	items[1] = assetEth
+
+	// for i := range items {
+	// 	hasMarket := i%2 == 0
+	// 	var marketId uint32
+	// 	if hasMarket {
+	// 		marketId = uint32(i + firstValidAssetIdInt - 1)
+	// 	}
+	// 	asset, err := keeper.CreateAsset(
+	// 		ctx,
+	// 		uint32(i + firstValidAssetIdInt), // AssetId
+	// 		fmt.Sprintf("symbol-%v", i), // Symbol
+	// 		fmt.Sprintf("denom-%v", i),  // Denom
+	// 		int32(i),                    // DenomExponent
+	// 		hasMarket,                   // HasMarket
+	// 		marketId,                    // MarketId
+	// 		int32(i),                    // AtomicResolution
+	// 	)
+	// 	if err != nil {
+	// 		return items, err
+	// 	}
+
+	// 	items[i] = asset
+	// }
+
+	return items, nil
+}
+
 
 // createNAssets creates n test assets with id 2 to n + 1 (0 is reserved for USDC, 1 reserved for ETH)
 func createNAssets(
@@ -33,18 +103,17 @@ func createNAssets(
 	n int,
 ) ([]types.Asset, error) {
 	items := make([]types.Asset, n)
-
-	keepertest.CreateNMarkets(t, ctx, pricesKeeper, n)
+	keepertest.CreateNMarketsWithSpecialEthMarket(t, ctx, pricesKeeper, n)
 
 	for i := range items {
 		hasMarket := i%2 == 0
 		var marketId uint32
 		if hasMarket {
-			marketId = uint32(i)
+			marketId = uint32(i + firstValidAssetIdInt - 1)
 		}
 		asset, err := keeper.CreateAsset(
 			ctx,
-			uint32(i+2),                 // AssetId
+			uint32(i + firstValidAssetIdInt), // AssetId
 			fmt.Sprintf("symbol-%v", i), // Symbol
 			fmt.Sprintf("denom-%v", i),  // Denom
 			int32(i),                    // DenomExponent
@@ -316,7 +385,7 @@ func TestModifyAsset_NotFound(t *testing.T) {
 		ctx,
 		firstValidAssetId,
 		true,
-		uint32(0),
+		uint32(firstValidAssetId - 1),
 	)
 	require.NoError(t, err)
 }
@@ -412,6 +481,24 @@ func TestGetNetCollateral_Usdc(t *testing.T) {
 	)
 	require.NoError(t, err)
 	require.Equal(t, new(big.Int).SetInt64(100), netCollateral)
+}
+
+// NOTE: Assumes ETH price is 1000 (set when market is created)
+func TestGetNetCollateral_Eth(t *testing.T) {
+	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
+	_, err := createNAssetsAndUsdcAndEth(t, ctx, keeper, pricesKeeper, 2)
+	require.NoError(t, err)
+
+	netCollateral, err := keeper.GetNetCollateral(
+		ctx,
+		types.AssetEth.Id,
+		new(big.Int).SetInt64(1000000000000000), // NOTE: the amount here is wei
+	)
+	require.NoError(t, err)
+	// NOTE: The value of 1 below has to be adjusted depending on EthAtomicResolution, priceExponent, and QuoteCurrencyAtomicResolution
+	// General calculation: base quantums * 10 ^ base quantum resolution * price * 10 ^ price exponent / 10^quote quantum exponent
+	// Current calculation: 1000000000000000 * 10^-18 * 1000 * 10^-6 / 10^-6
+	require.Equal(t, new(big.Int).SetInt64(1), netCollateral)
 }
 
 
