@@ -82,7 +82,7 @@ func (k Keeper) applyValidSubaccountUpdateForTransfer(
 	return types.GetErrorFromUpdateResults(success, successPerUpdate, updates)
 }
 
-// DepositFundsFromAccountToSubaccount returns an error if the call to `k.CanUpdateSubaccounts()`
+// Change Comment: DepositFundsFromAccountToSubaccount returns an error if the call to `k.CanUpdateSubaccounts()`
 // fails. Otherwise, increases the asset quantums in the subaccount, translates the
 // `assetId` and `quantums` into a `sdk.Coin`, and calls
 // `bankKeeper.SendCoinsFromAccountToModule()`.
