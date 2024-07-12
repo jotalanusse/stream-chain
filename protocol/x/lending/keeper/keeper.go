@@ -5,7 +5,6 @@ import (
 
 	cosmoslog "cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,51 +12,19 @@ import (
 
 type (
 	Keeper struct {
-		cdc             codec.BinaryCodec
-		storeKey        storetypes.StoreKey
-		bankKeeper      types.BankKeeper
-		blockTimeKeeper types.BlockTimeKeeper
-		ics4Wrapper     types.ICS4Wrapper
-
-		// the addresses capable of executing MsgSetLimitParams message.
-		authorities map[string]struct{}
+		cdc      codec.BinaryCodec
+		storeKey storetypes.StoreKey
 	}
 )
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
-	bankKeeper types.BankKeeper,
-	blockTimeKeeper types.BlockTimeKeeper,
-	ics4Wrapper types.ICS4Wrapper,
-	authorities []string,
 ) *Keeper {
 	return &Keeper{
-		cdc:             cdc,
-		storeKey:        storeKey,
-		bankKeeper:      bankKeeper,
-		blockTimeKeeper: blockTimeKeeper,
-		ics4Wrapper:     ics4Wrapper,
-		authorities:     lib.UniqueSliceToSet(authorities),
+		cdc:      cdc,
+		storeKey: storeKey,
 	}
-}
-
-// Takes the context, the address making the deposit, and the amount to deposit.
-func (k Keeper) ProcessDeposit(ctx sdk.Context, depositorAddress string, amount sdk.Coin) error {
-	// Use the bankKeeper to add the amount to the module's account
-	err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, depositorAddress, types.ModuleName, sdk.NewCoins(amount))
-	if err != nil {
-		return err
-	}
-	// Log the deposit
-	k.Logger(ctx).Info("Processed deposit", "depositor", depositorAddress, "amount", amount.String())
-
-	return nil
-}
-
-func (k Keeper) HasAuthority(authority string) bool {
-	_, ok := k.authorities[authority]
-	return ok
 }
 
 func (k Keeper) Logger(ctx sdk.Context) cosmoslog.Logger {
@@ -65,3 +32,93 @@ func (k Keeper) Logger(ctx sdk.Context) cosmoslog.Logger {
 }
 
 func (k Keeper) InitializeForGenesis(ctx sdk.Context) {}
+
+//Deposits
+
+// Set an example value in the store
+func (k Keeper) setDeposits(ctx sdk.Context, key string, value []byte) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set([]byte(key), value)
+}
+
+// Get an example value from the store
+func (k Keeper) getDeposits(ctx sdk.Context, key string) ([]byte, bool) {
+	store := ctx.KVStore(k.storeKey)
+	value := store.Get([]byte(key))
+	if value == nil {
+		return nil, false
+	}
+	return value, true
+}
+
+// Core functionalities
+func (k Keeper) Deposit(ctx sdk.Context, depositor sdk.AccAddress, amount sdk.Coin) error {
+	// Implementation to deposit assets
+	return nil
+}
+
+// Borrow
+func (k Keeper) Borrow(ctx sdk.Context, borrower sdk.AccAddress, amount sdk.Coin) error {
+	// Implementation to borrow assets
+	return nil
+}
+
+func (k Keeper) Repay(ctx sdk.Context, borrower sdk.AccAddress, amount sdk.Coin) error {
+	// Implementation to repay borrowed assets
+	return nil
+}
+
+func (k Keeper) Withdraw(ctx sdk.Context, depositor sdk.AccAddress, amount sdk.Coin) error {
+	// Implementation to withdraw assets
+	return nil
+}
+
+// Interest accrual and collateral management
+func (k Keeper) AccrueInterest(ctx sdk.Context) {
+	// Implementation to accrue interest on deposits and loans
+}
+
+func (k Keeper) DepositCollateral(ctx sdk.Context, depositor sdk.AccAddress, collateral sdk.Coin) error {
+	// Implementation to deposit collateral
+	return nil
+}
+
+func (k Keeper) WithdrawCollateral(ctx sdk.Context, depositor sdk.AccAddress, collateral sdk.Coin) error {
+	// Implementation to withdraw collateral
+	return nil
+}
+
+// Liquidation
+func (k Keeper) Liquidate(ctx sdk.Context, borrower sdk.AccAddress, liquidator sdk.AccAddress, amount sdk.Coin) error {
+	// Implementation to liquidate undercollateralized loans
+	return nil
+}
+
+// Governance and parameters
+// func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
+// 	// Implementation to set parameters
+// }
+
+// func (k Keeper) GetParams(ctx sdk.Context) types.Params {
+// 	// Implementation to get parameters
+// 	//return types.Params{}
+// }
+
+// Event emission
+func (k Keeper) EmitDepositEvent(ctx sdk.Context, depositor sdk.AccAddress, amount sdk.Coin) {
+	// Implementation to emit deposit event
+}
+
+func (k Keeper) EmitBorrowEvent(ctx sdk.Context, borrower sdk.AccAddress, amount sdk.Coin) {
+	// Implementation to emit borrow event
+}
+
+// Helper functions
+func (k Keeper) getAccount(ctx sdk.Context, address sdk.AccAddress) types.Account {
+	// Implementation to get account details
+	return types.Account{}
+}
+
+func (k Keeper) setAccount(ctx sdk.Context, account types.Account) {
+	// Implementation to set account details
+}

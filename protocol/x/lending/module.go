@@ -1,35 +1,38 @@
-package lending
+package ratelimit
 
 import (
-	"context"
-	"encoding/json"
+	//"context"
+	// "encoding/json"
 	"fmt"
 
-	"cosmossdk.io/core/appmodule"
+	//"cosmossdk.io/core/appmodule"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/client/cli"
+	// "github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+
+	//"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/client/cli"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/client/cli"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	//sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 )
 
 var (
-	_ module.AppModuleBasic   = AppModuleBasic{}
-	_ module.HasGenesisBasics = AppModuleBasic{}
+	_ module.AppModuleBasic = AppModuleBasic{}
+	// _ module.HasGenesisBasics = AppModuleBasic{}
 
-	_ appmodule.AppModule        = AppModule{}
-	_ appmodule.HasEndBlocker    = AppModule{}
-	_ module.HasConsensusVersion = AppModule{}
-	_ module.HasGenesis          = AppModule{}
-	_ module.HasServices         = AppModule{}
+	// _ appmodule.AppModule        = AppModule{}
+	// _ appmodule.HasEndBlocker    = AppModule{}
+	// _ module.HasConsensusVersion = AppModule{}
+	// _ module.HasGenesis          = AppModule{}
+	// _ module.HasServices         = AppModule{}
 )
 
 // ----------------------------------------------------------------------------
@@ -54,20 +57,23 @@ func (AppModuleBasic) Name() string {
 // RegisterLegacyAminoCodec registers the amino codec for the module, which is used to marshal and unmarshal structs
 // to/from []byte in order to persist them in the module's KVStore
 func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
-	types.RegisterCodec(cdc)
+	//types.RegisterCodec(cdc)
+	fmt.Printf("cdc: %v\n", cdc)
 }
 
 // RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message
 func (a AppModuleBasic) RegisterInterfaces(reg cdctypes.InterfaceRegistry) {
-	types.RegisterInterfaces(reg)
+	fmt.Printf("cdc: %v\n", reg)
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	if err := types.RegisterQueryHandlerClient(
-		context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
-		panic(err)
-	}
+	// if err := types.RegisterQueryHandlerClient(
+	// 	context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
+	// 	panic(err)
+	// }
+	fmt.Printf("clientCtx: %v\n", clientCtx)
+	fmt.Printf("mux: %v\n", mux)
 }
 
 // GetTxCmd returns the root Tx command for the module. The subcommands of this root command are used by end-users
@@ -84,18 +90,18 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 
 // DefaultGenesis returns a default GenesisState for the module, marshalled to json.RawMessage. The default
 // GenesisState need to be defined by the module developer and is primarily used for testing
-func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
-	return cdc.MustMarshalJSON(types.DefaultGenesis())
-}
+// func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
+// 	return cdc.MustMarshalJSON(types.DefaultGenesis())
+// }
 
 // ValidateGenesis used to validate the GenesisState, given in its json.RawMessage form
-func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
-	var genState types.GenesisState
-	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
-		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
-	}
-	return genState.Validate()
-}
+// func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
+// 	var genState types.GenesisState
+// 	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
+// 		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
+// 	}
+// 	return genState.Validate()
+// }
 
 // ----------------------------------------------------------------------------
 // AppModule
@@ -125,25 +131,25 @@ func (am AppModule) IsAppModule() {}
 func (am AppModule) IsOnePerModuleType() {}
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
-func (am AppModule) RegisterServices(cfg module.Configurator) {
-	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
-}
+// func (am AppModule) RegisterServices(cfg module.Configurator) {
+// 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
+// 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
+// }
 
 // InitGenesis performs the module's genesis initialization. It returns no validator updates.
-func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) {
-	var genState types.GenesisState
-	// Initialize global index to index in genesis state
-	cdc.MustUnmarshalJSON(gs, &genState)
+// func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) {
+// 	var genState types.GenesisState
+// 	// Initialize global index to index in genesis state
+// 	cdc.MustUnmarshalJSON(gs, &genState)
 
-	InitGenesis(ctx, am.keeper, genState)
-}
+// 	InitGenesis(ctx, am.keeper, genState)
+// }
 
 // ExportGenesis returns the module's exported genesis state as raw JSON bytes.
-func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.RawMessage {
-	genState := ExportGenesis(ctx, am.keeper)
-	return cdc.MustMarshalJSON(genState)
-}
+// func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.RawMessage {
+// 	genState := ExportGenesis(ctx, am.keeper)
+// 	return cdc.MustMarshalJSON(genState)
+// }
 
 // ConsensusVersion is a sequence number for state-breaking change of the module. It should be incremented on each
 // consensus-breaking change introduced by the module. To avoid wrong/empty versions, the initial version should
@@ -151,9 +157,9 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
-func (am AppModule) EndBlock(ctx context.Context) error {
-	sdkCtx := lib.UnwrapSDKContext(ctx, types.ModuleName)
-	am.keeper.UpdateAllCapacitiesEndBlocker(sdkCtx)
+// func (am AppModule) EndBlock(ctx context.Context) error {
+// 	sdkCtx := lib.UnwrapSDKContext(ctx, types.ModuleName)
+// 	am.keeper.UpdateAllCapacitiesEndBlocker(sdkCtx)
 
-	return nil
-}
+// 	return nil
+// }

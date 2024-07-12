@@ -137,6 +137,10 @@ import (
 	feetiersmodulekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/keeper"
 	feetiersmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 
+	lendingmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending"
+	lendingmodulekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/keeper"
+	lendingmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
+
 	perpetualsmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	perpetualsmodulekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	perpetualsmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -264,6 +268,8 @@ type App struct {
 
 	FeeTiersKeeper feetiersmodulekeeper.Keeper
 
+	LendingKeeper lendingmodulekeeper.Keeper
+
 	PerpetualsKeeper *perpetualsmodulekeeper.Keeper
 
 	StatsKeeper statsmodulekeeper.Keeper
@@ -364,6 +370,7 @@ func New(
 		assetsmoduletypes.StoreKey,
 		blocktimemoduletypes.StoreKey,
 		feetiersmoduletypes.StoreKey,
+		lendingmoduletypes.StoreKey,
 		perpetualsmoduletypes.StoreKey,
 		satypes.StoreKey,
 		statsmoduletypes.StoreKey,
@@ -812,6 +819,12 @@ func New(
 	)
 	delayMsgModule := delaymsgmodule.NewAppModule(appCodec, app.DelayMsgKeeper)
 
+	app.LendingKeeper = *lendingmodulekeeper.NewKeeper(
+		appCodec,
+		keys[lendingmoduletypes.StoreKey],
+	)
+	lendingModule := lendingmodule.NewAppModule(appCodec, app.LendingKeeper)
+
 	app.PerpetualsKeeper = perpetualsmodulekeeper.NewKeeper(
 		appCodec,
 		keys[perpetualsmoduletypes.StoreKey],
@@ -968,6 +981,7 @@ func New(
 		assetsModule,
 		blockTimeModule,
 		feeTiersModule,
+		lendingModule,
 		perpetualsModule,
 		statsModule,
 		subaccountsModule,
