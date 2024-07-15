@@ -5,6 +5,7 @@ import (
 
 	cosmoslog "cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,18 +13,21 @@ import (
 
 type (
 	Keeper struct {
-		cdc      codec.BinaryCodec
-		storeKey storetypes.StoreKey
+		cdc                 codec.BinaryCodec
+		storeKey            storetypes.StoreKey
+		indexerEventManager indexer_manager.IndexerEventManager
 	}
 )
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
+	indexerEventManager indexer_manager.IndexerEventManager,
 ) *Keeper {
 	return &Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
+		cdc:                 cdc,
+		storeKey:            storeKey,
+		indexerEventManager: indexerEventManager,
 	}
 }
 
@@ -35,14 +39,15 @@ func (k Keeper) InitializeForGenesis(ctx sdk.Context) {}
 
 //Deposits
 
-// Set an example value in the store
-func (k Keeper) setDeposits(ctx sdk.Context, key string, value []byte) {
+// Sets value in the store with a specific key
+func (k Keeper) SetDeposits(ctx sdk.Context, key string, value []byte) {
 	store := ctx.KVStore(k.storeKey)
+	//bz := k.cdc.MustMarshal(&coins) // Marshal the coins to binary
 	store.Set([]byte(key), value)
 }
 
-// Get an example value from the store
-func (k Keeper) getDeposits(ctx sdk.Context, key string) ([]byte, bool) {
+// Get value in the store based on a specific key
+func (k Keeper) GetDeposits(ctx sdk.Context, key string) ([]byte, bool) {
 	store := ctx.KVStore(k.storeKey)
 	value := store.Get([]byte(key))
 	if value == nil {
@@ -52,10 +57,6 @@ func (k Keeper) getDeposits(ctx sdk.Context, key string) ([]byte, bool) {
 }
 
 // Core functionalities
-func (k Keeper) Deposit(ctx sdk.Context, depositor sdk.AccAddress, amount sdk.Coin) error {
-	// Implementation to deposit assets
-	return nil
-}
 
 // Borrow
 func (k Keeper) Borrow(ctx sdk.Context, borrower sdk.AccAddress, amount sdk.Coin) error {
@@ -114,11 +115,11 @@ func (k Keeper) EmitBorrowEvent(ctx sdk.Context, borrower sdk.AccAddress, amount
 }
 
 // Helper functions
-func (k Keeper) getAccount(ctx sdk.Context, address sdk.AccAddress) types.Account {
+func (k Keeper) getAccount(ctx sdk.Context, address sdk.AccAddress) types.LendingAccount {
 	// Implementation to get account details
-	return types.Account{}
+	return types.LendingAccount{}
 }
 
-func (k Keeper) setAccount(ctx sdk.Context, account types.Account) {
+func (k Keeper) setAccount(ctx sdk.Context, account types.LendingAccount) {
 	// Implementation to set account details
 }

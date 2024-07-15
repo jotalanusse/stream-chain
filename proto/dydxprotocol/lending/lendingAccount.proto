@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package dydxprotocol.lending;
+
+import "cosmos_proto/cosmos.proto";
+import "google/protobuf/struct.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types";
+
+// Account defines a blockchain account structure.
+message LendingAccount {
+  // Unique address of the account.
+  string address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // Balance of various coins.
+  repeated cosmos.base.v1beta1.Coin balance = 2;
+
+  // Used to ensure transaction order.
+  uint64 nonce = 3;
+
+  // Additional account information should be added here
+}
