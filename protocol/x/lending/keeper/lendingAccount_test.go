@@ -82,3 +82,54 @@ func TestOpenLendingPosition(t *testing.T) {
 
 	assert.True(t, reflect.DeepEqual(updatedAccount, retrievedAccount), "created and retrieved accounts should have the same contents")
 }
+
+func TestAddMultipleAssetsToLendingPosition(t *testing.T) {
+	// Setup keeper and context here
+	ctx, lendingKeeper, _, _, _, _ := keepertest.LendingKeepers(t, true)
+
+	// Create a new lending account
+	bech32Addr := generateBech32Address()
+	account, err := lendingKeeper.CreateLendingAccount(ctx, bech32Addr)
+	require.NoError(t, err, "failed to create lending account")
+
+	// Open a 1 BTC lending position
+	btcAmount := sdk.NewCoin("BTC", sdkmath.NewInt(1))
+	_, err = lendingKeeper.OpenLendingPosition(ctx, account.Address, btcAmount)
+	require.NoError(t, err, "failed to open BTC lending position")
+
+	// Open an 10 ETH lending position
+	ethAmount := sdk.NewCoin("ETH", sdkmath.NewInt(10))
+	_, err = lendingKeeper.OpenLendingPosition(ctx, account.Address, ethAmount)
+	require.NoError(t, err, "failed to open ETH lending position")
+
+	// Open a 100 SOL lending position
+	solAmount := sdk.NewCoin("SOL", sdkmath.NewInt(100))
+	_, err = lendingKeeper.OpenLendingPosition(ctx, account.Address, solAmount)
+	require.NoError(t, err, "failed to open SOL lending position")
+
+	// Retrieve the updated account to verify positions
+	updatedAccount, exists := lendingKeeper.GetLendingAccount(ctx, account.Address)
+	require.True(t, exists, "account should exist")
+	assert.Len(t, updatedAccount.LendingPositions, 3, "there should be three lending positions")
+
+	// Verify each position
+	foundBTC, foundETH, foundSOL := false, false, false
+	for _, position := range updatedAccount.LendingPositions {
+		switch position.Denom {
+		case "BTC":
+			assert.Equal(t, btcAmount, *position, "BTC position should match")
+			foundBTC = true
+		case "ETH":
+			assert.Equal(t, ethAmount, *position, "ETH position should match")
+			foundETH = true
+		case "SOL":
+			assert.Equal(t, solAmount, *position, "SOL position should match")
+			foundSOL = true
+		}
+	}
+
+	// Ensure all positions are found
+	assert.True(t, foundBTC, "BTC position not found")
+	assert.True(t, foundETH, "ETH position not found")
+	assert.True(t, foundSOL, "SOL position not found")
+}

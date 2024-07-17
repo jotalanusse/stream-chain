@@ -9,9 +9,9 @@ import (
 /*
 	File includes methods related to setting/getting lending accounts.
 	File methods include:
-	- GetLendingAccount
-	- checkLendingAccountExists
-	- SetLendingAccount
+	- DoesLendingAccountExist
+	- CreateLendingAccount
+	- OpenLendingPosition
 	- CreateLendingAccount
 */
 
