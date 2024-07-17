@@ -28,21 +28,18 @@ func TestSetAndGetLendingAccount(t *testing.T) {
 	// Setup keeper and context here
 	ctx, lendingKeeper, _, _, _, _ := keepertest.LendingKeepers(t, true)
 
-	//Create a test account
+	// Create a test account
 	bech32Addr := "dydx1zaeeeycequcwxw5vuqnlz3nlax4zljpqsekv4j"
 	account := types.LendingAccount{
-		Address:            bech32Addr,
-		Nonce:              0,
-		LendingPositions:   []*sdk.Coin{},   // Corrected to use pointers
-		BorrowingPositions: []*types.Loan{}, // Corrected to use pointers
+		Address:          bech32Addr,
+		Nonce:            0,
+		AccountPositions: []*types.AccountPosition{},
 	}
 
 	// Set the lending account
 	lendingKeeper.SetLendingAccount(ctx, account)
 
 	// Retrieve the lending account
-	// accAddress, err := sdk.AccAddressFromBech32(bech32Addr)
-	// require.NoError(t, err, "failed to convert address to AccAddress")
 	retrievedAccount, exists := lendingKeeper.GetLendingAccount(ctx, bech32Addr)
 	require.True(t, exists, "account should exist")
 	assert.Equal(t, account, retrievedAccount, "retrieved account should match the set account")

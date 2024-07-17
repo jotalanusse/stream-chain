@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package dydxprotocol.lending;
+
+import "cosmos_proto/cosmos.proto";
+import "google/protobuf/struct.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types";
+
+// InterestRateModel defines the parameters for the interest rate model.
+message InterestRateModel {
+  float baseRate = 1;      // Base rate for the interest model
+  float multiplier = 2;    // Multiplier for the interest model
+  float jumpMultiplier = 3; // Jump multiplier for the interest model (interest rate post targetThreshold)
+  float targetThreshold = 4;          // targetThreshold for the interest model
+}
+
+// PoolParams defines the parameters for the pool.
+message PoolParams {
+  string assetDenom = 1;                      // Denomination of the asset in the pool
+  InterestRateModel interestRateModel = 2;   // Interest rate model for the pool
+}
+
+// Pool represents the data structure for the pool.
+message Pool {
+  cosmos.base.v1beta1.Coin totalDeposits = 1; // Total amount of deposits in the pool
+  cosmos.base.v1beta1.Coin totalBorrows = 2;  // Total amount of borrows in the pool
+  PoolParams params = 3;                      // Parameters for the pool
+}

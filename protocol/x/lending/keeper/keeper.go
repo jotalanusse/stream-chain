@@ -48,7 +48,7 @@ func (k Keeper) SetLendingAccount(ctx sdk.Context, account types.LendingAccount)
 	store.Set(accountKey, bz)
 }
 
-// retrieves the lending account from the KVStore.
+// Retrieves the lending account from the KVStore.
 func (k Keeper) GetLendingAccount(ctx sdk.Context, bech32AccAddr string) (types.LendingAccount, bool) {
 	store := ctx.KVStore(k.storeKey)
 	accountKey := types.GetLendingAccountStoreKey(bech32AccAddr)
@@ -59,15 +59,30 @@ func (k Keeper) GetLendingAccount(ctx sdk.Context, bech32AccAddr string) (types.
 	var account types.LendingAccount
 	k.cdc.MustUnmarshal(bz, &account)
 
-	// Ensure LendingPositions and BorrowingPositions fields are initialized to an empty slice if they're nil
-	if account.LendingPositions == nil {
-		account.LendingPositions = []*sdk.Coin{}
-	}
-	if account.BorrowingPositions == nil {
-		account.BorrowingPositions = []*types.Loan{}
+	// Ensure accountPositions field is initialized to an empty slice if it's nil
+	if account.AccountPositions == nil {
+		account.AccountPositions = []*types.AccountPosition{}
 	}
 
 	return account, true
+}
+
+// ///////// Lending Pools //////////
+func (k Keeper) SetPool(ctx sdk.Context, pool types.Pool) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&pool)
+	store.Set([]byte(pool.TotalDeposits.Denom), bz)
+}
+
+func (k Keeper) GetPool(ctx sdk.Context, assetDenom string) (types.Pool, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bz := store.Get([]byte(assetDenom))
+	if bz == nil {
+		return types.Pool{}, false
+	}
+	var pool types.Pool
+	k.cdc.MustUnmarshal(bz, &pool)
+	return pool, true
 }
 
 // Core functionalities
