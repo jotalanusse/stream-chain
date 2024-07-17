@@ -27,7 +27,7 @@ func TestCheckLendingAccountExists(t *testing.T) {
 	}
 
 	//ensure the account doesn't exist
-	nonExistentAddress, err := lendingKeeper.CheckLendingAccountExists(ctx, bech32Addr)
+	nonExistentAddress, err := lendingKeeper.DoesLendingAccountExist(ctx, bech32Addr)
 	require.NoError(t, err)
 	assert.False(t, nonExistentAddress, "account should not exist")
 
@@ -35,7 +35,7 @@ func TestCheckLendingAccountExists(t *testing.T) {
 	lendingKeeper.SetLendingAccount(ctx, account)
 
 	// ensure the account does exist
-	exists, err := lendingKeeper.CheckLendingAccountExists(ctx, bech32Addr)
+	exists, err := lendingKeeper.DoesLendingAccountExist(ctx, bech32Addr)
 	require.NoError(t, err)
 	assert.True(t, exists, "account should exist")
 }
@@ -67,11 +67,11 @@ func TestOpenLendingPosition(t *testing.T) {
 
 	// Open a lending position
 	amount := sdk.NewCoin("ETH", sdkmath.NewInt(100))
-	err = lendingKeeper.OpenLendingPosition(ctx, bech32Addr, amount)
+	updatedAccount, err := lendingKeeper.OpenLendingPosition(ctx, account.Address, amount)
 	require.NoError(t, err, "failed to open lending position")
 
 	// Check if the lending position was added
-	retrievedAccount, exists := lendingKeeper.GetLendingAccount(ctx, bech32Addr)
+	retrievedAccount, exists := lendingKeeper.GetLendingAccount(ctx, updatedAccount.Address)
 	require.True(t, exists, "account should exist")
 	assert.Len(t, retrievedAccount.LendingPositions, 1, "there should be one lending position")
 	assert.Equal(t, amount, *retrievedAccount.LendingPositions[0], "lending position should match")
@@ -80,5 +80,5 @@ func TestOpenLendingPosition(t *testing.T) {
 	t.Logf("Created Account: %+v\n", account)
 	t.Logf("Retrieved Account: %+v\n", retrievedAccount)
 
-	assert.True(t, reflect.DeepEqual(*account, *retrievedAccount), "created and retrieved accounts should have the same contents")
+	assert.True(t, reflect.DeepEqual(updatedAccount, retrievedAccount), "created and retrieved accounts should have the same contents")
 }

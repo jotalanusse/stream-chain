@@ -45,7 +45,7 @@ func TestSetAndGetLendingAccount(t *testing.T) {
 	// require.NoError(t, err, "failed to convert address to AccAddress")
 	retrievedAccount, exists := lendingKeeper.GetLendingAccount(ctx, bech32Addr)
 	require.True(t, exists, "account should exist")
-	assert.Equal(t, account, *retrievedAccount, "retrieved account should match the set account")
+	assert.Equal(t, account, retrievedAccount, "retrieved account should match the set account")
 }
 
 func TestGetNonExistentLendingAccount(t *testing.T) {
@@ -56,5 +56,5 @@ func TestGetNonExistentLendingAccount(t *testing.T) {
 	bech32Addr := "dydx1zaeeeycequcwxw5vuqnlz3nlax4zljpqsekv4j"
 	retrievedAccount, exists := lendingKeeper.GetLendingAccount(ctx, bech32Addr)
 	require.False(t, exists, "account should not exist")
-	assert.Equal(t, types.LendingAccount{}, *retrievedAccount, "retrieved account should be empty")
+	assert.Equal(t, types.LendingAccount{}, retrievedAccount, "retrieved account should be empty")
 }

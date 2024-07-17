@@ -49,11 +49,11 @@ func (k Keeper) SetLendingAccount(ctx sdk.Context, account types.LendingAccount)
 }
 
 // retrieves the lending account from the KVStore.
-func (k Keeper) GetLendingAccount(ctx sdk.Context, bech32AccAddr string) (*types.LendingAccount, bool) {
+func (k Keeper) GetLendingAccount(ctx sdk.Context, bech32AccAddr string) (types.LendingAccount, bool) {
 	store := ctx.KVStore(k.storeKey)
 	accountKey := types.GetLendingAccountStoreKey(bech32AccAddr)
 	if !store.Has(accountKey) {
-		return &types.LendingAccount{}, false
+		return types.LendingAccount{}, false
 	}
 	bz := store.Get(accountKey)
 	var account types.LendingAccount
@@ -67,7 +67,7 @@ func (k Keeper) GetLendingAccount(ctx sdk.Context, bech32AccAddr string) (*types
 		account.BorrowingPositions = []*types.Loan{}
 	}
 
-	return &account, true
+	return account, true
 }
 
 // Core functionalities
