@@ -822,6 +822,7 @@ func New(
 	app.LendingKeeper = *lendingmodulekeeper.NewKeeper(
 		appCodec,
 		keys[lendingmoduletypes.StoreKey],
+		app.IndexerEventManager,
 	)
 	lendingModule := lendingmodule.NewAppModule(appCodec, app.LendingKeeper)
 

@@ -37,23 +37,37 @@ func (k Keeper) Logger(ctx sdk.Context) cosmoslog.Logger {
 
 func (k Keeper) InitializeForGenesis(ctx sdk.Context) {}
 
-//Deposits
+/////////// Lending Accounts //////////
 
-// Sets value in the store with a specific key
-func (k Keeper) SetDeposits(ctx sdk.Context, key string, value []byte) {
+// marshals and stores the lending account in kv-store
+func (k Keeper) SetLendingAccount(ctx sdk.Context, account types.LendingAccount) {
 	store := ctx.KVStore(k.storeKey)
-	//bz := k.cdc.MustMarshal(&coins) // Marshal the coins to binary
-	store.Set([]byte(key), value)
+	accountKey := types.GetLendingAccountStoreKey(account.Address)
+
+	bz := k.cdc.MustMarshal(&account)
+	store.Set(accountKey, bz)
 }
 
-// Get value in the store based on a specific key
-func (k Keeper) GetDeposits(ctx sdk.Context, key string) ([]byte, bool) {
+// retrieves the lending account from the KVStore.
+func (k Keeper) GetLendingAccount(ctx sdk.Context, bech32AccAddr string) (*types.LendingAccount, bool) {
 	store := ctx.KVStore(k.storeKey)
-	value := store.Get([]byte(key))
-	if value == nil {
-		return nil, false
+	accountKey := types.GetLendingAccountStoreKey(bech32AccAddr)
+	if !store.Has(accountKey) {
+		return &types.LendingAccount{}, false
 	}
-	return value, true
+	bz := store.Get(accountKey)
+	var account types.LendingAccount
+	k.cdc.MustUnmarshal(bz, &account)
+
+	// Ensure LendingPositions and BorrowingPositions fields are initialized to an empty slice if they're nil
+	if account.LendingPositions == nil {
+		account.LendingPositions = []*sdk.Coin{}
+	}
+	if account.BorrowingPositions == nil {
+		account.BorrowingPositions = []*types.Loan{}
+	}
+
+	return &account, true
 }
 
 // Core functionalities

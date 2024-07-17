@@ -1,9 +1,9 @@
 package keeper
 
 import (
-	//errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -15,27 +15,9 @@ import (
 	- CreateLendingAccount
 */
 
-// retrieves a lending account if it exists.
-func (k Keeper) GetLendingAccount(ctx sdk.Context, address string) (types.LendingAccount, bool) {
-	store := ctx.KVStore(k.storeKey)
-	if !store.Has([]byte(address)) {
-		return types.LendingAccount{}, false
-	}
-	bz := store.Get([]byte(address))
-	var account types.LendingAccount
-	k.cdc.MustUnmarshal(bz, &account)
-
-	// Ensure the Balance field is initialized as an empty slice if it's nil (go treats nil and empty slice differently)
-	if account.Balance == nil {
-		account.Balance = []*sdk.Coin{}
-	}
-
-	return account, true
-}
-
 // checks if a lending account exists for the given address.
-func (k Keeper) checkLendingAccountExists(ctx sdk.Context, address string) (bool, error) {
-	_, accountExists := k.GetLendingAccount(ctx, address)
+func (k Keeper) CheckLendingAccountExists(ctx sdk.Context, bech32AccAddr string) (bool, error) {
+	_, accountExists := k.GetLendingAccount(ctx, bech32AccAddr)
 	if accountExists {
 		// Commented out the specific error type
 		// return true, errorsmod.Wrapf(
@@ -43,63 +25,49 @@ func (k Keeper) checkLendingAccountExists(ctx sdk.Context, address string) (bool
 		// 	"account with address %v already exists",
 		// 	address,
 		// )
-		println("account with address", address, "already exists")
+		println("account with address", bech32AccAddr, "already exists")
 		return true, nil
 	}
 	return false, nil
 }
 
-// marshals and stores the lending account in kv-store
-func (k Keeper) SetLendingAccount(ctx sdk.Context, account types.LendingAccount) {
-	store := ctx.KVStore(k.storeKey)
-	accountKey := []byte(account.Address)
-
-	bz := k.cdc.MustMarshal(&account)
-	store.Set(accountKey, bz)
-}
-
-// checks for existence, validates inputs, creates, and stores a lending account.
-func (k Keeper) CreateLendingAccount(ctx sdk.Context, address string) (types.LendingAccount, error) {
-	// check if the lending account exists, if it does return error
-	accountExists, err := k.checkLendingAccountExists(ctx, address)
-	if accountExists || err != nil {
-		// type specific error handling
-		// return types.LendingAccount{}, err
-		println("Error creating lending account for address", address)
-		return types.LendingAccount{}, nil
+// Checks for existence, validates inputs, creates, and stores a lending account.
+func (k Keeper) CreateLendingAccount(ctx sdk.Context, bech32AccAddr string) (*types.LendingAccount, error) {
+	// Check if the lending account exists, if it does return error
+	accountExists, err := k.CheckLendingAccountExists(ctx, bech32AccAddr)
+	if err != nil {
+		return nil, err
+	}
+	if accountExists {
+		return nil, errors.New("account already exists")
 	}
 
 	// Create and store the new lending account
-	account := types.LendingAccount{
-		Address: address,
-		Balance: []*sdk.Coin{},
-		Nonce:   0,
+	account := &types.LendingAccount{
+		Address:            bech32AccAddr,
+		Nonce:              0,
+		LendingPositions:   []*sdk.Coin{},
+		BorrowingPositions: []*types.Loan{},
 	}
 
-	k.SetLendingAccount(ctx, account)
+	k.SetLendingAccount(ctx, *account)
 
 	return account, nil
 }
 
-// Updates the values of an existing lending account.
-func (k Keeper) UpdateLendingAccount(ctx sdk.Context, address string, newBalance []*sdk.Coin, newNonce uint64) error {
+// Opens a new lending position for a given asset and quantity.
+func (k Keeper) OpenLendingPosition(ctx sdk.Context, bech32AccAddr string, amount sdk.Coin) error {
 	// Check if the lending account exists
-	account, exists := k.GetLendingAccount(ctx, address)
-	if !exists {
-		println("Lending account does not exist for address", address)
-		return nil // Replace with a specific error when reintroducing error handling
+	account, found := k.GetLendingAccount(ctx, bech32AccAddr)
+	if !found {
+		return errors.New("account not found")
 	}
 
-	// Update the account's balance and nonce
-	account.Balance = newBalance
-	account.Nonce = newNonce
+	// Append the new lending position to the account's existing positions
+	account.LendingPositions = append(account.LendingPositions, &amount)
 
-	// Marshal and store the updated account
-	k.SetLendingAccount(ctx, account)
+	// Store the updated account
+	k.SetLendingAccount(ctx, *account)
 
 	return nil
 }
-
-// func someFunctionName2() int {
-// 	return 1
-// }
