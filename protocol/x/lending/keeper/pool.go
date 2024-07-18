@@ -1,53 +1,13 @@
 package keeper
 
 import (
+	"fmt"
+
 	sdkmath "cosmossdk.io/math"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/pkg/errors"
 )
-
-// Checks if a pool exists for the given asset denomination.
-func (k Keeper) DoesPoolExist(ctx sdk.Context, assetDenom string) (bool, error) {
-	_, poolExists := k.GetPool(ctx, assetDenom)
-	if poolExists {
-		println("pool with asset denomination", assetDenom, "already exists")
-		return true, nil
-	}
-	return false, nil
-}
-
-// Checks for existence, validates inputs, creates, and stores a new pool.
-func (k Keeper) CreatePool(ctx sdk.Context, assetDenom string, params types.PoolParams) (types.Pool, error) {
-	// Check if the pool exists, if it does return error
-	poolExists, err := k.DoesPoolExist(ctx, assetDenom)
-	if err != nil || poolExists {
-		return types.Pool{}, errors.New("pool already exists")
-	}
-
-	// Create and store the new pool
-	pool := types.NewPool(assetDenom, params)
-
-	k.SetPool(ctx, pool)
-
-	return pool, nil
-}
-
-// Checks if the pool has enough liquidity to fulfill a borrow request.
-func (k Keeper) HasPoolLiquidityForBorrow(ctx sdk.Context, assetDenom string, amount sdk.Coin) (bool, error) {
-	pool, found := k.GetPool(ctx, assetDenom)
-	if !found {
-		return false, errors.New("pool not found")
-	}
-
-	// Check if the pool has enough deposits to fulfill the borrow request
-	availableLiquidity := pool.TotalDeposits.Sub(*pool.TotalBorrows)
-	if availableLiquidity.IsLT(amount) {
-		return false, errors.New("insufficient liquidity in the pool")
-	}
-
-	return true, nil
-}
 
 func (k Keeper) UpdatePoolDeposits(ctx sdk.Context, assetDenom string, amount sdk.Coin) {
 	pool, found := k.GetPool(ctx, assetDenom)
@@ -103,6 +63,9 @@ func (k Keeper) UpdateRatesForPool(ctx sdk.Context, pool *types.Pool) {
 	targetThreshold := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.TargetThreshold*100), 2)
 
 	// Calculate the lending rate based on utilization
+	// if utilizationRate <= targetThreshold: lendingRate = baseRate + (utilizationRate * multiplier)
+	// if utilizationRate > targetThreshold: lendingRate = baseRate + (targetThreshold * multiplier) + ((utilizationRate - targetThreshold) * jumpMultiplier)
+
 	var lendingRate sdkmath.LegacyDec
 	if utilizationRate.LTE(targetThreshold) {
 		lendingRate = baseRate.Add(utilizationRate.Mul(multiplier))
@@ -121,4 +84,62 @@ func (k Keeper) UpdateRatesForPool(ctx sdk.Context, pool *types.Pool) {
 
 	// Save the updated pool
 	k.SetPool(ctx, *pool)
+}
+
+// Checks for existence, validates inputs, creates, and stores a new pool.
+func (k Keeper) CreatePool(ctx sdk.Context, assetDenom string, params types.PoolParams) (types.Pool, error) {
+	// Check if the pool exists, if it does return error
+	poolExists, err := k.DoesPoolExist(ctx, assetDenom)
+	if err != nil || poolExists {
+		return types.Pool{}, errors.New("pool already exists")
+	}
+
+	// Create and store the new pool
+	pool := types.NewPool(assetDenom, params)
+
+	k.SetPool(ctx, pool)
+
+	return pool, nil
+}
+
+// Checks if a pool exists for the given asset denomination.
+func (k Keeper) DoesPoolExist(ctx sdk.Context, assetDenom string) (bool, error) {
+	_, poolExists := k.GetPool(ctx, assetDenom)
+	if poolExists {
+		println("pool with asset denomination", assetDenom, "already exists")
+		return true, nil
+	}
+	return false, nil
+}
+
+// Checks if the pool has enough liquidity to fulfill a borrow request.
+func (k Keeper) HasPoolLiquidityForBorrow(ctx sdk.Context, assetDenom string, amount sdk.Coin) (bool, error) {
+	pool, found := k.GetPool(ctx, assetDenom)
+	if !found {
+		return false, errors.New("pool not found")
+	}
+
+	// Check if the pool has enough deposits to fulfill the borrow request
+	availableLiquidity := pool.TotalDeposits.Sub(*pool.TotalBorrows)
+	if availableLiquidity.IsLT(amount) {
+		return false, errors.New("insufficient liquidity in the pool")
+	}
+
+	return true, nil
+}
+
+// calculates the liquidation threshold for a given pool (100% - liquidity premium - liquidation fee)
+func (k Keeper) GetLiquidationThreshold(ctx sdk.Context, assetDenom string) (sdkmath.LegacyDec, error) {
+	pool, found := k.GetPool(ctx, assetDenom)
+	if !found {
+		return sdkmath.LegacyDec{}, fmt.Errorf("pool not found")
+	}
+
+	liquidityPremium := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.LiquidityPremium*100), 2)
+	liquidationFee := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.LiquidationFee*100), 2)
+	oneHundredPercent := sdkmath.LegacyNewDec(100)
+
+	liquidationThreshold := oneHundredPercent.Sub(liquidityPremium).Sub(liquidationFee)
+
+	return liquidationThreshold, nil
 }

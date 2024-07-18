@@ -9,11 +9,13 @@ import "cosmos/base/v1beta1/coin.proto";
 option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types";
 
 // Represents an individual loan within a lending account.
+//AccruedBorrowedAsset: seperate from og borrow quantity to not have it appear like the user has more to borrow with than intended 
 message accountPosition {
-  repeated cosmos.base.v1beta1.Coin CollateralAssets = 1;  // Multiple assets can be placed as collateral
-  cosmos.base.v1beta1.Coin BorrowedAsset = 2;             // one borrow type per position (og quantity)
-  repeated cosmos.base.v1beta1.Coin Balance = 3;                     // Keeps track of utilization of collateral + borrow amount
-  bool IsPureLending = 4;                                   // Indicates if this is a pure lending position
+  repeated cosmos.base.v1beta1.Coin CollateralAssets = 1;   // Multiple assets can be placed as collateral
+  cosmos.base.v1beta1.Coin BorrowedAsset = 2;               // one borrow type per position (og quantity)
+  cosmos.base.v1beta1.Coin AccruedBorrowedAsset = 3;        //Tracks the amount of interest accumulated on the borrowed asset (same denom as borrow)
+  repeated cosmos.base.v1beta1.Coin Balance = 4;            // Keeps track of utilization of collateral + borrow amount
+  bool IsPureLending = 5;                                   // Indicates if this is a pure lending position
 }
 
 // Account structure for user deposits.

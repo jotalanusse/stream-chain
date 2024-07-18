@@ -24,3 +24,9 @@ func NewAccountPosition(amount sdk.Coin) *AccountPosition {
 		IsPureLending:    true,
 	}
 }
+
+// Define a new struct to hold the AccountPosition and its health value
+type PositionWithHealth struct {
+	Position AccountPosition
+	Health   sdkmath.LegacyDec
+}
