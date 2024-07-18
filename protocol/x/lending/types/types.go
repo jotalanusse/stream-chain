@@ -18,9 +18,9 @@ func NewPool(assetDenom string, params PoolParams) Pool {
 // NewAccountPosition creates a new AccountPosition instance.
 func NewAccountPosition(amount sdk.Coin) *AccountPosition {
 	return &AccountPosition{
-		CollateralAmounts: []*sdk.Coin{&amount},
-		BorrowedAmounts:   nil, // Set to nil for pure lending
-		Balance:           &amount,
-		IsPureLending:     true,
+		CollateralAssets: []*sdk.Coin{&amount},
+		BorrowedAsset:    nil, // Set to nil for pure lending
+		Balance:          []*sdk.Coin{&amount},
+		IsPureLending:    true,
 	}
 }

@@ -76,6 +76,9 @@ func (k Keeper) OpenLendingPosition(ctx sdk.Context, bech32AccAddr string, amoun
 	// Store the updated account
 	k.SetLendingAccount(ctx, account)
 
+	// Update the pool deposits
+	k.UpdatePoolDeposits(ctx, amount.Denom, amount)
+
 	return account, nil
 }
 
@@ -96,13 +99,19 @@ func (k Keeper) UpdateLendingPosition(ctx sdk.Context, bech32AccAddr string, amo
 		return emptyAccount, errors.New("account not found")
 	}
 
-	// Find and update the specific account position
+	// Find and update the specific account position for the given asset
 	updated := false
 	for _, position := range account.AccountPositions {
-		for _, collateral := range position.CollateralAmounts {
+		for _, collateral := range position.CollateralAssets {
 			if collateral.Denom == amount.Denom {
 				collateral.Amount = collateral.Amount.Add(amount.Amount)
-				position.Balance.Amount = position.Balance.Amount.Add(amount.Amount)
+				//account position has been update the balance for that asset as well
+				for _, balance := range position.Balance {
+					if balance.Denom == amount.Denom {
+						balance.Amount = balance.Amount.Add(amount.Amount)
+						break
+					}
+				}
 				updated = true
 				break
 			}
@@ -120,33 +129,8 @@ func (k Keeper) UpdateLendingPosition(ctx sdk.Context, bech32AccAddr string, amo
 	// Store the updated account
 	k.SetLendingAccount(ctx, account)
 
+	// Update the pool deposits
+	k.UpdatePoolDeposits(ctx, amount.Denom, amount)
+
 	return account, nil
 }
-
-// // Gets the lending rate for a user's specific position by retrieving the rate from the pool's lending rate.
-// func (k Keeper) GetLendingRateForPosition(ctx sdk.Context, bech32AccAddr string, assetDenom string) (sdk.Dec, error) {
-// 	// Check if the lending account exists
-// 	account, found := k.GetLendingAccount(ctx, bech32AccAddr)
-// 	if !found {
-// 		return sdk.Dec{}, errors.New("account not found")
-// 	}
-
-// 	// Check if the pool exists
-// 	pool, poolFound := k.GetPool(ctx, assetDenom)
-// 	if !poolFound {
-// 		return sdk.Dec{}, errors.New(fmt.Sprintf("pool with asset denomination %s does not exist", assetDenom))
-// 	}
-
-// 	// Retrieve the specific account position
-// 	for _, position := range account.AccountPositions {
-// 		for _, collateral := range position.CollateralAmounts {
-// 			if collateral.Denom == assetDenom {
-// 				// Assume that the pool has a method to calculate the current lending rate based on its parameters
-// 				lendingRate := pool.CalculateLendingRate()
-// 				return lendingRate, nil
-// 			}
-// 		}
-// 	}
-
-// 	return sdk.Dec{}, errors.New("position not found")
-// }
