@@ -122,3 +122,31 @@ func (k Keeper) UpdateLendingPosition(ctx sdk.Context, bech32AccAddr string, amo
 
 	return account, nil
 }
+
+// // Gets the lending rate for a user's specific position by retrieving the rate from the pool's lending rate.
+// func (k Keeper) GetLendingRateForPosition(ctx sdk.Context, bech32AccAddr string, assetDenom string) (sdk.Dec, error) {
+// 	// Check if the lending account exists
+// 	account, found := k.GetLendingAccount(ctx, bech32AccAddr)
+// 	if !found {
+// 		return sdk.Dec{}, errors.New("account not found")
+// 	}
+
+// 	// Check if the pool exists
+// 	pool, poolFound := k.GetPool(ctx, assetDenom)
+// 	if !poolFound {
+// 		return sdk.Dec{}, errors.New(fmt.Sprintf("pool with asset denomination %s does not exist", assetDenom))
+// 	}
+
+// 	// Retrieve the specific account position
+// 	for _, position := range account.AccountPositions {
+// 		for _, collateral := range position.CollateralAmounts {
+// 			if collateral.Denom == assetDenom {
+// 				// Assume that the pool has a method to calculate the current lending rate based on its parameters
+// 				lendingRate := pool.CalculateLendingRate()
+// 				return lendingRate, nil
+// 			}
+// 		}
+// 	}
+
+// 	return sdk.Dec{}, errors.New("position not found")
+// }

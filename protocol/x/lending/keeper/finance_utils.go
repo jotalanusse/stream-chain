@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	sdkmath "cosmossdk.io/math"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/pkg/errors"
 )
@@ -66,16 +67,55 @@ func QueryOraclePrice(assetID string) (price float64, err error) {
 	return 0, nil
 }
 
-// CalculateInterestRate calculates the interest rate for a given principal over time.
+func (k Keeper) UpdateRatesForPool(ctx sdk.Context, pool *types.Pool) {
+	// utilization rate = total quantity of asset borrowed / total quantity of asset deposited
+	utilizationRate := sdkmath.LegacyNewDecFromInt(pool.TotalBorrows.Amount).Quo(sdkmath.LegacyNewDecFromInt(pool.TotalDeposits.Amount))
+
+	// Fetch interest rate model parameters from the pool
+	//Ensure values are calculated everytime with the correct precision
+	//Suppose BaseRate is 0.02 (2%):
+	//int64(pool.Params.InterestRateModel.BaseRate * 100) converts 0.02 to 2.
+	//sdkmath.LegacyNewDecWithPrec(2, 2) converts 2 to 0.02 with a precision of 2 decimal places.
+	baseRate := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.BaseRate*100), 2)
+	multiplier := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.Multiplier*100), 2)
+	jumpMultiplier := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.JumpMultiplier*100), 2)
+	targetThreshold := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.TargetThreshold*100), 2)
+
+	// Calculate the lending rate based on utilization
+	var lendingRate sdkmath.LegacyDec
+	if utilizationRate.LTE(targetThreshold) {
+		lendingRate = baseRate.Add(utilizationRate.Mul(multiplier))
+	} else {
+		excessUtilization := utilizationRate.Sub(targetThreshold)
+		lendingRate = baseRate.Add(targetThreshold.Mul(multiplier)).Add(excessUtilization.Mul(jumpMultiplier))
+	}
+
+	// Update the pool's current lending rate
+	pool.CurrentLendingRate = lendingRate.MustFloat64()
+
+	// Calculate the borrow rate, assuming a spread of 0.02 (2%)
+	//TODO: Implement the actual logic to calculate the borrow rate
+	spread := sdkmath.LegacyNewDecWithPrec(2, 2)
+	pool.CurrentBorrowRate = lendingRate.Add(spread).MustFloat64()
+
+	// Save the updated pool
+	k.SetPool(ctx, *pool)
+}
+
+// CalculateLendingRate calculates the interest rate for a given principal over time.
 // Parameters:
 // - principal: The principal amount.
 // - rate: The annual interest rate.
 // - time: The time period in years.
-func CalculateInterestRate(principal float64, rate float64, time float64) (interest float64, err error) {
-	// Calculate the interest using the given formula (simple or compound)
-	// Return the calculated interest and nil if successful, or 0 and error if not
-	return 0, nil
+func CalculateLendingRateForPosition(principal float64, rate float64, time float64) (interest float64, err error) {
+	// Check if the inputs are valid
+	if principal < 0 || rate < 0 || time < 0 {
+		return 0, errors.New("invalid input values, all inputs should be non-negative")
+	}
 
+	// Calculate the interest using the simple interest formula: interest = principal * rate * time
+	interest = principal * rate * time
+	return interest, nil
 }
 
 // CalculateBorrowRate calculates the borrow rate for a given principal, considering the collateral.

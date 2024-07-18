@@ -10,10 +10,10 @@ option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/l
 
 // InterestRateModel defines the parameters for the interest rate model.
 message InterestRateModel {
-  float baseRate = 1;      // Base rate for the interest model
-  float multiplier = 2;    // Multiplier for the interest model
-  float jumpMultiplier = 3; // Jump multiplier for the interest model (interest rate post targetThreshold)
-  float targetThreshold = 4;          // targetThreshold for the interest model
+  double baseRate = 1;      // Base rate for the interest model
+  double multiplier = 2;    // Multiplier for the interest model
+  double jumpMultiplier = 3; // Jump multiplier for the interest model (interest rate post targetThreshold)
+  double targetThreshold = 4;          // targetThreshold for the interest model
 }
 
 // PoolParams defines the parameters for the pool.
@@ -26,5 +26,7 @@ message PoolParams {
 message Pool {
   cosmos.base.v1beta1.Coin totalDeposits = 1; // Total amount of deposits in the pool
   cosmos.base.v1beta1.Coin totalBorrows = 2;  // Total amount of borrows in the pool
-  PoolParams params = 3;                      // Parameters for the pool
+  double currentLendingRate = 3;              // Current lending rate for the pool
+  double currentBorrowRate = 4;              // Current lending rate for the pool
+  PoolParams params = 5;                      // Parameters for the pool
 }
