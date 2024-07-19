@@ -30,3 +30,8 @@ type PositionWithHealth struct {
 	Position AccountPosition
 	Health   sdkmath.LegacyDec
 }
+
+//Define the lending keeper's interface once implementation is more fleshed
+//out with how we want the various function to be defined
+//example of interface implementation:
+// /home/ec2-user/stream-chain/protocol/x/perpetuals/types/types.go

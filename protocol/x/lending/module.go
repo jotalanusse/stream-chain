@@ -1,4 +1,4 @@
-package ratelimit
+package lending
 
 import (
 	//"context"
@@ -57,13 +57,12 @@ func (AppModuleBasic) Name() string {
 // RegisterLegacyAminoCodec registers the amino codec for the module, which is used to marshal and unmarshal structs
 // to/from []byte in order to persist them in the module's KVStore
 func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
-	//types.RegisterCodec(cdc)
-	fmt.Printf("cdc: %v\n", cdc)
+	types.RegisterCodec(cdc)
 }
 
 // RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message
 func (a AppModuleBasic) RegisterInterfaces(reg cdctypes.InterfaceRegistry) {
-	fmt.Printf("cdc: %v\n", reg)
+	types.RegisterInterfaces(reg)
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module
@@ -111,12 +110,12 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper keeper.Keeper
+	keeper *keeper.Keeper
 }
 
 func NewAppModule(
 	cdc codec.Codec,
-	keeper keeper.Keeper,
+	keeper *keeper.Keeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
@@ -131,10 +130,10 @@ func (am AppModule) IsAppModule() {}
 func (am AppModule) IsOnePerModuleType() {}
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
-// func (am AppModule) RegisterServices(cfg module.Configurator) {
-// 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-// 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
-// }
+func (am AppModule) RegisterServices(cfg module.Configurator) {
+	//types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
+	//types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
+}
 
 // InitGenesis performs the module's genesis initialization. It returns no validator updates.
 // func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) {

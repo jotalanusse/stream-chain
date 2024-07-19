@@ -144,10 +144,10 @@ func (k Keeper) EmitBorrowEvent(ctx sdk.Context, borrower sdk.AccAddress, amount
 }
 
 // Helper functions
-func (k Keeper) getAccount(ctx sdk.Context, address sdk.AccAddress) types.LendingAccount {
-	// Implementation to get account details
-	return types.LendingAccount{}
-}
+// func (k Keeper) getAccount(ctx sdk.Context, address sdk.AccAddress) types.LendingAccount {
+// 	// Implementation to get account details
+// 	return types.LendingAccount{}
+// }
 
 func (k Keeper) setAccount(ctx sdk.Context, account types.LendingAccount) {
 	// Implementation to set account details

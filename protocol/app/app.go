@@ -268,7 +268,7 @@ type App struct {
 
 	FeeTiersKeeper feetiersmodulekeeper.Keeper
 
-	LendingKeeper lendingmodulekeeper.Keeper
+	LendingKeeper *lendingmodulekeeper.Keeper
 
 	PerpetualsKeeper *perpetualsmodulekeeper.Keeper
 
@@ -819,7 +819,7 @@ func New(
 	)
 	delayMsgModule := delaymsgmodule.NewAppModule(appCodec, app.DelayMsgKeeper)
 
-	app.LendingKeeper = *lendingmodulekeeper.NewKeeper(
+	app.LendingKeeper = lendingmodulekeeper.NewKeeper(
 		appCodec,
 		keys[lendingmoduletypes.StoreKey],
 		app.IndexerEventManager,
