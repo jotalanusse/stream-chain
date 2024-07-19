@@ -62,6 +62,7 @@ require (
 	github.com/ethereum/go-ethereum v1.14.0
 	github.com/ethos-works/ethos/ethos-chain v0.0.0-00010101000000-000000000000
 	github.com/go-kit/log v0.2.1
+	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-metrics v0.5.3
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/pelletier/go-toml v1.9.5
@@ -216,7 +217,6 @@ require (
 	github.com/google/pprof v0.0.0-20230228050547-1710fef4ab10 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/gordonklaus/ineffassign v0.0.0-20230610083614-0e73809eb601 // indirect

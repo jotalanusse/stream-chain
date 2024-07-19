@@ -75,7 +75,7 @@ func TestCreateLendingAccount(t *testing.T) {
 	assert.Equal(t, "account already exists", err.Error(), "error message should match")
 }
 
-func TestOpenLendingPosition(t *testing.T) {
+func TestCreateLendingPosition(t *testing.T) {
 	// Setup keeper and context here
 	ctx, lendingKeeper, _, _, _, _ := keepertest.LendingKeepers(t, true)
 
@@ -89,7 +89,7 @@ func TestOpenLendingPosition(t *testing.T) {
 
 	// Open a lending position
 	amount := sdk.NewCoin("ETH", sdkmath.NewInt(100))
-	updatedAccount, err := lendingKeeper.OpenLendingPosition(ctx, account.Address, amount)
+	updatedAccount, err := lendingKeeper.CreateLendingPosition(ctx, account.Address, amount)
 	require.NoError(t, err, "failed to open lending position")
 
 	// Check if the lending position was added
@@ -123,17 +123,17 @@ func TestAddMultipleAssetsToLendingPosition(t *testing.T) {
 
 	// Open a 1 BTC lending position
 	btcAmount := sdk.NewCoin("BTC", sdkmath.NewInt(1))
-	_, err = lendingKeeper.OpenLendingPosition(ctx, account.Address, btcAmount)
+	_, err = lendingKeeper.CreateLendingPosition(ctx, account.Address, btcAmount)
 	require.NoError(t, err, "failed to open BTC lending position")
 
 	// Open an 10 ETH lending position
 	ethAmount := sdk.NewCoin("ETH", sdkmath.NewInt(10))
-	_, err = lendingKeeper.OpenLendingPosition(ctx, account.Address, ethAmount)
+	_, err = lendingKeeper.CreateLendingPosition(ctx, account.Address, ethAmount)
 	require.NoError(t, err, "failed to open ETH lending position")
 
 	// Open a 100 SOL lending position
 	solAmount := sdk.NewCoin("SOL", sdkmath.NewInt(100))
-	_, err = lendingKeeper.OpenLendingPosition(ctx, account.Address, solAmount)
+	_, err = lendingKeeper.CreateLendingPosition(ctx, account.Address, solAmount)
 	require.NoError(t, err, "failed to open SOL lending position")
 
 	// Retrieve the updated account to verify positions

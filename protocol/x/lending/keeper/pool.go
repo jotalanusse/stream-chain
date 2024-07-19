@@ -9,63 +9,84 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (k Keeper) UpdatePoolDeposits(ctx sdk.Context, assetDenom string, amount sdk.Coin) {
-	pool, found := k.GetPool(ctx, assetDenom)
+/*
+	File includes methods to interact with the pool store.
+	- Main methods:
+		- UpdatePoolDeposits
+			- given asset updates the deposit info of that pool
+		- UpdatePoolBorrows
+			- given asset updates the borrow info of that pool
+
+	- Helper methods:
+		- updatePoolValues
+			- Updates the pool storeage and performinc necessary error checks
+		- UpdateRatesForPool
+			- based on the pool params give the new rate based on utilization
+		- CreatePool
+			- create a new pool for a given asset
+		- DoesPoolExist
+			- ensure a pool for the given asset exsists
+		- HasPoolLiquidityForBorrow
+			- Ensure that a pool has enough money deposited & below leverage within it to fulfill a borrow request
+		- GetLiquidationThreshold
+			- use the pool params to calculate: (100% - liquidity premium - liquidation fee)
+
+
+*/
+
+// updates  total deposits of a pool.
+func (k Keeper) UpdatePoolDeposits(ctx sdk.Context, asset sdk.Coin) error {
+	return k.updatePoolValues(ctx, asset, func(pool *types.Pool, asset sdk.Coin) {
+		sum := pool.TotalDeposits.Add(asset)
+		pool.TotalDeposits = &sum
+	})
+}
+
+// updates  total borrows of a pool.
+func (k Keeper) UpdatePoolBorrows(ctx sdk.Context, asset sdk.Coin) error {
+	return k.updatePoolValues(ctx, asset, func(pool *types.Pool, asset sdk.Coin) {
+		sum := pool.TotalBorrows.Add(asset)
+		pool.TotalBorrows = &sum
+	})
+}
+
+// update pool values (TotalDeposits or TotalBorrows).
+func (k Keeper) updatePoolValues(ctx sdk.Context, asset sdk.Coin, updateField func(*types.Pool, sdk.Coin)) error {
+	pool, found := k.GetPool(ctx, asset.Denom)
 	if !found {
-		panic("pool not found")
+		return fmt.Errorf("pool not found for asset denom %s", asset.Denom)
 	}
 
-	// Create a new Coin that is the sum of the existing TotalDeposits and the amount to add.
-	// Then take the address of this new Coin to match the expected *Coin type.
-	sum := pool.TotalDeposits.Add(amount)
-	pool.TotalDeposits = &sum
+	// Update the pool field using the provided update function.
+	updateField(&pool, asset)
 	k.SetPool(ctx, pool)
 
 	// Retrieve the most recent updated pool and call updateRatesForPool
-	updatedPool, found := k.GetPool(ctx, assetDenom)
+	updatedPool, found := k.GetPool(ctx, asset.Denom)
 	if !found {
-		panic("pool not found after setting")
+		return fmt.Errorf("pool not found after setting for asset denom %s", asset.Denom)
 	}
 	k.UpdateRatesForPool(ctx, &updatedPool)
+
+	return nil
 }
 
-func (k Keeper) UpdatePoolBorrows(ctx sdk.Context, assetDenom string, amount sdk.Coin) {
-	pool, found := k.GetPool(ctx, assetDenom)
-	if !found {
-		panic("pool not found")
-	}
-	// Create a new Coin that is the sum of the existing TotalBorrows and the amount to add.
-	// Then take the address of this new Coin to match the expected *Coin type.
-	sum := pool.TotalBorrows.Add(amount)
-	pool.TotalBorrows = &sum
-	k.SetPool(ctx, pool)
-
-	// Retrieve the most recent updated pool and call updateRatesForPool
-	updatedPool, found := k.GetPool(ctx, assetDenom)
-	if !found {
-		panic("pool not found after setting")
-	}
-	k.UpdateRatesForPool(ctx, &updatedPool)
-}
-
+// Calculate the lending rate based on utilization
+// if utilizationRate <= targetThreshold: lendingRate = baseRate + (utilizationRate * multiplier)
+// if utilizationRate > targetThreshold: lendingRate = baseRate + (targetThreshold * multiplier) + ((utilizationRate - targetThreshold) * jumpMultiplier)
 func (k Keeper) UpdateRatesForPool(ctx sdk.Context, pool *types.Pool) {
 	// utilization rate = total quantity of asset borrowed / total quantity of asset deposited
 	utilizationRate := sdkmath.LegacyNewDecFromInt(pool.TotalBorrows.Amount).Quo(sdkmath.LegacyNewDecFromInt(pool.TotalDeposits.Amount))
 
 	// Fetch interest rate model parameters from the pool
-	//Ensure values are calculated everytime with the correct precision
-	//Suppose BaseRate is 0.02 (2%):
-	//int64(pool.Params.InterestRateModel.BaseRate * 100) converts 0.02 to 2.
+	//Ex: Baserate is 0.02 (2%) -> int64(pool.Params.InterestRateModel.BaseRate * 100) = converts 0.02 to 2.
 	//sdkmath.LegacyNewDecWithPrec(2, 2) converts 2 to 0.02 with a precision of 2 decimal places.
 	baseRate := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.BaseRate*100), 2)
 	multiplier := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.Multiplier*100), 2)
 	jumpMultiplier := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.JumpMultiplier*100), 2)
 	targetThreshold := sdkmath.LegacyNewDecWithPrec(int64(pool.Params.InterestRateModel.TargetThreshold*100), 2)
 
-	// Calculate the lending rate based on utilization
-	// if utilizationRate <= targetThreshold: lendingRate = baseRate + (utilizationRate * multiplier)
-	// if utilizationRate > targetThreshold: lendingRate = baseRate + (targetThreshold * multiplier) + ((utilizationRate - targetThreshold) * jumpMultiplier)
-
+	// Calculate the lending rate based on the utilization rate
 	var lendingRate sdkmath.LegacyDec
 	if utilizationRate.LTE(targetThreshold) {
 		lendingRate = baseRate.Add(utilizationRate.Mul(multiplier))

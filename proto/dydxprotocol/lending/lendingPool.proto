@@ -8,7 +8,7 @@ import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lending/types";
 
-//Could get rid of the assetDenom as a pool param since the same info is saved in the TotalDeposits or totalBorrows but this depends on how want to 
+//TODO: Could get rid of the assetDenom as a pool param since the same info is saved in the TotalDeposits or totalBorrows but this depends on how want to 
 //use the pool structure created.
 
 // InterestRateModel defines the parameters for the interest rate model.
@@ -22,7 +22,7 @@ message InterestRateModel {
 // PoolParams defines the parameters for the pool.
 message PoolParams {
   string AssetDenom = 1;                      // Denomination of the asset in the pool
-  InterestRateModel InterestRateModel = 2;   // Interest rate model for the pool
+  InterestRateModel InterestRateModel = 2;    // Interest rate model for the pool
   double LiquidityPremium = 3;                //Liquidation Threshold = 100% - LiquidityPremium - LiquidationFee
   double LiquidationFee = 4;
 }

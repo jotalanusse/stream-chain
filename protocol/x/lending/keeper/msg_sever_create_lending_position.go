@@ -10,20 +10,20 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
-// CreateLendingAccount handles the message to create a lending account.
-func (k msgServer) CreateLendingAccount(
+// CreateLendingPosition handles the message to create a lending position.
+func (k msgServer) CreateLendingPosition(
 	goCtx context.Context,
-	msg *types.MsgCreateLendingAccount,
+	msg *types.MsgCreateLendingPosition,
 ) (*types.MsgCreateLendingAccountResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Create the lending account
-	_, err := k.Keeper.CreateLendingAccount(ctx, msg.Creator)
+	// Create the lending position
+	_, err := k.Keeper.CreateLendingPosition(ctx, msg.Creator, msg.Amount)
 	if err != nil {
-		if errors.Is(err, types.ErrAccountAlreadyExists) {
+		if errors.Is(err, types.ErrAccountNotFound) {
 			return nil, errorsmod.Wrapf(
 				govtypes.ErrInvalidSigner,
-				"account with address %s already exists",
+				"account with address %s not found",
 				msg.Creator,
 			)
 		}

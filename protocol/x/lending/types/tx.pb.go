@@ -114,26 +114,26 @@ func (m *MsgCreateLendingAccountResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateLendingAccountResponse proto.InternalMessageInfo
 
-// MsgOpenLendingPosition is a message used to open a new lending position.
-type MsgOpenLendingPosition struct {
+// MsgCreateLendingPosition is a message used to open a new lending position.
+type MsgCreateLendingPosition struct {
 	// The address of the account owner.
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	// The amount to be deposited.
 	Amount types.Coin `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount"`
 }
 
-func (m *MsgOpenLendingPosition) Reset()         { *m = MsgOpenLendingPosition{} }
-func (m *MsgOpenLendingPosition) String() string { return proto.CompactTextString(m) }
-func (*MsgOpenLendingPosition) ProtoMessage()    {}
-func (*MsgOpenLendingPosition) Descriptor() ([]byte, []int) {
+func (m *MsgCreateLendingPosition) Reset()         { *m = MsgCreateLendingPosition{} }
+func (m *MsgCreateLendingPosition) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateLendingPosition) ProtoMessage()    {}
+func (*MsgCreateLendingPosition) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5e283aa96acdc197, []int{2}
 }
-func (m *MsgOpenLendingPosition) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateLendingPosition) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgOpenLendingPosition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateLendingPosition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgOpenLendingPosition.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateLendingPosition.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -143,48 +143,48 @@ func (m *MsgOpenLendingPosition) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *MsgOpenLendingPosition) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgOpenLendingPosition.Merge(m, src)
+func (m *MsgCreateLendingPosition) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateLendingPosition.Merge(m, src)
 }
-func (m *MsgOpenLendingPosition) XXX_Size() int {
+func (m *MsgCreateLendingPosition) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgOpenLendingPosition) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgOpenLendingPosition.DiscardUnknown(m)
+func (m *MsgCreateLendingPosition) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateLendingPosition.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgOpenLendingPosition proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateLendingPosition proto.InternalMessageInfo
 
-func (m *MsgOpenLendingPosition) GetCreator() string {
+func (m *MsgCreateLendingPosition) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgOpenLendingPosition) GetAmount() types.Coin {
+func (m *MsgCreateLendingPosition) GetAmount() types.Coin {
 	if m != nil {
 		return m.Amount
 	}
 	return types.Coin{}
 }
 
-// MsgOpenLendingPositionResponse defines the OpenLendingPosition response type.
-type MsgOpenLendingPositionResponse struct {
+// MsgCreateLendingPositionResponse defines the CreateLendingPosition response type.
+type MsgCreateLendingPositionResponse struct {
 }
 
-func (m *MsgOpenLendingPositionResponse) Reset()         { *m = MsgOpenLendingPositionResponse{} }
-func (m *MsgOpenLendingPositionResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgOpenLendingPositionResponse) ProtoMessage()    {}
-func (*MsgOpenLendingPositionResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateLendingPositionResponse) Reset()         { *m = MsgCreateLendingPositionResponse{} }
+func (m *MsgCreateLendingPositionResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateLendingPositionResponse) ProtoMessage()    {}
+func (*MsgCreateLendingPositionResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5e283aa96acdc197, []int{3}
 }
-func (m *MsgOpenLendingPositionResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateLendingPositionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgOpenLendingPositionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateLendingPositionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgOpenLendingPositionResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateLendingPositionResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -194,56 +194,55 @@ func (m *MsgOpenLendingPositionResponse) XXX_Marshal(b []byte, deterministic boo
 		return b[:n], nil
 	}
 }
-func (m *MsgOpenLendingPositionResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgOpenLendingPositionResponse.Merge(m, src)
+func (m *MsgCreateLendingPositionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateLendingPositionResponse.Merge(m, src)
 }
-func (m *MsgOpenLendingPositionResponse) XXX_Size() int {
+func (m *MsgCreateLendingPositionResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgOpenLendingPositionResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgOpenLendingPositionResponse.DiscardUnknown(m)
+func (m *MsgCreateLendingPositionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateLendingPositionResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgOpenLendingPositionResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateLendingPositionResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgCreateLendingAccount)(nil), "dydxprotocol.lending.MsgCreateLendingAccount")
 	proto.RegisterType((*MsgCreateLendingAccountResponse)(nil), "dydxprotocol.lending.MsgCreateLendingAccountResponse")
-	proto.RegisterType((*MsgOpenLendingPosition)(nil), "dydxprotocol.lending.MsgOpenLendingPosition")
-	proto.RegisterType((*MsgOpenLendingPositionResponse)(nil), "dydxprotocol.lending.MsgOpenLendingPositionResponse")
+	proto.RegisterType((*MsgCreateLendingPosition)(nil), "dydxprotocol.lending.MsgCreateLendingPosition")
+	proto.RegisterType((*MsgCreateLendingPositionResponse)(nil), "dydxprotocol.lending.MsgCreateLendingPositionResponse")
 }
 
 func init() { proto.RegisterFile("dydxprotocol/lending/tx.proto", fileDescriptor_5e283aa96acdc197) }
 
 var fileDescriptor_5e283aa96acdc197 = []byte{
-	// 417 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x93, 0x41, 0x8b, 0x13, 0x31,
-	0x14, 0xc7, 0x27, 0xab, 0xae, 0x18, 0x3d, 0x8d, 0x83, 0xdb, 0x1d, 0x30, 0x5b, 0x7b, 0x5a, 0x16,
-	0x27, 0xa1, 0x55, 0x11, 0xbc, 0x6d, 0x17, 0xf4, 0x62, 0x71, 0xe9, 0xde, 0xf4, 0x20, 0x99, 0x4c,
-	0x48, 0x03, 0x9d, 0x64, 0x98, 0xa4, 0xa5, 0x05, 0x0f, 0x22, 0x78, 0x17, 0xfc, 0x22, 0x3d, 0xf8,
-	0x21, 0x7a, 0x2c, 0x9e, 0x3c, 0x89, 0xb4, 0x87, 0x7e, 0x0d, 0x99, 0x99, 0x8c, 0x8a, 0x4c, 0x0f,
-	0xdd, 0xd3, 0xcc, 0x7b, 0xff, 0x5f, 0xf2, 0xfe, 0xef, 0x85, 0x07, 0x1f, 0x26, 0xf3, 0x64, 0x96,
-	0xe5, 0xda, 0x6a, 0xa6, 0xc7, 0x64, 0xcc, 0x55, 0x22, 0x95, 0x20, 0x76, 0x86, 0xcb, 0x9c, 0x1f,
-	0xfc, 0x2b, 0x63, 0x27, 0x87, 0xc7, 0x4c, 0x9b, 0x54, 0x9b, 0xf7, 0xa5, 0x40, 0xaa, 0xa0, 0x3a,
-	0x10, 0x1e, 0x55, 0x11, 0x49, 0x8d, 0x20, 0xd3, 0x6e, 0xf1, 0x71, 0x42, 0x20, 0xb4, 0xd0, 0xd5,
-	0x81, 0xe2, 0xcf, 0x65, 0x91, 0xc3, 0x63, 0x6a, 0x38, 0x99, 0x76, 0x63, 0x6e, 0x69, 0x97, 0x30,
-	0x2d, 0x55, 0xa5, 0x77, 0xde, 0xc1, 0xa3, 0x81, 0x11, 0x17, 0x39, 0xa7, 0x96, 0xbf, 0xae, 0xaa,
-	0x9f, 0x33, 0xa6, 0x27, 0xca, 0xfa, 0x3d, 0x78, 0x9b, 0x15, 0x79, 0x9d, 0xb7, 0x40, 0x1b, 0x9c,
-	0xde, 0xe9, 0xb7, 0xbe, 0x7f, 0x8b, 0x02, 0x67, 0xe6, 0x3c, 0x49, 0x72, 0x6e, 0xcc, 0x95, 0xcd,
-	0xa5, 0x12, 0xc3, 0x1a, 0x7c, 0x71, 0xef, 0xd3, 0x76, 0x71, 0x56, 0x47, 0x9d, 0x47, 0xf0, 0x64,
-	0xc7, 0xe5, 0x43, 0x6e, 0x32, 0xad, 0x0c, 0xef, 0x7c, 0x05, 0xf0, 0xc1, 0xc0, 0x88, 0x37, 0x19,
-	0x57, 0x8e, 0xb8, 0xd4, 0x46, 0x5a, 0xa9, 0xd5, 0x75, 0xea, 0xfb, 0xcf, 0xe1, 0x21, 0x4d, 0x8b,
-	0x02, 0xad, 0x83, 0x36, 0x38, 0xbd, 0xdb, 0x3b, 0xc6, 0x8e, 0x2f, 0xfa, 0xc7, 0xae, 0x7f, 0x7c,
-	0xa1, 0xa5, 0xea, 0xdf, 0x5c, 0xfe, 0x3c, 0xf1, 0x86, 0x0e, 0xff, 0xcf, 0x78, 0x1b, 0xa2, 0x66,
-	0x53, 0xb5, 0xef, 0xde, 0xe7, 0x03, 0x78, 0x63, 0x60, 0x84, 0xff, 0x01, 0x06, 0x8d, 0xc3, 0x8b,
-	0x70, 0xd3, 0xc3, 0xe2, 0x1d, 0xe3, 0x08, 0x9f, 0xed, 0x85, 0xd7, 0x2e, 0xfc, 0x39, 0xbc, 0xdf,
-	0x34, 0xb9, 0xc7, 0x3b, 0x6f, 0x6b, 0xa0, 0xc3, 0xa7, 0xfb, 0xd0, 0x75, 0xe9, 0xf0, 0xd6, 0xc7,
-	0xed, 0xe2, 0x0c, 0xf4, 0xe9, 0x72, 0x8d, 0xc0, 0x6a, 0x8d, 0xc0, 0xaf, 0x35, 0x02, 0x5f, 0x36,
-	0xc8, 0x5b, 0x6d, 0x90, 0xf7, 0x63, 0x83, 0xbc, 0xb7, 0xaf, 0x84, 0xb4, 0xa3, 0x49, 0x8c, 0x99,
-	0x4e, 0xc9, 0x95, 0xcd, 0x39, 0x4d, 0x5f, 0x4a, 0x45, 0x15, 0xe3, 0xd1, 0x65, 0xbd, 0x0d, 0xa6,
-	0x4c, 0x47, 0x6c, 0x44, 0xa5, 0x22, 0x7f, 0x76, 0x64, 0xf6, 0x77, 0x4b, 0xe6, 0x19, 0x37, 0xf1,
-	0x61, 0xa9, 0x3c, 0xf9, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x50, 0x16, 0x71, 0x88, 0x4a, 0x03, 0x00,
-	0x00,
+	// 411 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4d, 0xa9, 0x4c, 0xa9,
+	0x28, 0x28, 0xca, 0x2f, 0xc9, 0x4f, 0xce, 0xcf, 0xd1, 0xcf, 0x49, 0xcd, 0x4b, 0xc9, 0xcc, 0x4b,
+	0xd7, 0x2f, 0xa9, 0xd0, 0x03, 0x8b, 0x09, 0x89, 0x20, 0x4b, 0xeb, 0x41, 0xa5, 0xa5, 0x24, 0x93,
+	0xf3, 0x8b, 0x73, 0xf3, 0x8b, 0xe3, 0xc1, 0x12, 0xfa, 0x10, 0x0e, 0x44, 0x83, 0x94, 0x38, 0x84,
+	0xa7, 0x9f, 0x5b, 0x9c, 0xae, 0x5f, 0x66, 0x08, 0xa2, 0xa0, 0x12, 0x22, 0xe9, 0xf9, 0xe9, 0xf9,
+	0x10, 0x0d, 0x20, 0x16, 0x54, 0x54, 0x0e, 0xaa, 0x3c, 0x29, 0xb1, 0x38, 0x55, 0xbf, 0xcc, 0x30,
+	0x29, 0xb5, 0x24, 0xd1, 0x50, 0x3f, 0x39, 0x3f, 0x33, 0x0f, 0x22, 0xaf, 0x14, 0xcd, 0x25, 0xee,
+	0x5b, 0x9c, 0xee, 0x5c, 0x94, 0x9a, 0x58, 0x92, 0xea, 0x03, 0xb1, 0xdd, 0x31, 0x39, 0x39, 0xbf,
+	0x34, 0xaf, 0x44, 0xc8, 0x88, 0x8b, 0x3d, 0x19, 0x24, 0x9e, 0x5f, 0x24, 0xc1, 0xa8, 0xc0, 0xa8,
+	0xc1, 0xe9, 0x24, 0x71, 0x69, 0x8b, 0xae, 0x08, 0xd4, 0x31, 0x8e, 0x29, 0x29, 0x45, 0xa9, 0xc5,
+	0xc5, 0xc1, 0x25, 0x45, 0x99, 0x79, 0xe9, 0x41, 0x30, 0x85, 0x56, 0x3c, 0x4d, 0xcf, 0x37, 0x68,
+	0xc1, 0x78, 0x4a, 0x8a, 0x5c, 0xf2, 0x38, 0x0c, 0x0f, 0x4a, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e,
+	0x55, 0x9a, 0xca, 0xc8, 0x25, 0x81, 0xae, 0x26, 0x20, 0xbf, 0x38, 0xb3, 0x24, 0x33, 0x3f, 0x8f,
+	0x1c, 0x17, 0x08, 0x99, 0x73, 0xb1, 0x25, 0xe6, 0x82, 0xac, 0x90, 0x60, 0x52, 0x60, 0xd4, 0xe0,
+	0x36, 0x92, 0xd4, 0x83, 0xaa, 0x07, 0x85, 0x80, 0x1e, 0x34, 0x04, 0xf4, 0x9c, 0xf3, 0x33, 0xf3,
+	0x9c, 0x58, 0x4e, 0xdc, 0x93, 0x67, 0x08, 0x82, 0x2a, 0x47, 0x73, 0xba, 0x12, 0x97, 0x02, 0x2e,
+	0x67, 0xc1, 0xdc, 0x6e, 0xd4, 0xcd, 0xc4, 0xc5, 0xec, 0x5b, 0x9c, 0x2e, 0x54, 0xc3, 0x25, 0x82,
+	0x35, 0x00, 0x75, 0xf5, 0xb0, 0x45, 0xae, 0x1e, 0x8e, 0x20, 0x91, 0x32, 0x25, 0x49, 0x39, 0xcc,
+	0x15, 0x42, 0xf5, 0x5c, 0xa2, 0xd8, 0x43, 0x4f, 0x8f, 0x38, 0xf3, 0x60, 0xea, 0xa5, 0xcc, 0x48,
+	0x53, 0x0f, 0x73, 0x80, 0x14, 0x6b, 0xc3, 0xf3, 0x0d, 0x5a, 0x8c, 0x4e, 0x89, 0x27, 0x1e, 0xc9,
+	0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e,
+	0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0xe5, 0x9e, 0x9e, 0x59, 0x92, 0x51, 0x9a, 0xa4, 0x97,
+	0x9c, 0x9f, 0xab, 0x1f, 0x5c, 0x52, 0x94, 0x9a, 0x98, 0xeb, 0x96, 0x99, 0x97, 0x98, 0x97, 0x9c,
+	0xaa, 0x1b, 0x00, 0xcb, 0x17, 0xc5, 0x60, 0x61, 0xdd, 0xe4, 0x8c, 0xc4, 0xcc, 0x3c, 0x7d, 0x78,
+	0x6e, 0xa9, 0x40, 0xe4, 0x97, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0xb0, 0x8c, 0x31, 0x20, 0x00,
+	0x00, 0xff, 0xff, 0xac, 0xc9, 0x6c, 0x3b, 0x54, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -260,8 +259,8 @@ const _ = grpc.SupportPackageIsVersion4
 type MsgClient interface {
 	// CreateLendingAccount creates a new lending account.
 	CreateLendingAccount(ctx context.Context, in *MsgCreateLendingAccount, opts ...grpc.CallOption) (*MsgCreateLendingAccountResponse, error)
-	// OpenLendingPosition opens a new lending position.
-	OpenLendingPosition(ctx context.Context, in *MsgOpenLendingPosition, opts ...grpc.CallOption) (*MsgOpenLendingPositionResponse, error)
+	// CreateLendingPosition opens a new lending position.
+	CreateLendingPosition(ctx context.Context, in *MsgCreateLendingPosition, opts ...grpc.CallOption) (*MsgCreateLendingPositionResponse, error)
 }
 
 type msgClient struct {
@@ -281,9 +280,9 @@ func (c *msgClient) CreateLendingAccount(ctx context.Context, in *MsgCreateLendi
 	return out, nil
 }
 
-func (c *msgClient) OpenLendingPosition(ctx context.Context, in *MsgOpenLendingPosition, opts ...grpc.CallOption) (*MsgOpenLendingPositionResponse, error) {
-	out := new(MsgOpenLendingPositionResponse)
-	err := c.cc.Invoke(ctx, "/dydxprotocol.lending.Msg/OpenLendingPosition", in, out, opts...)
+func (c *msgClient) CreateLendingPosition(ctx context.Context, in *MsgCreateLendingPosition, opts ...grpc.CallOption) (*MsgCreateLendingPositionResponse, error) {
+	out := new(MsgCreateLendingPositionResponse)
+	err := c.cc.Invoke(ctx, "/dydxprotocol.lending.Msg/CreateLendingPosition", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -294,8 +293,8 @@ func (c *msgClient) OpenLendingPosition(ctx context.Context, in *MsgOpenLendingP
 type MsgServer interface {
 	// CreateLendingAccount creates a new lending account.
 	CreateLendingAccount(context.Context, *MsgCreateLendingAccount) (*MsgCreateLendingAccountResponse, error)
-	// OpenLendingPosition opens a new lending position.
-	OpenLendingPosition(context.Context, *MsgOpenLendingPosition) (*MsgOpenLendingPositionResponse, error)
+	// CreateLendingPosition opens a new lending position.
+	CreateLendingPosition(context.Context, *MsgCreateLendingPosition) (*MsgCreateLendingPositionResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -305,8 +304,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) CreateLendingAccount(ctx context.Context, req *MsgCreateLendingAccount) (*MsgCreateLendingAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLendingAccount not implemented")
 }
-func (*UnimplementedMsgServer) OpenLendingPosition(ctx context.Context, req *MsgOpenLendingPosition) (*MsgOpenLendingPositionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OpenLendingPosition not implemented")
+func (*UnimplementedMsgServer) CreateLendingPosition(ctx context.Context, req *MsgCreateLendingPosition) (*MsgCreateLendingPositionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLendingPosition not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -331,20 +330,20 @@ func _Msg_CreateLendingAccount_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_OpenLendingPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgOpenLendingPosition)
+func _Msg_CreateLendingPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateLendingPosition)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).OpenLendingPosition(ctx, in)
+		return srv.(MsgServer).CreateLendingPosition(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dydxprotocol.lending.Msg/OpenLendingPosition",
+		FullMethod: "/dydxprotocol.lending.Msg/CreateLendingPosition",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).OpenLendingPosition(ctx, req.(*MsgOpenLendingPosition))
+		return srv.(MsgServer).CreateLendingPosition(ctx, req.(*MsgCreateLendingPosition))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -358,8 +357,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CreateLendingAccount_Handler,
 		},
 		{
-			MethodName: "OpenLendingPosition",
-			Handler:    _Msg_OpenLendingPosition_Handler,
+			MethodName: "CreateLendingPosition",
+			Handler:    _Msg_CreateLendingPosition_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -419,7 +418,7 @@ func (m *MsgCreateLendingAccountResponse) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgOpenLendingPosition) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateLendingPosition) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -429,12 +428,12 @@ func (m *MsgOpenLendingPosition) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgOpenLendingPosition) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateLendingPosition) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgOpenLendingPosition) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateLendingPosition) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -459,7 +458,7 @@ func (m *MsgOpenLendingPosition) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgOpenLendingPositionResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateLendingPositionResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -469,12 +468,12 @@ func (m *MsgOpenLendingPositionResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgOpenLendingPositionResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateLendingPositionResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgOpenLendingPositionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateLendingPositionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -515,7 +514,7 @@ func (m *MsgCreateLendingAccountResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgOpenLendingPosition) Size() (n int) {
+func (m *MsgCreateLendingPosition) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -530,7 +529,7 @@ func (m *MsgOpenLendingPosition) Size() (n int) {
 	return n
 }
 
-func (m *MsgOpenLendingPositionResponse) Size() (n int) {
+func (m *MsgCreateLendingPositionResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -677,7 +676,7 @@ func (m *MsgCreateLendingAccountResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgOpenLendingPosition) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateLendingPosition) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -700,10 +699,10 @@ func (m *MsgOpenLendingPosition) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgOpenLendingPosition: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateLendingPosition: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgOpenLendingPosition: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateLendingPosition: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -792,7 +791,7 @@ func (m *MsgOpenLendingPosition) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgOpenLendingPositionResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateLendingPositionResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -815,10 +814,10 @@ func (m *MsgOpenLendingPositionResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgOpenLendingPositionResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateLendingPositionResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgOpenLendingPositionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateLendingPositionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
