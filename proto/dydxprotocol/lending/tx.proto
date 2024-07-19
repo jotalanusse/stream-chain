@@ -17,6 +17,9 @@ service Msg {
 
   // CreateLendingPosition opens a new lending position.
   rpc CreateLendingPosition(MsgCreateLendingPosition) returns (MsgCreateLendingPositionResponse);
+  
+  // UpdateLendingPosition updates an existing lending position.
+  rpc UpdateLendingPosition(MsgUpdateLendingPosition) returns (MsgUpdateLendingPositionResponse);
 }
 
 // MsgCreateLendingAccount is a message used to create a new lending account.
@@ -43,3 +46,20 @@ message MsgCreateLendingPosition {
 
 // MsgCreateLendingPositionResponse defines the CreateLendingPosition response type.
 message MsgCreateLendingPositionResponse {}
+
+// MsgUpdateLendingPosition is a message used to update an existing lending position.
+message MsgUpdateLendingPosition {
+  option (cosmos.msg.v1.signer) = "creator";
+
+  // The address of the account owner.
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // The ID of the position to update.
+  string position_id = 2;
+
+  // The asset to be added.
+  cosmos.base.v1beta1.Coin asset = 3 [(gogoproto.nullable) = false];
+}
+
+// MsgUpdateLendingPositionResponse defines the UpdateLendingPosition response type.
+message MsgUpdateLendingPositionResponse {}

@@ -13,12 +13,22 @@ var (
 	)
 	ErrAccountAlreadyExists = errorsmod.Register(
 		ModuleName,
-		1,
+		2,
 		"Invalid Address",
 	)
 	ErrAccountNotFound = errorsmod.Register(
 		ModuleName,
-		1,
+		3,
 		"Address not found",
+	)
+	ErrInvalidPositionId = errorsmod.Register(
+		ModuleName,
+		4,
+		"Invalid Position ID",
+	)
+	ErrInvalidAmount = errorsmod.Register(
+		ModuleName,
+		5,
+		"Invalid Amount",
 	)
 )
