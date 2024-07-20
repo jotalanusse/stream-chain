@@ -32,7 +32,7 @@ func (k Keeper) UpdateAccruedInterestOnPosition(ctx sdk.Context, account types.L
 	time = yearInDays
 
 	for _, position := range account.AccountPositions {
-		if !position.IsPureLending {
+		if !IsPureLendingPosition(*position) {
 			// Update accrued borrowed amount with accrued interest
 			accruedBorrowedInterest, err := k.CalculateInterestAccruedForPosition(ctx, *position.BorrowedAsset, false, time)
 			if err != nil {
@@ -43,7 +43,7 @@ func (k Keeper) UpdateAccruedInterestOnPosition(ctx sdk.Context, account types.L
 		}
 
 		// Update accured interest for all collateral amounts
-		for _, collateral := range position.CollateralAssets {
+		for _, collateral := range position.LendingAssets {
 			accruedLendingInterest, err := k.CalculateInterestAccruedForPosition(ctx, *collateral, true, time)
 			if err != nil {
 				return err
@@ -73,7 +73,7 @@ func (k Keeper) GetAccountPositionsHealth(ctx sdk.Context, bech32AccAddr string)
 
 	// Find and update the specific account position of only borrowing positions
 	for _, position := range account.AccountPositions {
-		if position.IsPureLending {
+		if IsPureLendingPosition(*position) {
 			continue
 		}
 		// Calculate the health for a single position
@@ -105,7 +105,7 @@ func (k Keeper) GetAccountPositionsHealth(ctx sdk.Context, bech32AccAddr string)
 // func (k Keeper) CalculatePositionHealth(ctx sdk.Context, borrowedAsset sdk.Coin, balance []*sdk.Coin, collateralAssets []*sdk.Coin, time float64) (sdkmath.LegacyDec, error)
 func (k Keeper) CalculatePositionHealth(ctx sdk.Context, position types.AccountPosition) (sdkmath.LegacyDec, error) {
 	// Validate input parameters
-	if err := validateInputParameters(*position.BorrowedAsset, position.Balance, position.CollateralAssets); err != nil {
+	if err := validateInputParameters(*position.BorrowedAsset, position.Balance, position.LendingAssets); err != nil {
 		return sdkmath.LegacyDec{}, err
 	}
 
@@ -169,7 +169,7 @@ func (k Keeper) calculateLiabilities(ctx sdk.Context, position types.AccountPosi
 	borrowedValueInUSDDec := sdkmath.LegacyNewDecWithPrec(int64(borrowedValueInUSD*100), 2).Mul(sdkmath.LegacyNewDecFromInt(position.BorrowedAsset.Amount))
 	accuredBorrowedInterest := sdkmath.LegacyNewDecFromInt(position.AccruedBorrowedAsset.Amount)
 
-	collateralValueInUSD, err := k.GetNetAssetPriceUSD(ctx, position.CollateralAssets)
+	collateralValueInUSD, err := k.GetNetAssetPriceUSD(ctx, position.LendingAssets)
 	if err != nil {
 		return sdkmath.LegacyDec{}, err
 	}

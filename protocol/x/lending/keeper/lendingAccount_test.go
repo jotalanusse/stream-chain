@@ -96,9 +96,8 @@ func TestCreateLendingPosition(t *testing.T) {
 	retrievedAccount, exists := lendingKeeper.GetLendingAccount(ctx, updatedAccount.Address)
 	require.True(t, exists, "account should exist")
 	assert.Len(t, retrievedAccount.AccountPositions, 1, "there should be one account position")
-	assert.Equal(t, []*sdk.Coin{&amount}, retrievedAccount.AccountPositions[0].CollateralAssets, "collateral amounts should match")
+	assert.Equal(t, []*sdk.Coin{&amount}, retrievedAccount.AccountPositions[0].LendingAssets, "collateral amounts should match")
 	assert.Equal(t, []*sdk.Coin{&amount}, retrievedAccount.AccountPositions[0].Balance, "balance should match") // Updated to match slice structure
-	assert.True(t, retrievedAccount.AccountPositions[0].IsPureLending, "should be a pure lending position")
 
 	// Ensure all account instances are equivalent
 	t.Logf("Created Account: %+v\n", account)
@@ -144,7 +143,7 @@ func TestAddMultipleAssetsToLendingPosition(t *testing.T) {
 	// Verify each position
 	foundBTC, foundETH, foundSOL := false, false, false
 	for _, position := range updatedAccount.AccountPositions {
-		for _, collateral := range position.CollateralAssets {
+		for _, collateral := range position.LendingAssets {
 			switch collateral.Denom {
 			case "BTC":
 				assert.Equal(t, btcAmount, *collateral, "BTC position should match")

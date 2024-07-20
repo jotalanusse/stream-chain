@@ -13,11 +13,11 @@ import (
 			- Accounts can hold multiple positions on the same asset
 		- CreateLendingPosition
 			- Creates a new position for a given asset with a uuid
-		- UpdateLendingPosition
+		- UpdateDepositInPosition
 			- Based on the asset and uuid updates a pre-existing position in the account
 
 	- Helper methods:
-		- findAndUpdatePosition
+		- findAndUpdateDepositInPosition
 			- Finds and updates a specific position in the account using the given asset and uuid
 		- updatePositionBalance
 			- Updates the balance of a specific asset in the account after the position has been updated
@@ -25,6 +25,8 @@ import (
 			- Checks if a lending account exists for the given address
 		- getPositionsForAsset
 			- Returns a list of positions for a given asset within an account
+		- IsPureLendingPosition
+			- Checks if a position is only lending: all borrowed amounts and borrowedAccuredInterest are zero
 */
 
 // Checks for existence, validates inputs, creates, and stores a lending account.
@@ -80,7 +82,7 @@ func (k Keeper) CreateLendingPosition(ctx sdk.Context, bech32AccAddr string, ass
 }
 
 // UpdateLendingPosition updates an existing lending position for a given asset and quantity, and returns the updated lending account.
-func (k Keeper) UpdateLendingPosition(ctx sdk.Context, bech32AccAddr string, asset sdk.Coin, positionID string) (types.LendingAccount, error) {
+func (k Keeper) UpdateDepositInPosition(ctx sdk.Context, bech32AccAddr string, asset sdk.Coin, positionID string) (types.LendingAccount, error) {
 	// Initialize an empty LendingAccount struct to return in case of errors
 	var emptyAccount types.LendingAccount
 
@@ -97,7 +99,7 @@ func (k Keeper) UpdateLendingPosition(ctx sdk.Context, bech32AccAddr string, ass
 	}
 
 	// Find and update the specific account position using the UUID and asset
-	err = findAndUpdatePosition(&account, asset, positionID)
+	err = findAndUpdateDepositInPosition(&account, asset, positionID)
 	if err != nil {
 		return emptyAccount, err
 	}
@@ -112,10 +114,10 @@ func (k Keeper) UpdateLendingPosition(ctx sdk.Context, bech32AccAddr string, ass
 }
 
 // finds and update the position + balance based on the uuid and asset
-func findAndUpdatePosition(account *types.LendingAccount, asset sdk.Coin, positionID string) error {
+func findAndUpdateDepositInPosition(account *types.LendingAccount, asset sdk.Coin, positionID string) error {
 	for _, position := range account.AccountPositions {
 		if position.ID == positionID {
-			for _, collateral := range position.CollateralAssets {
+			for _, collateral := range position.LendingAssets {
 				if collateral.Denom == asset.Denom {
 					collateral.Amount = collateral.Amount.Add(asset.Amount)
 					// Account position has been updated; update the balance for that asset as well
@@ -132,6 +134,7 @@ func findAndUpdatePosition(account *types.LendingAccount, asset sdk.Coin, positi
 }
 
 // updates the balance for the given asset in the specified account position.
+// TODO: create a lambda function so that it can add and subtract from the position balance
 func updatePositionBalance(position *types.AccountPosition, asset sdk.Coin) error {
 	for _, balance := range position.Balance {
 		if balance.Denom == asset.Denom {
@@ -159,11 +162,11 @@ func (k Keeper) DoesLendingAccountExist(ctx sdk.Context, bech32AccAddr string) (
 	return false, nil
 }
 
-// returns a list of positions for a given asset within an account
+// returns a list of positions where the asset is a collateral (used to filter positions down to get uuids or other relevant info)
 func getPositionsForAsset(account *types.LendingAccount, assetDenom string) ([]*types.AccountPosition, error) {
 	var positions []*types.AccountPosition
 	for _, position := range account.AccountPositions {
-		for _, collateral := range position.CollateralAssets {
+		for _, collateral := range position.LendingAssets {
 			if collateral.Denom == assetDenom {
 				positions = append(positions, position)
 				break
@@ -174,4 +177,12 @@ func getPositionsForAsset(account *types.LendingAccount, assetDenom string) ([]*
 		return nil, errors.New("no positions found for the given asset")
 	}
 	return positions, nil
+}
+
+// checks if a position is only lending: all borrowed amounts and borrowedAccuredInterest are zero
+func IsPureLendingPosition(position types.AccountPosition) bool {
+	if position.BorrowedAsset.Amount.IsZero() && position.AccruedBorrowedAsset.Amount.IsZero() {
+		return true
+	}
+	return false
 }
