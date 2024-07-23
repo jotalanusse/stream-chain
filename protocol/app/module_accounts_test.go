@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app"
+	lendingpooltypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perpetualsmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -19,10 +20,11 @@ func TestModuleAccountsToAddresses(t *testing.T) {
 
 		ibctransfertypes.ModuleName:                "dydx1yl6hdjhmkf37639730gffanpzndzdpmh8xcdh5",
 		satypes.ModuleName:                         "dydx1v88c3xv9xyv3eetdx0tvcmq7ung3dywp5upwc6",
-		perpetualsmoduletypes.InsuranceFundName:   "dydx1c7ptc87hkd54e3r7zjy92q29xkq7t79w64slrq",
+		perpetualsmoduletypes.InsuranceFundName:    "dydx1c7ptc87hkd54e3r7zjy92q29xkq7t79w64slrq",
 		icatypes.ModuleName:                        "dydx1vlthgax23ca9syk7xgaz347xmf4nunefw3cnv8",
 		consumertypes.ConsumerRedistributeName:     "dydx1x69dz0c0emw8m2c6kp5v6c08kgjxmu30yn6p5y",
 		consumertypes.ConsumerToSendToProviderName: "dydx1ywtansy6ss0jtq8ckrcv6jzkps8yh8mf37gcch",
+		lendingpooltypes.ModuleName:                "dydx153n3m2je0afq3u3j6hv6jsu06rxrh6yvpkeeg3",
 	}
 
 	require.True(t, len(expectedModuleAccToAddresses) == len(app.GetMaccPerms()))
@@ -54,6 +56,7 @@ func TestMaccPerms(t *testing.T) {
 		"interchainaccounts":       nil,
 		"cons_redistribute":        nil,
 		"cons_to_send_to_provider": nil,
+		"lendingpool":              {"minter", "burner"},
 	}
 	require.Equal(t, expectedMaccPerms, maccPerms, "default macc perms list does not match expected")
 }
@@ -67,6 +70,7 @@ func TestModuleAccountAddrs(t *testing.T) {
 		"dydx1c7ptc87hkd54e3r7zjy92q29xkq7t79w64slrq": true, // x/clob.insuranceFund
 		"dydx1x69dz0c0emw8m2c6kp5v6c08kgjxmu30yn6p5y": true, // x/ccvconsumer.ConsumerRedistribute
 		"dydx1ywtansy6ss0jtq8ckrcv6jzkps8yh8mf37gcch": true, // x/ccvconsumer.ConsumerToSendToProvider
+		"dydx153n3m2je0afq3u3j6hv6jsu06rxrh6yvpkeeg3": true, // x/lendingpool.LendingPool
 	}
 
 	require.Equal(t, expectedModuleAccAddresses, app.ModuleAccountAddrs())
