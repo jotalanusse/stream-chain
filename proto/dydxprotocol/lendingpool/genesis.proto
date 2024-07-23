@@ -1,0 +1,12 @@
+syntax = "proto3";
+package dydxprotocol.lendingpool;
+
+import "gogoproto/gogo.proto";
+import "dydxprotocol/lendingpool/pool_params.proto";
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types";
+
+// GenesisState defines the lendingpool module's genesis state.
+message GenesisState {
+    repeated PoolParams pool_params = 1 [ (gogoproto.nullable) = false ];
+}

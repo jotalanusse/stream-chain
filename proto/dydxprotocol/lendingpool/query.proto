@@ -1,0 +1,27 @@
+syntax = "proto3";
+package dydxprotocol.lendingpool;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "dydxprotocol/lendingpool/pool_params.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Queries PoolParams by tokenDenom.
+  rpc PoolParams(QueryGetPoolParamsRequest) returns (QueryPoolParamsResponse) {
+    option (google.api.http).get = "/dydxprotocol/v4/lendingpool/pool_params/{token_denom}";
+  }
+}
+
+// QueryGetPoolParamsRequest is request type for the GetPoolParams RPC method.
+message QueryGetPoolParamsRequest { string token_denom = 1; }
+
+// QueryPoolParamsResponse is response type for the GetPoolParams RPC method.
+message QueryPoolParamsResponse {
+  PoolParams pool_params = 1 [ (gogoproto.nullable) = false ];
+}
+
