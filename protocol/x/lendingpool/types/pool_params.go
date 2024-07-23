@@ -67,6 +67,11 @@ func (params PoolParams) Validate() error {
 		return ErrSlopeTwoRateOutOfRange
 	}
 
+	creditAccounts := params.PermissionedCreditAccounts
+	if len(creditAccounts) == 0 {
+		return ErrPermissionedCreditAccountsEmpty
+	}
+
 	return nil
 }
 

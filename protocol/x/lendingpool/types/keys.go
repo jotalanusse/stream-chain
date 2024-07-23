@@ -9,4 +9,14 @@ const (
 	StoreKey = ModuleName
 
 	PoolParamsKeyPrefix = "poolparams"
+
+	LastUpdatedTimePrefix = "lastupdatedtime"
+
+	LastUpdatedTotalLiquidityPrefix = "lastupdatedtotalliquidity"
+
+	CumulativeInterestRatePrefix = "cumulativeinterestrate"
+
+	TotalBorrowedPrefix = "totalborrowed"
+
+	CurrentBorrowAPYEighteenDecimalsPrefix = "currentborrowapy"
 )

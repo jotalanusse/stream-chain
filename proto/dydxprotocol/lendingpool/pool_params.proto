@@ -29,6 +29,8 @@ message PoolParams {
 
   // slope_two_rate is the interest rate slope for the second segment.
   string slope_two_rate = 7;
+
+  repeated string permissioned_credit_accounts = 8;
 }
 
 

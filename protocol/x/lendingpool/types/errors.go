@@ -50,4 +50,29 @@ var (
 		10,
 		"Pool parameters already exist",
 	)
+	ErrInvalidAddress = errorsmod.Register(
+		ModuleName,
+		11,
+		"Invalid address",
+	)
+	ErrPoolMoreThanMaxLiquidityLimit = errorsmod.Register(
+		ModuleName,
+		12,
+		"Pool exceed the max liquidity limit",
+	)
+	ErrPermissionedCreditAccountsEmpty = errorsmod.Register(
+		ModuleName,
+		13,
+		"Permissioned credit accounts are empty",
+	)
+	ErrCreditAccountNotPermissioned = errorsmod.Register(
+		ModuleName,
+		14,
+		"Credit account is not permissioned",
+	)
+	ErrInvalidRepayFromCreditAccount = errorsmod.Register(
+		ModuleName,
+		15,
+		"Invalid repay from credit account",
+	)
 )
