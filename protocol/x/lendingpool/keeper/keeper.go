@@ -78,23 +78,23 @@ func (k Keeper) CreatePoolParams(ctx sdk.Context, poolParams types.PoolParams) e
 func (k Keeper) GetLastUpdatedTime(
 	ctx sdk.Context,
 	tokenDenom string,
-) (timestamp uint64, found bool) {
+) (timestamp *big.Int, found bool) {
 	store := k.getLastUpdatedTimeStore(ctx)
 
 	b := store.Get([]byte(tokenDenom))
 
 	if b == nil {
-		return 0, false
+		return nil, false
 	}
 
-	timestamp = sdk.BigEndianToUint64(b)
+	timestamp = new(big.Int).SetBytes(b)
 	return timestamp, true
 }
 
-func (k Keeper) SetLastUpdatedTime(ctx sdk.Context, tokenDenom string, timestamp uint64) {
+func (k Keeper) SetLastUpdatedTime(ctx sdk.Context, tokenDenom string, timestamp *big.Int) {
 	store := k.getLastUpdatedTimeStore(ctx)
 
-	bz := sdk.Uint64ToBigEndian(timestamp)
+	bz := timestamp.Bytes()
 	store.Set([]byte(tokenDenom), bz)
 }
 

@@ -215,23 +215,23 @@ func (k Keeper) CalculateExpectedLiquidity(ctx sdk.Context, tokenDenom string) (
 //	currentBorrowRate * timeDifference
 //
 // interestAccrued = totalBorrow *  currentBorrowRate * timeDifference / SECONDS_PER_YEAR
-func (k Keeper) CalculateInterestAccrued(totalBorrowed, borrowAPY *big.Int, timeDifference uint64) *big.Int {
+func (k Keeper) CalculateInterestAccrued(totalBorrowed, borrowAPY *big.Int, timeDifference *big.Int) *big.Int {
 	interestAccrued := new(big.Int).Mul(totalBorrowed, borrowAPY)
-	interestAccrued = interestAccrued.Mul(interestAccrued, big.NewInt(int64(timeDifference)))
+	interestAccrued = interestAccrued.Mul(interestAccrued, timeDifference)
 	interestAccrued = interestAccrued.Div(interestAccrued, types.TWENTY_SEVEN_DECIMALS)
 	interestAccrued = interestAccrued.Div(interestAccrued, types.SECONDS_PER_YEAR)
 	return interestAccrued
 }
 
-func (k Keeper) GetTimeDifference(ctx sdk.Context, tokenDenom string) (uint64, error) {
+func (k Keeper) GetTimeDifference(ctx sdk.Context, tokenDenom string) (timeDifference *big.Int, err error) {
 	// Get the last updated time
 	lastUpdatedTime, found := k.GetLastUpdatedTime(ctx, tokenDenom)
 	if !found {
-		return 0, errorsmod.Wrap(types.ErrInvalidTokenDenom, "last updated time not found")
+		return nil, errorsmod.Wrap(types.ErrInvalidTokenDenom, "last updated time not found")
 	}
 
 	// Calculate the time difference
-	timeDifference := uint64(ctx.BlockTime().Unix()) - lastUpdatedTime
+	timeDifference = new(big.Int).Sub(big.NewInt(ctx.BlockTime().Unix()), lastUpdatedTime)
 	return timeDifference, nil
 }
 
@@ -381,7 +381,7 @@ func (k Keeper) UpdateBorrowRate(ctx sdk.Context, loss *big.Int, tokenDenom stri
 	k.SetCurrentBorrowAPY(ctx, tokenDenom, borrowAPY)
 
 	// Update the last updated timestamp
-	k.SetLastUpdatedTime(ctx, tokenDenom, uint64(ctx.BlockTime().Unix()))
+	k.SetLastUpdatedTime(ctx, tokenDenom, big.NewInt(ctx.BlockTime().Unix()))
 
 	return nil
 }
@@ -413,9 +413,9 @@ func (k Keeper) CalculateLinearCumulative(ctx sdk.Context, tokenDenom string) (*
 }
 
 // newIndex  = currentIndex * (1 + borrowAPY * timeDifference / SECONDS_PER_YEAR)
-func (k Keeper) CalculateNewCumulativeIndex(cumulativeIndex, borrowAPY *big.Int, timeDifference uint64) *big.Int {
+func (k Keeper) CalculateNewCumulativeIndex(cumulativeIndex, borrowAPY *big.Int, timeDifference *big.Int) *big.Int {
 	// Calculate the linear index
-	linearIndex := new(big.Int).Mul(big.NewInt(int64(timeDifference)), borrowAPY)
+	linearIndex := new(big.Int).Mul(timeDifference, borrowAPY)
 	linearIndex = linearIndex.Div(linearIndex, types.SECONDS_PER_YEAR)
 	linearIndex = linearIndex.Add(linearIndex, types.TWENTY_SEVEN_DECIMALS)
 	linearIndex = linearIndex.Mul(linearIndex, cumulativeIndex)

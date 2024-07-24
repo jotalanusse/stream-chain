@@ -18,7 +18,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		if err := k.CreatePoolParams(ctx, params); err != nil {
 			panic(err)
 		}
-		k.SetLastUpdatedTime(ctx, params.TokenDenom, uint64(ctx.BlockTime().Unix()))
+		k.SetLastUpdatedTime(ctx, params.TokenDenom, big.NewInt(ctx.BlockTime().Unix()))
 		k.SetCumulativeInterestRate(ctx, params.TokenDenom, types.TWENTY_SEVEN_DECIMALS)
 		k.SetTotalBorrowed(ctx, params.TokenDenom, big.NewInt(0))
 		k.SetCurrentBorrowAPY(ctx, params.TokenDenom, big.NewInt(0))
