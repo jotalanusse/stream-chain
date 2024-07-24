@@ -3,7 +3,6 @@ package keeper
 import (
 	"math/big"
 
-	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -57,17 +56,4 @@ func (k Keeper) CalcBorrowRate(ctx sdk.Context, tokenDenom string, expectedLiqui
 	borrowRate = borrowRate.Add(borrowRate, poolParams.SlopeOneRate)
 	borrowRate = borrowRate.Add(borrowRate, poolParams.BaseRate)
 	return borrowRate, nil
-}
-
-func ConvertStringToBigInt(str string) (*big.Int, error) {
-
-	bigint, ok := new(big.Int).SetString(str, 10)
-	if !ok {
-		return nil, errorsmod.Wrap(
-			types.ErrUnableToDecodeBigInt,
-			"Unable to convert the sDAI conversion rate to a big int",
-		)
-	}
-
-	return bigint, nil
 }
