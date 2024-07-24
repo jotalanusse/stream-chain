@@ -12,13 +12,6 @@ const (
 
 	SECONDS_PER_YEAR = 31536000
 
-	// todo placeholders for ibc denoms of btc, eth, dai
-	BTC_POOL = "BTC"
-
-	ETH_POOL = "ETH"
-
-	DAI_POOL = "DAI"
-
 	// address of the lending pool insurance fund
 	LENDING_POOL_INSURANCE_FUND = "lendingpoolinsurancefund"
 )

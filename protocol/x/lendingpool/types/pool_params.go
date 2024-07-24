@@ -8,9 +8,6 @@ import (
 
 // Validate validates perpetual module's parameters.
 func (params PoolParams) Validate() error {
-	if params.TokenDenom != BTC_POOL && params.TokenDenom != ETH_POOL && params.TokenDenom != DAI_POOL {
-		return ErrInvalidTokenDenom
-	}
 
 	bigMaxPoolLiquidity, err := ConvertStringToBigInt(params.MaxPoolLiquidity)
 	if err != nil {

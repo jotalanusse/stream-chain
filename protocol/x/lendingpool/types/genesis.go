@@ -11,7 +11,7 @@ func DefaultGenesis() *GenesisState {
 func DefaultPoolParams() []PoolParams {
 	return []PoolParams{
 		{
-			TokenDenom:                 BTC_POOL,
+			TokenDenom:                 "ibc/BTC", // placeholders todo
 			MaxPoolLiquidity:           "1000000000000",
 			WithdrawFee:                "100",
 			OptimalUtilizationRatio:    "8000",
@@ -21,7 +21,7 @@ func DefaultPoolParams() []PoolParams {
 			PermissionedCreditAccounts: []string{"defaultcreditaccount"},
 		},
 		{
-			TokenDenom:                 ETH_POOL,
+			TokenDenom:                 "ibc/ETH", // placeholders todo
 			MaxPoolLiquidity:           "2000000000000",
 			WithdrawFee:                "150",
 			OptimalUtilizationRatio:    "7500",
@@ -31,7 +31,7 @@ func DefaultPoolParams() []PoolParams {
 			PermissionedCreditAccounts: []string{"defaultcreditaccount"},
 		},
 		{
-			TokenDenom:                 DAI_POOL,
+			TokenDenom:                 "ibc/DAI", // placeholders todo
 			MaxPoolLiquidity:           "3000000000000",
 			WithdrawFee:                "200",
 			OptimalUtilizationRatio:    "7000",
