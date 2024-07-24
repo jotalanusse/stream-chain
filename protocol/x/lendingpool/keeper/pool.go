@@ -41,7 +41,7 @@ func (k Keeper) DepositLiquidity(ctx sdk.Context, amount *big.Int, onBehalfOf sd
 		return err
 	}
 
-	err = k.UpdateExpectedLiquidity(ctx, tokenDenom, amount, false)
+	err = k.UpdateTotalLiquidity(ctx, tokenDenom, amount, false)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (k Keeper) RemoveLiquidity(ctx sdk.Context, amount *big.Int, onBehalfOf sdk
 		return nil, err
 	}
 
-	err = k.UpdateExpectedLiquidity(ctx, tokenDenom, amountToWithdraw, true)
+	err = k.UpdateTotalLiquidity(ctx, tokenDenom, amountToWithdraw, true)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func (k Keeper) validateCanAddLiquidity(ctx sdk.Context, amount *big.Int, onBeha
 		return errorsmod.Wrap(types.ErrInvalidTokenDenom, "pool params not found")
 	}
 
-	err := k.ValidateExpectedLiquidity(ctx, tokenDenom, amount, poolParams.MaxPoolLiquidity)
+	err := k.ValidateTotalLiquidity(ctx, tokenDenom, amount, poolParams.MaxPoolLiquidity)
 	if err != nil {
 		return err
 	}
@@ -182,7 +182,7 @@ func (k Keeper) validateCanAddLiquidity(ctx sdk.Context, amount *big.Int, onBeha
 	return nil
 }
 
-func (k Keeper) CalculateExpectedLiquidity(ctx sdk.Context, tokenDenom string) (*big.Int, error) {
+func (k Keeper) CalculateTotalLiquidity(ctx sdk.Context, tokenDenom string) (*big.Int, error) {
 
 	timeDifference, err := k.GetTimeDifference(ctx, tokenDenom)
 	if err != nil {
@@ -201,15 +201,15 @@ func (k Keeper) CalculateExpectedLiquidity(ctx sdk.Context, tokenDenom string) (
 
 	interestAccrued := k.CalculateInterestAccrued(totalBorrowed, borrowAPY, timeDifference)
 
-	expectedLiquidityLU, found := k.GetLastUpdatedTotalLiquidity(ctx, tokenDenom)
+	totalLiquidityLU, found := k.GetLastUpdatedTotalLiquidity(ctx, tokenDenom)
 	if !found {
 		return nil, errorsmod.Wrap(types.ErrInvalidTokenDenom, "expected liquidity last updated not found")
 	}
 
 	// Calculate the expected liquidity
-	expectedLiquidity := new(big.Int).Add(expectedLiquidityLU, interestAccrued)
+	totalLiquidity := new(big.Int).Add(totalLiquidityLU, interestAccrued)
 
-	return expectedLiquidity, nil
+	return totalLiquidity, nil
 }
 
 //	currentBorrowRate * timeDifference
@@ -235,16 +235,16 @@ func (k Keeper) GetTimeDifference(ctx sdk.Context, tokenDenom string) (timeDiffe
 	return timeDifference, nil
 }
 
-func (k Keeper) ValidateExpectedLiquidity(ctx sdk.Context, tokenDenom string, amount *big.Int, expectedLiquidityLimit *big.Int) error {
-	// Get the expected liquidity
-	expectedLiquidity, err := k.CalculateExpectedLiquidity(ctx, tokenDenom)
+func (k Keeper) ValidateTotalLiquidity(ctx sdk.Context, tokenDenom string, amount *big.Int, totalLiquidityLimit *big.Int) error {
+	// Get the total liquidity
+	totalLiquidity, err := k.CalculateTotalLiquidity(ctx, tokenDenom)
 	if err != nil {
 		return err
 	}
 
-	// Check if the expected liquidity plus the amount is within the expected liquidity limit
-	if new(big.Int).Add(expectedLiquidity, amount).Cmp(expectedLiquidityLimit) > 0 {
-		return errorsmod.Wrap(types.ErrPoolMoreThanMaxLiquidityLimit, "expected liquidity would exceed the limit if deposit")
+	// Check if the total liquidity plus the amount is within the total liquidity limit
+	if new(big.Int).Add(totalLiquidity, amount).Cmp(totalLiquidityLimit) > 0 {
+		return errorsmod.Wrap(types.ErrPoolMoreThanMaxLiquidityLimit, "total liquidity would exceed the limit if deposit")
 	}
 
 	return nil
@@ -298,34 +298,34 @@ func (k Keeper) GetLendingTokenExchangeRate(ctx sdk.Context, denom string) (*big
 		return types.TWENTY_SEVEN_DECIMALS, nil
 	}
 
-	expectedLiquidity, err := k.CalculateExpectedLiquidity(ctx, denom)
+	totalLiquidity, err := k.CalculateTotalLiquidity(ctx, denom)
 	if err != nil {
 		return nil, err
 	}
 
-	exchangeRate := new(big.Int).Mul(expectedLiquidity, types.TWENTY_SEVEN_DECIMALS)
+	exchangeRate := new(big.Int).Mul(totalLiquidity, types.TWENTY_SEVEN_DECIMALS)
 	exchangeRate = exchangeRate.Div(exchangeRate, lendingTokenSupply)
 	return exchangeRate, nil
 }
 
-func (k Keeper) UpdateExpectedLiquidity(ctx sdk.Context, tokenDenom string, amount *big.Int, isNegative bool) error {
+func (k Keeper) UpdateTotalLiquidity(ctx sdk.Context, tokenDenom string, amount *big.Int, isNegative bool) error {
 
-	// Get the expected liquidity last updated
-	expectedLiquidityLU, found := k.GetLastUpdatedTotalLiquidity(ctx, tokenDenom)
+	// Get the total liquidity last updated
+	totalLiquidityLU, found := k.GetLastUpdatedTotalLiquidity(ctx, tokenDenom)
 	if !found {
-		return errorsmod.Wrap(types.ErrInvalidTokenDenom, "expected liquidity last updated not found")
+		return errorsmod.Wrap(types.ErrInvalidTokenDenom, "total liquidity last updated not found")
 	}
 
-	newExpectedLiquidity := new(big.Int)
+	newTotalLiquidity := new(big.Int)
 
 	if isNegative {
-		newExpectedLiquidity = new(big.Int).Sub(expectedLiquidityLU, amount)
+		newTotalLiquidity = new(big.Int).Sub(totalLiquidityLU, amount)
 	} else {
-		newExpectedLiquidity = new(big.Int).Add(expectedLiquidityLU, amount)
+		newTotalLiquidity = new(big.Int).Add(totalLiquidityLU, amount)
 	}
 
-	// Set the expected liquidity last updated
-	k.SetLastUpdatedTotalLiquidity(ctx, tokenDenom, newExpectedLiquidity)
+	// Set the total liquidity last updated
+	k.SetLastUpdatedTotalLiquidity(ctx, tokenDenom, newTotalLiquidity)
 
 	return nil
 }
@@ -353,17 +353,17 @@ func (k Keeper) UpdateTotalBorrowed(ctx sdk.Context, tokenDenom string, amount *
 }
 
 func (k Keeper) UpdateBorrowRate(ctx sdk.Context, loss *big.Int, tokenDenom string) error {
-	// Get the expected liquidity last updated
-	expectedLiquidity, err := k.CalculateExpectedLiquidity(ctx, tokenDenom)
+	// Get the total liquidity last updated
+	totalLiquidity, err := k.CalculateTotalLiquidity(ctx, tokenDenom)
 	if err != nil {
 		return err
 	}
 
 	// Update total expected liquidity
-	expectedLiquidity = new(big.Int).Sub(expectedLiquidity, loss)
+	totalLiquidity = new(big.Int).Sub(totalLiquidity, loss)
 
-	// Set the expected liquidity last updated
-	k.SetLastUpdatedTotalLiquidity(ctx, tokenDenom, expectedLiquidity)
+	// Set the total liquidity last updated
+	k.SetLastUpdatedTotalLiquidity(ctx, tokenDenom, totalLiquidity)
 
 	// Update cumulative index
 	cumulativeIndex, err := k.CalculateLinearCumulative(ctx, tokenDenom)
@@ -374,7 +374,7 @@ func (k Keeper) UpdateBorrowRate(ctx sdk.Context, loss *big.Int, tokenDenom stri
 
 	// Update borrow APY
 	availableLiquidity := k.GetLendingPoolBalance(ctx, tokenDenom)
-	borrowAPY, err := k.CalcBorrowRate(ctx, tokenDenom, expectedLiquidity, availableLiquidity)
+	borrowAPY, err := k.CalculateBorrowRate(ctx, tokenDenom, totalLiquidity, availableLiquidity)
 	if err != nil {
 		return err
 	}
@@ -470,7 +470,7 @@ func (k Keeper) HandleProfit(ctx sdk.Context, profit *big.Int, tokenDenom string
 			return err
 		}
 
-		err = k.UpdateExpectedLiquidity(ctx, tokenDenom, profit, false)
+		err = k.UpdateTotalLiquidity(ctx, tokenDenom, profit, false)
 		if err != nil {
 			return err
 		}
