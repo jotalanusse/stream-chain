@@ -174,12 +174,7 @@ func (k Keeper) validateCanAddLiquidity(ctx sdk.Context, amount *big.Int, onBeha
 		return errorsmod.Wrap(types.ErrInvalidTokenDenom, "pool params not found")
 	}
 
-	PoolLiquidityLimit, err := ConvertStringToBigInt(poolParams.MaxPoolLiquidity)
-	if err != nil {
-		return err
-	}
-
-	err = k.ValidateExpectedLiquidity(ctx, tokenDenom, amount, PoolLiquidityLimit)
+	err := k.ValidateExpectedLiquidity(ctx, tokenDenom, amount, poolParams.MaxPoolLiquidity)
 	if err != nil {
 		return err
 	}
@@ -435,14 +430,8 @@ func (k Keeper) CalculateInsuranceFundFee(ctx sdk.Context, tokenDenom string, un
 		return big.NewInt(0) // or handle the error appropriately
 	}
 
-	// Get the withdraw fee from the pool parameters
-	withdrawFee, err := ConvertStringToBigInt(poolParams.WithdrawFee)
-	if err != nil {
-		return big.NewInt(0) // or handle the error appropriately
-	}
-
 	// Calculate the insurance fund fee
-	insuranceFundFee := types.PercentMul(underlyingTokensAmount, withdrawFee)
+	insuranceFundFee := types.PercentMul(underlyingTokensAmount, poolParams.WithdrawFee)
 
 	return insuranceFundFee
 }

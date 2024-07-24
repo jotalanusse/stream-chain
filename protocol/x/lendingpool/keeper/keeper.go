@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/big"
 
@@ -52,22 +53,25 @@ func (k Keeper) getPoolParamsStore(
 func (k Keeper) CreatePoolParams(ctx sdk.Context, poolParams types.PoolParams) error {
 
 	// Perform stateless validation on the provided `EpochInfo`.
-	err := poolParams.Validate()
+	internalParams, err := poolParams.Validate()
 	if err != nil {
 		return err
 	}
 
-	err = poolParams.ApplyDecimalConversions()
+	err = internalParams.ApplyDecimalConversions()
 	if err != nil {
 		return err
 	}
 
 	// Check if identifier already exists
-	if _, found := k.GetPoolParams(ctx, poolParams.TokenDenom); found {
+	if _, found := k.GetPoolParams(ctx, internalParams.TokenDenom); found {
 		return errorsmod.Wrapf(types.ErrPoolParamsAlreadyExists, "poolParams.TokenDenom already exists (%s)", poolParams.TokenDenom)
 	}
 
-	k.setPoolParams(ctx, poolParams)
+	err = k.setPoolParams(ctx, internalParams)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -204,35 +208,49 @@ func (k Keeper) getLastUpdatedTotalLiquidityStore(ctx sdk.Context) prefix.Store 
 func (k Keeper) GetPoolParams(
 	ctx sdk.Context,
 	tokenDenom string,
-) (val types.PoolParams, found bool) {
+) (val types.InternalPoolParams, found bool) {
 	store := k.getPoolParamsStore(ctx)
 
 	b := store.Get([]byte(tokenDenom))
 
 	if b == nil {
+		return types.InternalPoolParams{}, false
+	}
+
+	err := json.Unmarshal(b, &val)
+	if err != nil {
 		return val, false
 	}
 
-	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
-func (k Keeper) setPoolParams(ctx sdk.Context, poolParams types.PoolParams) {
+func (k Keeper) setPoolParams(ctx sdk.Context, poolParams types.InternalPoolParams) error {
 	store := k.getPoolParamsStore(ctx)
-	b := k.cdc.MustMarshal(&poolParams)
+
+	// Marshal the struct to JSON
+	b, err := json.Marshal(poolParams)
+	if err != nil {
+		return err
+	}
+
 	store.Set([]byte(poolParams.TokenDenom), b)
+	return nil
 }
 
 // GetAllPoolParams returns all poolParams
-func (k Keeper) GetAllPoolParams(ctx sdk.Context) (list []types.PoolParams) {
+func (k Keeper) GetAllPoolParams(ctx sdk.Context) (list []types.InternalPoolParams) {
 	store := k.getPoolParamsStore(ctx)
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.PoolParams
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		var val types.InternalPoolParams
+		err := json.Unmarshal(iterator.Value(), &val)
+		if err != nil {
+			continue
+		}
 		list = append(list, val)
 	}
 

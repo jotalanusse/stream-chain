@@ -47,7 +47,7 @@ func DefaultPoolParams() []PoolParams {
 // failure.
 func (gs GenesisState) Validate() error {
 	for _, pool := range gs.PoolParams {
-		if err := pool.Validate(); err != nil {
+		if _, err := pool.Validate(); err != nil {
 			return err
 		}
 	}

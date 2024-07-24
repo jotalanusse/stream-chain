@@ -19,11 +19,7 @@ func (k Keeper) CalcBorrowRate(ctx sdk.Context, tokenDenom string, expectedLiqui
 	}
 
 	if expectedLiquidity.Cmp(big.NewInt(0)) == 0 || expectedLiquidity.Cmp(availableLiquidity) < 0 {
-		baseRate, err := ConvertStringToBigInt(poolParams.BaseRate)
-		if err != nil {
-			return nil, err
-		}
-		return baseRate, nil
+		return poolParams.BaseRate, nil
 	}
 
 	//      expectedLiquidity - availableLiquidity
@@ -33,11 +29,7 @@ func (k Keeper) CalcBorrowRate(ctx sdk.Context, tokenDenom string, expectedLiqui
 	utilisation_eighteen := new(big.Int).Mul(big.NewInt(types.EIGHTEEN_DECIMALS), new(big.Int).Sub(expectedLiquidity, availableLiquidity))
 	utilisation_eighteen = utilisation_eighteen.Div(utilisation_eighteen, expectedLiquidity)
 
-	U_Optimal_eighteen, _ := big.NewInt(0).SetString(poolParams.OptimalUtilizationRatio, 10)
-	R_base_twentyseven, _ := big.NewInt(0).SetString(poolParams.BaseRate, 10)
-	R_slope1_twentyseven, _ := big.NewInt(0).SetString(poolParams.SlopeOneRate, 10)
-	R_slope2_twentyseven, _ := big.NewInt(0).SetString(poolParams.SlopeTwoRate, 10)
-	U_Optimal_inverted_eighteen := new(big.Int).Sub(big.NewInt(types.EIGHTEEN_DECIMALS), U_Optimal_eighteen)
+	U_Optimal_inverted_eighteen := new(big.Int).Sub(big.NewInt(types.EIGHTEEN_DECIMALS), poolParams.OptimalUtilizationRatio)
 
 	// if U < Uoptimal:
 	//
@@ -46,11 +38,11 @@ func (k Keeper) CalcBorrowRate(ctx sdk.Context, tokenDenom string, expectedLiqui
 	//                                 Uoptimal
 	//
 
-	if utilisation_eighteen.Cmp(U_Optimal_eighteen) < 0 {
+	if utilisation_eighteen.Cmp(poolParams.OptimalUtilizationRatio) < 0 {
 		// borrowRate = Rbase + Rslope1 * (U / Uoptimal)
-		borrowRate := new(big.Int).Mul(R_slope1_twentyseven, utilisation_eighteen)
-		borrowRate = borrowRate.Div(borrowRate, U_Optimal_eighteen)
-		borrowRate = borrowRate.Add(borrowRate, R_base_twentyseven)
+		borrowRate := new(big.Int).Mul(poolParams.SlopeOneRate, utilisation_eighteen)
+		borrowRate = borrowRate.Div(borrowRate, poolParams.OptimalUtilizationRatio)
+		borrowRate = borrowRate.Add(borrowRate, poolParams.BaseRate)
 		return borrowRate, nil
 	}
 
@@ -59,11 +51,11 @@ func (k Keeper) CalcBorrowRate(ctx sdk.Context, tokenDenom string, expectedLiqui
 	//                                           U - Uoptimal
 	// borrowRate = Rbase + Rslope1 + Rslope2 * --------------
 	//
-	borrowRate := new(big.Int).Sub(utilisation_eighteen, U_Optimal_eighteen)
-	borrowRate = borrowRate.Mul(borrowRate, R_slope2_twentyseven)
+	borrowRate := new(big.Int).Sub(utilisation_eighteen, poolParams.OptimalUtilizationRatio)
+	borrowRate = borrowRate.Mul(borrowRate, poolParams.SlopeTwoRate)
 	borrowRate = borrowRate.Div(borrowRate, U_Optimal_inverted_eighteen)
-	borrowRate = borrowRate.Add(borrowRate, R_slope1_twentyseven)
-	borrowRate = borrowRate.Add(borrowRate, R_base_twentyseven)
+	borrowRate = borrowRate.Add(borrowRate, poolParams.SlopeOneRate)
+	borrowRate = borrowRate.Add(borrowRate, poolParams.BaseRate)
 	return borrowRate, nil
 }
 

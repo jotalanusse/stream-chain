@@ -16,13 +16,16 @@ func (k Keeper) PoolParams(
 	}
 	ctx := lib.UnwrapSDKContext(c, types.ModuleName)
 
-	val, found := k.GetPoolParams(
+	internalVal, found := k.GetPoolParams(
 		ctx,
 		req.TokenDenom,
 	)
+
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}
+
+	val := types.ConvertInternalToPoolParams(internalVal)
 
 	return &types.QueryPoolParamsResponse{PoolParams: val}, nil
 }

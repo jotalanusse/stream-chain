@@ -28,7 +28,15 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 // ExportGenesis returns the lending module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
+
+	poolParams := k.GetAllPoolParams(ctx)
+	genesisPoolParams := make([]types.PoolParams, len(poolParams))
+
+	for i, params := range poolParams {
+		genesisPoolParams[i] = types.ConvertInternalToPoolParams(params)
+	}
+
 	return &types.GenesisState{
-		PoolParams: k.GetAllPoolParams(ctx),
+		PoolParams: genesisPoolParams,
 	}
 }
