@@ -218,8 +218,8 @@ func (k Keeper) CalculateExpectedLiquidity(ctx sdk.Context, tokenDenom string) (
 func (k Keeper) CalculateInterestAccrued(totalBorrowed, borrowAPY *big.Int, timeDifference uint64) *big.Int {
 	interestAccrued := new(big.Int).Mul(totalBorrowed, borrowAPY)
 	interestAccrued = interestAccrued.Mul(interestAccrued, big.NewInt(int64(timeDifference)))
-	interestAccrued = interestAccrued.Div(interestAccrued, big.NewInt(types.TWENTY_SEVEN_DECIMALS))
-	interestAccrued = interestAccrued.Div(interestAccrued, big.NewInt(types.SECONDS_PER_YEAR))
+	interestAccrued = interestAccrued.Div(interestAccrued, types.TWENTY_SEVEN_DECIMALS)
+	interestAccrued = interestAccrued.Div(interestAccrued, types.SECONDS_PER_YEAR)
 	return interestAccrued
 }
 
@@ -273,7 +273,7 @@ func (k Keeper) ToLendingToken(ctx sdk.Context, amount *big.Int, denom string) (
 	if err != nil {
 		return nil, err
 	}
-	lendingToken := new(big.Int).Mul(amount, big.NewInt(types.TWENTY_SEVEN_DECIMALS))
+	lendingToken := new(big.Int).Mul(amount, types.TWENTY_SEVEN_DECIMALS)
 	lendingToken = lendingToken.Div(lendingToken, exchangeRate)
 	return lendingToken, nil
 }
@@ -284,7 +284,7 @@ func (k Keeper) FromLendingToken(ctx sdk.Context, amount *big.Int, denom string)
 		return nil, err
 	}
 	token := new(big.Int).Mul(amount, exchangeRate)
-	token = token.Div(token, big.NewInt(types.TWENTY_SEVEN_DECIMALS))
+	token = token.Div(token, types.TWENTY_SEVEN_DECIMALS)
 	return token, nil
 }
 
@@ -295,7 +295,7 @@ func (k Keeper) GetLendingTokenExchangeRate(ctx sdk.Context, denom string) (*big
 		return nil, err
 	}
 	if lendingTokenSupply.Cmp(big.NewInt(0)) == 0 {
-		return big.NewInt(types.TWENTY_SEVEN_DECIMALS), nil
+		return types.TWENTY_SEVEN_DECIMALS, nil
 	}
 
 	expectedLiquidity, err := k.CalculateExpectedLiquidity(ctx, denom)
@@ -303,7 +303,7 @@ func (k Keeper) GetLendingTokenExchangeRate(ctx sdk.Context, denom string) (*big
 		return nil, err
 	}
 
-	exchangeRate := new(big.Int).Mul(expectedLiquidity, big.NewInt(types.TWENTY_SEVEN_DECIMALS))
+	exchangeRate := new(big.Int).Mul(expectedLiquidity, types.TWENTY_SEVEN_DECIMALS)
 	exchangeRate = exchangeRate.Div(exchangeRate, lendingTokenSupply)
 	return exchangeRate, nil
 }
@@ -416,10 +416,10 @@ func (k Keeper) CalculateLinearCumulative(ctx sdk.Context, tokenDenom string) (*
 func (k Keeper) CalculateNewCumulativeIndex(cumulativeIndex, borrowAPY *big.Int, timeDifference uint64) *big.Int {
 	// Calculate the linear index
 	linearIndex := new(big.Int).Mul(big.NewInt(int64(timeDifference)), borrowAPY)
-	linearIndex = linearIndex.Div(linearIndex, big.NewInt(types.SECONDS_PER_YEAR))
-	linearIndex = linearIndex.Add(linearIndex, big.NewInt(types.TWENTY_SEVEN_DECIMALS))
+	linearIndex = linearIndex.Div(linearIndex, types.SECONDS_PER_YEAR)
+	linearIndex = linearIndex.Add(linearIndex, types.TWENTY_SEVEN_DECIMALS)
 	linearIndex = linearIndex.Mul(linearIndex, cumulativeIndex)
-	linearIndex = linearIndex.Div(linearIndex, big.NewInt(types.TWENTY_SEVEN_DECIMALS))
+	linearIndex = linearIndex.Div(linearIndex, types.TWENTY_SEVEN_DECIMALS)
 	return linearIndex
 }
 

@@ -41,7 +41,7 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 		return InternalPoolParams{}, err
 	}
 
-	if bigWithdrawFee.Cmp(big.NewInt(0)) < 0 || bigWithdrawFee.Cmp(big.NewInt(PERCENTAGE_PRECISION)) >= 0 {
+	if bigWithdrawFee.Cmp(big.NewInt(0)) < 0 || bigWithdrawFee.Cmp(PERCENTAGE_PRECISION) >= 0 {
 		return InternalPoolParams{}, ErrWithdrawFeeOutOfRange
 	}
 
@@ -50,7 +50,7 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 		return InternalPoolParams{}, err
 	}
 
-	if bigOptimalUtilizationRatio.Cmp(big.NewInt(0)) < 0 || bigOptimalUtilizationRatio.Cmp(big.NewInt(PERCENTAGE_PRECISION)) >= 0 {
+	if bigOptimalUtilizationRatio.Cmp(big.NewInt(0)) < 0 || bigOptimalUtilizationRatio.Cmp(PERCENTAGE_PRECISION) >= 0 {
 		return InternalPoolParams{}, ErrOptimalUtilizationRatioOutOfRange
 	}
 
@@ -59,7 +59,7 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 		return InternalPoolParams{}, err
 	}
 
-	if bigBaseRate.Cmp(big.NewInt(0)) < 0 || bigBaseRate.Cmp(big.NewInt(PERCENTAGE_PRECISION)) >= 0 {
+	if bigBaseRate.Cmp(big.NewInt(0)) < 0 || bigBaseRate.Cmp(PERCENTAGE_PRECISION) >= 0 {
 		return InternalPoolParams{}, ErrBaseRateOutOfRange
 	}
 
@@ -68,7 +68,7 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 		return InternalPoolParams{}, err
 	}
 
-	if bigSlopeOneRate.Cmp(big.NewInt(0)) < 0 || bigSlopeOneRate.Cmp(big.NewInt(PERCENTAGE_PRECISION)) >= 0 {
+	if bigSlopeOneRate.Cmp(big.NewInt(0)) < 0 || bigSlopeOneRate.Cmp(PERCENTAGE_PRECISION) >= 0 {
 		return InternalPoolParams{}, ErrSlopeOneRateOutOfRange
 	}
 
@@ -118,16 +118,13 @@ func ConvertInternalToPoolParams(internalParams InternalPoolParams) PoolParams {
 // ApplyDecimalConversions converts the pool params to the correct decimal places
 func (params *InternalPoolParams) ApplyDecimalConversions() error {
 
-	bigEighteenDecimals := big.NewInt(EIGHTEEN_DECIMALS)
-	bigTwentySevenDecimals := big.NewInt(TWENTY_SEVEN_DECIMALS)
+	params.OptimalUtilizationRatio = PercentMul(params.OptimalUtilizationRatio, EIGHTEEN_DECIMALS)
 
-	params.OptimalUtilizationRatio = PercentMul(params.OptimalUtilizationRatio, bigEighteenDecimals)
+	params.BaseRate = PercentMul(params.BaseRate, TWENTY_SEVEN_DECIMALS)
 
-	params.BaseRate = PercentMul(params.BaseRate, bigTwentySevenDecimals)
+	params.SlopeOneRate = PercentMul(params.SlopeOneRate, TWENTY_SEVEN_DECIMALS)
 
-	params.SlopeOneRate = PercentMul(params.SlopeOneRate, bigTwentySevenDecimals)
-
-	params.SlopeTwoRate = PercentMul(params.SlopeTwoRate, bigTwentySevenDecimals)
+	params.SlopeTwoRate = PercentMul(params.SlopeTwoRate, TWENTY_SEVEN_DECIMALS)
 
 	return nil
 }
@@ -150,12 +147,9 @@ func PercentMul(value, percentage *big.Int) *big.Int {
 		return big.NewInt(0)
 	}
 
-	halfPercent := big.NewInt(HALF_PERCENT)
-	percentageFactor := big.NewInt(PERCENTAGE_PRECISION)
-
 	result := new(big.Int).Mul(value, percentage)
-	result = result.Add(result, halfPercent)
-	result = result.Div(result, percentageFactor)
+	result = result.Add(result, HALF_PERCENT)
+	result = result.Div(result, PERCENTAGE_PRECISION)
 
 	return result
 }

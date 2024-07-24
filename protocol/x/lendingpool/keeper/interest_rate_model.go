@@ -26,10 +26,10 @@ func (k Keeper) CalcBorrowRate(ctx sdk.Context, tokenDenom string, expectedLiqui
 	// U = -------------------------------------
 	//             expectedLiquidity
 
-	utilisation_eighteen := new(big.Int).Mul(big.NewInt(types.EIGHTEEN_DECIMALS), new(big.Int).Sub(expectedLiquidity, availableLiquidity))
+	utilisation_eighteen := new(big.Int).Mul(types.EIGHTEEN_DECIMALS, new(big.Int).Sub(expectedLiquidity, availableLiquidity))
 	utilisation_eighteen = utilisation_eighteen.Div(utilisation_eighteen, expectedLiquidity)
 
-	U_Optimal_inverted_eighteen := new(big.Int).Sub(big.NewInt(types.EIGHTEEN_DECIMALS), poolParams.OptimalUtilizationRatio)
+	U_Optimal_inverted_eighteen := new(big.Int).Sub(types.EIGHTEEN_DECIMALS, poolParams.OptimalUtilizationRatio)
 
 	// if U < Uoptimal:
 	//
