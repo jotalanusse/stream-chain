@@ -947,7 +947,7 @@ func New(
 	app.voteCodec = vecodec.NewDefaultVoteExtensionCodec()
 	app.extCodec = vecodec.NewDefaultExtendedCommitCodec()
 
-	aggregatorFn := voteweighted.Median(
+	aggregatorFn := voteweighted.MedianWithMarkAndFundingRate(
 		logger,
 		app.ConsumerKeeper,
 		voteweighted.DefaultPowerThreshold,
@@ -964,6 +964,8 @@ func New(
 		logger,
 		aggregator,
 		app.PricesKeeper,
+		app.ClobKeeper,
+		app.PerpetualsKeeper,
 		app.voteCodec,
 		app.extCodec,
 	)

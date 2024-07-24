@@ -18,12 +18,17 @@ import (
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	pricestest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/prices"
 	vetesting "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/ve"
+	clobkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
+	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	pk "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ccvtypes "github.com/ethos-works/ethos/ethos-chain/x/ccv/consumer/types"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
+
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 )
 
 type PreBlockTestSuite struct {
@@ -51,9 +56,23 @@ func (s *PreBlockTestSuite) SetupTest() {
 
 	ctx, pricesKeeper, _, indexPriceCahce, _, mockTimeProvider := keepertest.PricesKeepers(s.T())
 	mockTimeProvider.On("Now").Return(constants.TimeT)
+
 	s.ctx = ctx
 	s.pricesKeeper = pricesKeeper
 	s.indexPriceCache = indexPriceCahce
+
+	mPerpKeeper := &mocks.PriceApplierPerpetualsKeeper{}
+	mPerpKeeper.On(
+		"GetPerpetual",
+		mock.Anything,
+		mock.Anything,
+	).Return(perptypes.Perpetual{}, nil)
+
+	mClobKeeper := &mocks.PriceApplierClobKeeper{}
+	mClobKeeper.On(
+		"GetClobMetadata",
+		mock.Anything,
+	).Return(map[clobtypes.ClobPairId]clobkeeper.ClobMetadata{})
 
 	s.voteCodec = vecodec.NewDefaultVoteExtensionCodec()
 	s.extCodec = vecodec.NewDefaultExtendedCommitCodec()
@@ -63,7 +82,7 @@ func (s *PreBlockTestSuite) SetupTest() {
 	mCCVStore := &mocks.CCValidatorStore{}
 	s.ccvStore = mCCVStore
 
-	aggregationFn := voteweighted.Median(
+	aggregationFn := voteweighted.MedianWithMarkAndFundingRate(
 		s.logger,
 		s.ccvStore,
 		voteweighted.DefaultPowerThreshold,
@@ -80,6 +99,8 @@ func (s *PreBlockTestSuite) SetupTest() {
 		s.logger,
 		aggregator,
 		*s.pricesKeeper,
+		mClobKeeper,
+		mPerpKeeper,
 		s.voteCodec,
 		s.extCodec,
 	)

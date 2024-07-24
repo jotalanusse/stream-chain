@@ -34,7 +34,13 @@ type VoteAggregator interface {
 	// In order for a currency pair to be included in the final oracle price, the currency
 	// pair must be provided by a super-majority (2/3+) of validators. This is enforced by the
 	// price aggregator but can be replaced by the application.
-	AggregateDaemonVEIntoFinalPrices(ctx sdk.Context, votes []Vote) (map[string]*big.Int, error)
+	AggregateDaemonVEIntoFinalPrices(
+		ctx sdk.Context,
+		votes []Vote,
+		midPrices map[string]*big.Int,
+		fundingRates map[string]*big.Int,
+		smoothedPrices map[string]*big.Int,
+	) (map[string]*big.Int, error)
 
 	// GetPriceForValidator gets the prices reported by a given validator. This method depends
 	// on the prices from the latest set of aggregated votes.
@@ -50,7 +56,13 @@ type MedianAggregator struct {
 	// prices is a map of validator address to a map of currency pair to price
 	perValidatorPrices map[string]map[string]*big.Int
 
-	aggregateFn func(ctx sdk.Context, perValidatorPrices map[string]map[string]*big.Int) (map[string]*big.Int, error)
+	aggregateFn func(
+		ctx sdk.Context,
+		perValidatorPrices map[string]map[string]*big.Int,
+		midPrices map[string]*big.Int,
+		fundingRates map[string]*big.Int,
+		smoothedPrices map[string]*big.Int,
+	) (map[string]*big.Int, error)
 }
 
 func NewVeAggregator(
@@ -67,7 +79,13 @@ func NewVeAggregator(
 	}
 }
 
-func (ma *MedianAggregator) AggregateDaemonVEIntoFinalPrices(ctx sdk.Context, votes []Vote) (map[string]*big.Int, error) {
+func (ma *MedianAggregator) AggregateDaemonVEIntoFinalPrices(
+	ctx sdk.Context,
+	votes []Vote,
+	midPrices map[string]*big.Int,
+	fundingRates map[string]*big.Int,
+	smoothedPrices map[string]*big.Int,
+) (map[string]*big.Int, error) {
 	// wipe the previous prices
 	ma.perValidatorPrices = make(map[string]map[string]*big.Int)
 
@@ -77,7 +95,7 @@ func (ma *MedianAggregator) AggregateDaemonVEIntoFinalPrices(ctx sdk.Context, vo
 		ma.addVoteToAggregator(ctx, consAddr, voteExtension)
 	}
 
-	prices, err := ma.aggregateFn(ctx, ma.perValidatorPrices)
+	prices, err := ma.aggregateFn(ctx, ma.perValidatorPrices, midPrices, fundingRates, smoothedPrices)
 	if err != nil {
 		ma.logger.Error(
 			"failed to aggregate prices",

@@ -18,8 +18,14 @@ type PriceApplier struct {
 	// used to aggregate votes into final prices
 	voteAggregator aggregator.VoteAggregator
 
-	// pk is the prices keeper that is used to write prices to state.
+	// used to write prices to state.
 	pricesKeeper PriceApplierPricesKeeper
+
+	// used to get the mid price of clob markets
+	clobKeeper PriceApplierClobKeeper
+
+	// used to get funding rates
+	perpetualKeeper PriceApplierPerpetualsKeeper
 
 	// finalPriceCache is the cache that stores the final prices
 	finalPriceCache pricecache.PriceCache
@@ -36,12 +42,16 @@ func NewPriceApplier(
 	logger log.Logger,
 	voteAggregator aggregator.VoteAggregator,
 	pricesKeeper PriceApplierPricesKeeper,
+	clobKeeper PriceApplierClobKeeper,
+	perpetualKeeper PriceApplierPerpetualsKeeper,
 	voteExtensionCodec codec.VoteExtensionCodec,
 	extendedCommitCodec codec.ExtendedCommitCodec,
 ) *PriceApplier {
 	return &PriceApplier{
 		voteAggregator:      voteAggregator,
 		pricesKeeper:        pricesKeeper,
+		clobKeeper:          clobKeeper,
+		perpetualKeeper:     perpetualKeeper,
 		logger:              logger,
 		voteExtensionCodec:  voteExtensionCodec,
 		extendedCommitCodec: extendedCommitCodec,
@@ -76,6 +86,7 @@ func (pa *PriceApplier) writePricesToStore(
 		if err != nil {
 			return nil, false, err
 		}
+
 		pa.fallbackWritePricesToStore(ctx, prices)
 		return prices, false, nil
 	}
@@ -86,6 +97,7 @@ func (pa *PriceApplier) getPricesAndAggregateFromVE(
 	request *abci.RequestFinalizeBlock,
 ) (map[string]*big.Int, error) {
 	votes, err := aggregator.GetDaemonVotesFromBlock(request.Txs, pa.voteExtensionCodec, pa.extendedCommitCodec)
+
 	if err != nil {
 		pa.logger.Error(
 			"failed to get extended commit info from proposal",
@@ -96,7 +108,19 @@ func (pa *PriceApplier) getPricesAndAggregateFromVE(
 
 		return nil, err
 	}
-	prices, err := pa.voteAggregator.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+
+	clobMetadata := pa.getClobMidPrices(ctx)
+	lastFundingIndexes := pa.getLastFundingRates(ctx)
+	smoothedPrices := pa.getSmoothedPrices(ctx)
+
+	prices, err := pa.voteAggregator.AggregateDaemonVEIntoFinalPrices(
+		ctx,
+		votes,
+		clobMetadata,
+		lastFundingIndexes,
+		smoothedPrices,
+	)
+
 	if err != nil {
 		pa.logger.Error(
 			"failed to aggregate prices",
@@ -108,6 +132,56 @@ func (pa *PriceApplier) getPricesAndAggregateFromVE(
 	}
 
 	return prices, nil
+}
+
+func (pa *PriceApplier) getClobMidPrices(
+	ctx sdk.Context,
+) map[string]*big.Int {
+	midPrices := make(map[string]*big.Int)
+	metadata := pa.clobKeeper.GetClobMetadata(ctx)
+	for pair, data := range metadata {
+		market, exists := pa.pricesKeeper.GetMarketParam(ctx, pair.ToUint32())
+		if !exists || data.MidPrice == 0 {
+			continue
+		}
+		midPrices[market.Pair] = data.MidPrice.ToBigInt()
+	}
+
+	return map[string]*big.Int{}
+}
+
+func (pa *PriceApplier) getSmoothedPrices(
+	ctx sdk.Context,
+) map[string]*big.Int {
+	smoothedPrices := make(map[string]*big.Int)
+	marketParams := pa.pricesKeeper.GetAllMarketParams(ctx)
+	for _, market := range marketParams {
+		marketPair := market.Pair
+		smoothedPrice, exists := pa.pricesKeeper.GetSmoothedPrice(market.Id)
+		if !exists || smoothedPrice == 0 {
+			continue
+		}
+		smoothedPrices[marketPair] = new(big.Int).SetUint64(smoothedPrice)
+
+	}
+	return smoothedPrices
+}
+
+func (pa *PriceApplier) getLastFundingRates(
+	ctx sdk.Context,
+) map[string]*big.Int {
+	fundingRates := make(map[string]*big.Int)
+	marketParams := pa.pricesKeeper.GetAllMarketParams(ctx)
+	for _, market := range marketParams {
+		marketPair := market.Pair
+		perpetual, err := pa.perpetualKeeper.GetPerpetual(ctx, market.Id)
+		if err != nil {
+			continue
+		}
+		fundingRates[marketPair] = perpetual.LastFundingRate.BigInt()
+	}
+
+	return fundingRates
 }
 
 func (pa *PriceApplier) GetCachedPrices() pricestypes.MarketPriceUpdates {
@@ -161,7 +235,6 @@ func (pa *PriceApplier) writePricesToStoreFromCache(ctx sdk.Context) error {
 
 func (pa *PriceApplier) fallbackWritePricesToStore(ctx sdk.Context, prices map[string]*big.Int) error {
 	marketParams := pa.pricesKeeper.GetAllMarketParams(ctx)
-
 	for _, market := range marketParams {
 		pair := market.Pair
 		shouldWritePrice, price := pa.shouldWritePriceToStore(ctx, prices, market)
