@@ -15,22 +15,19 @@ message PoolParams {
   // max_pool_liquidity is the maximum liquidity allowed in the pool.
   string max_pool_liquidity = 2;
 
-  // withdraw_fee is the fee charged for withdrawals from the pool send to the insurance fund.
-  string withdraw_fee = 3;
-
   // optimal_utilization_ratio is the optimal ratio of utilization for the pool.
-  string optimal_utilization_ratio = 4;
+  string optimal_utilization_ratio = 3;
 
   // base_rate is the base interest rate for the pool.
-  string base_rate = 5;
+  string base_rate = 4;
 
   // slope_one_rate is the interest rate slope for the first segment.
-  string slope_one_rate = 6;
+  string slope_one_rate = 5;
 
   // slope_two_rate is the interest rate slope for the second segment.
-  string slope_two_rate = 7;
+  string slope_two_rate = 6;
 
-  repeated string permissioned_credit_accounts = 8;
+  repeated string permissioned_credit_accounts = 7;
 }
 
 

@@ -13,7 +13,6 @@ func DefaultPoolParams() []PoolParams {
 		{
 			TokenDenom:                 "ibc/BTC", // placeholders todo
 			MaxPoolLiquidity:           "1000000000000",
-			WithdrawFee:                "100",
 			OptimalUtilizationRatio:    "8000",
 			BaseRate:                   "200",
 			SlopeOneRate:               "300",
@@ -23,7 +22,6 @@ func DefaultPoolParams() []PoolParams {
 		{
 			TokenDenom:                 "ibc/ETH", // placeholders todo
 			MaxPoolLiquidity:           "2000000000000",
-			WithdrawFee:                "150",
 			OptimalUtilizationRatio:    "7500",
 			BaseRate:                   "250",
 			SlopeOneRate:               "350",
@@ -33,7 +31,6 @@ func DefaultPoolParams() []PoolParams {
 		{
 			TokenDenom:                 "ibc/DAI", // placeholders todo
 			MaxPoolLiquidity:           "3000000000000",
-			WithdrawFee:                "200",
 			OptimalUtilizationRatio:    "7000",
 			BaseRate:                   "300",
 			SlopeOneRate:               "400",

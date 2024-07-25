@@ -17,16 +17,16 @@ func (k Keeper) CalculateBorrowRate(ctx sdk.Context, tokenDenom string, totalLiq
 		return poolParams.BaseRate, nil
 	}
 
-	utilisation := k.GetUtilisation(totalLiquidity, availableLiquidity)
+	utilisation := getUtilisation(totalLiquidity, availableLiquidity)
 
 	if utilisation.Cmp(poolParams.OptimalUtilizationRatio) < 0 {
-		return k.getBorrowRateUnderOptimalUtilization(poolParams, utilisation), nil
+		return getBorrowRateUnderOptimalUtilization(poolParams, utilisation), nil
 	}
 
-	return k.getBorrowRateAboveOptimalUtilization(poolParams, utilisation), nil
+	return getBorrowRateAboveOptimalUtilization(poolParams, utilisation), nil
 }
 
-func (k Keeper) GetUtilisation(totalLiquidity, availableLiquidity *big.Int) *big.Int {
+func getUtilisation(totalLiquidity, availableLiquidity *big.Int) *big.Int {
 
 	//      totalLiquidity - availableLiquidity
 	// U = -------------------------------------
@@ -37,7 +37,7 @@ func (k Keeper) GetUtilisation(totalLiquidity, availableLiquidity *big.Int) *big
 	return utilisation
 }
 
-func (k Keeper) getBorrowRateUnderOptimalUtilization(poolParams types.InternalPoolParams, utilisation *big.Int) *big.Int {
+func getBorrowRateUnderOptimalUtilization(poolParams types.InternalPoolParams, utilisation *big.Int) *big.Int {
 
 	//                                    U
 	// borrowRate = Rbase + Rslope1 * ----------
@@ -48,7 +48,7 @@ func (k Keeper) getBorrowRateUnderOptimalUtilization(poolParams types.InternalPo
 	return borrowRate
 }
 
-func (k Keeper) getBorrowRateAboveOptimalUtilization(poolParams types.InternalPoolParams, utilisation *big.Int) *big.Int {
+func getBorrowRateAboveOptimalUtilization(poolParams types.InternalPoolParams, utilisation *big.Int) *big.Int {
 
 	//                                           U - Uoptimal
 	// borrowRate = Rbase + Rslope1 + Rslope2 * --------------

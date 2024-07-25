@@ -11,8 +11,6 @@ type InternalPoolParams struct {
 	TokenDenom string
 	// max_pool_liquidity is the maximum liquidity allowed in the pool.
 	MaxPoolLiquidity *big.Int
-	// withdraw_fee is the fee charged for withdrawals from the pool send to the insurance fund.
-	WithdrawFee *big.Int
 	// optimal_utilization_ratio is the optimal ratio of utilization for the pool.
 	OptimalUtilizationRatio *big.Int
 	// base_rate is the base interest rate for the pool.
@@ -34,15 +32,6 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 
 	if bigMaxPoolLiquidity.Cmp(big.NewInt(0)) <= 0 {
 		return InternalPoolParams{}, ErrMaxPoolLiquidityIsZeroOrLess
-	}
-
-	bigWithdrawFee, err := ConvertStringToBigInt(params.WithdrawFee)
-	if err != nil {
-		return InternalPoolParams{}, err
-	}
-
-	if bigWithdrawFee.Cmp(big.NewInt(0)) < 0 || bigWithdrawFee.Cmp(PERCENTAGE_PRECISION) >= 0 {
-		return InternalPoolParams{}, ErrWithdrawFeeOutOfRange
 	}
 
 	bigOptimalUtilizationRatio, err := ConvertStringToBigInt(params.OptimalUtilizationRatio)
@@ -90,7 +79,6 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 	internalParams = InternalPoolParams{
 		TokenDenom:                 params.TokenDenom,
 		MaxPoolLiquidity:           bigMaxPoolLiquidity,
-		WithdrawFee:                bigWithdrawFee,
 		OptimalUtilizationRatio:    bigOptimalUtilizationRatio,
 		BaseRate:                   bigBaseRate,
 		SlopeOneRate:               bigSlopeOneRate,
@@ -106,7 +94,6 @@ func ConvertInternalToPoolParams(internalParams InternalPoolParams) PoolParams {
 	return PoolParams{
 		TokenDenom:                 internalParams.TokenDenom,
 		MaxPoolLiquidity:           internalParams.MaxPoolLiquidity.String(),
-		WithdrawFee:                internalParams.WithdrawFee.String(),
 		OptimalUtilizationRatio:    internalParams.OptimalUtilizationRatio.String(),
 		BaseRate:                   internalParams.BaseRate.String(),
 		SlopeOneRate:               internalParams.SlopeOneRate.String(),
@@ -118,13 +105,13 @@ func ConvertInternalToPoolParams(internalParams InternalPoolParams) PoolParams {
 // ApplyDecimalConversions converts the pool params to the correct decimal places
 func (params *InternalPoolParams) ApplyDecimalConversions() error {
 
-	params.OptimalUtilizationRatio = PercentMul(params.OptimalUtilizationRatio, EIGHTEEN_DECIMALS)
+	params.OptimalUtilizationRatio = PercentMultiply(params.OptimalUtilizationRatio, EIGHTEEN_DECIMALS)
 
-	params.BaseRate = PercentMul(params.BaseRate, TWENTY_SEVEN_DECIMALS)
+	params.BaseRate = PercentMultiply(params.BaseRate, TWENTY_SEVEN_DECIMALS)
 
-	params.SlopeOneRate = PercentMul(params.SlopeOneRate, TWENTY_SEVEN_DECIMALS)
+	params.SlopeOneRate = PercentMultiply(params.SlopeOneRate, TWENTY_SEVEN_DECIMALS)
 
-	params.SlopeTwoRate = PercentMul(params.SlopeTwoRate, TWENTY_SEVEN_DECIMALS)
+	params.SlopeTwoRate = PercentMultiply(params.SlopeTwoRate, TWENTY_SEVEN_DECIMALS)
 
 	return nil
 }
@@ -142,14 +129,13 @@ func ConvertStringToBigInt(str string) (*big.Int, error) {
 	return bigint, nil
 }
 
-func PercentMul(value, percentage *big.Int) *big.Int {
+func PercentMultiply(value, percentage *big.Int) (result *big.Int) {
+
 	if value.Cmp(big.NewInt(0)) == 0 || percentage.Cmp(big.NewInt(0)) == 0 {
 		return big.NewInt(0)
 	}
 
-	result := new(big.Int).Mul(value, percentage)
-	result = result.Add(result, HALF_PERCENT)
-	result = result.Div(result, PERCENTAGE_PRECISION)
-
-	return result
+	result = new(big.Int).Mul(value, percentage)
+	result = result.Add(result, HALF_PERCENT) // to round up
+	return result.Div(result, PERCENTAGE_PRECISION)
 }
