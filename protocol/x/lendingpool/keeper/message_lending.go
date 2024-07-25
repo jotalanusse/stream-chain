@@ -34,12 +34,12 @@ func (k msgServer) DepositLiquidityIntoPool(ctx context.Context, msg *types.MsgD
 		return nil, types.ErrInvalidDepositAmount
 	}
 
-	_, exists := k.Keeper.GetPoolParams(sdkCtx, msg.TokenDenom)
+	_, exists := k.GetPoolParams(sdkCtx, msg.TokenDenom)
 	if !exists {
 		return nil, types.ErrInvalidTokenDenom
 	}
 
-	err = k.Keeper.DepositLiquidity(sdkCtx, amount, liquidityProvider, msg.TokenDenom)
+	err = k.DepositLiquidity(sdkCtx, amount, liquidityProvider, msg.TokenDenom)
 	if err != nil {
 		return nil, err
 	}
@@ -61,12 +61,12 @@ func (k msgServer) WithdrawLiquidityFromPool(ctx context.Context, msg *types.Msg
 		return nil, types.ErrInvalidDepositAmount
 	}
 
-	_, exists := k.Keeper.GetPoolParams(sdkCtx, msg.TokenDenom)
+	_, exists := k.GetPoolParams(sdkCtx, msg.TokenDenom)
 	if !exists {
 		return nil, types.ErrInvalidTokenDenom
 	}
 
-	err = k.Keeper.RemoveLiquidity(sdkCtx, amount, liquidityProvider, msg.TokenDenom)
+	err = k.RemoveLiquidity(sdkCtx, amount, liquidityProvider, msg.TokenDenom)
 	if err != nil {
 		return nil, err
 	}
@@ -75,9 +75,14 @@ func (k msgServer) WithdrawLiquidityFromPool(ctx context.Context, msg *types.Msg
 }
 
 func (k msgServer) SetPoolParams(ctx context.Context, msg *types.MsgSetPoolParams) (*types.MsgSetPoolParamsResponse, error) {
+
+	if !k.HasAuthority(msg.Authority) {
+		return nil, types.ErrInvalidAuthorityAddress
+	}
+
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	_, exists := k.Keeper.GetPoolParams(sdkCtx, msg.TokenDenom)
+	_, exists := k.GetPoolParams(sdkCtx, msg.TokenDenom)
 	if !exists {
 		return nil, types.ErrInvalidTokenDenom
 	}
@@ -93,7 +98,7 @@ func (k msgServer) SetPoolParams(ctx context.Context, msg *types.MsgSetPoolParam
 		return nil, err
 	}
 
-	err = k.Keeper.setPoolParams(sdkCtx, internalParams)
+	err = k.setPoolParams(sdkCtx, internalParams)
 	if err != nil {
 		return nil, err
 	}

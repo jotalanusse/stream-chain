@@ -9,6 +9,7 @@ import (
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -29,12 +30,13 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	bankKeeper types.BankKeeper,
 	storeKey storetypes.StoreKey,
-
+	authorities []string,
 ) *Keeper {
 	return &Keeper{
-		cdc:        cdc,
-		bankKeeper: bankKeeper,
-		storeKey:   storeKey,
+		cdc:         cdc,
+		bankKeeper:  bankKeeper,
+		storeKey:    storeKey,
+		authorities: lib.UniqueSliceToSet(authorities),
 	}
 }
 
@@ -258,4 +260,9 @@ func (k Keeper) GetAllPoolParams(ctx sdk.Context) (list []types.InternalPoolPara
 	}
 
 	return
+}
+
+func (k Keeper) HasAuthority(authority string) bool {
+	_, ok := k.authorities[authority]
+	return ok
 }
