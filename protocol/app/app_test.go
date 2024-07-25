@@ -19,6 +19,7 @@ import (
 	delaymsgmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/delaymsg"
 	epochsmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs"
 	feetiersmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers"
+	lendingpoolmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool"
 	perpetualsmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	pricesmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	ratelimitmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit"
@@ -190,6 +191,7 @@ func TestModuleBasics(t *testing.T) {
 		delaymsgmodule.AppModuleBasic{},
 		epochsmodule.AppModuleBasic{},
 		ratelimitmodule.AppModuleBasic{},
+		lendingpoolmodule.AppModuleBasic{},
 	)
 
 	app := testapp.DefaultTestApp(nil)

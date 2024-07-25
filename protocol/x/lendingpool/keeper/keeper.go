@@ -18,8 +18,8 @@ import (
 type (
 	Keeper struct {
 		cdc        codec.BinaryCodec
-		bankKeeper types.BankKeeper
 		storeKey   storetypes.StoreKey
+		bankKeeper types.BankKeeper
 
 		// the addresses capable of executing MsgSetPoolParams message.
 		authorities map[string]struct{}
@@ -28,14 +28,14 @@ type (
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
-	bankKeeper types.BankKeeper,
 	storeKey storetypes.StoreKey,
+	bankKeeper types.BankKeeper,
 	authorities []string,
 ) *Keeper {
 	return &Keeper{
 		cdc:         cdc,
-		bankKeeper:  bankKeeper,
 		storeKey:    storeKey,
+		bankKeeper:  bankKeeper,
 		authorities: lib.UniqueSliceToSet(authorities),
 	}
 }

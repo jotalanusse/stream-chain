@@ -22,6 +22,7 @@ import (
 	clobmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob"
 	epochsmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs"
 	feetiersmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers"
+	lendingpoolmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool"
 	perpetualsmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	pricesmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	ratelimitmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit"
@@ -74,5 +75,6 @@ var (
 		sendingmodule.AppModuleBasic{},
 		epochsmodule.AppModuleBasic{},
 		ratelimitmodule.AppModuleBasic{},
+		lendingpoolmodule.AppModuleBasic{},
 	)
 )

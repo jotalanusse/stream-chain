@@ -138,6 +138,9 @@ import (
 	feetiersmodulekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/keeper"
 	feetiersmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 
+	lendingpoolmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool"
+	lendingpoolmodulekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/keeper"
+	lendingpoolmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perpetualsmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	perpetualsmodulekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	perpetualsmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -247,6 +250,7 @@ type App struct {
 	EvidenceKeeper        evidencekeeper.Keeper
 	TransferKeeper        ibctransferkeeper.Keeper
 	RatelimitKeeper       ratelimitmodulekeeper.Keeper
+	LendingPoolKeeper     lendingpoolmodulekeeper.Keeper
 	FeeGrantKeeper        feegrantkeeper.Keeper
 	ConsensusParamsKeeper consensusparamkeeper.Keeper
 
@@ -357,6 +361,7 @@ func New(
 		ibctransfertypes.StoreKey,
 		ibcconsumertypes.StoreKey,
 		ratelimitmoduletypes.StoreKey,
+		lendingpoolmoduletypes.StoreKey,
 		icacontrollertypes.StoreKey,
 		icahosttypes.StoreKey,
 		evidencetypes.StoreKey,
@@ -568,6 +573,18 @@ func New(
 		},
 	)
 	rateLimitModule := ratelimitmodule.NewAppModule(appCodec, app.RatelimitKeeper)
+
+	app.LendingPoolKeeper = *lendingpoolmodulekeeper.NewKeeper(
+		appCodec,
+		keys[lendingpoolmoduletypes.StoreKey],
+		app.BankKeeper,
+		// set the governance and delaymsg module accounts as the authority for conducting upgrades
+		[]string{
+			lib.GovModuleAddress.String(),
+			delaymsgmoduletypes.ModuleAddress.String(),
+		},
+	)
+	lendingPoolModule := lendingpoolmodule.NewAppModule(appCodec, app.LendingPoolKeeper)
 
 	// initialize the actual consumer keeper
 	app.ConsumerKeeper = ibcconsumerkeeper.NewKeeper(
@@ -979,6 +996,7 @@ func New(
 		delayMsgModule,
 		epochsModule,
 		rateLimitModule,
+		lendingPoolModule,
 	)
 
 	app.ModuleManager.SetOrderPreBlockers(
@@ -1013,6 +1031,7 @@ func New(
 		assetsmoduletypes.ModuleName,
 		feetiersmoduletypes.ModuleName,
 		perpetualsmoduletypes.ModuleName,
+		lendingpoolmoduletypes.ModuleName,
 		statsmoduletypes.ModuleName,
 		satypes.ModuleName,
 		clobmoduletypes.ModuleName,
@@ -1045,6 +1064,7 @@ func New(
 		assetsmoduletypes.ModuleName,
 		feetiersmoduletypes.ModuleName,
 		perpetualsmoduletypes.ModuleName,
+		lendingpoolmoduletypes.ModuleName,
 		statsmoduletypes.ModuleName,
 		satypes.ModuleName,
 		clobmoduletypes.ModuleName,
@@ -1083,6 +1103,7 @@ func New(
 		blocktimemoduletypes.ModuleName,
 		feetiersmoduletypes.ModuleName,
 		perpetualsmoduletypes.ModuleName,
+		lendingpoolmoduletypes.ModuleName,
 		statsmoduletypes.ModuleName,
 		satypes.ModuleName,
 		clobmoduletypes.ModuleName,
@@ -1117,6 +1138,7 @@ func New(
 		blocktimemoduletypes.ModuleName,
 		feetiersmoduletypes.ModuleName,
 		perpetualsmoduletypes.ModuleName,
+		lendingpoolmoduletypes.ModuleName,
 		statsmoduletypes.ModuleName,
 		satypes.ModuleName,
 		clobmoduletypes.ModuleName,

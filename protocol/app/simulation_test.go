@@ -21,6 +21,7 @@ import (
 	blocktimetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/blocktime/types"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
+	lendingpoolmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perpetualstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	ratelimitmodule "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
@@ -118,6 +119,7 @@ var genesisModuleOrder = []string{
 	pricestypes.ModuleName,
 	assetstypes.ModuleName,
 	perpetualstypes.ModuleName,
+	lendingpoolmoduletypes.ModuleName,
 	satypes.ModuleName,
 	clobtypes.ModuleName,
 	sendingtypes.ModuleName,

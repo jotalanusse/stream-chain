@@ -40,6 +40,7 @@ import (
 	delaymsgtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/delaymsg/types"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	feetiertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
+	lendingpooltypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	ratelimittypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
@@ -189,7 +190,8 @@ type GenesisStates interface {
 		epochstypes.GenesisState |
 		sendingtypes.GenesisState |
 		delaymsgtypes.GenesisState |
-		ratelimittypes.GenesisState
+		ratelimittypes.GenesisState |
+		lendingpooltypes.GenesisState
 }
 
 // UpdateGenesisDocWithAppStateForModule updates the supplied genesis doc using the provided function. The function
@@ -233,6 +235,8 @@ func UpdateGenesisDocWithAppStateForModule[T GenesisStates](genesisDoc *types.Ge
 		moduleName = sendingtypes.ModuleName
 	case ratelimittypes.GenesisState:
 		moduleName = ratelimittypes.ModuleName
+	case lendingpooltypes.GenesisState:
+		moduleName = lendingpooltypes.ModuleName
 	default:
 		panic(fmt.Errorf("Unsupported type %T", t))
 	}
