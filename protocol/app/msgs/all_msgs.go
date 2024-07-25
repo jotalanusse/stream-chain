@@ -121,6 +121,10 @@ var (
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParams":         {},
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParamsResponse": {},
 
+		// lendingpool
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool":         {},
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse": {},
+
 		// perpetuals
 		"/dydxprotocol.perpetuals.MsgAddPremiumVotes":               {},
 		"/dydxprotocol.perpetuals.MsgAddPremiumVotesResponse":       {},

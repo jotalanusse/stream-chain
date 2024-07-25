@@ -10,6 +10,7 @@ import (
 	custommodule "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers"
+	lendingpooltypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perpetualtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	sendingtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
@@ -61,6 +62,9 @@ func GetTestEncodingCfg() testutil.TestEncodingConfig {
 		&clobtypes.MsgPlaceOrder{},
 		&clobtypes.MsgCancelOrder{},
 		&clobtypes.MsgBatchCancel{},
+
+		// Lending
+		&lendingpooltypes.MsgDepositLiquidityIntoPool{},
 
 		// Perpetuals.
 		&perpetualtypes.MsgAddPremiumVotes{},

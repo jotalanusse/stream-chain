@@ -70,4 +70,14 @@ var (
 		14,
 		"Invalid repay from credit account",
 	)
+	ErrInvalidAccountAddress = errorsmod.Register(
+		ModuleName,
+		15,
+		"Invalid account address",
+	)
+	ErrInvalidDepositAmount = errorsmod.Register(
+		ModuleName,
+		16,
+		"Invalid deposit amount",
+	)
 )

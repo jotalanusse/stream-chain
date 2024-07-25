@@ -61,6 +61,10 @@ func TestNormalMsgs_Key(t *testing.T) {
 		"/cosmos.feegrant.v1beta1.MsgRevokeAllowanceResponse",
 		"/cosmos.feegrant.v1beta1.PeriodicAllowance",
 
+		// lendingpool
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool",
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse",
+
 		// params
 		"/cosmos.params.v1beta1.ParameterChangeProposal",
 

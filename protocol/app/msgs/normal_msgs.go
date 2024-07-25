@@ -5,6 +5,7 @@ import (
 	feegrant "cosmossdk.io/x/feegrant"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	clob "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+	lendingpool "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	sending "github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/authz"
@@ -192,6 +193,10 @@ var (
 		"/dydxprotocol.clob.MsgCancelOrderResponse": nil,
 		"/dydxprotocol.clob.MsgPlaceOrder":          &clob.MsgPlaceOrder{},
 		"/dydxprotocol.clob.MsgPlaceOrderResponse":  nil,
+
+		// lendingpool
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool":         &lendingpool.MsgDepositLiquidityIntoPool{},
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse": nil,
 
 		// perpetuals
 
