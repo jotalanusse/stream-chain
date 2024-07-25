@@ -7,6 +7,7 @@ import (
 	clob "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	delaymsg "github.com/StreamFinance-Protocol/stream-chain/protocol/x/delaymsg/types"
 	feetiers "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
+	lendingpool "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perpetuals "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	prices "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	ratelimit "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
@@ -104,6 +105,10 @@ var (
 		// feetiers
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParams":         &feetiers.MsgUpdatePerpetualFeeParams{},
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParamsResponse": nil,
+
+		// lendingpool
+		"/dydxprotocol.lendingpool.MsgSetPoolParams":         &lendingpool.MsgSetPoolParams{},
+		"/dydxprotocol.lendingpool.MsgSetPoolParamsResponse": nil,
 
 		// perpetuals
 		"/dydxprotocol.perpetuals.MsgCreatePerpetual":               &perpetuals.MsgCreatePerpetual{},

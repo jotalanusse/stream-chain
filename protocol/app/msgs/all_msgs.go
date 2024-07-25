@@ -126,6 +126,8 @@ var (
 		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse":  {},
 		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPool":         {},
 		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPoolResponse": {},
+		"/dydxprotocol.lendingpool.MsgSetPoolParams":                     {},
+		"/dydxprotocol.lendingpool.MsgSetPoolParamsResponse":             {},
 
 		// perpetuals
 		"/dydxprotocol.perpetuals.MsgAddPremiumVotes":               {},

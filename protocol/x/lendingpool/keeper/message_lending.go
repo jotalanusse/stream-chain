@@ -73,3 +73,30 @@ func (k msgServer) WithdrawLiquidityFromPool(ctx context.Context, msg *types.Msg
 
 	return &types.MsgWithdrawLiquidityFromPoolResponse{}, nil
 }
+
+func (k msgServer) SetPoolParams(ctx context.Context, msg *types.MsgSetPoolParams) (*types.MsgSetPoolParamsResponse, error) {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	_, exists := k.Keeper.GetPoolParams(sdkCtx, msg.TokenDenom)
+	if !exists {
+		return nil, types.ErrInvalidTokenDenom
+	}
+
+	// Perform stateless validation on the provided `EpochInfo`.
+	internalParams, err := msg.PoolParams.Validate()
+	if err != nil {
+		return nil, err
+	}
+
+	err = internalParams.ApplyDecimalConversions()
+	if err != nil {
+		return nil, err
+	}
+
+	err = k.Keeper.setPoolParams(sdkCtx, internalParams)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgSetPoolParamsResponse{}, nil
+}

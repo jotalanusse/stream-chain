@@ -6,6 +6,7 @@ import (
 	clob "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	delaymsg "github.com/StreamFinance-Protocol/stream-chain/protocol/x/delaymsg/types"
 	feetiers "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
+	lendingpool "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	perpetuals "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	prices "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	ratelimit "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
@@ -64,6 +65,10 @@ func IsInternalMsg(msg sdk.Msg) bool {
 
 		// feetiers
 		*feetiers.MsgUpdatePerpetualFeeParams,
+
+		// lendingpool
+		*lendingpool.MsgSetPoolParams,
+		*lendingpool.MsgSetPoolParamsResponse,
 
 		// perpetuals
 		*perpetuals.MsgCreatePerpetual,

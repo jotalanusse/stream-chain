@@ -92,6 +92,12 @@ func NewInterfaceRegistry(addrPrefix string, valAddrPrefix string) (types.Interf
 				"dydxprotocol.sending.MsgWithdrawFromSubaccount": getLegacyMsgSignerFn(
 					[]string{"sender", "owner"},
 				),
+				"dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool": getLegacyMsgSignerFn(
+					[]string{"liquidity_provider"},
+				),
+				"dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPool": getLegacyMsgSignerFn(
+					[]string{"liquidity_provider"},
+				),
 
 				// App injected messages have no signers.
 				"dydxprotocol.clob.MsgProposedOperations":    noSigners,

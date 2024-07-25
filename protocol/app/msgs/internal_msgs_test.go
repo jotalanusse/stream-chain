@@ -71,6 +71,10 @@ func TestInternalMsgSamples_Gov_Key(t *testing.T) {
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParams",
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParamsResponse",
 
+		// lendingpool
+		"/dydxprotocol.lendingpool.MsgSetPoolParams",
+		"/dydxprotocol.lendingpool.MsgSetPoolParamsResponse",
+
 		// perpeutals
 		"/dydxprotocol.perpetuals.MsgCreatePerpetual",
 		"/dydxprotocol.perpetuals.MsgCreatePerpetualResponse",

@@ -19,6 +19,9 @@ type (
 		cdc        codec.BinaryCodec
 		bankKeeper types.BankKeeper
 		storeKey   storetypes.StoreKey
+
+		// the addresses capable of executing MsgSetPoolParams message.
+		authorities map[string]struct{}
 	}
 )
 

@@ -85,4 +85,9 @@ var (
 		17,
 		"Invalid withdraw amount",
 	)
+	ErrInvalidAuthorityAddress = errorsmod.Register(
+		ModuleName,
+		18,
+		"Invalid authority address",
+	)
 )

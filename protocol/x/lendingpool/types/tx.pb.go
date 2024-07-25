@@ -232,43 +232,152 @@ func (m *MsgWithdrawLiquidityFromPoolResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgWithdrawLiquidityFromPoolResponse proto.InternalMessageInfo
 
+// MsgSetPoolParams is the Msg/SetPoolParams request type.
+type MsgSetPoolParams struct {
+	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	// The token denom to set the pool parameters for.
+	TokenDenom string `protobuf:"bytes,2,opt,name=tokenDenom,proto3" json:"tokenDenom,omitempty"`
+	// Defines the parameters to set. All parameters must be supplied.
+	PoolParams PoolParams `protobuf:"bytes,3,opt,name=pool_params,json=poolParams,proto3" json:"pool_params"`
+}
+
+func (m *MsgSetPoolParams) Reset()         { *m = MsgSetPoolParams{} }
+func (m *MsgSetPoolParams) String() string { return proto.CompactTextString(m) }
+func (*MsgSetPoolParams) ProtoMessage()    {}
+func (*MsgSetPoolParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_60095c300d330800, []int{4}
+}
+func (m *MsgSetPoolParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetPoolParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetPoolParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetPoolParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetPoolParams.Merge(m, src)
+}
+func (m *MsgSetPoolParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetPoolParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetPoolParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetPoolParams proto.InternalMessageInfo
+
+func (m *MsgSetPoolParams) GetAuthority() string {
+	if m != nil {
+		return m.Authority
+	}
+	return ""
+}
+
+func (m *MsgSetPoolParams) GetTokenDenom() string {
+	if m != nil {
+		return m.TokenDenom
+	}
+	return ""
+}
+
+func (m *MsgSetPoolParams) GetPoolParams() PoolParams {
+	if m != nil {
+		return m.PoolParams
+	}
+	return PoolParams{}
+}
+
+// MsgSetPoolParamsResponse is the Msg/SetPoolParams response type.
+type MsgSetPoolParamsResponse struct {
+}
+
+func (m *MsgSetPoolParamsResponse) Reset()         { *m = MsgSetPoolParamsResponse{} }
+func (m *MsgSetPoolParamsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetPoolParamsResponse) ProtoMessage()    {}
+func (*MsgSetPoolParamsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_60095c300d330800, []int{5}
+}
+func (m *MsgSetPoolParamsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetPoolParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetPoolParamsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetPoolParamsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetPoolParamsResponse.Merge(m, src)
+}
+func (m *MsgSetPoolParamsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetPoolParamsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetPoolParamsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetPoolParamsResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgDepositLiquidityIntoPool)(nil), "dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool")
 	proto.RegisterType((*MsgDepositLiquidityIntoPoolResponse)(nil), "dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse")
 	proto.RegisterType((*MsgWithdrawLiquidityFromPool)(nil), "dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPool")
 	proto.RegisterType((*MsgWithdrawLiquidityFromPoolResponse)(nil), "dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPoolResponse")
+	proto.RegisterType((*MsgSetPoolParams)(nil), "dydxprotocol.lendingpool.MsgSetPoolParams")
+	proto.RegisterType((*MsgSetPoolParamsResponse)(nil), "dydxprotocol.lendingpool.MsgSetPoolParamsResponse")
 }
 
 func init() { proto.RegisterFile("dydxprotocol/lendingpool/tx.proto", fileDescriptor_60095c300d330800) }
 
 var fileDescriptor_60095c300d330800 = []byte{
-	// 414 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x53, 0xcd, 0xaa, 0xda, 0x40,
-	0x14, 0x76, 0x94, 0x0a, 0x9d, 0x5d, 0x83, 0xd8, 0x98, 0x96, 0xd0, 0xda, 0x1f, 0x8a, 0x60, 0x42,
-	0x5b, 0xda, 0x45, 0xa1, 0x85, 0x8a, 0x08, 0xa5, 0x15, 0x44, 0x17, 0x85, 0x6e, 0x4a, 0xcc, 0x0c,
-	0xe3, 0xd0, 0x64, 0x4e, 0x3a, 0x33, 0x5a, 0xdd, 0x95, 0x3e, 0x81, 0xd0, 0x17, 0x71, 0x51, 0xfb,
-	0x0c, 0x5d, 0x4a, 0x57, 0x77, 0x79, 0xd1, 0x85, 0xaf, 0x71, 0x31, 0x31, 0xe2, 0x45, 0x92, 0x85,
-	0xab, 0xbb, 0x4a, 0xce, 0xf7, 0x9d, 0xef, 0xcc, 0x77, 0xce, 0xcc, 0xc1, 0x0f, 0xc9, 0x8c, 0x4c,
-	0x23, 0x09, 0x1a, 0x7c, 0x08, 0xdc, 0x80, 0x0a, 0xc2, 0x05, 0x8b, 0x00, 0x02, 0x57, 0x4f, 0x9d,
-	0x18, 0x37, 0xcc, 0xe3, 0x14, 0xe7, 0x28, 0xc5, 0xba, 0xeb, 0x83, 0x0a, 0x41, 0xb9, 0xa1, 0x62,
-	0xee, 0xe4, 0xf9, 0xee, 0x93, 0x48, 0xac, 0x5a, 0x42, 0x7c, 0x8d, 0x23, 0x37, 0x09, 0xf6, 0x54,
-	0x85, 0x01, 0x83, 0x04, 0xdf, 0xfd, 0x25, 0x68, 0x7d, 0x89, 0xf0, 0xbd, 0xae, 0x62, 0x6d, 0x1a,
-	0x81, 0xe2, 0xfa, 0x13, 0xff, 0x3e, 0xe6, 0x84, 0xeb, 0xd9, 0x07, 0xa1, 0xa1, 0x07, 0x10, 0x18,
-	0x1d, 0x7c, 0x27, 0x48, 0xc1, 0x9e, 0x84, 0x09, 0x27, 0x54, 0x9a, 0xe8, 0x01, 0x7a, 0x76, 0xbb,
-	0x65, 0xfe, 0xff, 0xd3, 0xac, 0xec, 0x8f, 0x78, 0x4f, 0x88, 0xa4, 0x4a, 0x0d, 0xb4, 0xe4, 0x82,
-	0xf5, 0x4f, 0x25, 0x86, 0x8d, 0xb1, 0x86, 0x6f, 0x54, 0xb4, 0xa9, 0x80, 0xd0, 0x2c, 0xee, 0x0a,
-	0xf4, 0x8f, 0x10, 0xa3, 0x8a, 0xcb, 0x5e, 0x08, 0x63, 0xa1, 0xcd, 0x52, 0xcc, 0xed, 0xa3, 0x37,
-	0xd5, 0x5f, 0xdb, 0x45, 0xe3, 0xb4, 0x5e, 0xfd, 0x09, 0x7e, 0x94, 0x63, 0xbb, 0x4f, 0x55, 0x04,
-	0x42, 0xd1, 0xfa, 0x5f, 0x84, 0xef, 0x77, 0x15, 0xfb, 0xcc, 0xf5, 0x88, 0x48, 0xef, 0xc7, 0x21,
-	0xb1, 0x23, 0x21, 0xbc, 0xd1, 0xfd, 0x3d, 0xc5, 0x8f, 0xf3, 0x7c, 0xa7, 0x0d, 0xbe, 0x58, 0x16,
-	0x71, 0xa9, 0xab, 0x98, 0x31, 0x47, 0xd8, 0xcc, 0xbc, 0xc4, 0x57, 0x4e, 0xd6, 0x4b, 0x72, 0x72,
-	0x86, 0x68, 0xbd, 0x3d, 0x4b, 0x96, 0x5a, 0x33, 0x7e, 0x23, 0x5c, 0xcb, 0x1e, 0xfc, 0xeb, 0xdc,
-	0xe2, 0x99, 0x3a, 0xeb, 0xdd, 0x79, 0xba, 0xd4, 0x95, 0x75, 0xeb, 0xe7, 0x76, 0xd1, 0x40, 0x2d,
-	0xfa, 0x6f, 0x6d, 0xa3, 0xd5, 0xda, 0x46, 0x97, 0x6b, 0x1b, 0xcd, 0x37, 0x76, 0x61, 0xb5, 0xb1,
-	0x0b, 0x17, 0x1b, 0xbb, 0xf0, 0xe5, 0x23, 0xe3, 0x7a, 0x34, 0x1e, 0x3a, 0x3e, 0x84, 0xee, 0x40,
-	0x4b, 0xea, 0x85, 0x1d, 0x2e, 0x3c, 0xe1, 0xd3, 0x66, 0x2f, 0xdd, 0x56, 0x15, 0xc3, 0x4d, 0x7f,
-	0xe4, 0x71, 0xe1, 0x1e, 0x76, 0x78, 0x7a, 0x7d, 0x8b, 0x67, 0x11, 0x55, 0xc3, 0x72, 0xcc, 0xbe,
-	0xbc, 0x0a, 0x00, 0x00, 0xff, 0xff, 0x19, 0x3c, 0x44, 0xe5, 0xee, 0x03, 0x00, 0x00,
+	// 517 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x94, 0x4f, 0x6b, 0x13, 0x4f,
+	0x18, 0xc7, 0x33, 0xbf, 0xfc, 0x2c, 0x74, 0x8a, 0xa2, 0x4b, 0xa9, 0xdb, 0xb5, 0xac, 0x1a, 0xab,
+	0x48, 0x20, 0xbb, 0x18, 0xd1, 0x43, 0x41, 0xc1, 0x50, 0x02, 0x52, 0x03, 0x61, 0x73, 0x10, 0xbc,
+	0x94, 0xed, 0xee, 0x30, 0x19, 0xdc, 0x9d, 0x67, 0x9d, 0x99, 0xd4, 0xe4, 0x26, 0xbe, 0x82, 0x82,
+	0xef, 0xc1, 0x9b, 0xd0, 0x83, 0xfa, 0x1a, 0x7a, 0x2c, 0x9e, 0x3c, 0x89, 0x24, 0x87, 0xbe, 0x0d,
+	0xd9, 0xbf, 0x49, 0x2c, 0xbb, 0x4a, 0x4f, 0x5e, 0x92, 0x7d, 0xbe, 0xcf, 0xbf, 0xcf, 0xc3, 0x3c,
+	0x3c, 0xf8, 0xb6, 0x3f, 0xf1, 0xc7, 0x91, 0x00, 0x05, 0x1e, 0x04, 0x76, 0x40, 0xb8, 0xcf, 0x38,
+	0x8d, 0x00, 0x02, 0x5b, 0x8d, 0xad, 0x44, 0xd7, 0xf4, 0xc5, 0x10, 0x6b, 0x21, 0xc4, 0xb8, 0xee,
+	0x81, 0x0c, 0x41, 0xda, 0xa1, 0xa4, 0xf6, 0xe1, 0x83, 0xf8, 0x2f, 0x4d, 0x31, 0x36, 0x53, 0xc7,
+	0x7e, 0x62, 0xd9, 0xa9, 0x91, 0xb9, 0xd6, 0x29, 0x50, 0x48, 0xf5, 0xf8, 0x2b, 0x53, 0x9b, 0xa5,
+	0x18, 0xf1, 0xcf, 0x7e, 0xe4, 0x0a, 0x37, 0xcc, 0x2a, 0x34, 0xbe, 0x20, 0x7c, 0xa3, 0x27, 0xe9,
+	0x2e, 0x89, 0x40, 0x32, 0xf5, 0x82, 0xbd, 0x19, 0x31, 0x9f, 0xa9, 0xc9, 0x73, 0xae, 0xa0, 0x0f,
+	0x10, 0x68, 0x5d, 0x7c, 0x2d, 0xc8, 0xc5, 0xbe, 0x80, 0x43, 0xe6, 0x13, 0xa1, 0xa3, 0x5b, 0xe8,
+	0xfe, 0x6a, 0x47, 0xff, 0xf6, 0xb9, 0xb5, 0x9e, 0xe1, 0x3c, 0xf3, 0x7d, 0x41, 0xa4, 0x1c, 0x28,
+	0xc1, 0x38, 0x75, 0xce, 0xa7, 0x68, 0x26, 0xc6, 0x0a, 0x5e, 0x13, 0xbe, 0x4b, 0x38, 0x84, 0xfa,
+	0x7f, 0x71, 0x01, 0x67, 0x41, 0xd1, 0x36, 0xf0, 0x8a, 0x1b, 0xc2, 0x88, 0x2b, 0xbd, 0x9e, 0xf8,
+	0x32, 0x6b, 0x67, 0xe3, 0xfd, 0xd9, 0x71, 0xf3, 0x7c, 0xbd, 0xc6, 0x5d, 0x7c, 0xa7, 0x02, 0xdb,
+	0x21, 0x32, 0x02, 0x2e, 0x49, 0xe3, 0x2b, 0xc2, 0x5b, 0x3d, 0x49, 0x5f, 0x32, 0x35, 0xf4, 0x85,
+	0xfb, 0xb6, 0x08, 0xec, 0x0a, 0x08, 0xff, 0xe9, 0xf9, 0xee, 0xe1, 0xed, 0x2a, 0xee, 0x62, 0xc0,
+	0x4f, 0x08, 0x5f, 0xed, 0x49, 0x3a, 0x20, 0x2a, 0x96, 0xfb, 0xc9, 0xd3, 0x6a, 0x5b, 0x78, 0xd5,
+	0x1d, 0xa9, 0x21, 0x08, 0xa6, 0x26, 0xe9, 0x30, 0xce, 0x5c, 0xf8, 0x23, 0xea, 0x1e, 0x5e, 0x5b,
+	0xd8, 0x93, 0x84, 0x77, 0xad, 0xbd, 0x6d, 0x95, 0x2d, 0xae, 0x35, 0x6f, 0xdc, 0xf9, 0xff, 0xe4,
+	0xc7, 0xcd, 0x9a, 0x83, 0xa3, 0x42, 0xd9, 0xb9, 0x12, 0xcf, 0x37, 0x6f, 0xde, 0x30, 0xb0, 0xfe,
+	0x3b, 0x6e, 0x3e, 0x4b, 0xfb, 0x63, 0x1d, 0xd7, 0x7b, 0x92, 0x6a, 0x47, 0x08, 0xeb, 0xa5, 0x0b,
+	0xf9, 0xa8, 0x1c, 0xa4, 0x62, 0x21, 0x8c, 0x27, 0x17, 0x4a, 0xcb, 0xd1, 0xb4, 0x0f, 0x08, 0x6f,
+	0x96, 0x2f, 0xd1, 0xe3, 0xca, 0xe2, 0xa5, 0x79, 0xc6, 0xd3, 0x8b, 0xe5, 0x15, 0x54, 0x80, 0x2f,
+	0x2f, 0x3f, 0x7c, 0xb3, 0xb2, 0xe0, 0x52, 0xac, 0xd1, 0xfe, 0xfb, 0xd8, 0xbc, 0xa1, 0x71, 0xe9,
+	0xdd, 0xd9, 0x71, 0x13, 0x75, 0xc8, 0xc9, 0xd4, 0x44, 0xa7, 0x53, 0x13, 0xfd, 0x9c, 0x9a, 0xe8,
+	0x68, 0x66, 0xd6, 0x4e, 0x67, 0x66, 0xed, 0xfb, 0xcc, 0xac, 0xbd, 0xda, 0xa3, 0x4c, 0x0d, 0x47,
+	0x07, 0x96, 0x07, 0xa1, 0x3d, 0x50, 0x82, 0xb8, 0x61, 0x97, 0x71, 0x97, 0x7b, 0xa4, 0xd5, 0xcf,
+	0xef, 0x91, 0x4c, 0xe4, 0x96, 0x37, 0x74, 0x19, 0xb7, 0x8b, 0x2b, 0x35, 0x5e, 0x3e, 0x97, 0x93,
+	0x88, 0xc8, 0x83, 0x95, 0xc4, 0xfb, 0xf0, 0x57, 0x00, 0x00, 0x00, 0xff, 0xff, 0xb4, 0x78, 0x7b,
+	0x1a, 0x57, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -287,6 +396,8 @@ type MsgClient interface {
 	DepositLiquidityIntoPool(ctx context.Context, in *MsgDepositLiquidityIntoPool, opts ...grpc.CallOption) (*MsgDepositLiquidityIntoPoolResponse, error)
 	// WithdrawLiquidityFromPool withdraws liquidity from a pool.
 	WithdrawLiquidityFromPool(ctx context.Context, in *MsgWithdrawLiquidityFromPool, opts ...grpc.CallOption) (*MsgWithdrawLiquidityFromPoolResponse, error)
+	// SetPoolParams sets the pool parameters for the lending pool.
+	SetPoolParams(ctx context.Context, in *MsgSetPoolParams, opts ...grpc.CallOption) (*MsgSetPoolParamsResponse, error)
 }
 
 type msgClient struct {
@@ -315,12 +426,23 @@ func (c *msgClient) WithdrawLiquidityFromPool(ctx context.Context, in *MsgWithdr
 	return out, nil
 }
 
+func (c *msgClient) SetPoolParams(ctx context.Context, in *MsgSetPoolParams, opts ...grpc.CallOption) (*MsgSetPoolParamsResponse, error) {
+	out := new(MsgSetPoolParamsResponse)
+	err := c.cc.Invoke(ctx, "/dydxprotocol.lendingpool.Msg/SetPoolParams", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	// DepositLiquidityIntoPool deposits liquidity into a pool.
 	DepositLiquidityIntoPool(context.Context, *MsgDepositLiquidityIntoPool) (*MsgDepositLiquidityIntoPoolResponse, error)
 	// WithdrawLiquidityFromPool withdraws liquidity from a pool.
 	WithdrawLiquidityFromPool(context.Context, *MsgWithdrawLiquidityFromPool) (*MsgWithdrawLiquidityFromPoolResponse, error)
+	// SetPoolParams sets the pool parameters for the lending pool.
+	SetPoolParams(context.Context, *MsgSetPoolParams) (*MsgSetPoolParamsResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -332,6 +454,9 @@ func (*UnimplementedMsgServer) DepositLiquidityIntoPool(ctx context.Context, req
 }
 func (*UnimplementedMsgServer) WithdrawLiquidityFromPool(ctx context.Context, req *MsgWithdrawLiquidityFromPool) (*MsgWithdrawLiquidityFromPoolResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WithdrawLiquidityFromPool not implemented")
+}
+func (*UnimplementedMsgServer) SetPoolParams(ctx context.Context, req *MsgSetPoolParams) (*MsgSetPoolParamsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetPoolParams not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -374,6 +499,24 @@ func _Msg_WithdrawLiquidityFromPool_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SetPoolParams_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetPoolParams)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SetPoolParams(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dydxprotocol.lendingpool.Msg/SetPoolParams",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SetPoolParams(ctx, req.(*MsgSetPoolParams))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "dydxprotocol.lendingpool.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -385,6 +528,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WithdrawLiquidityFromPool",
 			Handler:    _Msg_WithdrawLiquidityFromPool_Handler,
+		},
+		{
+			MethodName: "SetPoolParams",
+			Handler:    _Msg_SetPoolParams_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -525,6 +672,76 @@ func (m *MsgWithdrawLiquidityFromPoolResponse) MarshalToSizedBuffer(dAtA []byte)
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgSetPoolParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetPoolParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetPoolParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.PoolParams.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x1a
+	if len(m.TokenDenom) > 0 {
+		i -= len(m.TokenDenom)
+		copy(dAtA[i:], m.TokenDenom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.TokenDenom)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Authority) > 0 {
+		i -= len(m.Authority)
+		copy(dAtA[i:], m.Authority)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSetPoolParamsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetPoolParamsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetPoolParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -588,6 +805,34 @@ func (m *MsgWithdrawLiquidityFromPool) Size() (n int) {
 }
 
 func (m *MsgWithdrawLiquidityFromPoolResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgSetPoolParams) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Authority)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.TokenDenom)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = m.PoolParams.Size()
+	n += 1 + l + sovTx(uint64(l))
+	return n
+}
+
+func (m *MsgSetPoolParamsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -971,6 +1216,203 @@ func (m *MsgWithdrawLiquidityFromPoolResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgWithdrawLiquidityFromPoolResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetPoolParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetPoolParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetPoolParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Authority = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenDenom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenDenom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PoolParams", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.PoolParams.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetPoolParamsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetPoolParamsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetPoolParamsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

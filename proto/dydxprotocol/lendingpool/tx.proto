@@ -7,6 +7,7 @@ option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/l
 import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
+import "dydxprotocol/lendingpool/pool_params.proto";
 
 // Msg defines the Msg service.
 service Msg {
@@ -15,9 +16,11 @@ service Msg {
   rpc DepositLiquidityIntoPool(MsgDepositLiquidityIntoPool) returns (MsgDepositLiquidityIntoPoolResponse);
   // WithdrawLiquidityFromPool withdraws liquidity from a pool.
   rpc WithdrawLiquidityFromPool(MsgWithdrawLiquidityFromPool) returns (MsgWithdrawLiquidityFromPoolResponse);
+  // SetPoolParams sets the pool parameters for the lending pool.
+  rpc SetPoolParams(MsgSetPoolParams) returns (MsgSetPoolParamsResponse);
 }
 
-// MsgSetLimitParams is the Msg/SetLimitParams request type.
+// MsgDepositLiquidityIntoPool is the Msg/DepositLiquidityIntoPool request type.
 message MsgDepositLiquidityIntoPool {
     option (cosmos.msg.v1.signer) = "liquidityProvider";
   
@@ -50,3 +53,19 @@ message MsgWithdrawLiquidityFromPool {
 
 // MsgWithdrawLiquidityFromPoolResponse is the Msg/WithdrawLiquidityFromPool response type.
 message MsgWithdrawLiquidityFromPoolResponse {}
+
+// MsgSetPoolParams is the Msg/SetPoolParams request type.
+message MsgSetPoolParams {
+  // The address that controls the module.
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+
+  // The token denom to set the pool parameters for.
+  string tokenDenom = 2;
+
+  // Defines the parameters to set. All parameters must be supplied.
+  PoolParams pool_params = 3 [ (gogoproto.nullable) = false ];
+}
+
+// MsgSetPoolParamsResponse is the Msg/SetPoolParams response type.
+message MsgSetPoolParamsResponse {}
