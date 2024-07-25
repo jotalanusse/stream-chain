@@ -113,7 +113,7 @@ func TestDisallowMsgs_CheckTx_Fail(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// Setup app.
-			tApp := testapp.NewTestAppBuilder(t).Build()
+			tApp := testapp.NewTestAppBuilder(t).WithNonDeterminismChecksEnabled(false).Build()
 			ctx := tApp.AdvanceToBlock(2, testapp.AdvanceToBlockOptions{})
 
 			// Setup msgs.
@@ -166,7 +166,7 @@ func TestDisallowMsgs_PrepareProposal_Filter(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// Setup app.
-			tApp := testapp.NewTestAppBuilder(t).Build()
+			tApp := testapp.NewTestAppBuilder(t).WithNonDeterminismChecksEnabled(false).Build()
 			tApp.AdvanceToBlock(2, testapp.AdvanceToBlockOptions{})
 
 			// Setup msg tx.
@@ -219,7 +219,7 @@ func TestDisallowMsgs_ProcessProposal_Fail(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// Setup app.
-			tApp := testapp.NewTestAppBuilder(t).Build()
+			tApp := testapp.NewTestAppBuilder(t).WithNonDeterminismChecksEnabled(false).Build()
 			tApp.AdvanceToBlock(2, testapp.AdvanceToBlockOptions{})
 
 			// Setup msgs.
