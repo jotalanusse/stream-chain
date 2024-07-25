@@ -25,6 +25,7 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdDepositToLendingPool())
+	cmd.AddCommand(CmdWithdrawFromLendingPool())
 
 	return cmd
 }

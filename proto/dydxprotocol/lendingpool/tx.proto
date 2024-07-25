@@ -13,6 +13,8 @@ service Msg {
   option (cosmos.msg.v1.service) = true;
   // DepositLiquidityIntoPool deposits liquidity into a pool.
   rpc DepositLiquidityIntoPool(MsgDepositLiquidityIntoPool) returns (MsgDepositLiquidityIntoPoolResponse);
+  // WithdrawLiquidityFromPool withdraws liquidity from a pool.
+  rpc WithdrawLiquidityFromPool(MsgWithdrawLiquidityFromPool) returns (MsgWithdrawLiquidityFromPoolResponse);
 }
 
 // MsgSetLimitParams is the Msg/SetLimitParams request type.
@@ -31,3 +33,20 @@ message MsgDepositLiquidityIntoPool {
 
 // MsgDepositLiquidityIntoPoolResponse is the Msg/DepositLiquidityIntoPool response type.
 message MsgDepositLiquidityIntoPoolResponse {}
+
+// MsgWithdrawLiquidityFromPool is the Msg/WithdrawLiquidityFromPool request type.
+message MsgWithdrawLiquidityFromPool {
+  option (cosmos.msg.v1.signer) = "liquidityProvider";
+
+  // The liquidity provider wallet address.
+  string liquidityProvider = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // The token denom to deposit.
+  string tokenDenom = 2;
+
+  // The amount to deposit.
+  string amount = 3;
+}
+
+// MsgWithdrawLiquidityFromPoolResponse is the Msg/WithdrawLiquidityFromPool response type.
+message MsgWithdrawLiquidityFromPoolResponse {}

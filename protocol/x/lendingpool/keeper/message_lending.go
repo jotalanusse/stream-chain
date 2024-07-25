@@ -46,3 +46,30 @@ func (k msgServer) DepositLiquidityIntoPool(ctx context.Context, msg *types.MsgD
 
 	return &types.MsgDepositLiquidityIntoPoolResponse{}, nil
 }
+
+func (k msgServer) WithdrawLiquidityFromPool(ctx context.Context, msg *types.MsgWithdrawLiquidityFromPool) (*types.MsgWithdrawLiquidityFromPoolResponse, error) {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	// Validate account sender.
+	liquidityProvider, err := sdk.AccAddressFromBech32(msg.LiquidityProvider)
+	if err != nil {
+		return nil, types.ErrInvalidAccountAddress
+	}
+
+	amount, err := types.ConvertStringToBigInt(msg.Amount)
+	if err != nil {
+		return nil, types.ErrInvalidDepositAmount
+	}
+
+	_, exists := k.Keeper.GetPoolParams(sdkCtx, msg.TokenDenom)
+	if !exists {
+		return nil, types.ErrInvalidTokenDenom
+	}
+
+	err = k.Keeper.RemoveLiquidity(sdkCtx, amount, liquidityProvider, msg.TokenDenom)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgWithdrawLiquidityFromPoolResponse{}, nil
+}

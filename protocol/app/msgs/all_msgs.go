@@ -122,8 +122,10 @@ var (
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParamsResponse": {},
 
 		// lendingpool
-		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool":         {},
-		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse": {},
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool":          {},
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse":  {},
+		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPool":         {},
+		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPoolResponse": {},
 
 		// perpetuals
 		"/dydxprotocol.perpetuals.MsgAddPremiumVotes":               {},

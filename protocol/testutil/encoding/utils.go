@@ -65,6 +65,7 @@ func GetTestEncodingCfg() testutil.TestEncodingConfig {
 
 		// Lending
 		&lendingpooltypes.MsgDepositLiquidityIntoPool{},
+		&lendingpooltypes.MsgWithdrawLiquidityFromPool{},
 
 		// Perpetuals.
 		&perpetualtypes.MsgAddPremiumVotes{},

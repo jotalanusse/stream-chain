@@ -80,4 +80,9 @@ var (
 		16,
 		"Invalid deposit amount",
 	)
+	ErrInvalidWithdrawAmount = errorsmod.Register(
+		ModuleName,
+		17,
+		"Invalid withdraw amount",
+	)
 )

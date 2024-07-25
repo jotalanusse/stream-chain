@@ -64,6 +64,8 @@ func TestNormalMsgs_Key(t *testing.T) {
 		// lendingpool
 		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool",
 		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse",
+		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPool",
+		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPoolResponse",
 
 		// params
 		"/cosmos.params.v1beta1.ParameterChangeProposal",

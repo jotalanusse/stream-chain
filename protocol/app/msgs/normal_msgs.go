@@ -195,8 +195,10 @@ var (
 		"/dydxprotocol.clob.MsgPlaceOrderResponse":  nil,
 
 		// lendingpool
-		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool":         &lendingpool.MsgDepositLiquidityIntoPool{},
-		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse": nil,
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPool":          &lendingpool.MsgDepositLiquidityIntoPool{},
+		"/dydxprotocol.lendingpool.MsgDepositLiquidityIntoPoolResponse":  nil,
+		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPool":         &lendingpool.MsgWithdrawLiquidityFromPool{},
+		"/dydxprotocol.lendingpool.MsgWithdrawLiquidityFromPoolResponse": nil,
 
 		// perpetuals
 

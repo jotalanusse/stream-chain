@@ -53,43 +53,43 @@ func (k Keeper) DepositLiquidity(ctx sdk.Context, amount *big.Int, liquidityProv
 	return nil
 }
 
-func (k Keeper) RemoveLiquidity(ctx sdk.Context, lendingTokenAmount *big.Int, liquidityProvider sdk.AccAddress, tokenDenom string) (amountSent *big.Int, err error) {
+func (k Keeper) RemoveLiquidity(ctx sdk.Context, lendingTokenAmount *big.Int, liquidityProvider sdk.AccAddress, tokenDenom string) error {
 
-	err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, liquidityProvider, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmount))))
+	err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, liquidityProvider, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmount))))
 	if err != nil {
-		return nil, errorsmod.Wrap(err, "failed to withdraw liquidity from the lending pool")
+		return errorsmod.Wrap(err, "failed to withdraw liquidity from the lending pool")
 	}
 
 	amountToWithdraw, err := k.ConvertLendingTokenToBase(ctx, lendingTokenAmount, tokenDenom)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, liquidityProvider, sdk.NewCoins(sdk.NewCoin(tokenDenom, sdkmath.NewIntFromBigInt(amountToWithdraw))))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmount))))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = k.UpdateTotalLiquidity(ctx, tokenDenom, new(big.Int).Neg(amountToWithdraw))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = k.UpdateCumulativeBorrowIndex(ctx, tokenDenom)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = k.UpdatePool(ctx, big.NewInt(0), tokenDenom)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return amountToWithdraw, nil
+	return nil
 }
 
 // Assumes all collateral checks are done by the credit account
