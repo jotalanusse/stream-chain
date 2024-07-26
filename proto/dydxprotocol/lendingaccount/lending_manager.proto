@@ -1,0 +1,70 @@
+syntax = "proto3";
+package dydxprotocol.lendingaccount;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingaccount/types";
+
+message LendingManager {
+
+    // The name of the lending manager.
+    string name = 1;
+
+    // The base denomination for the lending manager.
+    string base_denom = 2;
+
+    // A list of enabled lending perpetuals.
+    repeated EnabledLendingPerpetual enabled_lending_perpetuals = 3;
+
+    // A list of enabled collateral assets.
+    repeated EnabledCollateralAssets enabled_collateral_assets = 4;
+
+    // Parameters for liquidation.
+    LiquidationParams liquidation_params = 5;
+
+    // The maximum leverage for perpetuals.
+    uint64 max_perpetual_leverage = 6;
+
+    // The interest fee.
+    uint64 interest_fee = 7;
+
+    // Indicates if the lending manager is frozen.
+    bool is_frozen = 8;
+
+    // A map from account number to address.
+    map<uint64, string> account_number_to_address = 9 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+
+message EnabledLendingPerpetual {
+
+    // The ID of the perpetual.
+    uint32 perp_id = 1;
+
+    // Indicates if the account is enabled to go long or short.
+    bool is_long = 2;
+
+}
+
+message EnabledCollateralAssets {
+
+    // The denomination of the collateral asset.
+    string denom = 1;
+
+    // The collateral ratio.
+    uint64 collateral_ratio = 2;
+}
+
+message LiquidationParams {
+
+    // The liquidation threshold.
+    uint64 liquidation_threshold = 1;
+
+    // The liquidation discount.
+    uint64 liquidation_discount = 2;
+
+    // The liquidation fee.
+    uint64 liquidation_fee = 3;
+}
+

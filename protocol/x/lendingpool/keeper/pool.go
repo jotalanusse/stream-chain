@@ -173,7 +173,12 @@ func (k Keeper) HandleProfit(ctx sdk.Context, profit *big.Int, tokenDenom string
 		return err
 	}
 
-	err = k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, types.LENDING_POOL_INSURANCE_FUND, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmountToMint))))
+	insuranceFund, err := k.GetInsuranceFundForPool(ctx, tokenDenom)
+	if err != nil {
+		return err
+	}
+
+	err = k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, insuranceFund, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmountToMint))))
 	if err != nil {
 		return err
 	}
@@ -192,12 +197,17 @@ func (k Keeper) HandleLoss(ctx sdk.Context, loss *big.Int, tokenDenom string) er
 		return err
 	}
 
-	insuranceFundBalance := k.GetInsuranceFundBalance(ctx, types.GetLendingTokenDenom(tokenDenom))
+	insuranceFund, err := k.GetInsuranceFundForPool(ctx, tokenDenom)
+	if err != nil {
+		return err
+	}
+
+	insuranceFundBalance := k.GetInsuranceFundBalance(ctx, types.GetLendingTokenDenom(tokenDenom), insuranceFund)
 	if insuranceFundBalance.Cmp(lendingTokenAmountToBurn) < 0 {
 		lendingTokenAmountToBurn = insuranceFundBalance
 	}
 
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.LENDING_POOL_INSURANCE_FUND, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmountToBurn))))
+	k.bankKeeper.SendCoinsFromModuleToModule(ctx, insuranceFund, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmountToBurn))))
 
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.GetLendingTokenDenom(tokenDenom), sdkmath.NewIntFromBigInt(lendingTokenAmountToBurn))))
 	return nil

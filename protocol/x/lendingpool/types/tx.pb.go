@@ -30,7 +30,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// MsgSetLimitParams is the Msg/SetLimitParams request type.
+// MsgDepositLiquidityIntoPool is the Msg/DepositLiquidityIntoPool request type.
 type MsgDepositLiquidityIntoPool struct {
 	// The liquidity provider wallet address.
 	LiquidityProvider string `protobuf:"bytes,1,opt,name=liquidityProvider,proto3" json:"liquidityProvider,omitempty"`

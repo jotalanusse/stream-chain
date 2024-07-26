@@ -228,8 +228,23 @@ func (k Keeper) GetLendingPoolBalance(ctx sdk.Context, denom string) *big.Int {
 	return k.bankKeeper.GetBalance(ctx, moduleAddress, denom).Amount.BigInt()
 }
 
-func (k Keeper) GetInsuranceFundBalance(ctx sdk.Context, denom string) *big.Int {
+func (k Keeper) GetInsuranceFundBalance(ctx sdk.Context, denom string, insuranceFund string) *big.Int {
 
-	moduleAddress := authtypes.NewModuleAddress(types.LENDING_POOL_INSURANCE_FUND)
+	moduleAddress := authtypes.NewModuleAddress(insuranceFund)
 	return k.bankKeeper.GetBalance(ctx, moduleAddress, denom).Amount.BigInt()
+}
+
+func (k Keeper) GetInsuranceFundForPool(ctx sdk.Context, baseDenom string) (insuranceFund string, err error) {
+
+	poolParams, found := k.GetPoolParams(ctx, baseDenom)
+	if !found {
+		return "", types.ErrInvalidTokenDenom
+	}
+
+	if poolParams.IsIsolated {
+		insuranceFund = types.LENDING_POOL_INSURANCE_FUND + baseDenom
+	} else {
+		insuranceFund = types.LENDING_POOL_INSURANCE_FUND
+	}
+	return insuranceFund, nil
 }

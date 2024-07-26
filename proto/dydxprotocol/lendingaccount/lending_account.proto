@@ -1,0 +1,23 @@
+syntax = "proto3";
+package dydxprotocol.lendingaccount;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/duration.proto";
+import "dydxprotocol/subaccounts/subaccount.proto";
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingaccount/types";
+
+// LendingAccount defines the parameters for a lending account.
+message LendingAccount {
+
+  // borrowed_amount is the amount borrowed in the lending account.
+  string borrowed_amount = 1;
+
+  // initial_borrow_index is the initial borrow index for the lending account.
+  string initial_borrow_index = 2;
+
+  // subaccount_id is the ID of the subaccount associated with the lending account.
+  dydxprotocol.subaccounts.SubaccountId subaccount_id = 3 [ (gogoproto.nullable) = false ];
+}
+
+

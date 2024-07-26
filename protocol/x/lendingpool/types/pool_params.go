@@ -18,8 +18,11 @@ type InternalPoolParams struct {
 	// slope_one_rate is the interest rate slope for the first segment.
 	SlopeOneRate *big.Int
 	// slope_two_rate is the interest rate slope for the second segment.
-	SlopeTwoRate               *big.Int
+	SlopeTwoRate *big.Int
+	// permissioned_credit_accounts are the accounts that are allowed to borrow from the pool.
 	PermissionedCreditAccounts []string
+	// is_isolated is a flag to determine if the pool is isolated.
+	IsIsolated bool
 }
 
 // Validate validates perpetual module's parameters.
@@ -84,6 +87,7 @@ func (params PoolParams) Validate() (internalParams InternalPoolParams, err erro
 		SlopeOneRate:               bigSlopeOneRate,
 		SlopeTwoRate:               bigSlopeTwoRate,
 		PermissionedCreditAccounts: creditAccounts,
+		IsIsolated:                 params.IsIsolated,
 	}
 
 	return internalParams, nil
@@ -99,6 +103,7 @@ func ConvertInternalToPoolParams(internalParams InternalPoolParams) PoolParams {
 		SlopeOneRate:               internalParams.SlopeOneRate.String(),
 		SlopeTwoRate:               internalParams.SlopeTwoRate.String(),
 		PermissionedCreditAccounts: internalParams.PermissionedCreditAccounts,
+		IsIsolated:                 internalParams.IsIsolated,
 	}
 }
 

@@ -18,6 +18,7 @@ func DefaultPoolParams() []PoolParams {
 			SlopeOneRate:               "300",
 			SlopeTwoRate:               "500",
 			PermissionedCreditAccounts: []string{"defaultcreditaccount"},
+			IsIsolated:                 false,
 		},
 		{
 			TokenDenom:                 "ibc/ETH", // placeholders todo
@@ -27,6 +28,7 @@ func DefaultPoolParams() []PoolParams {
 			SlopeOneRate:               "350",
 			SlopeTwoRate:               "550",
 			PermissionedCreditAccounts: []string{"defaultcreditaccount"},
+			IsIsolated:                 false,
 		},
 		{
 			TokenDenom:                 "ibc/DAI", // placeholders todo
@@ -36,6 +38,7 @@ func DefaultPoolParams() []PoolParams {
 			SlopeOneRate:               "400",
 			SlopeTwoRate:               "600",
 			PermissionedCreditAccounts: []string{"defaultcreditaccount"},
+			IsIsolated:                 false,
 		},
 	}
 }

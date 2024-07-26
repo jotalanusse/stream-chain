@@ -28,6 +28,8 @@ message PoolParams {
   string slope_two_rate = 6;
 
   repeated string permissioned_credit_accounts = 7;
+
+  bool is_isolated = 8;
 }
 
 

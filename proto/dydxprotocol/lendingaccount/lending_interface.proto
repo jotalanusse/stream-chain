@@ -1,0 +1,36 @@
+syntax = "proto3";
+package dydxprotocol.lendingaccount;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingaccount/types";
+
+message LendingInterface {
+
+    // The name of the lending manager.
+    string manager_name = 1;
+
+    // The base denomination for the lending interface.
+    string base_denom = 2;
+
+    // The maximum amount that can be borrowed per block.
+    string max_borrow_per_block = 3;
+
+    // The minimum amount that can be borrowed per account.
+    string min_borrow_per_account = 4;
+
+    // The maximum amount that can be borrowed per account.
+    string max_borrow_per_account = 5;
+
+    // The cumulative loss for the lending interface.
+    string cumulative_loss = 6;
+
+    // The limit for the cumulative loss.
+    string cumulative_loss_limit = 7;
+
+    // The total debt for the lending interface.
+    string total_debt = 8;
+
+    // The limit for the total debt.
+    string total_debt_limit = 9;
+}
