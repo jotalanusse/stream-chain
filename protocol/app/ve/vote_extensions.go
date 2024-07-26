@@ -165,6 +165,7 @@ func (h *VoteExtensionHandler) VerifyVoteExtensionHandler() sdk.VerifyVoteExtens
 }
 
 func (h *VoteExtensionHandler) GetVEBytesFromCurrPrices(ctx sdk.Context) ([]byte, error) {
+
 	priceUpdates := h.getCurrentPrices(ctx)
 
 	if len(priceUpdates.MarketPriceUpdates) == 0 {
@@ -259,7 +260,7 @@ func (h *VoteExtensionHandler) getMedianPrice(
 ) *big.Int {
 	adjustedFundingRate := new(big.Int).Add(lastFundingRate, big.NewInt(1))
 	fundingWeightedPrice := new(big.Int).Mul(indexPrice, adjustedFundingRate)
-
+	fmt.Println("FUNDING WEIGHTED PRICE", fundingWeightedPrice)
 	prices := []*big.Int{clobMidPrice, smoothedPrice, fundingWeightedPrice}
 	sort.Slice(prices, func(i, j int) bool {
 		return prices[i].Cmp(prices[j]) < 0

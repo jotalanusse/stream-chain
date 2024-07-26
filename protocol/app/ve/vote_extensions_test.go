@@ -10,10 +10,13 @@ import (
 	ve "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve"
 	vecodec "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
 	vetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	constants "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	vetestutils "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/ve"
+	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	"github.com/stretchr/testify/mock"
@@ -86,14 +89,42 @@ func TestExtendVoteHandler(t *testing.T) {
 			pricesKeeper: func() *mocks.PreBlockExecPricesKeeper {
 				mpricesKeeper := &mocks.PreBlockExecPricesKeeper{}
 				mpricesKeeper.On("GetValidMarketPriceUpdates", mock.Anything).Return(
-					constants.ValidSingleMarketPriceUpdate,
+					constants.ValidSingleMarketPriceUpdateObj,
 				)
 				mpricesKeeper.On("GetMarketParam", mock.Anything, mock.Anything).Return(
 					constants.TestSingleMarketParam,
 					true,
 				)
+				mpricesKeeper.On("GetSmoothedPrice", mock.Anything).Return(
+					constants.Price5,
+					true,
+				)
 
 				return mpricesKeeper
+			},
+			perpKeeper: func() *mocks.ExtendVotePerpetualsKeeper {
+				mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
+				mPerpKeeper.On("GetPerpetual", mock.Anything, uint32(0)).Return(
+					perptypes.Perpetual{
+						LastFundingRate: dtypes.NewInt(int64(constants.Price5)),
+					},
+					nil,
+				)
+
+				return mPerpKeeper
+			},
+			clobKeeper: func() *mocks.ExtendVoteClobKeeper {
+				mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+				mClobKeeper.On("GetClobPair", mock.Anything, mock.Anything).Return(
+					clobtypes.ClobPair{},
+					true,
+				)
+				mClobKeeper.On("GetSingleMarketClobMetadata", mock.Anything, mock.Anything).Return(
+					clobtypes.ClobMetadata{
+						MidPrice: clobtypes.Subticks(constants.Price5),
+					},
+				)
+				return mClobKeeper
 			},
 			expectedResponse: &vetypes.DaemonVoteExtension{
 				Prices: map[uint32][]byte{
@@ -105,7 +136,7 @@ func TestExtendVoteHandler(t *testing.T) {
 			pricesKeeper: func() *mocks.PreBlockExecPricesKeeper {
 				mPricesKeeper := &mocks.PreBlockExecPricesKeeper{}
 				mPricesKeeper.On("GetValidMarketPriceUpdates", mock.Anything).Return(
-					constants.ValidMarketPriceUpdates,
+					constants.ValidMarketPriceUpdateObj,
 				)
 				mPricesKeeper.On("GetMarketParam", mock.Anything, constants.MarketId0).Return(
 					constants.TestMarketParams[0],
@@ -119,13 +150,118 @@ func TestExtendVoteHandler(t *testing.T) {
 					constants.TestMarketParams[2],
 					true,
 				)
+				mPricesKeeper.On("GetMarketParam", mock.Anything, constants.MarketId3).Return(
+					constants.Price4,
+					true,
+				)
+				mPricesKeeper.On("GetMarketParam", mock.Anything, constants.MarketId4).Return(
+					constants.Price3,
+					true,
+				)
+				mPricesKeeper.On("GetSmoothedPrice", constants.MarketId0).Return(
+					constants.Price1,
+					true,
+				)
+				mPricesKeeper.On("GetSmoothedPrice", constants.MarketId1).Return(
+					constants.Price2,
+					true,
+				)
+				mPricesKeeper.On("GetSmoothedPrice", constants.MarketId2).Return(
+					constants.Price3,
+					true,
+				)
+				mPricesKeeper.On("GetSmoothedPrice", constants.MarketId3).Return(
+					constants.Price4,
+					true,
+				)
+				mPricesKeeper.On("GetSmoothedPrice", constants.MarketId4).Return(
+					constants.Price3,
+					true,
+				)
 				return mPricesKeeper
+			},
+			perpKeeper: func() *mocks.ExtendVotePerpetualsKeeper {
+				mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
+				mPerpKeeper.On("GetPerpetual", mock.Anything, mock.Anything).Return(
+					perptypes.Perpetual{
+						LastFundingRate: dtypes.NewInt(int64(0)),
+					},
+					nil,
+				)
+				return mPerpKeeper
+			},
+			clobKeeper: func() *mocks.ExtendVoteClobKeeper {
+				mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+				mClobKeeper.On("GetClobPair", mock.Anything, mock.Anything).Return(
+					clobtypes.ClobPair{
+						Id: constants.MarketId0,
+					},
+					true,
+				)
+				mClobKeeper.On(
+					"GetSingleMarketClobMetadata",
+					mock.Anything,
+					clobtypes.ClobPair{
+						Id: constants.MarketId0,
+					},
+				).Return(
+					clobtypes.ClobMetadata{
+						MidPrice: clobtypes.Subticks(constants.Price5),
+					},
+				)
+				mClobKeeper.On(
+					"GetSingleMarketClobMetadata",
+					mock.Anything,
+					clobtypes.ClobPair{
+						Id: constants.MarketId1,
+					},
+				).Return(
+					clobtypes.ClobMetadata{
+						MidPrice: clobtypes.Subticks(constants.Price6),
+					},
+				)
+				mClobKeeper.On(
+					"GetSingleMarketClobMetadata",
+					mock.Anything,
+					clobtypes.ClobPair{
+						Id: constants.MarketId2,
+					},
+				).Return(
+					clobtypes.ClobMetadata{
+						MidPrice: clobtypes.Subticks(constants.Price7),
+					},
+				)
+				mClobKeeper.On(
+					"GetSingleMarketClobMetadata",
+					mock.Anything,
+					clobtypes.ClobPair{
+						Id: constants.MarketId3,
+					},
+				).Return(
+					clobtypes.ClobMetadata{
+						MidPrice: clobtypes.Subticks(constants.Price4),
+					},
+				)
+				mClobKeeper.On(
+					"GetSingleMarketClobMetadata",
+					mock.Anything,
+					clobtypes.ClobPair{
+						Id: constants.MarketId4,
+					},
+				).Return(
+					clobtypes.ClobMetadata{
+						MidPrice: clobtypes.Subticks(constants.Price3),
+					},
+				)
+				return mClobKeeper
 			},
 			expectedResponse: &vetypes.DaemonVoteExtension{
 				Prices: map[uint32][]byte{
 					constants.MarketId0: constants.Price5Bytes,
 					constants.MarketId1: constants.Price6Bytes,
 					constants.MarketId2: constants.Price7Bytes,
+					constants.MarketId3: constants.Price4Bytes,
+					constants.MarketId4: constants.Price3Bytes,
 				},
 			},
 		},
@@ -137,6 +273,14 @@ func TestExtendVoteHandler(t *testing.T) {
 			},
 			expectedResponse: &vetypes.DaemonVoteExtension{
 				Prices: nil,
+			},
+			perpKeeper: func() *mocks.ExtendVotePerpetualsKeeper {
+				mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
+				return mPerpKeeper
+			},
+			clobKeeper: func() *mocks.ExtendVoteClobKeeper {
+				mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+				return mClobKeeper
 			},
 			expectedError: true,
 		},
@@ -163,13 +307,9 @@ func TestExtendVoteHandler(t *testing.T) {
 			if tc.extendVoteRequest != nil {
 				req = tc.extendVoteRequest()
 			}
-			if req != nil {
-				finalizeBlockReq := &cometabci.RequestFinalizeBlock{
-					Txs:    req.Txs,
-					Height: req.Height,
-				}
-				mPriceApplier.On("ApplyPricesFromVE", ctx, finalizeBlockReq).Return(nil)
-			}
+
+			mPriceApplier.On("ApplyPricesFromVE", mock.Anything, mock.Anything).Return(nil)
+
 			resp, err := h.ExtendVoteHandler()(ctx, req)
 			if !tc.expectedError {
 				if resp == nil || len(resp.VoteExtension) == 0 {

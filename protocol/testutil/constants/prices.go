@@ -328,6 +328,10 @@ var (
 		},
 	}
 
+	ValidMarketPriceUpdateObj = &types.MarketPriceUpdates{
+		MarketPriceUpdates: ValidMarketPriceUpdates,
+	}
+
 	ValidSingleMarketPriceUpdateObj = &types.MarketPriceUpdates{
 		MarketPriceUpdates: ValidSingleMarketPriceUpdate,
 	}
