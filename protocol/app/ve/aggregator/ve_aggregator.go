@@ -37,9 +37,6 @@ type VoteAggregator interface {
 	AggregateDaemonVEIntoFinalPrices(
 		ctx sdk.Context,
 		votes []Vote,
-		midPrices map[string]*big.Int,
-		fundingRates map[string]*big.Int,
-		smoothedPrices map[string]*big.Int,
 	) (map[string]*big.Int, error)
 
 	// GetPriceForValidator gets the prices reported by a given validator. This method depends
@@ -59,9 +56,6 @@ type MedianAggregator struct {
 	aggregateFn func(
 		ctx sdk.Context,
 		perValidatorPrices map[string]map[string]*big.Int,
-		midPrices map[string]*big.Int,
-		fundingRates map[string]*big.Int,
-		smoothedPrices map[string]*big.Int,
 	) (map[string]*big.Int, error)
 }
 
@@ -82,9 +76,6 @@ func NewVeAggregator(
 func (ma *MedianAggregator) AggregateDaemonVEIntoFinalPrices(
 	ctx sdk.Context,
 	votes []Vote,
-	midPrices map[string]*big.Int,
-	fundingRates map[string]*big.Int,
-	smoothedPrices map[string]*big.Int,
 ) (map[string]*big.Int, error) {
 	// wipe the previous prices
 	ma.perValidatorPrices = make(map[string]map[string]*big.Int)
@@ -95,7 +86,7 @@ func (ma *MedianAggregator) AggregateDaemonVEIntoFinalPrices(
 		ma.addVoteToAggregator(ctx, consAddr, voteExtension)
 	}
 
-	prices, err := ma.aggregateFn(ctx, ma.perValidatorPrices, midPrices, fundingRates, smoothedPrices)
+	prices, err := ma.aggregateFn(ctx, ma.perValidatorPrices)
 	if err != nil {
 		ma.logger.Error(
 			"failed to aggregate prices",

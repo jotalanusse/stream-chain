@@ -33,6 +33,62 @@ func (_m *PreBlockExecPricesKeeper) GetAllMarketParams(ctx types.Context) []pric
 	return r0
 }
 
+// GetMarketParam provides a mock function with given fields: ctx, id
+func (_m *PreBlockExecPricesKeeper) GetMarketParam(ctx types.Context, id uint32) (pricestypes.MarketParam, bool) {
+	ret := _m.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetMarketParam")
+	}
+
+	var r0 pricestypes.MarketParam
+	var r1 bool
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) (pricestypes.MarketParam, bool)); ok {
+		return rf(ctx, id)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) pricestypes.MarketParam); ok {
+		r0 = rf(ctx, id)
+	} else {
+		r0 = ret.Get(0).(pricestypes.MarketParam)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, uint32) bool); ok {
+		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Get(1).(bool)
+	}
+
+	return r0, r1
+}
+
+// GetSmoothedPrice provides a mock function with given fields: markedId
+func (_m *PreBlockExecPricesKeeper) GetSmoothedPrice(markedId uint32) (uint64, bool) {
+	ret := _m.Called(markedId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetSmoothedPrice")
+	}
+
+	var r0 uint64
+	var r1 bool
+	if rf, ok := ret.Get(0).(func(uint32) (uint64, bool)); ok {
+		return rf(markedId)
+	}
+	if rf, ok := ret.Get(0).(func(uint32) uint64); ok {
+		r0 = rf(markedId)
+	} else {
+		r0 = ret.Get(0).(uint64)
+	}
+
+	if rf, ok := ret.Get(1).(func(uint32) bool); ok {
+		r1 = rf(markedId)
+	} else {
+		r1 = ret.Get(1).(bool)
+	}
+
+	return r0, r1
+}
+
 // GetValidMarketPriceUpdates provides a mock function with given fields: ctx
 func (_m *PreBlockExecPricesKeeper) GetValidMarketPriceUpdates(ctx types.Context) *pricestypes.MarketPriceUpdates {
 	ret := _m.Called(ctx)

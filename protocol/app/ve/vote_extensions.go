@@ -3,11 +3,13 @@ package ve
 import (
 	"fmt"
 	"math/big"
+	"sort"
 
 	"cosmossdk.io/log"
 	codec "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/types"
 	veutils "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/utils"
+	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	pricetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,6 +24,12 @@ type VoteExtensionHandler struct {
 	// fetching valid price updates and current markets
 	pricesKeeper PreBlockExecPricesKeeper
 
+	// fetching last funding rates for price calc
+	perpetualsKeeper ExtendVotePerpetualsKeeper
+
+	// fetching mid price for price calc
+	clobKeeper ExtendVoteClobKeeper
+
 	// writing prices to the prices module store
 	priceApplier VEPriceApplier
 }
@@ -35,13 +43,17 @@ func NewVoteExtensionHandler(
 	logger log.Logger,
 	voteCodec codec.VoteExtensionCodec,
 	pricesKeeper PreBlockExecPricesKeeper,
+	perpetualsKeeper ExtendVotePerpetualsKeeper,
+	clobKeeper ExtendVoteClobKeeper,
 	priceApplier VEPriceApplier,
 ) *VoteExtensionHandler {
 	return &VoteExtensionHandler{
-		logger:       logger,
-		voteCodec:    voteCodec,
-		pricesKeeper: pricesKeeper,
-		priceApplier: priceApplier,
+		logger:           logger,
+		voteCodec:        voteCodec,
+		pricesKeeper:     pricesKeeper,
+		perpetualsKeeper: perpetualsKeeper,
+		clobKeeper:       clobKeeper,
+		priceApplier:     priceApplier,
 	}
 }
 
@@ -153,7 +165,7 @@ func (h *VoteExtensionHandler) VerifyVoteExtensionHandler() sdk.VerifyVoteExtens
 }
 
 func (h *VoteExtensionHandler) GetVEBytesFromCurrPrices(ctx sdk.Context) ([]byte, error) {
-	priceUpdates := h.pricesKeeper.GetValidMarketPriceUpdates(ctx)
+	priceUpdates := h.getCurrentPrices(ctx)
 
 	if len(priceUpdates.MarketPriceUpdates) == 0 {
 		return nil, fmt.Errorf("no valid median prices")
@@ -204,4 +216,92 @@ func (h *VoteExtensionHandler) GetEncodedPriceFromPriceUpdate(
 	}
 
 	return encodedPrice, nil
+}
+
+func (h *VoteExtensionHandler) getCurrentPrices(
+	ctx sdk.Context,
+) *pricetypes.MarketPriceUpdates {
+	indexPrices := h.pricesKeeper.GetValidMarketPriceUpdates(ctx)
+
+	for i, market := range indexPrices.MarketPriceUpdates {
+
+		clobMidPrice := h.getClobMidPrice(ctx, market.MarketId)
+		if clobMidPrice == nil {
+			continue
+		}
+		smoothedPrice := h.getSmoothedPrice(market.MarketId)
+		if smoothedPrice == nil {
+			continue
+		}
+		lastFundingRate := h.getLastFundingRate(ctx, market.MarketId)
+		if lastFundingRate == nil {
+			continue
+		}
+
+		medianPrice := h.getMedianPrice(
+			new(big.Int).SetUint64(market.Price),
+			clobMidPrice,
+			smoothedPrice,
+			lastFundingRate,
+		)
+
+		indexPrices.MarketPriceUpdates[i].Price = medianPrice.Uint64()
+	}
+
+	return indexPrices
+}
+
+func (h *VoteExtensionHandler) getMedianPrice(
+	indexPrice *big.Int,
+	clobMidPrice *big.Int,
+	smoothedPrice *big.Int,
+	lastFundingRate *big.Int,
+) *big.Int {
+	adjustedFundingRate := new(big.Int).Add(lastFundingRate, big.NewInt(1))
+	fundingWeightedPrice := new(big.Int).Mul(indexPrice, adjustedFundingRate)
+
+	prices := []*big.Int{clobMidPrice, smoothedPrice, fundingWeightedPrice}
+	sort.Slice(prices, func(i, j int) bool {
+		return prices[i].Cmp(prices[j]) < 0
+	})
+
+	return prices[1]
+}
+
+func (h *VoteExtensionHandler) getClobMidPrice(
+	ctx sdk.Context,
+	marketId uint32,
+) *big.Int {
+	clobPair, found := h.clobKeeper.GetClobPair(ctx, clobtypes.ClobPairId(marketId))
+
+	if !found {
+		return nil
+	}
+
+	clobMetadata := h.clobKeeper.GetSingleMarketClobMetadata(ctx, clobPair)
+
+	return clobMetadata.MidPrice.ToBigInt()
+}
+
+func (h *VoteExtensionHandler) getSmoothedPrice(
+	marketId uint32,
+) *big.Int {
+	smoothedPrice, exists := h.pricesKeeper.GetSmoothedPrice(marketId)
+	if !exists || smoothedPrice == 0 {
+		return nil
+	}
+
+	return new(big.Int).SetUint64(smoothedPrice)
+}
+
+func (h *VoteExtensionHandler) getLastFundingRate(
+	ctx sdk.Context,
+	marketId uint32,
+) *big.Int {
+	perpetual, err := h.perpetualsKeeper.GetPerpetual(ctx, marketId)
+	if err != nil {
+		return nil
+	}
+
+	return perpetual.LastFundingRate.BigInt()
 }

@@ -16,9 +16,6 @@ import (
 type TestVoteWeightedMedianTC struct {
 	validators      []string
 	validatorPrices map[string]map[string]*big.Int
-	midPrices       map[string]*big.Int
-	smoothPrices    map[string]*big.Int
-	fundingRates    map[string]*big.Int
 	expectedPrices  map[string]*big.Int
 	powers          map[string]int64
 }
@@ -32,9 +29,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 				"bob":   500,
 				"carl":  500,
 			},
-			midPrices:       map[string]*big.Int{},
-			smoothPrices:    map[string]*big.Int{},
-			fundingRates:    map[string]*big.Int{},
 			validatorPrices: map[string]map[string]*big.Int{},
 			expectedPrices:  map[string]*big.Int{},
 		},
@@ -48,9 +42,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: constants.Price5Big,
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: constants.Price5Big,
 			},
@@ -73,9 +64,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: big.NewInt(5002),
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: big.NewInt(5001),
 			},
@@ -94,9 +82,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: big.NewInt(5001),
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: big.NewInt(5000),
 			},
@@ -115,9 +100,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: nil,
 				},
 			},
-			midPrices:      map[string]*big.Int{},
-			smoothPrices:   map[string]*big.Int{},
-			fundingRates:   map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{},
 		},
 		"single price multiple validators, varied prices, one nil": {
@@ -138,9 +120,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: big.NewInt(5002),
 				},
 			},
-			midPrices:      map[string]*big.Int{},
-			smoothPrices:   map[string]*big.Int{},
-			fundingRates:   map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{},
 		},
 		"single price multiple validators, varied prices, all nil": {
@@ -161,9 +140,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: nil,
 				},
 			},
-			midPrices:      map[string]*big.Int{},
-			smoothPrices:   map[string]*big.Int{},
-			fundingRates:   map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{},
 		},
 		"single price multiple validators, same price": {
@@ -184,9 +160,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.BtcUsdPair: constants.Price5Big,
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: constants.Price5Big,
 			},
@@ -202,9 +175,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: constants.Price6Big,
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: constants.Price5Big,
 				constants.EthUsdPair: constants.Price6Big,
@@ -231,9 +201,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: constants.Price6Big,
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: constants.Price5Big,
 				constants.EthUsdPair: constants.Price6Big,
@@ -260,9 +227,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: big.NewInt(6002),
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: big.NewInt(5001),
 				constants.EthUsdPair: big.NewInt(6001),
@@ -289,9 +253,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: big.NewInt(5500),
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: big.NewInt(5000),
 				constants.EthUsdPair: big.NewInt(6000),
@@ -314,9 +275,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: big.NewInt(6000),
 				},
 			},
-			midPrices:      map[string]*big.Int{},
-			smoothPrices:   map[string]*big.Int{},
-			fundingRates:   map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{},
 		},
 		"single price, multiple validators, different stake": {
@@ -362,9 +320,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: big.NewInt(5500),
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: big.NewInt(4000),
 				constants.EthUsdPair: big.NewInt(5000),
@@ -391,9 +346,6 @@ func TestVoteWeightedMedian(t *testing.T) {
 					constants.EthUsdPair: big.NewInt(5004),
 				},
 			},
-			midPrices:    map[string]*big.Int{},
-			smoothPrices: map[string]*big.Int{},
-			fundingRates: map[string]*big.Int{},
 			expectedPrices: map[string]*big.Int{
 				constants.BtcUsdPair: big.NewInt(4002),
 				constants.EthUsdPair: big.NewInt(5002),
@@ -407,13 +359,13 @@ func TestVoteWeightedMedian(t *testing.T) {
 
 			mCCVStore := ethosutils.NewGetAllCCValidatorMockReturnWithPowers(ctx, tc.validators, tc.powers)
 
-			medianFn := voteWeighted.MedianWithMarkAndFundingRate(
+			medianFn := voteWeighted.Median(
 				log.NewNopLogger(),
 				mCCVStore,
 				voteWeighted.DefaultPowerThreshold,
 			)
 
-			prices, err := medianFn(ctx, tc.validatorPrices, tc.midPrices, tc.fundingRates, tc.smoothPrices)
+			prices, err := medianFn(ctx, tc.validatorPrices)
 
 			require.NoError(t, err)
 			require.Equal(t, tc.expectedPrices, prices)

@@ -1,6 +1,8 @@
 package ve_test
 
 import (
+	"fmt"
+
 	"cosmossdk.io/log"
 
 	"testing"
@@ -21,6 +23,8 @@ import (
 type TestExtendedVoteTC struct {
 	expectedResponse  *vetypes.DaemonVoteExtension
 	pricesKeeper      func() *mocks.PreBlockExecPricesKeeper
+	perpKeeper        func() *mocks.ExtendVotePerpetualsKeeper
+	clobKeeper        func() *mocks.ExtendVoteClobKeeper
 	extendVoteRequest func() *cometabci.RequestExtendVote
 	expectedError     bool
 }
@@ -31,6 +35,14 @@ func TestExtendVoteHandler(t *testing.T) {
 			pricesKeeper: func() *mocks.PreBlockExecPricesKeeper {
 				mPricesKeeper := &mocks.PreBlockExecPricesKeeper{}
 				return mPricesKeeper
+			},
+			perpKeeper: func() *mocks.ExtendVotePerpetualsKeeper {
+				mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
+				return mPerpKeeper
+			},
+			clobKeeper: func() *mocks.ExtendVoteClobKeeper {
+				mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+				return mClobKeeper
 			},
 			extendVoteRequest: func() *cometabci.RequestExtendVote {
 				return nil
@@ -51,6 +63,20 @@ func TestExtendVoteHandler(t *testing.T) {
 				)
 
 				return mPricesKeeper
+			},
+			perpKeeper: func() *mocks.ExtendVotePerpetualsKeeper {
+				mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
+				mPerpKeeper.On("GetPerpetual", mock.Anything, mock.Anything).Return(
+					nil, fmt.Errorf("error"),
+				)
+				return mPerpKeeper
+			},
+			clobKeeper: func() *mocks.ExtendVoteClobKeeper {
+				mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+				mClobKeeper.On("GetClobPair", mock.Anything, mock.Anything).Return(
+					nil, false,
+				)
+				return mClobKeeper
 			},
 			expectedResponse: &vetypes.DaemonVoteExtension{
 				Prices: nil,
@@ -128,6 +154,8 @@ func TestExtendVoteHandler(t *testing.T) {
 				log.NewTestLogger(t),
 				votecodec,
 				tc.pricesKeeper(),
+				tc.perpKeeper(),
+				tc.clobKeeper(),
 				mPriceApplier,
 			)
 
@@ -330,12 +358,16 @@ func TestVerifyVoteHandler(t *testing.T) {
 			ctx, _, _, _, _, _ := keepertest.PricesKeepers(t)
 			ctx = vetestutils.GetVeEnabledCtx(ctx, 3)
 			mPriceApplier := &mocks.VEPriceApplier{}
+			mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+			mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
 			mPricesKeeper := tc.pricesKeeper()
 
 			handler := ve.NewVoteExtensionHandler(
 				log.NewTestLogger(t),
 				votecodec,
 				mPricesKeeper,
+				mPerpKeeper,
+				mClobKeeper,
 				mPriceApplier,
 			).VerifyVoteExtensionHandler()
 

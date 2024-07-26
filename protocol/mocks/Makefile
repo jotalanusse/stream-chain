@@ -38,12 +38,11 @@ mock-gen:
 	@go run github.com/vektra/mockery/v2 --name=ProcessConsumerKeeper --dir=./app/process --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=ProcessProposalPriceApplier --dir=./app/process --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=ProcessConsumerKeeper --dir=./app/process --recursive --output=./mocks
-	@go run github.com/vektra/mockery/v2 --name=ExtendVotePricesKeeper --dir=./app/ve --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=ExtendVoteIndexPriceCache --dir=./app/ve --recursive --output=./mocks
+	@go run github.com/vektra/mockery/v2 --name=ExtendVoteClobKeeper --dir=./app/ve --recursive --output=./mocks
+	@go run github.com/vektra/mockery/v2 --name=ExtendVotePerpetualsKeeper --dir=./app/ve --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=CCValidatorStore --dir=./app/ve/math --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=PriceApplierPricesKeeper --dir=./app/ve/applier --recursive --output=./mocks
-	@go run github.com/vektra/mockery/v2 --name=PriceApplierPerpetualsKeeper --dir=./app/ve/applier --recursive --output=./mocks
-	@go run github.com/vektra/mockery/v2 --name=PriceApplierClobKeeper --dir=./app/ve/applier --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=VoteAggregator --dir=./app/ve/aggregator --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=VEPriceApplier --dir=./app/ve --recursive --output=./mocks
 	@go run github.com/vektra/mockery/v2 --name=MemClob --dir=./x/clob/types --recursive --output=./mocks

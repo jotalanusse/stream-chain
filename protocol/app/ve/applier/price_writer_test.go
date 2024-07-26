@@ -16,9 +16,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	vetesting "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/ve"
-	clobkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
-	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	"github.com/stretchr/testify/mock"
 
@@ -33,18 +30,6 @@ func TestPriceWriter(t *testing.T) {
 
 	ctx, _, _, _, _, _ := keepertest.PricesKeepers(t)
 
-	mPerpKeeper := &mocks.PriceApplierPerpetualsKeeper{}
-	mPerpKeeper.On(
-		"GetPerpetual",
-		mock.Anything,
-		mock.Anything,
-	).Return(perptypes.Perpetual{}, nil)
-
-	mClobKeeper := &mocks.PriceApplierClobKeeper{}
-	mClobKeeper.On(
-		"GetClobMetadata",
-		mock.Anything,
-	).Return(map[clobtypes.ClobPairId]clobkeeper.ClobMetadata{})
 	pricesKeeper := &mocks.PriceApplierPricesKeeper{}
 
 	pricesKeeper.On("PerformStatefulPriceUpdateValidation", mock.Anything, mock.Anything).Return(nil)
@@ -53,8 +38,6 @@ func TestPriceWriter(t *testing.T) {
 		log.NewNopLogger(),
 		voteAggregator,
 		pricesKeeper,
-		mClobKeeper,
-		mPerpKeeper,
 		voteCodec,
 		extCodec,
 	)

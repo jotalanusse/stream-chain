@@ -63,34 +63,6 @@ func (_m *PriceApplierPricesKeeper) GetMarketParam(ctx types.Context, id uint32)
 	return r0, r1
 }
 
-// GetSmoothedPrice provides a mock function with given fields: markedId
-func (_m *PriceApplierPricesKeeper) GetSmoothedPrice(markedId uint32) (uint64, bool) {
-	ret := _m.Called(markedId)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GetSmoothedPrice")
-	}
-
-	var r0 uint64
-	var r1 bool
-	if rf, ok := ret.Get(0).(func(uint32) (uint64, bool)); ok {
-		return rf(markedId)
-	}
-	if rf, ok := ret.Get(0).(func(uint32) uint64); ok {
-		r0 = rf(markedId)
-	} else {
-		r0 = ret.Get(0).(uint64)
-	}
-
-	if rf, ok := ret.Get(1).(func(uint32) bool); ok {
-		r1 = rf(markedId)
-	} else {
-		r1 = ret.Get(1).(bool)
-	}
-
-	return r0, r1
-}
-
 // PerformStatefulPriceUpdateValidation provides a mock function with given fields: ctx, marketPriceUpdates
 func (_m *PriceApplierPricesKeeper) PerformStatefulPriceUpdateValidation(ctx types.Context, marketPriceUpdates *pricestypes.MarketPriceUpdates) error {
 	ret := _m.Called(ctx, marketPriceUpdates)

@@ -17,9 +17,9 @@ type VoteAggregator struct {
 	mock.Mock
 }
 
-// AggregateDaemonVEIntoFinalPrices provides a mock function with given fields: ctx, votes, midPrices, fundingRates, smoothedPrices
-func (_m *VoteAggregator) AggregateDaemonVEIntoFinalPrices(ctx types.Context, votes []aggregator.Vote, midPrices map[string]*big.Int, fundingRates map[string]*big.Int, smoothedPrices map[string]*big.Int) (map[string]*big.Int, error) {
-	ret := _m.Called(ctx, votes, midPrices, fundingRates, smoothedPrices)
+// AggregateDaemonVEIntoFinalPrices provides a mock function with given fields: ctx, votes
+func (_m *VoteAggregator) AggregateDaemonVEIntoFinalPrices(ctx types.Context, votes []aggregator.Vote) (map[string]*big.Int, error) {
+	ret := _m.Called(ctx, votes)
 
 	if len(ret) == 0 {
 		panic("no return value specified for AggregateDaemonVEIntoFinalPrices")
@@ -27,19 +27,19 @@ func (_m *VoteAggregator) AggregateDaemonVEIntoFinalPrices(ctx types.Context, vo
 
 	var r0 map[string]*big.Int
 	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, []aggregator.Vote, map[string]*big.Int, map[string]*big.Int, map[string]*big.Int) (map[string]*big.Int, error)); ok {
-		return rf(ctx, votes, midPrices, fundingRates, smoothedPrices)
+	if rf, ok := ret.Get(0).(func(types.Context, []aggregator.Vote) (map[string]*big.Int, error)); ok {
+		return rf(ctx, votes)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, []aggregator.Vote, map[string]*big.Int, map[string]*big.Int, map[string]*big.Int) map[string]*big.Int); ok {
-		r0 = rf(ctx, votes, midPrices, fundingRates, smoothedPrices)
+	if rf, ok := ret.Get(0).(func(types.Context, []aggregator.Vote) map[string]*big.Int); ok {
+		r0 = rf(ctx, votes)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(map[string]*big.Int)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(types.Context, []aggregator.Vote, map[string]*big.Int, map[string]*big.Int, map[string]*big.Int) error); ok {
-		r1 = rf(ctx, votes, midPrices, fundingRates, smoothedPrices)
+	if rf, ok := ret.Get(1).(func(types.Context, []aggregator.Vote) error); ok {
+		r1 = rf(ctx, votes)
 	} else {
 		r1 = ret.Error(1)
 	}
