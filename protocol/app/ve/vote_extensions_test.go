@@ -2,6 +2,8 @@ package ve_test
 
 import (
 	"fmt"
+	"math"
+	"math/big"
 
 	"cosmossdk.io/log"
 
@@ -521,4 +523,422 @@ func TestVerifyVoteHandler(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestGetVEBytesFromCurrPrices(t *testing.T) {
+	tests := map[string]struct {
+		markets        []uint32
+		indexPrices    *pricestypes.MarketPriceUpdates
+		smoothedPrices map[uint32]uint64
+		midPrices      map[uint32]uint64
+		fundingRates   map[uint32]int64
+		expected       *vetypes.DaemonVoteExtension
+		expectedError  bool
+	}{
+		"throws error if no prices": {
+			markets: []uint32{},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{},
+			},
+			smoothedPrices: nil,
+			midPrices:      nil,
+			fundingRates:   nil,
+			expected:       nil,
+			expectedError:  true,
+		},
+		"valid single price, no funding-smooth-or-mid": {
+			markets: []uint32{constants.MarketId0},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: math.MaxInt64,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid single price with funding, no smooth or mid": {
+			markets: []uint32{constants.MarketId0},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: 2000, // 0.2% in ppm
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid multiple prices, no funding, smooth or mid": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: math.MaxInt64,
+				constants.MarketId1: math.MaxInt64,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+					constants.MarketId1: constants.Price6Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid multiple prices with funding, no smooth or mid": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: 2000,
+				constants.MarketId1: 1000,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+					constants.MarketId1: constants.Price6Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid multiple prices with funding and smooth, no mid": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5,
+				constants.MarketId1: constants.Price6,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: 2000,
+				constants.MarketId1: 1000,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+					constants.MarketId1: constants.Price6Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid multiple prices with smooth and mid, no funding": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5,
+				constants.MarketId1: constants.Price6,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: math.MaxInt64,
+				constants.MarketId1: math.MaxInt64,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5,
+				constants.MarketId1: constants.Price6,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+					constants.MarketId1: constants.Price6Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid multiple prices with smooth, no funding or mid": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5,
+				constants.MarketId1: constants.Price6,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: math.MaxInt64,
+				constants.MarketId1: math.MaxInt64,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+					constants.MarketId1: constants.Price6Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"valid multiple prices with mid, no funding or smooth": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: math.MaxUint64,
+				constants.MarketId1: math.MaxUint64,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: math.MaxInt64,
+				constants.MarketId1: math.MaxInt64,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5,
+				constants.MarketId1: constants.Price6,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: constants.Price5Bytes,
+					constants.MarketId1: constants.Price6Bytes,
+				},
+			},
+			expectedError: false,
+		},
+		"single price with smooth, funding, and mid": {
+			markets: []uint32{constants.MarketId0},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5 - 100,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: 2000, // 0.2% in ppm
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5In1000SubticksPerTick - 2000,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: getGobEncodedPriceBytes(500003),
+				},
+			},
+			expectedError: false,
+		},
+		"mutliple prices with smooth, funding, and mid": {
+			markets: []uint32{constants.MarketId0, constants.MarketId1},
+			indexPrices: &pricestypes.MarketPriceUpdates{
+				MarketPriceUpdates: []*pricestypes.MarketPriceUpdates_MarketPriceUpdate{
+					pricestypes.NewMarketPriceUpdate(constants.MarketId0, constants.Price5),
+					pricestypes.NewMarketPriceUpdate(constants.MarketId1, constants.Price6),
+				},
+			},
+			smoothedPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5 - 100,
+				constants.MarketId1: constants.Price6 + 100,
+			},
+			fundingRates: map[uint32]int64{
+				constants.MarketId0: 2000, // 0.2% in ppm
+				constants.MarketId1: 500,
+			},
+			midPrices: map[uint32]uint64{
+				constants.MarketId0: constants.Price5In1000SubticksPerTick - 2000,
+				constants.MarketId1: constants.Price6In1000SubticksPerTick + 2000,
+			},
+			expected: &vetypes.DaemonVoteExtension{
+				Prices: map[uint32][]byte{
+					constants.MarketId0: getGobEncodedPriceBytes(500003),
+					constants.MarketId1: getGobEncodedPriceBytes(60036),
+				},
+			},
+			expectedError: false,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			votecodec := vecodec.NewDefaultVoteExtensionCodec()
+			mPriceApplier := &mocks.VEPriceApplier{}
+			mPricesKeeper := &mocks.PreBlockExecPricesKeeper{}
+			mClobKeeper := &mocks.ExtendVoteClobKeeper{}
+			mPerpKeeper := &mocks.ExtendVotePerpetualsKeeper{}
+
+			mPricesKeeper.On("GetValidMarketPriceUpdates", mock.Anything).Return(tc.indexPrices)
+
+			for _, market := range tc.markets {
+				mPricesKeeper.On("GetMarketParam", mock.Anything, market).Return(
+					pricestypes.MarketParam{
+						Id:                 market,
+						Pair:               constants.IdsToPairs[market],
+						MinExchanges:       1,
+						MinPriceChangePpm:  50,
+						ExchangeConfigJson: constants.TestMarketExchangeConfigs[market],
+					},
+					true,
+				)
+
+				if tc.smoothedPrices[market] == math.MaxUint64 {
+					mPricesKeeper.On("GetSmoothedPrice", market).Return(
+						uint64(0),
+						false,
+					)
+				} else {
+					mPricesKeeper.On("GetSmoothedPrice", market).Return(
+						tc.smoothedPrices[market],
+						true,
+					)
+				}
+
+				if tc.fundingRates[market] == math.MaxInt64 {
+					mPerpKeeper.On("GetPerpetual", mock.Anything, market).Return(
+						perptypes.Perpetual{
+							LastFundingRate: dtypes.NewInt(0),
+						},
+						fmt.Errorf("error"),
+					)
+				} else {
+					mPerpKeeper.On("GetPerpetual", mock.Anything, market).Return(
+						perptypes.Perpetual{
+							LastFundingRate: dtypes.NewInt(tc.fundingRates[market]),
+						},
+						nil,
+					)
+				}
+
+				mClobKeeper.On("GetClobPair", mock.Anything, clobtypes.ClobPairId(market)).Return(
+					clobtypes.ClobPair{
+						Id:              market,
+						SubticksPerTick: 1000,
+					},
+					true,
+				)
+
+				if tc.midPrices[market] == math.MaxUint64 {
+					mClobKeeper.On(
+						"GetSingleMarketClobMetadata",
+						mock.Anything,
+						clobtypes.ClobPair{
+							Id:              market,
+							SubticksPerTick: 1000,
+						},
+					).Return(
+						clobtypes.ClobMetadata{
+							MidPrice: 0,
+						},
+					)
+				} else {
+					mClobKeeper.On(
+						"GetSingleMarketClobMetadata",
+						mock.Anything,
+						clobtypes.ClobPair{
+							Id:              market,
+							SubticksPerTick: 1000,
+						},
+					).Return(
+						clobtypes.ClobMetadata{
+							MidPrice: clobtypes.Subticks(tc.midPrices[market]),
+						},
+					)
+				}
+
+			}
+
+			h := ve.NewVoteExtensionHandler(
+				log.NewTestLogger(t),
+				votecodec,
+				mPricesKeeper,
+				mPerpKeeper,
+				mClobKeeper,
+				mPriceApplier,
+			)
+
+			ctx, _, _, _, _, _ := keepertest.PricesKeepers(t)
+			ctx = vetestutils.GetVeEnabledCtx(ctx, 3)
+
+			var expectedVEBytes []byte
+			if tc.expected != nil {
+				var err error
+				expectedVEBytes, err = votecodec.Encode(*tc.expected)
+				require.NoError(t, err)
+			}
+
+			veBytes, err := h.GetVEBytesFromCurrPrices(ctx)
+
+			if tc.expectedError {
+				require.Error(t, err)
+				require.Nil(t, veBytes)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, expectedVEBytes, veBytes)
+			}
+		})
+	}
+}
+
+func getGobEncodedPriceBytes(
+	price int64,
+) []byte {
+	bytes, err := big.NewInt(price).GobEncode()
+	if err != nil {
+		return []byte{}
+	}
+	return bytes
 }

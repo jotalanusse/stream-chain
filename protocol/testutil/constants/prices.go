@@ -41,6 +41,22 @@ const (
 	ErrorMsgInvalidMinPriceChange   = "Min price change in parts-per-million must be greater than 0 and less than 10000"
 )
 
+var IdsToPairs = map[uint32]string{
+	0: BtcUsdPair,
+	1: EthUsdPair,
+	2: SolUsdPair,
+	3: IsoUsdPair,
+	4: Iso2UsdPair,
+}
+
+var IdsToExponents = map[uint32]int32{
+	0: BtcUsdExponent,
+	1: EthUsdExponent,
+	2: SolUsdExponent,
+	3: IsoUsdExponent,
+	4: Iso2UsdExponent,
+}
+
 var TestMarketExchangeConfigs = map[pricefeedclient.MarketId]string{
 	exchange_config.MARKET_BTC_USD: `{
 		"exchanges": [
