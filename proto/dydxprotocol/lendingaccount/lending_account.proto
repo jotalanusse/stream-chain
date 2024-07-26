@@ -13,7 +13,7 @@ message LendingAccount {
   // borrowed_amount is the amount borrowed in the lending account.
   string borrowed_amount = 1;
 
-  // initial_borrow_index is the initial borrow index for the lending account.
+  // initial_borrow_index is used to track interest owed.
   string initial_borrow_index = 2;
 
   // subaccount_id is the ID of the subaccount associated with the lending account.
