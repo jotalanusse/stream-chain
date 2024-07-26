@@ -72,7 +72,7 @@ func (pa *PriceApplier) writePricesToStore(
 		err := pa.writePricesToStoreFromCache(ctx)
 		return nil, true, err
 	} else {
-		prices, err := pa.getPricesAndAggregateFromVE(ctx, request)
+		prices, err := pa.GetPricesAndAggregateFromVE(ctx, request)
 		if err != nil {
 			return nil, false, err
 		}
@@ -82,7 +82,7 @@ func (pa *PriceApplier) writePricesToStore(
 	}
 }
 
-func (pa *PriceApplier) getPricesAndAggregateFromVE(
+func (pa *PriceApplier) GetPricesAndAggregateFromVE(
 	ctx sdk.Context,
 	request *abci.RequestFinalizeBlock,
 ) (map[string]*big.Int, error) {

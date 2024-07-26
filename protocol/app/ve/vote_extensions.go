@@ -258,15 +258,25 @@ func (h *VoteExtensionHandler) getMedianPrice(
 	smoothedPrice *big.Int,
 	lastFundingRate *big.Int,
 ) *big.Int {
-	adjustedFundingRate := new(big.Int).Add(lastFundingRate, big.NewInt(1))
-	fundingWeightedPrice := new(big.Int).Mul(indexPrice, adjustedFundingRate)
-	fmt.Println("FUNDING WEIGHTED PRICE", fundingWeightedPrice)
+
+	fundingWeightedPrice := h.getFundingWeightedIndexPrice(indexPrice, lastFundingRate)
 	prices := []*big.Int{clobMidPrice, smoothedPrice, fundingWeightedPrice}
 	sort.Slice(prices, func(i, j int) bool {
 		return prices[i].Cmp(prices[j]) < 0
 	})
 
 	return prices[1]
+}
+
+func (h *VoteExtensionHandler) getFundingWeightedIndexPrice(
+	indexPrice *big.Int,
+	lastFundingRate *big.Int,
+) *big.Int {
+	ppmFactor := new(big.Int).SetInt64(1000000)
+	adjustedFundingRate := new(big.Int).Add(lastFundingRate, ppmFactor)
+	fundingWeightedPrice := new(big.Int).Mul(indexPrice, adjustedFundingRate)
+	fundingWeightedPrice = fundingWeightedPrice.Div(fundingWeightedPrice, ppmFactor)
+	return fundingWeightedPrice
 }
 
 func (h *VoteExtensionHandler) getClobMidPrice(
@@ -281,7 +291,13 @@ func (h *VoteExtensionHandler) getClobMidPrice(
 
 	clobMetadata := h.clobKeeper.GetSingleMarketClobMetadata(ctx, clobPair)
 
-	return clobMetadata.MidPrice.ToBigInt()
+	if clobMetadata.MidPrice == 0 {
+		return nil
+	}
+
+	midPrice := clobMetadata.MidPrice.ToBigInt()
+	subticksPerTick := new(big.Int).SetUint64(uint64(clobPair.SubticksPerTick))
+	return new(big.Int).Div(midPrice, subticksPerTick)
 }
 
 func (h *VoteExtensionHandler) getSmoothedPrice(
