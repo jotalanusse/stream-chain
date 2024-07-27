@@ -9,4 +9,16 @@ const (
 	StoreKey = ModuleName
 
 	LendingAccountKeyPrefix = "lending_account"
+
+	LendingManagerKeyPrefix = "lending_manager"
+
+	LendingInterfaceKeyPrefix = "lending_interface"
+
+	TotalDebtKeyPrefix = "total_debt"
+
+	BorrowedInBlockKeyPrefix = "borrowed_in_block"
+
+	BlockLastBorrowedKeyPrefix = "block_last_borrowed"
+
+	LendingManagerSybilResistanceKeyPrefix = "lending_manager_sybil_resistance"
 )

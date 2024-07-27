@@ -29,7 +29,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type LendingAccount struct {
 	// borrowed_amount is the amount borrowed in the lending account.
 	BorrowedAmount string `protobuf:"bytes,1,opt,name=borrowed_amount,json=borrowedAmount,proto3" json:"borrowed_amount,omitempty"`
-	// initial_borrow_index is the initial borrow index for the lending account.
+	// initial_borrow_index is used to track interest owed.
 	InitialBorrowIndex string `protobuf:"bytes,2,opt,name=initial_borrow_index,json=initialBorrowIndex,proto3" json:"initial_borrow_index,omitempty"`
 	// subaccount_id is the ID of the subaccount associated with the lending account.
 	SubaccountId types.SubaccountId `protobuf:"bytes,3,opt,name=subaccount_id,json=subaccountId,proto3" json:"subaccount_id"`

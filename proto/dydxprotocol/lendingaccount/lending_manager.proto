@@ -11,14 +11,14 @@ message LendingManager {
     // The name of the lending manager.
     string name = 1;
 
-    // The base denomination for the lending manager.
-    string base_denom = 2;
+    // The base asset for the lending manager.
+    uint32 asset_id = 2;
 
-    // A list of enabled lending perpetuals.
-    repeated EnabledLendingPerpetual enabled_lending_perpetuals = 3;
+    // A map of enabled lending perpetuals. 
+    map<uint32, EnabledLendingPerpetual> enabled_lending_perpetuals = 3;
 
-    // A list of enabled collateral assets.
-    repeated EnabledCollateralAssets enabled_collateral_assets = 4;
+    // A map of enabled collateral assets. 
+    map<uint32, EnabledCollateralAssets> enabled_collateral_assets = 4;
 
     // Parameters for liquidation.
     LiquidationParams liquidation_params = 5;
@@ -33,27 +33,22 @@ message LendingManager {
     bool is_frozen = 8;
 
     // A map from account number to address.
-    map<uint64, string> account_number_to_address = 9 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+    map<uint32, string> account_number_to_address = 9 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 }
 
 
 message EnabledLendingPerpetual {
 
-    // The ID of the perpetual.
-    uint32 perp_id = 1;
-
     // Indicates if the account is enabled to go long or short.
-    bool is_long = 2;
+    bool long_enabled = 1;
+    bool short_enabled = 2;
 
 }
 
 message EnabledCollateralAssets {
 
-    // The denomination of the collateral asset.
-    string denom = 1;
-
     // The collateral ratio.
-    uint64 collateral_ratio = 2;
+    uint64 collateral_ratio = 1;
 }
 
 message LiquidationParams {
