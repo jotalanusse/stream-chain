@@ -1,8 +1,10 @@
 package testutil
 
 import (
+	"math/big"
 	"testing"
 
+	"cosmossdk.io/math"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/network"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -17,16 +19,16 @@ import (
 func CreateBankGenesisState(
 	t *testing.T,
 	cfg network.Config,
-	initialSubaccountModuleBalance int64,
+	initialSubaccountModuleBalance *big.Int,
 ) []byte {
 	bankGenState := banktypes.GenesisState{
 		Balances: []banktypes.Balance{
 			{
 				Address: satypes.ModuleAddress.String(),
 				Coins: []sdk.Coin{
-					sdk.NewInt64Coin(
-						constants.Usdc.Denom,
-						initialSubaccountModuleBalance,
+					sdk.NewCoin(
+						constants.TDai.Denom,
+						math.NewIntFromBigInt(initialSubaccountModuleBalance),
 					),
 				},
 			},

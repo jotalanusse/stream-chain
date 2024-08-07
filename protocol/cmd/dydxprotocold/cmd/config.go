@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	// `minGasPriceUusdc` is default minimum gas price in micro USDC.
-	minGasPriceUusdc = "0.025" + assettypes.UusdcDenom
+	// `minGasPriceUusdc` is default minimum gas price in TDAI.
+	// Note that TDAI has 18 decimals.
+	minGasPriceTDai = "25000000000" + assettypes.TDaiDenom
 	// `minGasPriceStakeToken` is the default minimum gas price in stake token.
 	// TODO(GENESIS): `adv4tnt` is a placeholder for the stake token of the dYdX chain.
 	// Before this software is published for genesis, `adv4tnt` should be replaced with
@@ -19,7 +20,7 @@ const (
 	// is roughly the same in value as 0.025 micro USDC.
 	minGasPriceStakeToken = "25000000000adv4tnt"
 	// `minGasPrice` defines the default `minimum-gas-prices` attribute in validator's `app.toml` file.
-	MinGasPrice = minGasPriceUusdc + "," + minGasPriceStakeToken
+	MinGasPrice = minGasPriceTDai + "," + minGasPriceStakeToken
 )
 
 // DydxAppConfig specifies dYdX app specific config.

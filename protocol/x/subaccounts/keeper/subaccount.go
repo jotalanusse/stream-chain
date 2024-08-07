@@ -402,10 +402,10 @@ func (k Keeper) addYieldToSubaccount(
 	if totalNewYield.Cmp(big.NewInt(0)) < 0 {
 		panic("Total yield is less than 0. This should not be the case")
 	}
-	newUsdcPosition := new(big.Int).Add(subaccount.GetUsdcPosition(), totalNewYield)
+	newTDaiPosition := new(big.Int).Add(subaccount.GetTDaiPosition(), totalNewYield)
 
 	// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
-	newSubaccount.SetUsdcAssetPosition(newUsdcPosition)
+	newSubaccount.SetTDaiAssetPosition(newTDaiPosition)
 	return newSubaccount, totalNewYield, nil
 }
 
@@ -418,7 +418,7 @@ func getYieldFromAssetPositions(
 ) {
 	for _, assetPosition := range subaccount.AssetPositions {
 		// TODO [YBCP-16]: Adapt quote currency to be DAI
-		if assetPosition.AssetId != assettypes.AssetUsdc.Id {
+		if assetPosition.AssetId != assettypes.AssetTDai.Id {
 			continue
 		}
 		newAssetYield, err := calculateAssetYieldInQuoteQuantums(subaccount, assetYieldIndex, assetPosition)
@@ -752,12 +752,12 @@ func GetSettledSubaccountWithPerpetuals(
 		panic("Total yield is less than 0. This should not be the case")
 	}
 
-	newUsdcPosition := new(big.Int).Add(subaccount.GetUsdcPosition(), totalNewYield)
+	newTDaiPosition := new(big.Int).Add(subaccount.GetTDaiPosition(), totalNewYield)
 	totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
-	newUsdcPosition.Add(newUsdcPosition, totalNetSettlement)
+	newTDaiPosition.Add(newTDaiPosition, totalNetSettlement)
 
 	// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
-	newSubaccount.SetUsdcAssetPosition(newUsdcPosition)
+	newSubaccount.SetTDaiAssetPosition(newTDaiPosition)
 	return newSubaccount, fundingPayments, nil
 }
 

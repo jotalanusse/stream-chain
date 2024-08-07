@@ -10,13 +10,13 @@ import (
 
 const (
 	// TestFee is the gas fee offered for test transactions.
-	TestFee = "50000" + asstypes.UusdcDenom // 5 cents
+	TestFee = "50000000000000000" + asstypes.TDaiDenom // 5 cents
 	// TestFeeNativeTokens is the gas fee offered for test transactions specified in native tokens.
 	// Value is .05 of native token in adv4tnt denom.
 	TestFeeNativeTokens = "50000000000000000" + lib.DefaultBaseDenom
 	// TestGasLimit is the gas limit used for test transactions.
 	// It's set to a larger amount such that the transaction never runs out of gas.
-	TestGasLimit = 1_000_000
+	TestGasLimit = 1_000_000_000_000_000_000
 	// TestNativeTokenDenom is the denom of the native token used for testing.
 	TestNativeTokenDenom = "adv4tnt"
 )
@@ -46,13 +46,13 @@ var (
 		AtomicResolution: int32(-8),
 	}
 
-	Usdc = &asstypes.Asset{
+	TDai = &asstypes.Asset{
 		Id:               0,
-		Symbol:           "USDC",
-		Denom:            asstypes.AssetUsdc.Denom,
-		DenomExponent:    int32(-6),
+		Symbol:           "TDAI",
+		Denom:            asstypes.AssetTDai.Denom,
+		DenomExponent:    asstypes.AssetTDai.DenomExponent,
 		HasMarket:        false,
 		MarketId:         uint32(0),
-		AtomicResolution: int32(-6),
+		AtomicResolution: asstypes.AssetTDai.DenomExponent,
 	}
 )

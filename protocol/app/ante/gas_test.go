@@ -1,14 +1,15 @@
 package ante_test
 
 import (
+	"reflect"
+	"testing"
+
 	"cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	assets "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	bank "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"reflect"
-	"testing"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -182,7 +183,7 @@ func TestSubmitTxnWithGas(t *testing.T) {
 				FromAddress: constants.BobAccAddress.String(),
 				ToAddress:   constants.AliceAccAddress.String(),
 				Amount: []sdk.Coin{
-					sdk.NewCoin(assets.AssetUsdc.Denom, sdkmath.NewInt(1)),
+					sdk.NewCoin(assets.AssetTDai.Denom, sdkmath.NewInt(1)),
 				},
 			}
 

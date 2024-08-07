@@ -12,8 +12,8 @@ const (
 	TenThousand       = uint32(10_000)
 	OneHundred        = uint32(100)
 	MaxPriceChangePpm = uint32(10_000)
-	// 10^6 quantums == 1 USD.
-	QuoteCurrencyAtomicResolution = int32(-6)
+	// 10^18 quantums == 1 tDAI.
+	QuoteCurrencyAtomicResolution = int32(-18)
 
 	ZeroUint64 = uint64(0)
 
@@ -27,6 +27,14 @@ const (
 var PowerReduction = sdkmath.NewIntFromBigInt(
 	new(big.Int).SetUint64(1_000_000_000_000_000_000),
 )
+
+func TDaiFullCoinToTDaiQuantumsExponent() *big.Int {
+	return BigIntTenToTheEighteen()
+}
+
+func TDaiFullCoinToTDaiDenomExponent() *big.Int {
+	return BigIntTenToTheEighteen()
+}
 
 // BigInt0 returns a `big.Int` that is set to 0.
 func BigInt0() *big.Int {
@@ -65,6 +73,11 @@ func BigIntOneTrillion() *big.Int {
 	return big.NewInt(1_000_000_000_000)
 }
 
+// BigIntTenToTheEighteen returns a `big.Int` that is set to 1_000_000_000_000_000_000
+func BigIntTenToTheEighteen() *big.Int {
+	return big.NewInt(1_000_000_000_000_000_000)
+}
+
 // BigRatOneMillion returns a `big.Rat` that is set to 1_000_000.
 func BigRatOneMillion() *big.Rat {
 	return big.NewRat(1_000_000, 1)
@@ -78,4 +91,12 @@ func BigRat0() *big.Rat {
 // BigRat1 returns a `big.Rat` that is set to 1.
 func BigRat1() *big.Rat {
 	return big.NewRat(1, 1)
+}
+
+func IntTDaiToBigIntTDaiQuantums(tdaiAmount int64) *big.Int {
+	return new(big.Int).Mul(big.NewInt(tdaiAmount), TDaiFullCoinToTDaiQuantumsExponent())
+}
+
+func IntTDaiToBigIntTDaiDenomAmount(tdaiAmount int64) *big.Int {
+	return new(big.Int).Mul(big.NewInt(tdaiAmount), TDaiFullCoinToTDaiDenomExponent())
 }

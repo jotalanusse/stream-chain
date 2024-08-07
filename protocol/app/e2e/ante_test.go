@@ -1,6 +1,7 @@
 package e2e_test
 
 import (
+	"math/big"
 	"math/rand"
 	"sync"
 	"sync/atomic"
@@ -26,6 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/syndtr/goleveldb/leveldb/testutil"
 
+	"cosmossdk.io/math"
 	ratelimittypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
 )
 
@@ -62,7 +64,7 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 							Number: 0,
 						},
 						AssetPositions: []*satypes.AssetPosition{
-							&constants.Usdc_Asset_500_000,
+							&constants.TDai_Asset_500_000,
 						},
 					})
 				}
@@ -74,9 +76,9 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 				for _, simAccount := range simAccounts {
 					genesisState.Balances = append(genesisState.Balances, banktypes.Balance{
 						Address: sdktypes.AccAddress(simAccount.PubKey.Address()).String(),
-						Coins: sdktypes.NewCoins(sdktypes.NewInt64Coin(
-							constants.Usdc.Denom,
-							constants.Usdc_Asset_500_000.Quantums.BigInt().Int64(),
+						Coins: sdktypes.NewCoins(sdktypes.NewCoin(
+							constants.TDai.Denom,
+							math.NewIntFromBigInt(constants.TDai_Asset_500_000.Quantums.BigInt()),
 						)),
 					})
 				}
@@ -161,8 +163,8 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 								Number: 0,
 							},
 							Recipient: simAccount.Address.String(),
-							AssetId:   constants.Usdc.Id,
-							Quantums:  constants.Usdc_Asset_1.Quantums.BigInt().Uint64(),
+							AssetId:   constants.TDai.Id,
+							Quantums:  constants.TDai_Asset_1.Quantums.BigInt().Uint64(),
 						},
 					},
 					constants.TestFeeCoins_5Cents,
@@ -289,10 +291,15 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 		require.Equal(
 			t,
 			[]*satypes.AssetPosition{{
-				AssetId: constants.Usdc.Id,
-				Quantums: dtypes.NewIntFromUint64(
-					constants.Usdc_Asset_500_000.Quantums.BigInt().Uint64() -
-						transferCounts[i].Load()*constants.Usdc_Asset_1.Quantums.BigInt().Uint64()),
+				AssetId: constants.TDai.Id,
+				Quantums: dtypes.NewIntFromBigInt(
+					new(big.Int).Sub(constants.TDai_Asset_500_000.Quantums.BigInt(),
+						new(big.Int).Mul(
+							new(big.Int).SetUint64(transferCounts[i].Load()),
+							constants.TDai_Asset_1.Quantums.BigInt(),
+						),
+					),
+				),
 			}},
 			subAccount.AssetPositions,
 		)

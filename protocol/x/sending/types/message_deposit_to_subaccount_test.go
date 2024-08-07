@@ -44,7 +44,7 @@ func TestMsgDepositToSubaccount_ValidateBasic(t *testing.T) {
 				AssetId:   uint32(1),
 				Quantums:  uint64(100),
 			},
-			err: types.ErrNonUsdcAssetTransferNotImplemented,
+			err: types.ErrNonTDaiAssetTransferNotImplemented,
 		},
 		"Invalid quantums": {
 			msg: types.MsgDepositToSubaccount{

@@ -3,17 +3,16 @@ package types
 import "github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 
 const (
-	// UusdcDenom is the precomputed denom for IBC Micro USDC.
-	UusdcDenom         = "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5"
-	UusdcDenomExponent = -6
+	TDaiDenom         = "tdai"
+	TDaiDenomExponent = -18
 )
 
 var (
-	AssetUsdc Asset = Asset{
+	AssetTDai Asset = Asset{
 		Id:               0,
-		Symbol:           "USDC",
-		DenomExponent:    UusdcDenomExponent,
-		Denom:            UusdcDenom,
+		Symbol:           "TDAI",
+		DenomExponent:    TDaiDenomExponent,
+		Denom:            TDaiDenom,
 		HasMarket:        false,
 		AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 		AssetYieldIndex:  "0/1",
@@ -24,7 +23,7 @@ var (
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Assets: []Asset{
-			AssetUsdc,
+			AssetTDai,
 		},
 	}
 }
@@ -38,8 +37,8 @@ func (gs GenesisState) Validate() error {
 	}
 
 	// The first asset should always be USDC.
-	if gs.Assets[0] != AssetUsdc {
-		return ErrUsdcMustBeAssetZero
+	if gs.Assets[0] != AssetTDai {
+		return ErrTDaiMustBeAssetZero
 	}
 
 	// Provided assets should not contain duplicated asset ids, and denoms.

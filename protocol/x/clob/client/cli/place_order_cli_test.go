@@ -29,8 +29,8 @@ import (
 )
 
 var (
-	initialQuoteBalance               = int64(1_000_000_000)  // $1,000.
-	initialSubaccountModuleAccBalance = int64(10_000_000_000) // $10,000.
+	initialQuoteBalance               = lib.IntTDaiToBigIntTDaiQuantums(1_000)     // $1,000
+	initialSubaccountModuleAccBalance = lib.IntTDaiToBigIntTDaiDenomAmount(10_000) // $10,000
 	subaccountNumberZero              = uint32(0)
 	subaccountNumberOne               = uint32(1)
 )
@@ -159,10 +159,16 @@ func (s *PlaceOrderIntegrationTestSuite) TestCLIPlaceOrder() {
 
 	s.Require().Contains(
 		[]*big.Int{
-			new(big.Int).SetInt64(initialQuoteBalance - fillSizeQuoteQuantums - takerFee),
-			new(big.Int).SetInt64(initialQuoteBalance - fillSizeQuoteQuantums - makerFee),
+			new(big.Int).Sub(
+				new(big.Int).Sub(initialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(takerFee),
+			),
+			new(big.Int).Sub(
+				new(big.Int).Sub(initialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(makerFee),
+			),
 		},
-		subaccountZero.GetUsdcPosition(),
+		subaccountZero.GetTDaiPosition(),
 	)
 
 	s.Require().Len(subaccountZero.PerpetualPositions, 1)
@@ -170,10 +176,16 @@ func (s *PlaceOrderIntegrationTestSuite) TestCLIPlaceOrder() {
 
 	s.Require().Contains(
 		[]*big.Int{
-			new(big.Int).SetInt64(initialQuoteBalance + fillSizeQuoteQuantums - takerFee),
-			new(big.Int).SetInt64(initialQuoteBalance + fillSizeQuoteQuantums - makerFee),
+			new(big.Int).Sub(
+				new(big.Int).Add(initialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(takerFee),
+			),
+			new(big.Int).Sub(
+				new(big.Int).Add(initialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(makerFee),
+			),
 		},
-		subaccountOne.GetUsdcPosition(),
+		subaccountOne.GetTDaiPosition(),
 	)
 
 	s.Require().Len(subaccountOne.PerpetualPositions, 1)
@@ -186,9 +198,14 @@ func (s *PlaceOrderIntegrationTestSuite) TestCLIPlaceOrder() {
 		satypes.ModuleName,
 	)
 	s.Require().NoError(err)
+	finalAccountBalance := new(big.Int).Sub(
+		new(big.Int).Sub(initialSubaccountModuleAccBalance, big.NewInt(makerFee)),
+		big.NewInt(takerFee),
+	)
+
 	s.Require().Equal(
-		initialSubaccountModuleAccBalance-makerFee-takerFee,
-		saModuleUSDCBalance,
+		0,
+		finalAccountBalance.Cmp(saModuleUSDCBalance),
 	)
 
 	network.CleanupCustomNetwork()

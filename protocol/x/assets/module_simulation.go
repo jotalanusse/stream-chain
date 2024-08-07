@@ -33,7 +33,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	assetsGenesis := types.GenesisState{
 		Assets: []types.Asset{
-			types.AssetUsdc,
+			types.AssetTDai,
 		},
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&assetsGenesis)

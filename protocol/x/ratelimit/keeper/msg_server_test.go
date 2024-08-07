@@ -16,7 +16,7 @@ import (
 
 var (
 	altLimitParamsForUsdc = types.LimitParams{
-		Denom: assettypes.UusdcDenom,
+		Denom: assettypes.TDaiDenom,
 		Limiters: []types.Limiter{
 			{
 				Period:          3600 * time.Second,
@@ -84,7 +84,7 @@ func TestMsgSetLimitParams(t *testing.T) {
 			input: &types.MsgSetLimitParams{
 				Authority: lib.GovModuleAddress.String(),
 				LimitParams: types.LimitParams{
-					Denom:    assettypes.UusdcDenom,
+					Denom:    assettypes.TDaiDenom,
 					Limiters: []types.Limiter{}, // Empty list removes rate-limit
 				},
 			},

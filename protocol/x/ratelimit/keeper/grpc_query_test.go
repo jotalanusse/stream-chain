@@ -60,7 +60,7 @@ func TestCapacityByDenom(t *testing.T) {
 	}{
 		"Success, returns default limiter and baseline capacity": {
 			req: &types.QueryCapacityByDenomRequest{
-				Denom: assettypes.UusdcDenom,
+				Denom: assettypes.TDaiDenom,
 			},
 			res: &types.QueryCapacityByDenomResponse{
 				LimiterCapacityList: []types.LimiterCapacity{
@@ -120,7 +120,7 @@ func TestCapacityByDenom(t *testing.T) {
 						// initialized with minimum baseline.
 						genesisState.Balances = bank_testutil.FilterDenomFromBalances(
 							genesisState.Balances,
-							assettypes.UusdcDenom,
+							assettypes.TDaiDenom,
 						)
 					},
 				)

@@ -29,8 +29,8 @@ import (
 )
 
 const (
-	cancelsInitialQuoteBalance               = int64(1_000_000_000)  // $1,000.
-	cancelsInitialSubaccountModuleAccBalance = int64(10_000_000_000) // $10,000.
+	cancelsInitialQuoteBalance               = lib.IntTDaiToBigIntTDaiQuantums(1_000)     // $1,000
+	cancelsInitialSubaccountModuleAccBalance = lib.IntTDaiToBigIntTDaiDenomAmount(10_000) // $10,000
 	cancelsSubaccountNumberZero              = uint32(0)
 	cancelsSubaccountNumberOne               = uint32(1)
 )
@@ -147,14 +147,14 @@ func (s *CancelOrderIntegrationTestSuite) TestCLICancelPendingOrder() {
 		subaccount := subaccountResp.Subaccount
 
 		s.Require().Equal(
-			new(big.Int).SetInt64(cancelsInitialQuoteBalance),
-			subaccount.GetUsdcPosition(),
+			cancelsInitialQuoteBalance,
+			subaccount.GetTDaiPosition(),
 		)
 		s.Require().Len(subaccount.PerpetualPositions, 0)
 
 		s.Require().Equal(
-			new(big.Int).SetInt64(cancelsInitialQuoteBalance),
-			subaccount.GetUsdcPosition())
+			cancelsInitialQuoteBalance,
+			subaccount.GetTDaiPosition())
 		s.Require().Len(subaccount.PerpetualPositions, 0)
 	}
 
@@ -166,8 +166,8 @@ func (s *CancelOrderIntegrationTestSuite) TestCLICancelPendingOrder() {
 	)
 	s.Require().NoError(err)
 	s.Require().Equal(
-		cancelsInitialSubaccountModuleAccBalance,
-		saModuleUSDCBalance,
+		0,
+		cancelsInitialSubaccountModuleAccBalance.Cmp(saModuleUSDCBalance),
 	)
 
 	network.CleanupCustomNetwork()
@@ -272,20 +272,32 @@ func (s *CancelOrderIntegrationTestSuite) TestCLICancelMatchingOrders() {
 
 	s.Require().Contains(
 		[]*big.Int{
-			new(big.Int).SetInt64(cancelsInitialQuoteBalance - fillSizeQuoteQuantums - takerFee),
-			new(big.Int).SetInt64(cancelsInitialQuoteBalance - fillSizeQuoteQuantums - makerFee),
+			new(big.Int).Sub(
+				new(big.Int).Sub(cancelsInitialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(takerFee),
+			),
+			new(big.Int).Sub(
+				new(big.Int).Sub(cancelsInitialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(makerFee),
+			),
 		},
-		subaccountZero.GetUsdcPosition(),
+		subaccountZero.GetTDaiPosition(),
 	)
 	s.Require().Len(subaccountZero.PerpetualPositions, 1)
 	s.Require().Equal(quantums.ToBigInt(), subaccountZero.PerpetualPositions[0].GetBigQuantums())
 
 	s.Require().Contains(
 		[]*big.Int{
-			new(big.Int).SetInt64(cancelsInitialQuoteBalance + fillSizeQuoteQuantums - takerFee),
-			new(big.Int).SetInt64(cancelsInitialQuoteBalance + fillSizeQuoteQuantums - makerFee),
+			new(big.Int).Sub(
+				new(big.Int).Add(cancelsInitialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(takerFee),
+			),
+			new(big.Int).Sub(
+				new(big.Int).Add(cancelsInitialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(makerFee),
+			),
 		},
-		subaccountOne.GetUsdcPosition(),
+		subaccountOne.GetTDaiPosition(),
 	)
 	s.Require().Len(subaccountOne.PerpetualPositions, 1)
 	s.Require().Equal(new(big.Int).Neg(
@@ -301,8 +313,8 @@ func (s *CancelOrderIntegrationTestSuite) TestCLICancelMatchingOrders() {
 	)
 	s.Require().NoError(err)
 	s.Require().Equal(
-		cancelsInitialSubaccountModuleAccBalance-makerFee-takerFee,
-		saModuleUSDCBalance,
+		0,
+		cancelsInitialSubaccountModuleAccBalance-makerFee-takerFee.Cmp(saModuleUSDCBalance),
 	)
 
 	network.CleanupCustomNetwork()

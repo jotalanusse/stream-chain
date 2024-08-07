@@ -1324,7 +1324,7 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 		// 		{
 		// 			Id: &constants.Dave_Num0,
 		// 			AssetPositions: []*satypes.AssetPosition{
-		// 				&constants.Usdc_Asset_50_000,
+		// 				&constants.TDai_Asset_50_000,
 		// 			},
 		// 			PerpetualPositions: []*satypes.PerpetualPosition{
 		// 				{
@@ -1369,7 +1369,7 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 		// 		{
 		// 			Id: &constants.Dave_Num0,
 		// 			AssetPositions: []*satypes.AssetPosition{
-		// 				&constants.Usdc_Asset_50_000,
+		// 				&constants.TDai_Asset_50_000,
 		// 			},
 		// 			PerpetualPositions: []*satypes.PerpetualPosition{
 		// 				{

@@ -1,6 +1,8 @@
 package bank
 
 import (
+	"math/big"
+
 	sdkmath "cosmossdk.io/math"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/network"
@@ -19,7 +21,7 @@ func GetModuleAccUsdcBalance(
 	codec codec.Codec,
 	moduleName string,
 ) (
-	balance int64,
+	balance *big.Int,
 	err error,
 ) {
 	moduleAddress := authtypes.NewModuleAddress(moduleName)
@@ -28,32 +30,23 @@ func GetModuleAccUsdcBalance(
 		" query bank balances " + moduleAddress.String()
 	transferOut, _, err := network.QueryCustomNetwork(query)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-
-	// resp, err := testutil.GetRequest(fmt.Sprintf(
-	// 	"%s/cosmos/bank/v1beta1/balances/%s",
-	// 	val.APIAddress,
-	// 	moduleAddress,
-	// ))
-	// if err != nil {
-	// 	return 0, err
-	// }
 
 	var balRes banktypes.QueryAllBalancesResponse
 
 	err = codec.UnmarshalJSON(transferOut, &balRes)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	for _, coin := range balRes.Balances {
-		if coin.Denom == constants.Usdc.Denom {
-			return coin.Amount.Int64(), nil
+		if coin.Denom == constants.TDai.Denom {
+			return coin.Amount.BigInt(), nil
 		}
 	}
 
-	return 0, nil
+	return nil, nil
 }
 
 // MatchUsdcOfAmount is a test utility function to generate a matcher function

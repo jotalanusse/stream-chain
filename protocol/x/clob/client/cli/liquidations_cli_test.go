@@ -164,13 +164,19 @@ func (s *LiquidationsIntegrationTestSuite) TestCLILiquidations() {
 	// Assert that both Subaccounts have the appropriate state.
 	takerFee := fillSizeQuoteQuantums * int64(constants.PerpetualFeeParams.Tiers[0].TakerFeePpm) / int64(lib.OneMillion)
 	makerFee := fillSizeQuoteQuantums * int64(constants.PerpetualFeeParams.Tiers[0].MakerFeePpm) / int64(lib.OneMillion)
-	subaccountZeroInitialQuoteBalance := constants.Usdc_Asset_100_000.GetBigQuantums().Int64()
+	subaccountZeroInitialQuoteBalance := constants.TDai_Asset_100_000.GetBigQuantums()
 	s.Require().Contains(
 		[]*big.Int{
-			new(big.Int).SetInt64(subaccountZeroInitialQuoteBalance - fillSizeQuoteQuantums - takerFee),
-			new(big.Int).SetInt64(subaccountZeroInitialQuoteBalance - fillSizeQuoteQuantums - makerFee),
+			new(big.Int).Sub(
+				new(big.Int).Sub(subaccountZeroInitialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(takerFee),
+			),
+			new(big.Int).Sub(
+				new(big.Int).Sub(subaccountZeroInitialQuoteBalance, big.NewInt(fillSizeQuoteQuantums)),
+				big.NewInt(makerFee),
+			),
 		},
-		subaccountZero.GetUsdcPosition(),
+		subaccountZero.GetTDaiPosition(),
 	)
 	s.Require().Len(subaccountZero.PerpetualPositions, 1)
 	s.Require().Equal(liqTestMakerOrderQuantums.ToBigInt(), subaccountZero.PerpetualPositions[0].GetBigQuantums())
@@ -181,7 +187,7 @@ func (s *LiquidationsIntegrationTestSuite) TestCLILiquidations() {
 		int64(lib.OneMillion)
 	s.Require().Equal(
 		new(big.Int).SetInt64(subaccountOneInitialQuoteBalance+fillSizeQuoteQuantums-liquidationFee),
-		subaccountOne.GetUsdcPosition(),
+		subaccountOne.GetTDaiPosition(),
 	)
 	s.Require().Empty(subaccountOne.PerpetualPositions)
 
@@ -192,9 +198,15 @@ func (s *LiquidationsIntegrationTestSuite) TestCLILiquidations() {
 		satypes.ModuleName,
 	)
 	s.Require().NoError(err)
+
+	finalAccountBalance := new(big.Int).Sub(
+		new(big.Int).Sub(initialSubaccountModuleAccBalance, big.NewInt(makerFee)),
+		big.NewInt(liquidationFee),
+	)
+
 	s.Require().Equal(
-		initialSubaccountModuleAccBalance-makerFee-liquidationFee,
-		saModuleUSDCBalance,
+		0,
+		finalAccountBalance.Cmp(saModuleUSDCBalance),
 	)
 
 	// Check that the insurance fund has expected USDC balance.
@@ -205,6 +217,9 @@ func (s *LiquidationsIntegrationTestSuite) TestCLILiquidations() {
 	)
 
 	s.Require().NoError(err)
-	s.Require().Equal(liquidationFee, insuranceFundBalance)
+	s.Require().Equal(
+		0,
+		liquidationFee.Cmp(insuranceFundBalance),
+	)
 	network.CleanupCustomNetwork()
 }

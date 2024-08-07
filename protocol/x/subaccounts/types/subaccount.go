@@ -63,44 +63,44 @@ func (m *Subaccount) GetPerpetualPositionForId(
 	return nil, false
 }
 
-// GetUsdcPosition returns the balance of the USDC asset position.
-func (m *Subaccount) GetUsdcPosition() *big.Int {
-	usdcAssetPosition := m.getUsdcAssetPosition()
-	if usdcAssetPosition == nil {
+// GetTDaiPosition returns the balance of the TDAI asset position.
+func (m *Subaccount) GetTDaiPosition() *big.Int {
+	tDaiAssetPosition := m.getTDaiAssetPosition()
+	if tDaiAssetPosition == nil {
 		return new(big.Int)
 	}
-	return usdcAssetPosition.GetBigQuantums()
+	return tDaiAssetPosition.GetBigQuantums()
 }
 
-// SetUsdcAssetPosition sets the balance of the USDC asset position to `newUsdcPosition`.
-func (m *Subaccount) SetUsdcAssetPosition(newUsdcPosition *big.Int) {
+// SetTDaiAssetPosition sets the balance of the TDAI asset position to `newTDaiPosition`.
+func (m *Subaccount) SetTDaiAssetPosition(newTDaiPosition *big.Int) {
 	if m == nil {
 		return
 	}
 
-	usdcAssetPosition := m.getUsdcAssetPosition()
-	if newUsdcPosition == nil || newUsdcPosition.Sign() == 0 {
-		if usdcAssetPosition != nil {
+	tDaiAssetPosition := m.getTDaiAssetPosition()
+	if newTDaiPosition == nil || newTDaiPosition.Sign() == 0 {
+		if tDaiAssetPosition != nil {
 			m.AssetPositions = m.AssetPositions[1:]
 		}
 	} else {
-		if usdcAssetPosition == nil {
-			usdcAssetPosition = &AssetPosition{
-				AssetId: assettypes.AssetUsdc.Id,
+		if tDaiAssetPosition == nil {
+			tDaiAssetPosition = &AssetPosition{
+				AssetId: assettypes.AssetTDai.Id,
 			}
-			m.AssetPositions = append([]*AssetPosition{usdcAssetPosition}, m.AssetPositions...)
+			m.AssetPositions = append([]*AssetPosition{tDaiAssetPosition}, m.AssetPositions...)
 		}
-		usdcAssetPosition.Quantums = dtypes.NewIntFromBigInt(newUsdcPosition)
+		tDaiAssetPosition.Quantums = dtypes.NewIntFromBigInt(newTDaiPosition)
 	}
 }
 
-func (m *Subaccount) getUsdcAssetPosition() *AssetPosition {
+func (m *Subaccount) getTDaiAssetPosition() *AssetPosition {
 	if m == nil || len(m.AssetPositions) == 0 {
 		return nil
 	}
 
 	firstAsset := m.AssetPositions[0]
-	if firstAsset.AssetId != assettypes.AssetUsdc.Id {
+	if firstAsset.AssetId != assettypes.AssetTDai.Id {
 		return nil
 	}
 	return firstAsset

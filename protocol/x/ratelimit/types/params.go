@@ -11,16 +11,16 @@ import (
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 )
 
-// BigBaselineMinimum1Hr defines the minimum baseline USDC for the 1-hour rate-limit.
+// BigBaselineMinimum1Hr defines the minimum baseline tDAI for the 1-hour rate-limit.
 var BigBaselineMinimum1Hr = new(big.Int).Mul(
 	big.NewInt(1_000_000), // 1m full coins
-	lib.BigPow10(-assettypes.UusdcDenomExponent),
+	lib.BigPow10(-assettypes.TDaiDenomExponent),
 )
 
 // BigBaselineMinimum1Day defines the minimum baseline USDC for the 1-day rate-limit.
 var BigBaselineMinimum1Day = new(big.Int).Mul(
 	big.NewInt(10_000_000), // 10m full coins
-	lib.BigPow10(-assettypes.UusdcDenomExponent),
+	lib.BigPow10(-assettypes.TDaiDenomExponent),
 )
 
 var DefaultUsdcHourlyLimter = Limiter{
@@ -38,7 +38,7 @@ var DefaultUsdcDailyLimiter = Limiter{
 // DefaultUsdcRateLimitParams returns default rate-limit params for USDC.
 func DefaultUsdcRateLimitParams() LimitParams {
 	return LimitParams{
-		Denom: assettypes.UusdcDenom,
+		Denom: assettypes.TDaiDenom,
 		Limiters: []Limiter{
 			DefaultUsdcHourlyLimter,
 			DefaultUsdcDailyLimiter,

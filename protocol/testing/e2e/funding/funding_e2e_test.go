@@ -107,7 +107,7 @@ var (
 			Transfer: &sendingtypes.Transfer{
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.Alice_Num0,
-				AssetId:   assettypes.AssetUsdc.Id,
+				AssetId:   assettypes.AssetTDai.Id,
 				Amount:    TestTransferUsdcForSettlement,
 			},
 		},
@@ -115,7 +115,7 @@ var (
 			Transfer: &sendingtypes.Transfer{
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.Bob_Num0,
-				AssetId:   assettypes.AssetUsdc.Id,
+				AssetId:   assettypes.AssetTDai.Id,
 				Amount:    TestTransferUsdcForSettlement,
 			},
 		},
@@ -123,7 +123,7 @@ var (
 			Transfer: &sendingtypes.Transfer{
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.Carl_Num0,
-				AssetId:   assettypes.AssetUsdc.Id,
+				AssetId:   assettypes.AssetTDai.Id,
 				Amount:    TestTransferUsdcForSettlement,
 			},
 		},

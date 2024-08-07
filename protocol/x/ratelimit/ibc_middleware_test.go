@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"cosmossdk.io/math"
 	sdkmath "cosmossdk.io/math"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
@@ -104,9 +105,9 @@ func setupChainForIBC(t *testing.T, coord *ibctesting.Coordinator, chainID strin
 				for _, simAccount := range simAccounts {
 					genesisState.Balances = append(genesisState.Balances, banktypes.Balance{
 						Address: sdktypes.AccAddress(simAccount.PubKey.Address()).String(),
-						Coins: sdktypes.NewCoins(sdktypes.NewInt64Coin(
+						Coins: sdktypes.NewCoins(sdktypes.NewCoin(
 							sdk.DefaultBondDenom,
-							constants.Usdc_Asset_500_000.Quantums.BigInt().Int64(),
+							math.NewIntFromBigInt(constants.TDai_Asset_500_000.Quantums.BigInt()),
 						)),
 					})
 				}

@@ -2,9 +2,10 @@ package simulation_test
 
 import (
 	"encoding/json"
+	"testing"
+
 	v4module "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"testing"
 
 	sdkmath "cosmossdk.io/math"
 	testutil_rand "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/rand"
@@ -61,7 +62,7 @@ func TestRandomizedGenState(t *testing.T) {
 				require.Len(t, sa.GetAssetPositions(), 1)
 
 				onlyAssetPosition := sa.GetAssetPositions()[0]
-				require.True(t, onlyAssetPosition.AssetId == asstypes.AssetUsdc.Id)
+				require.True(t, onlyAssetPosition.AssetId == asstypes.AssetTDai.Id)
 
 				bigQuantums := sdkmath.NewIntFromBigInt(onlyAssetPosition.GetBigQuantums())
 				totalUsdcSupply = totalUsdcSupply.Add(bigQuantums)
@@ -90,7 +91,7 @@ func TestRandomizedGenState(t *testing.T) {
 		foundUsdc := false
 
 		for _, supply := range bankGenesis.Supply {
-			if supply.Denom == asstypes.AssetUsdc.Denom {
+			if supply.Denom == asstypes.AssetTDai.Denom {
 				isSupplyEqual := totalUsdcSupply.Equal(supply.Amount)
 				require.True(t, isSupplyEqual)
 				foundUsdc = true

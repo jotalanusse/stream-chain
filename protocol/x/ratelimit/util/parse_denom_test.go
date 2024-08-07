@@ -32,14 +32,14 @@ func TestParseDenomFromRecvPacket(t *testing.T) {
 		//   -> tack on prefix (transfer/channel-0/uusdc) and hash
 		{
 			name:               "sink_one_hop",
-			packetDenomTrace:   assettypes.UusdcDenom,
+			packetDenomTrace:   assettypes.TDaiDenom,
 			sourceChannel:      dydxChannelOnNoble,
 			destinationChannel: nobleChannelOnDydx,
 			expectedDenom: hashDenomTrace(fmt.Sprintf(
 				"%s/%s/%s",
 				transferPort,
 				nobleChannelOnDydx,
-				assettypes.UusdcDenom,
+				assettypes.TDaiDenom,
 			)),
 		},
 		// Native source assets
@@ -107,7 +107,7 @@ func TestParseDenomFromSendPacket(t *testing.T) {
 		{
 			name:             "uusdc on dYdX",
 			packetDenomTrace: "transfer/channel-0/uusdc",
-			expectedDenom:    assettypes.UusdcDenom,
+			expectedDenom:    assettypes.TDaiDenom,
 		},
 	}
 

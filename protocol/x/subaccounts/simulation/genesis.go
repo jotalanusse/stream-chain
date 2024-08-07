@@ -53,7 +53,7 @@ func RandomizedGenState(simState *module.SimulationState) {
 				quantums := r.Uint64()
 				subacct.AssetPositions = []*types.AssetPosition{
 					{
-						AssetId:  asstypes.AssetUsdc.Id,
+						AssetId:  asstypes.AssetTDai.Id,
 						Quantums: dtypes.NewIntFromUint64(quantums),
 					},
 				}
@@ -101,7 +101,7 @@ func updateBankModuleGenesisState(
 	subaccountsUsdcBalance := banktypes.Balance{
 		Address: types.ModuleAddress.String(),
 		Coins: []sdk.Coin{{
-			Denom:  asstypes.AssetUsdc.Denom,
+			Denom:  asstypes.AssetTDai.Denom,
 			Amount: totalUsdcSupply,
 		}},
 	}
@@ -111,7 +111,7 @@ func updateBankModuleGenesisState(
 
 	// Set the total supply of USDC on the bank genesis.
 	bankGenesis.Supply = append(bankGenesis.Supply,
-		sdk.NewCoin(asstypes.AssetUsdc.Denom, totalUsdcSupply),
+		sdk.NewCoin(asstypes.AssetTDai.Denom, totalUsdcSupply),
 	)
 
 	// Update the bank module's genesis state.
