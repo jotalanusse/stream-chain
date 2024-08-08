@@ -251,7 +251,6 @@ func (k Keeper) PlacePerpetualLiquidation(
 	err error,
 ) {
 	lib.AssertCheckTxMode(ctx)
-
 	defer telemetry.ModuleMeasureSince(
 		types.ModuleName,
 		time.Now(),
@@ -911,7 +910,13 @@ func (k Keeper) GetSubaccountMaxNotionalLiquidatable(
 	liquidationConfig := k.GetLiquidationsConfig(ctx)
 
 	// Calculate the maximum notional amount that the given subaccount can liquidate in this block.
-	bigTotalNotionalLiquidated := new(big.Int).SetUint64(subaccountLiquidationInfo.NotionalLiquidated)
+	var bigTotalNotionalLiquidated *big.Int
+	if subaccountLiquidationInfo.NotionalLiquidated.IsNil() {
+		bigTotalNotionalLiquidated = big.NewInt(0)
+	} else {
+		bigTotalNotionalLiquidated = subaccountLiquidationInfo.NotionalLiquidated.BigInt()
+	}
+
 	bigNotionalLiquidatedBlockLimit := new(big.Int).SetUint64(
 		liquidationConfig.SubaccountBlockLimits.MaxNotionalLiquidated,
 	)
@@ -962,7 +967,14 @@ func (k Keeper) GetSubaccountMaxInsuranceLost(
 	liquidationConfig := k.GetLiquidationsConfig(ctx)
 
 	// Calculate the maximum insurance fund payout amount for the given subaccount in this block.
-	bigCurrentInsuranceFundLost := new(big.Int).SetUint64(subaccountLiquidationInfo.QuantumsInsuranceLost)
+
+	var bigCurrentInsuranceFundLost *big.Int
+	if subaccountLiquidationInfo.QuantumsInsuranceLost.IsNil() {
+		bigCurrentInsuranceFundLost = big.NewInt(0)
+	} else {
+		bigCurrentInsuranceFundLost = subaccountLiquidationInfo.QuantumsInsuranceLost.BigInt()
+	}
+
 	bigInsuranceFundLostBlockLimit := new(big.Int).SetUint64(
 		liquidationConfig.SubaccountBlockLimits.MaxQuantumsInsuranceLost,
 	)

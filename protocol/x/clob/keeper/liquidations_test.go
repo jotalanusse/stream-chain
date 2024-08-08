@@ -560,8 +560,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{1, 0},
-					NotionalLiquidated:    53_000_000_000, // $53,000
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(53_000_000_000)), // $53,000
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -634,8 +634,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{1, 0},
-					NotionalLiquidated:    3_000_000_000, // $3,000
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(3_000_000_000)), // $3,000
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -688,8 +688,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    12_500_000_000, // $12,500
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -762,8 +762,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{1, 0},
-					NotionalLiquidated:    3_000_000_000, // $3,000
-					QuantumsInsuranceLost: 30_000_000,    // $30
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(3_000_000_000)), // $3,000
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(30_000_000)),    // $30
 				},
 				constants.Dave_Num0: {},
 			},
@@ -817,8 +817,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    12_500_000_000, // $12,500
-					QuantumsInsuranceLost: 250_000,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -864,8 +864,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    0,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewInt(0),
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -912,8 +912,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				constants.Carl_Num0: {},
 				constants.Dave_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    0,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewInt(0),
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 		},
@@ -999,8 +999,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    12_500_000_000, // $12,500
-					QuantumsInsuranceLost: 250_000,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -1088,8 +1088,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				constants.Carl_Num0: {},
 				constants.Dave_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    12_500_000_000, // $12,500
-					QuantumsInsuranceLost: 250_000,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),
 				},
 			},
 		},
@@ -1371,8 +1371,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000, // $50,000
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // $50,000
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1431,8 +1431,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    12_500_000_000, // $12,500
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1512,8 +1512,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    0, // $0
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewInt(0), // $0
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1573,8 +1573,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_500_000_000 / 4,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_500_000_000 / 4)),
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1652,8 +1652,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    0,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewInt(0),
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1701,8 +1701,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    12_500_000_000,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1784,8 +1784,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    0,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewInt(0),
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1869,8 +1869,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_500_000_000 / 4,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_500_000_000 / 4)), // $12,625
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -1952,8 +1952,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_500_000_000,
-					QuantumsInsuranceLost: 750_000,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_500_000_000)), // $50,500
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(750_000)),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -2025,8 +2025,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000 / 4,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000 / 4)), // $12,625
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{

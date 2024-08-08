@@ -251,8 +251,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000, // Liquidated 1BTC at $50,000.
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // Liquidated 1BTC at $50,000.
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -337,8 +337,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000, // Liquidated 1BTC at $50,000
-					QuantumsInsuranceLost: 1_000_000,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // Liquidated 1BTC at $50,000
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(1_000_000)),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -437,8 +437,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    25_000_000_000, // Liquidated 0.5 BTC at $50,000
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(25_000_000_000)), // Liquidated 0.5 BTC at $50,000
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -544,8 +544,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    25_000_000_000, // Liquidated 0.5 BTC at $50,000
-					QuantumsInsuranceLost: 500_000,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(25_000_000_000)), // Liquidated 0.5 BTC at $50,000
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(500_000)),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -648,8 +648,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000,
-					QuantumsInsuranceLost: 250_000, // Insurance fund covered $0.25.
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // $50,000
+					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),        // Insurance fund covered $0.25.
 				},
 				constants.Dave_Num0: {},
 			},
@@ -761,8 +761,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // $50,000
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -862,8 +862,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    25_000_000_000,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(25_000_000_000)), // $25,000
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -964,8 +964,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    5_000,
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(5_000)), // $0.005
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},

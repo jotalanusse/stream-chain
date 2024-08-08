@@ -27,10 +27,18 @@ message SubaccountLiquidationInfo {
   repeated uint32 perpetuals_liquidated = 1;
   // The notional value (in quote quantums, determined by the oracle price) of
   // all positions liquidated for this subaccount.
-  uint64 notional_liquidated = 2;
+  bytes notional_liquidated = 2 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // The amount of funds that the insurance fund has lost
   // covering this subaccount.
-  uint64 quantums_insurance_lost = 3;
+  bytes quantums_insurance_lost = 3 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // SubaccountOpenPositionInfo holds information about open positions for a

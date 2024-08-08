@@ -7,6 +7,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 
 	"cosmossdk.io/store/prefix"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -72,9 +73,16 @@ func (k Keeper) UpdateSubaccountLiquidationInfo(
 ) {
 	subaccountLiquidationInfo := k.GetSubaccountLiquidationInfo(ctx, subaccountId)
 
+	var currNotionalLiquidated *big.Int
+	if subaccountLiquidationInfo.NotionalLiquidated.IsNil() {
+		currNotionalLiquidated = big.NewInt(0)
+	} else {
+		currNotionalLiquidated = subaccountLiquidationInfo.NotionalLiquidated.BigInt()
+	}
+
 	updatedNotionalLiquidatedQuoteQuantums := new(big.Int).Add(
 		new(big.Int).Abs(notionalLiquidatedQuoteQuantums),
-		new(big.Int).SetUint64(subaccountLiquidationInfo.NotionalLiquidated),
+		currNotionalLiquidated,
 	)
 	if !updatedNotionalLiquidatedQuoteQuantums.IsUint64() {
 		// This should never happen, since the total notional liquidated for any subaccount should
@@ -88,29 +96,25 @@ func (k Keeper) UpdateSubaccountLiquidationInfo(
 		)
 	}
 
-	subaccountLiquidationInfo.NotionalLiquidated = updatedNotionalLiquidatedQuoteQuantums.Uint64()
+	subaccountLiquidationInfo.NotionalLiquidated = dtypes.NewIntFromBigInt(updatedNotionalLiquidatedQuoteQuantums)
 
 	// Update the total insurance funds lost for this subaccount if the insurance fund delta is
 	// negative.
 	if insuranceFundDeltaQuoteQuantums.Sign() == -1 {
-		updatedQuantumsInsuranceLost := new(big.Int).Add(
-			new(big.Int).Abs(insuranceFundDeltaQuoteQuantums),
-			new(big.Int).SetUint64(subaccountLiquidationInfo.QuantumsInsuranceLost),
-		)
-		if !updatedQuantumsInsuranceLost.IsUint64() {
-			// This should never happen, since the total insurance lost for any subaccount should never
-			// exceed the value of maximum insurance lost (uint64) in the liquidation config.
-			// This should also never exceed the maximum possible insurance fund balance.
-			panic(
-				errorsmod.Wrapf(
-					satypes.ErrIntegerOverflow,
-					"Quantums insurance lost update for subaccount %v overflows uint64",
-					subaccountId,
-				),
-			)
+
+		var quantumsInsuranceLost *big.Int
+		if subaccountLiquidationInfo.QuantumsInsuranceLost.IsNil() {
+			quantumsInsuranceLost = big.NewInt(0)
+		} else {
+			quantumsInsuranceLost = subaccountLiquidationInfo.QuantumsInsuranceLost.BigInt()
 		}
 
-		subaccountLiquidationInfo.QuantumsInsuranceLost = updatedQuantumsInsuranceLost.Uint64()
+		updatedQuantumsInsuranceLost := new(big.Int).Add(
+			new(big.Int).Abs(insuranceFundDeltaQuoteQuantums),
+			quantumsInsuranceLost,
+		)
+
+		subaccountLiquidationInfo.QuantumsInsuranceLost = dtypes.NewIntFromBigInt(updatedQuantumsInsuranceLost)
 	}
 
 	store := k.getSubaccountLiquidationInfoStore(ctx)

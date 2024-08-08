@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
@@ -52,8 +53,8 @@ func TestSetGetSubaccountLiquidationInfo(t *testing.T) {
 
 			expectedSubaccountLiquidationInfo: types.SubaccountLiquidationInfo{
 				PerpetualsLiquidated:  []uint32{2},
-				NotionalLiquidated:    5,
-				QuantumsInsuranceLost: 10,
+				NotionalLiquidated:    dtypes.NewInt(5),
+				QuantumsInsuranceLost: dtypes.NewInt(10),
 			},
 		},
 		"can get and set subaccount liquidation info with positive insurance delta": {
@@ -75,8 +76,8 @@ func TestSetGetSubaccountLiquidationInfo(t *testing.T) {
 
 			expectedSubaccountLiquidationInfo: types.SubaccountLiquidationInfo{
 				PerpetualsLiquidated:  []uint32{2},
-				NotionalLiquidated:    5,
-				QuantumsInsuranceLost: 0,
+				NotionalLiquidated:    dtypes.NewInt(5),
+				QuantumsInsuranceLost: dtypes.NewInt(0),
 			},
 		},
 		"can get and set subaccount liquidation info with negative notional liquidated": {
@@ -98,8 +99,8 @@ func TestSetGetSubaccountLiquidationInfo(t *testing.T) {
 
 			expectedSubaccountLiquidationInfo: types.SubaccountLiquidationInfo{
 				PerpetualsLiquidated:  []uint32{2},
-				NotionalLiquidated:    5,
-				QuantumsInsuranceLost: 0,
+				NotionalLiquidated:    dtypes.NewInt(5),
+				QuantumsInsuranceLost: dtypes.NewInt(0),
 			},
 		},
 		"can get and set subaccount liquidation info multiple times for one subaccount": {
@@ -143,8 +144,8 @@ func TestSetGetSubaccountLiquidationInfo(t *testing.T) {
 
 			expectedSubaccountLiquidationInfo: types.SubaccountLiquidationInfo{
 				PerpetualsLiquidated:  []uint32{2, 3, 100},
-				NotionalLiquidated:    55,
-				QuantumsInsuranceLost: 60,
+				NotionalLiquidated:    dtypes.NewInt(55),
+				QuantumsInsuranceLost: dtypes.NewInt(60),
 			},
 		},
 		"can get and set subaccount liquidation info for multiple subaccounts": {
@@ -188,8 +189,8 @@ func TestSetGetSubaccountLiquidationInfo(t *testing.T) {
 
 			expectedSubaccountLiquidationInfo: types.SubaccountLiquidationInfo{
 				PerpetualsLiquidated:  []uint32{100},
-				NotionalLiquidated:    25,
-				QuantumsInsuranceLost: 50,
+				NotionalLiquidated:    dtypes.NewInt(25),
+				QuantumsInsuranceLost: dtypes.NewInt(50),
 			},
 		},
 	}
@@ -260,46 +261,6 @@ func TestUpdateSubaccountLiquidationInfo_NotionalLiquidatedOverflowPanics(t *tes
 				subaccountId,
 				big.NewInt(1),
 				big.NewInt(50),
-			)
-		},
-	)
-}
-
-func TestUpdateSubaccountLiquidationInfo_QuantumInsuranceLostOverflowPanics(t *testing.T) {
-	memClob := memclob.NewMemClobPriceTimePriority(false)
-	bankMock := &mocks.BankKeeper{}
-	ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, &mocks.IndexerEventManager{})
-
-	subaccountId := constants.Alice_Num0
-	ks.ClobKeeper.MustUpdateSubaccountPerpetualLiquidated(
-		ks.Ctx,
-		subaccountId,
-		0,
-	)
-	ks.ClobKeeper.UpdateSubaccountLiquidationInfo(
-		ks.Ctx,
-		subaccountId,
-		big.NewInt(50),
-		constants.BigNegMaxUint64(),
-	)
-
-	require.PanicsWithError(
-		t,
-		fmt.Sprintf(
-			"Quantums insurance lost update for subaccount %v overflows uint64: integer overflow",
-			subaccountId,
-		),
-		func() {
-			ks.ClobKeeper.MustUpdateSubaccountPerpetualLiquidated(
-				ks.Ctx,
-				subaccountId,
-				1,
-			)
-			ks.ClobKeeper.UpdateSubaccountLiquidationInfo(
-				ks.Ctx,
-				subaccountId,
-				big.NewInt(50),
-				big.NewInt(-1),
 			)
 		},
 	)
