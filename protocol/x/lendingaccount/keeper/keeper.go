@@ -217,6 +217,16 @@ func (k Keeper) CheckLendingAccountExistsAndAddToAddressMapping(ctx sdk.Context,
 	return nil
 }
 
+func (k Keeper) GetLendingAccountAddress(ctx sdk.Context, managerName string, lendingAccountId uint32) (address string, found bool) {
+	manager, found := k.GetLendingManager(ctx, managerName)
+	if !found {
+		return "", false
+	}
+
+	address, found = manager.AccountNumberToAddress[lendingAccountId]
+	return address, found
+}
+
 func (k Keeper) RemoveFromLendingAccountToAddressMapping(ctx sdk.Context, managerName string, lendingAccountId uint32, address string) error {
 
 	if lendingAccountId >= subaccounttypes.MaxSubaccountIdNumber {

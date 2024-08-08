@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	types "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingaccount/types"
+	lendingPoolTypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/lendingpool/types"
 	subaccounttypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -74,6 +75,14 @@ func (k Keeper) openCreditAccountOnManager(ctx sdk.Context, managerName string, 
 	return nil
 }
 
+func (k Keeper) closeCreditAccountOnManager(ctx sdk.Context, managerName string, lendingAccount types.LendingAccount, isLiquidation bool, portfolioValueForLiquidation *big.Int, owner sdk.Address, payer sdk.Address) error {
+
+	// check if perpetual positions are open
+	// if they are we sell them through the liquidation flow
+
+	// next we figure out the total value of what needs to be payed (depends on if is liquidation or not)
+}
+
 func (k Keeper) checkCollateralOfPosition(ctx sdk.Context, managerName string, collateralAssetIds []uint32, amounts []*big.Int, borrowedAmountWithInterestAndFees *big.Int) error {
 
 	lendingManager, found := k.GetLendingManager(ctx, managerName)
@@ -110,10 +119,39 @@ func (k Keeper) checkCollateralOfPosition(ctx sdk.Context, managerName string, c
 
 }
 
-// func (k Keeper) calculateLendingAccountAccruedInterest(ctx sdk.Context, managerName string, lendingAccountId uint32) (borrowedAmount *big.Int, borrowedAmountWithInterest *big.Int, borrowedAmountWithInterestAndFees *big.Int, err error) {
+func (k Keeper) calculateBorrowedAmountWithInterestAndFees(ctx sdk.Context, managerName string, lendingAccount types.LendingAccount) (borrowedAmountWithInterest *big.Int, borrowedAmountWithInterestAndFees *big.Int, err error) {
 
-// }
+	lendingManager, found := k.GetLendingManager(ctx, managerName)
+	if !found {
+		return nil, nil, fmt.Errorf("lending manager with name %s not found", managerName)
+	}
 
-// func (k Keeper) getCreditAccountParameters(ctx sdk.Context, managerName string, lendingAccountId uint32) (borrowedAmount *big.Int, initialBorrowIndex *big.Int, currentBorrowIndex *big.Int, err error) {
+	asset, found := k.assetsKeeper.GetAsset(ctx, lendingManager.AssetId)
+	if !found {
+		return nil, nil, fmt.Errorf("asset with id %d not found", lendingManager.AssetId)
+	}
 
-// }
+	currentBorrowAPY, found := k.lendingPoolKeeper.GetCurrentBorrowAPY(ctx, asset.Denom)
+	if !found {
+		return nil, nil, fmt.Errorf("current borrow APY for asset %s not found", asset.Denom)
+	}
+
+	bigBorrowedAmount, err := lendingPoolTypes.ConvertStringToBigInt(lendingAccount.BorrowedAmount)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	bigInitialBorrowIndex, err := lendingPoolTypes.ConvertStringToBigInt(lendingAccount.InitialBorrowIndex)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	borrowedAmountWithInterest = new(big.Int).Div(new(big.Int).Mul(bigBorrowedAmount, currentBorrowAPY), bigInitialBorrowIndex)
+
+	feeInterest := big.NewInt(int64(lendingManager.InterestFee))
+	borrowedAmountWithInterestAndFees = new(big.Int).Sub(borrowedAmountWithInterest, bigBorrowedAmount)
+	borrowedAmountWithInterestAndFees = new(big.Int).Div(new(big.Int).Mul(borrowedAmountWithInterestAndFees, feeInterest), types.PERCENTAGE_FACTOR)
+	borrowedAmountWithInterestAndFees = new(big.Int).Add(borrowedAmountWithInterest, borrowedAmountWithInterest)
+
+	return borrowedAmountWithInterest, borrowedAmountWithInterestAndFees, nil
+}

@@ -76,6 +76,7 @@ type LendingPoolKeeper interface {
 	) (val lendingpooltypes.InternalPoolParams, found bool)
 	CalculateCumulativeBorrowIndex(ctx sdk.Context, tokenDenom string) (newBorrowIndex *big.Int, err error)
 	LendToCreditAccount(ctx sdk.Context, amount *big.Int, creditAccount string, tokenDenom string) error
+	GetCurrentBorrowAPY(ctx sdk.Context, tokenDenom string) (rate *big.Int, found bool)
 }
 
 type AssetsKeeper interface {

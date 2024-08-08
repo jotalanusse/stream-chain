@@ -154,3 +154,33 @@ func checkCollateralAssetsAreAllowed(enabledCollateralAssets map[uint32]*types.E
 
 	return nil
 }
+
+func (k Keeper) CloseCreditAccount(ctx sdk.Context, managerName string, lendingAccountId uint32) error {
+
+	lendingInterface, found := k.GetLendingInterface(ctx, managerName)
+	if !found {
+		return fmt.Errorf("lending interface with manager name %s not found", managerName)
+	}
+
+	owner, found := k.GetLendingAccountAddress(ctx, managerName, lendingAccountId)
+	if !found {
+		return fmt.Errorf("lending account with id %d not found", lendingAccountId)
+	}
+
+	lendingAccount, found := k.GetLendingAccount(ctx, managerName, lendingAccountId)
+	if !found {
+		return fmt.Errorf("lending account with id %d not found", lendingAccountId)
+	}
+
+	bigBorrowedAmount, err := lendingpooltypes.ConvertStringToBigInt(lendingAccount.BorrowedAmount)
+	if err != nil {
+		return err
+	}
+	err = k.checkAndUpdateTotalDebt(ctx, managerName, bigBorrowedAmount, false, lendingInterface.TotalDebtLimit)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
