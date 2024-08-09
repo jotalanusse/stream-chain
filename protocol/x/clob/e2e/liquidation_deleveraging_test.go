@@ -1,7 +1,6 @@
 package clob_test
 
 import (
-	"math"
 	"math/big"
 	"testing"
 
@@ -60,8 +59,8 @@ func TestLiquidationConfig(t *testing.T) {
 					// 1% of $50,000 is $500 so $500 worth of BTC should get liquidated.
 					// However, this is smaller than the minimum position notional liquidated of $100,000,
 					// so the entire position should get liquidated.
-					MinPositionNotionalLiquidated:   100_000_000_000, // $100,000
-					MaxPositionPortionLiquidatedPpm: 10_000,          // 1%
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("100_000_000_000"), // $100,000
+					MaxPositionPortionLiquidatedPpm: 10_000,                                     // 1%
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
 			},
@@ -112,8 +111,8 @@ func TestLiquidationConfig(t *testing.T) {
 					// 1% of $50,000 is $500 so $500 worth of BTC should get liquidated.
 					// However, this is smaller than the minimum position notional liquidated of $100,000,
 					// so the entire position should get liquidated.
-					MinPositionNotionalLiquidated:   100_000_000_000, // $100,000
-					MaxPositionPortionLiquidatedPpm: 10_000,          // 1%
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("100_000_000_000"), // $100,000
+					MaxPositionPortionLiquidatedPpm: 10_000,                                     // 1%
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
 			},
@@ -162,8 +161,8 @@ func TestLiquidationConfig(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: clobtypes.PositionBlockLimits{
 					// 10% of $50,000 is $5,000 so $5,000 worth of BTC should get liquidated.
-					MinPositionNotionalLiquidated:   100_000_000, // $1,000
-					MaxPositionPortionLiquidatedPpm: 100_000,     // 10%
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("100_000_000"), // $100
+					MaxPositionPortionLiquidatedPpm: 100_000,                                // 10%
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
 			},
@@ -228,8 +227,8 @@ func TestLiquidationConfig(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: clobtypes.PositionBlockLimits{
 					// 10% of $50,000 is $5,000 so $5,000 worth of BTC should get liquidated.
-					MinPositionNotionalLiquidated:   100_000_000, // $1,000
-					MaxPositionPortionLiquidatedPpm: 100_000,     // 10%
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("100_000_000"), // $100
+					MaxPositionPortionLiquidatedPpm: 100_000,                                // 10%
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
 			},
@@ -295,8 +294,8 @@ func TestLiquidationConfig(t *testing.T) {
 				PositionBlockLimits:  constants.PositionBlockLimits_Default,
 				SubaccountBlockLimits: clobtypes.SubaccountBlockLimits{
 					// Subaccount may only liquidate $5,000 per block.
-					MaxNotionalLiquidated:    5_000_000_000,
-					MaxQuantumsInsuranceLost: 100_000_000_000_000,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("5_000_000_000"),       // $5,000
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
 				},
 			},
 
@@ -365,8 +364,8 @@ func TestLiquidationConfig(t *testing.T) {
 				PositionBlockLimits:  constants.PositionBlockLimits_Default,
 				SubaccountBlockLimits: clobtypes.SubaccountBlockLimits{
 					// Subaccount may only liquidate $5,000 per block.
-					MaxNotionalLiquidated:    5_000_000_000,
-					MaxQuantumsInsuranceLost: 100_000_000_000_000,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("5_000_000_000"),       // $5,000
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
 				},
 			},
 
@@ -441,8 +440,8 @@ func TestLiquidationConfig(t *testing.T) {
 				PositionBlockLimits:  constants.PositionBlockLimits_Default,
 				SubaccountBlockLimits: clobtypes.SubaccountBlockLimits{
 					// Subaccount may only lose $0.5 per block.
-					MaxNotionalLiquidated:    100_000_000_000_000,
-					MaxQuantumsInsuranceLost: 500_000,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("500_000"),             // $0.5
 				},
 			},
 
@@ -518,8 +517,8 @@ func TestLiquidationConfig(t *testing.T) {
 				PositionBlockLimits:  constants.PositionBlockLimits_Default,
 				SubaccountBlockLimits: clobtypes.SubaccountBlockLimits{
 					// Subaccount may only lose $0.5 per block.
-					MaxNotionalLiquidated:    100_000_000_000_000,
-					MaxQuantumsInsuranceLost: 500_000,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("500_000"),             // $0.5
 				},
 			},
 
@@ -1087,8 +1086,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Max_Smmr,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: clobtypes.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    math.MaxUint64,
-					MaxQuantumsInsuranceLost: 1,
+					MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("1"), // $0.000001
 				},
 			},
 

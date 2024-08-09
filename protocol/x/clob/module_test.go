@@ -330,10 +330,10 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	require.Equal(t, uint32(5_000), liquidationsConfig.MaxLiquidationFeePpm)
 	require.Equal(t, uint32(1_000_000), liquidationsConfig.FillablePriceConfig.BankruptcyAdjustmentPpm)
 	require.Equal(t, uint32(100_000), liquidationsConfig.FillablePriceConfig.SpreadToMaintenanceMarginRatioPpm)
-	require.Equal(t, uint64(1_000), liquidationsConfig.PositionBlockLimits.MinPositionNotionalLiquidated)
+	require.Equal(t, dtypes.NewIntFromString("1_000"), liquidationsConfig.PositionBlockLimits.MinPositionNotionalLiquidated)
 	require.Equal(t, uint32(1_000_000), liquidationsConfig.PositionBlockLimits.MaxPositionPortionLiquidatedPpm)
-	require.Equal(t, uint64(100_000_000_000_000), liquidationsConfig.SubaccountBlockLimits.MaxNotionalLiquidated)
-	require.Equal(t, uint64(100_000_000_000_000), liquidationsConfig.SubaccountBlockLimits.MaxQuantumsInsuranceLost)
+	require.Equal(t, dtypes.NewIntFromString("100_000_000_000_000"), liquidationsConfig.SubaccountBlockLimits.MaxNotionalLiquidated)
+	require.Equal(t, dtypes.NewIntFromString("100_000_000_000_000"), liquidationsConfig.SubaccountBlockLimits.MaxQuantumsInsuranceLost)
 
 	blockRateLimitConfig := keeper.GetBlockRateLimitConfiguration(ctx)
 	require.Equal(

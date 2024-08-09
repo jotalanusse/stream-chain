@@ -2,9 +2,11 @@ package simulation_test
 
 import (
 	"encoding/json"
-	v4module "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"testing"
+
+	v4module "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	sdkmath "cosmossdk.io/math"
 	testutil_rand "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/rand"
@@ -62,13 +64,17 @@ func TestRandomizedGenState(t *testing.T) {
 		// validation in LiquidationConfig.Validate()
 		require.LessOrEqual(
 			t,
-			uint64(sim_helpers.MinPositionNotionalBuckets[0]),
-			liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated,
+			-1,
+			dtypes.NewIntFromUint64(uint64(sim_helpers.MinPositionNotionalBuckets[0])).Cmp(
+				liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated,
+			),
 		)
 		require.GreaterOrEqual(
 			t,
-			uint64(sim_helpers.MinPositionNotionalBuckets[len(sim_helpers.MinPositionNotionalBuckets)-1]),
-			liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated,
+			1,
+			dtypes.NewIntFromUint64(uint64(sim_helpers.MinPositionNotionalBuckets[len(sim_helpers.MinPositionNotionalBuckets)-1])).Cmp(
+				liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated,
+			),
 		)
 		err := liquidationConfig.Validate()
 		require.NoError(t, err)

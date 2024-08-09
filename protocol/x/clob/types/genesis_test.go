@@ -202,7 +202,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					MaxLiquidationFeePpm: lib.OneMillion,
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits: types.PositionBlockLimits{
-						MinPositionNotionalLiquidated:   1_000,
+						MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"),
 						MaxPositionPortionLiquidatedPpm: 0,
 					},
 					SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
@@ -217,7 +217,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					MaxLiquidationFeePpm: lib.OneMillion,
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits: types.PositionBlockLimits{
-						MinPositionNotionalLiquidated:   1_000,
+						MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"),
 						MaxPositionPortionLiquidatedPpm: lib.OneMillion + 1,
 					},
 					SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
@@ -233,8 +233,8 @@ func TestGenesisState_Validate(t *testing.T) {
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits:  constants.PositionBlockLimits_Default,
 					SubaccountBlockLimits: types.SubaccountBlockLimits{
-						MaxNotionalLiquidated:    0,
-						MaxQuantumsInsuranceLost: 100_000_000_000_000,
+						MaxNotionalLiquidated:    dtypes.NewInt(0),
+						MaxQuantumsInsuranceLost: dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
 					},
 				},
 			},
@@ -248,8 +248,8 @@ func TestGenesisState_Validate(t *testing.T) {
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits:  constants.PositionBlockLimits_Default,
 					SubaccountBlockLimits: types.SubaccountBlockLimits{
-						MaxNotionalLiquidated:    100_000_000_000_000,
-						MaxQuantumsInsuranceLost: 0,
+						MaxNotionalLiquidated:    dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
+						MaxQuantumsInsuranceLost: dtypes.NewInt(0),
 					},
 				},
 			},

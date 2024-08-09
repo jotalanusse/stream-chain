@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -13,12 +14,12 @@ var (
 			SpreadToMaintenanceMarginRatioPpm: 100_000,
 		},
 		PositionBlockLimits: PositionBlockLimits{
-			MinPositionNotionalLiquidated:   1_000,
+			MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1000"), // $0.001
 			MaxPositionPortionLiquidatedPpm: 1_000_000,
 		},
 		SubaccountBlockLimits: SubaccountBlockLimits{
-			MaxNotionalLiquidated:    100_000_000_000_000,
-			MaxQuantumsInsuranceLost: 100_000_000_000_000,
+			MaxNotionalLiquidated:    dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
+			MaxQuantumsInsuranceLost: dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
 		},
 	}
 )

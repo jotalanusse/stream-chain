@@ -2,6 +2,7 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 )
 
@@ -10,11 +11,10 @@ import (
 // - `maxLiquidationFee == 0 || maxLiquidationFee > 1_000_000`.
 // - `bankruptcyAdjustmentPpm < 1_000_000`.
 // - `spreadToMaintenanceMarginRatioPpm == 0.
+// - `minPositionNotionalLiquidated` < 0`.
 // - `maxPositionPortionLiquidatedPpm == 0 || maxPositionPortionLiquidatedPpm > 1_000_000`.
-// - `maxNotionalLiquidated == 0`.
-// - `maxQuantumsInsuranceLost == 0`.
-//
-// Note that `minPositionNotionalLiquidated` is intentionally not validated.
+// - `maxNotionalLiquidated == 0 || maxNotionalLiquidated < 0`.
+// - `maxQuantumsInsuranceLost == 0 || maxNotionalLiquidated < 0`.
 
 func (lc *LiquidationsConfig) Validate() error {
 	// Validate the BankruptcyAdjustmentPpm.
@@ -46,6 +46,16 @@ func (lc *LiquidationsConfig) Validate() error {
 		)
 	}
 
+	// Validate MinPositionNotionalLiquidated
+	minPositionNotionalLiquidated := lc.PositionBlockLimits.MinPositionNotionalLiquidated
+	if minPositionNotionalLiquidated.Cmp(dtypes.NewInt(0)) == -1 {
+		return errorsmod.Wrapf(
+			ErrInvalidLiquidationsConfig,
+			"%v is not a valid MinPositionNotionalLiquidated",
+			minPositionNotionalLiquidated,
+		)
+	}
+
 	// Validate the MaxPositionPortionLiquidatedPpm.
 	maxPositionPortionLiquidatedPpm := lc.PositionBlockLimits.MaxPositionPortionLiquidatedPpm
 	if maxPositionPortionLiquidatedPpm == 0 || maxPositionPortionLiquidatedPpm > lib.OneMillion {
@@ -58,7 +68,7 @@ func (lc *LiquidationsConfig) Validate() error {
 
 	// Validate the MaxNotionalLiquidated.
 	maxNotionalLiquidated := lc.SubaccountBlockLimits.MaxNotionalLiquidated
-	if maxNotionalLiquidated == 0 {
+	if maxNotionalLiquidated.Cmp(dtypes.NewInt(0)) == 0 || maxNotionalLiquidated.Cmp(dtypes.NewInt(0)) == -1 {
 		return errorsmod.Wrapf(
 			ErrInvalidLiquidationsConfig,
 			"%v is not a valid MaxNotionalLiquidated",
@@ -68,7 +78,7 @@ func (lc *LiquidationsConfig) Validate() error {
 
 	// Validate the MaxQuantumsInsuranceLost.
 	maxQuantumsInsuranceLost := lc.SubaccountBlockLimits.MaxQuantumsInsuranceLost
-	if maxQuantumsInsuranceLost == 0 {
+	if maxQuantumsInsuranceLost.Cmp(dtypes.NewInt(0)) == 0 || maxQuantumsInsuranceLost.Cmp(dtypes.NewInt(0)) == -1 {
 		return errorsmod.Wrapf(
 			ErrInvalidLiquidationsConfig,
 			"%v is not a valid MaxQuantumsInsuranceLost",

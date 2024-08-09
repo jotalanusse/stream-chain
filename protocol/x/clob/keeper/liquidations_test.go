@@ -560,7 +560,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{1, 0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(53_000_000_000)), // $53,000
+					NotionalLiquidated:    dtypes.NewIntFromString("53_000_000_000"), // $53,000
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -596,8 +596,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    10_000_000_000, // $10,000
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("10_000_000_000"), // $10,000
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 			placedMatchableOrders: []types.MatchableOrder{
@@ -634,7 +634,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{1, 0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(3_000_000_000)), // $3,000
+					NotionalLiquidated:    dtypes.NewIntFromString("3_000_000_000"), // $3,000
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -651,8 +651,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    20_000_000_000, // $20,000
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("20_000_000_000"), // $20,000
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 			placedMatchableOrders: []types.MatchableOrder{
@@ -688,7 +688,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -724,8 +724,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    math.MaxUint64,
-					MaxQuantumsInsuranceLost: 50_000_000, // $50
+					MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("50_000_000"), // $50
 				},
 			},
 			placedMatchableOrders: []types.MatchableOrder{
@@ -762,8 +762,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{1, 0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(3_000_000_000)), // $3,000
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(30_000_000)),    // $30
+					NotionalLiquidated:    dtypes.NewIntFromString("3_000_000_000"), // $3,000
+					QuantumsInsuranceLost: dtypes.NewIntFromString("30_000_000"),    // $30
 				},
 				constants.Dave_Num0: {},
 			},
@@ -779,8 +779,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    math.MaxUint64,
-					MaxQuantumsInsuranceLost: 500_000, // $0.5
+					MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("500_000"), // $0.5
 				},
 			},
 			placedMatchableOrders: []types.MatchableOrder{
@@ -817,8 +817,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500
+					QuantumsInsuranceLost: dtypes.NewIntFromString("250_000"),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -999,8 +999,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500
+					QuantumsInsuranceLost: dtypes.NewIntFromString("250_000"),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -1088,8 +1088,8 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				constants.Carl_Num0: {},
 				constants.Dave_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500
+					QuantumsInsuranceLost: dtypes.NewIntFromString("250_000"),
 				},
 			},
 		},
@@ -1371,7 +1371,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // $50,000
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // $50,000
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
@@ -1431,7 +1431,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
@@ -1573,7 +1573,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_500_000_000 / 4)),
+					NotionalLiquidated:    dtypes.NewIntFromString("12_625_000_000"), // $ 50,500,000,000 / 4
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
@@ -1701,7 +1701,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(12_500_000_000)), // $12,500
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
@@ -1869,7 +1869,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_500_000_000 / 4)), // $12,625
+					NotionalLiquidated:    dtypes.NewIntFromString("12_625_000_000"), // $12,625; 50_500_000_000 / 4
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
@@ -1952,8 +1952,8 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_500_000_000)), // $50,500
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(750_000)),
+					NotionalLiquidated:    dtypes.NewIntFromString("50_500_000_000"), // $50,500
+					QuantumsInsuranceLost: dtypes.NewIntFromString("750_000"),
 				},
 			},
 			expectedSubaccounts: []satypes.Subaccount{
@@ -2025,7 +2025,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000 / 4)), // $12,625
+					NotionalLiquidated:    dtypes.NewIntFromString("12_500_000_000"), // $12,500; 50_000_000_000 / 4
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 			},
@@ -4109,7 +4109,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   10_000_000_000,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("10_000_000_000"),
 					MaxPositionPortionLiquidatedPpm: lib.OneMillion,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4133,7 +4133,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1_000,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"), // $0.001
 					MaxPositionPortionLiquidatedPpm: 500_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4160,7 +4160,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1"), // $0.000001
 					MaxPositionPortionLiquidatedPpm: 100_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4188,7 +4188,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1"), // $0.000001
 					MaxPositionPortionLiquidatedPpm: 100_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4217,7 +4217,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1"), // $0.000001
 					MaxPositionPortionLiquidatedPpm: 100_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4245,8 +4245,8 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    10_000_000_000, // $10,000
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("10_000_000_000"), // $10,000
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 
@@ -4269,8 +4269,8 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    2_500_000_000, // $2,500
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("2_500_000_000"), // $2,500
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 
@@ -4293,12 +4293,12 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1_000,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"), // $0.001
 					MaxPositionPortionLiquidatedPpm: 500_000,
 				},
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    2_000_000_000, // $2,000
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("2_000_000_000"), // $2,000
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 
@@ -4321,12 +4321,12 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1_000,
-					MaxPositionPortionLiquidatedPpm: 400_000, // 40%
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"), // $0.001
+					MaxPositionPortionLiquidatedPpm: 400_000,                          // 40%
 				},
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    2_500_000_000, // $2,500
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("2_500_000_000"), // $2,500
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 
@@ -4351,7 +4351,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1_000,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"), // $0.001
 					MaxPositionPortionLiquidatedPpm: 500_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4415,7 +4415,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   10_000_000_000,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("10_000_000_000"), // $10,000
 					MaxPositionPortionLiquidatedPpm: lib.OneMillion,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4439,7 +4439,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   1_000,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("1_000"), // $0.001
 					MaxPositionPortionLiquidatedPpm: 500_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -4464,8 +4464,8 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    10_000_000_000, // $10,000
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("10_000_000_000"), // $10,000
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 
@@ -4488,8 +4488,8 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    2_500_000_000, // $2,500
-					MaxQuantumsInsuranceLost: math.MaxUint64,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("2_500_000_000"), // $2,500
+					MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 				},
 			},
 
@@ -4518,7 +4518,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 
 			expectedClobPair: constants.ClobPair_Eth,
 			expectedQuantums: new(big.Int).Neg(
-				new(big.Int).SetUint64(6148914691236517000),
+				big_testutil.MustFirst(new(big.Int).SetString("18446744073709551615", 10)),
 			),
 		},
 		`Full position size of negated max uint64 of perpetual and CLOB pair are returned when
@@ -4539,9 +4539,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 
 			expectedClobPair: constants.ClobPair_Eth,
 			expectedQuantums: new(big.Int).Neg(
-				big_testutil.MustFirst(
-					new(big.Int).SetString("-6148914691236517000", 10),
-				),
+				big_testutil.MustFirst(new(big.Int).SetString("-18446744073709551615", 10)),
 			),
 		},
 	}
@@ -4919,8 +4917,8 @@ func TestGetMaxLiquidatableNotionalAndInsuranceLost(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    150,
-					MaxQuantumsInsuranceLost: 150,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("150"), // $0.000150
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("150"), // $0.000150
 				},
 			},
 			previouslyLiquidatedPerpetualId: uint32(1),
@@ -4944,8 +4942,8 @@ func TestGetMaxLiquidatableNotionalAndInsuranceLost(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    50,
-					MaxQuantumsInsuranceLost: 150,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("50"),  // $0.000050
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("150"), // $0.000150
 				},
 			},
 			previouslyLiquidatedPerpetualId: uint32(1),
@@ -4968,8 +4966,8 @@ func TestGetMaxLiquidatableNotionalAndInsuranceLost(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    150,
-					MaxQuantumsInsuranceLost: 50,
+					MaxNotionalLiquidated:    dtypes.NewIntFromString("150"), // $0.000150
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("50"),  // $0.000050
 				},
 			},
 			previouslyLiquidatedPerpetualId: uint32(1),
@@ -5084,7 +5082,7 @@ func TestGetMaxAndMinPositionNotionalLiquidatable(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   100,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("100"), // $0.0001
 					MaxPositionPortionLiquidatedPpm: lib.OneMillion,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -5101,7 +5099,7 @@ func TestGetMaxAndMinPositionNotionalLiquidatable(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   100,
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("100"), // $0.0001
 					MaxPositionPortionLiquidatedPpm: 500_000,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,
@@ -5118,7 +5116,7 @@ func TestGetMaxAndMinPositionNotionalLiquidatable(t *testing.T) {
 				MaxLiquidationFeePpm: 5_000,
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits: types.PositionBlockLimits{
-					MinPositionNotionalLiquidated:   10_000_000, // $10
+					MinPositionNotionalLiquidated:   dtypes.NewIntFromString("10_000_000"), // $10
 					MaxPositionPortionLiquidatedPpm: lib.OneMillion,
 				},
 				SubaccountBlockLimits: constants.SubaccountBlockLimits_No_Limit,

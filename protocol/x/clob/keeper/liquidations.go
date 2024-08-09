@@ -917,9 +917,13 @@ func (k Keeper) GetSubaccountMaxNotionalLiquidatable(
 		bigTotalNotionalLiquidated = subaccountLiquidationInfo.NotionalLiquidated.BigInt()
 	}
 
-	bigNotionalLiquidatedBlockLimit := new(big.Int).SetUint64(
-		liquidationConfig.SubaccountBlockLimits.MaxNotionalLiquidated,
-	)
+	var bigNotionalLiquidatedBlockLimit *big.Int
+	if liquidationConfig.SubaccountBlockLimits.MaxNotionalLiquidated.IsNil() {
+		bigNotionalLiquidatedBlockLimit = big.NewInt(0)
+	} else {
+		bigNotionalLiquidatedBlockLimit = liquidationConfig.SubaccountBlockLimits.MaxNotionalLiquidated.BigInt()
+	}
+
 	if bigTotalNotionalLiquidated.Cmp(bigNotionalLiquidatedBlockLimit) > 0 {
 		panic(
 			errorsmod.Wrapf(
@@ -975,9 +979,13 @@ func (k Keeper) GetSubaccountMaxInsuranceLost(
 		bigCurrentInsuranceFundLost = subaccountLiquidationInfo.QuantumsInsuranceLost.BigInt()
 	}
 
-	bigInsuranceFundLostBlockLimit := new(big.Int).SetUint64(
-		liquidationConfig.SubaccountBlockLimits.MaxQuantumsInsuranceLost,
-	)
+	var bigInsuranceFundLostBlockLimit *big.Int
+	if liquidationConfig.SubaccountBlockLimits.MaxQuantumsInsuranceLost.IsNil() {
+		bigInsuranceFundLostBlockLimit = big.NewInt(0)
+	} else {
+		bigInsuranceFundLostBlockLimit = liquidationConfig.SubaccountBlockLimits.MaxQuantumsInsuranceLost.BigInt()
+	}
+
 	if bigCurrentInsuranceFundLost.Cmp(bigInsuranceFundLostBlockLimit) > 0 {
 		panic(
 			errorsmod.Wrapf(
@@ -1025,8 +1033,15 @@ func (k Keeper) GetMaxAndMinPositionNotionalLiquidatable(
 
 	bigAbsNetNotionalQuoteQuantums := new(big.Int).Abs(bigNetNotionalQuoteQuantums)
 	// Get the mininum notional of this position that can be liquidated, which cannot exceed the size of the position.
+	var minPositionNotionalLiquidated *big.Int
+	if liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated.IsNil() {
+		minPositionNotionalLiquidated = big.NewInt(0)
+	} else {
+		minPositionNotionalLiquidated = liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated.BigInt()
+	}
+
 	bigMinPosNotionalLiquidatable = lib.BigMin(
-		new(big.Int).SetUint64(liquidationConfig.PositionBlockLimits.MinPositionNotionalLiquidated),
+		minPositionNotionalLiquidated,
 		bigAbsNetNotionalQuoteQuantums,
 	)
 

@@ -251,7 +251,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // Liquidated 1BTC at $50,000.
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // Liquidated 1BTC at $50,000.
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -337,8 +337,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // Liquidated 1BTC at $50,000
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(1_000_000)),
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // Liquidated 1BTC at $50,000
+					QuantumsInsuranceLost: dtypes.NewIntFromString("1_000_000"),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -437,7 +437,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(25_000_000_000)), // Liquidated 0.5 BTC at $50,000
+					NotionalLiquidated:    dtypes.NewIntFromString("25_000_000_000"), // Liquidated 0.5 BTC at $50,000
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -544,8 +544,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(25_000_000_000)), // Liquidated 0.5 BTC at $50,000
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(500_000)),
+					NotionalLiquidated:    dtypes.NewIntFromString("25_000_000_000"), // Liquidated 0.5 BTC at $50,000
+					QuantumsInsuranceLost: dtypes.NewIntFromString("500_000"),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -648,8 +648,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // $50,000
-					QuantumsInsuranceLost: dtypes.NewIntFromBigInt(big.NewInt(250_000)),        // Insurance fund covered $0.25.
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // $50,000
+					QuantumsInsuranceLost: dtypes.NewIntFromString("250_000"),        // Insurance fund covered $0.25.
 				},
 				constants.Dave_Num0: {},
 			},
@@ -761,7 +761,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(50_000_000_000)), // $50,000
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // $50,000
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -862,7 +862,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(25_000_000_000)), // $25,000
+					NotionalLiquidated:    dtypes.NewIntFromString("25_000_000_000"), // $25,000
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -964,7 +964,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    dtypes.NewIntFromBigInt(big.NewInt(5_000)), // $0.005
+					NotionalLiquidated:    dtypes.NewIntFromString("5_000"), // $0.005
 					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
@@ -2183,8 +2183,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    math.MaxUint64,
-					MaxQuantumsInsuranceLost: 999_999, // $0.999999
+					MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("999_999"), // $0.999999
 				},
 			},
 			insuranceFundBalance: math.MaxUint64,
@@ -2236,8 +2236,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated:    math.MaxUint64,
-					MaxQuantumsInsuranceLost: 499_999, // $0.499999
+					MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("499_999"), // $0.499999
 				},
 			},
 			insuranceFundBalance: math.MaxUint64,
@@ -2310,11 +2310,11 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				FillablePriceConfig:  constants.FillablePriceConfig_Default,
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
-					MaxNotionalLiquidated: math.MaxUint64,
+					MaxNotionalLiquidated: dtypes.MaxUint256SerializableInt(),
 					// Max insurance lost that a subaccount can have is $0.5.
 					// For this liquidation, overall insurance fund delta is -$0.5, which is within the limit.
 					// but the delta for the second fill is -$0.75, therefore, still considered to be exceeding the limit.
-					MaxQuantumsInsuranceLost: 500_000,
+					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("500_000"), // $0.5
 				},
 			},
 			expectedError: types.ErrLiquidationExceedsSubaccountMaxInsuranceLost,
