@@ -7,6 +7,8 @@ import (
 )
 
 var (
+	NegativeTenQuantumsBigInt                        = big.NewInt(-10)
+	NegativeTenQuantumsSerializableInt               = dtypes.NewIntFromString("-10")
 	ZeroQuantumsBigInt                               = big.NewInt(0)
 	ZeroQuantumsSerializableInt                      = dtypes.NewIntFromString("0")
 	OneQuantumBigInt                                 = big.NewInt(1)

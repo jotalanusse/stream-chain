@@ -410,6 +410,25 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 			},
 			expectedError: types.ErrTotalFillAmountExceedsOrderSize,
 		},
+		"Stateless liquidation validation: fails when total fill amount is negative": {
+			operations: []types.OperationRaw{
+				clobtestutils.NewShortTermOrderPlacementOperationRaw(constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000),
+				clobtestutils.NewMatchOperationRawFromPerpetualLiquidation(types.MatchPerpetualLiquidation{
+					Liquidated:  constants.Carl_Num0,
+					ClobPairId:  0,
+					PerpetualId: 0,
+					TotalSize:   constants.NegativeTenQuantumsSerializableInt, // Total size is negative.
+					IsBuy:       true,
+					Fills: []types.MakerFill{
+						{
+							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
+							FillAmount:   constants.OneHundredQuantumsSerializableInt,
+						},
+					},
+				}),
+			},
+			expectedError: types.ErrInvalidLiquidationOrderTotalSize,
+		},
 		"Stateless liquidation validation: fails when total fill amount is zero": {
 			operations: []types.OperationRaw{
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000),

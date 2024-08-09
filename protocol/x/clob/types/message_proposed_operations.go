@@ -313,6 +313,14 @@ func (validator *operationsQueueValidator) validateMatchPerpetualLiquidationOper
 		)
 	}
 
+	if totalSize.Cmp(dtypes.NewInt(0)) == -1 {
+		return errorsmod.Wrapf(
+			ErrInvalidLiquidationOrderTotalSize,
+			"Liquidation match total size is negative. match: %+v",
+			liquidationMatch,
+		)
+	}
+
 	// Make sure the sum of all fill_amount entries in the list of fills does not exceed the total size.
 	// Get the total quantums filled for this liquidation order.
 	bigQuantumsFilled := new(big.Int)
