@@ -258,8 +258,8 @@ func TestPlaceOrder(t *testing.T) {
 								&PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.Order,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount: PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20.
-											Order.GetBaseQuantums().ToUint64(),
+										FillAmount: dtypes.NewIntFromBigInt(PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20.
+											Order.GetBaseQuantums().ToBigInt()),
 										MakerOrderId: PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20.Order.OrderId,
 									},
 								},
@@ -437,8 +437,8 @@ func TestPlaceOrder(t *testing.T) {
 								&PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.Order,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount: PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.
-											Order.GetBaseQuantums().ToUint64(),
+										FillAmount: dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.
+											Order.GetBaseQuantums().ToBigInt()),
 										MakerOrderId: PlaceOrder_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20.Order.OrderId,
 									},
 								},
@@ -616,8 +616,8 @@ func TestPlaceOrder(t *testing.T) {
 								&PlaceOrder_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20.Order,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount: PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.
-											Order.GetBaseQuantums().ToUint64(),
+										FillAmount: dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.
+											Order.GetBaseQuantums().ToBigInt()),
 										MakerOrderId: PlaceOrder_Bob_Num0_Id0_Clob0_Sell5_Price10_GTB20.Order.OrderId,
 									},
 								},

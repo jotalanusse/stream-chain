@@ -60,7 +60,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -72,7 +72,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -108,7 +108,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -120,7 +120,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -174,11 +174,11 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price15_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -191,11 +191,11 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price15_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -253,11 +253,11 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -270,11 +270,11 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -318,7 +318,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -330,7 +330,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -362,7 +362,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id3_Clob1_Buy10_Price10_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -379,7 +379,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id3_Clob1_Buy10_Price10_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),

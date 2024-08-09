@@ -12,6 +12,7 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/liquidation/api"
 	sdaiservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/sDAIOracle"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared/types"
@@ -894,11 +895,11 @@ func TestLiquidateSubaccounts(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-								FillAmount:   50_000_000,
+								FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 							},
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId1_Clob0,
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -970,7 +971,7 @@ func TestLiquidateSubaccounts(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-								FillAmount:   10_000_000,
+								FillAmount:   dtypes.NewIntFromString("10_000_000"),
 							},
 						},
 					},
@@ -985,15 +986,15 @@ func TestLiquidateSubaccounts(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-								FillAmount:   40_000_000,
+								FillAmount:   dtypes.NewIntFromString("40_000_000"),
 							},
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId1_Clob0,
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId2_Clob0,
-								FillAmount:   35_000_000,
+								FillAmount:   dtypes.NewIntFromString("35_000_000"),
 							},
 						},
 					},
@@ -1314,7 +1315,7 @@ func TestPrepareCheckState(t *testing.T) {
 					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
 					[]types.MakerFill{
 						{
-							FillAmount:   5,
+							FillAmount:   dtypes.NewIntFromString("5"),
 							MakerOrderId: constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20.OrderId,
 						},
 					},
@@ -1326,7 +1327,7 @@ func TestPrepareCheckState(t *testing.T) {
 					constants.Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16,
 					[]types.MakerFill{
 						{
-							FillAmount:   5,
+							FillAmount:   dtypes.NewIntFromString("5"),
 							MakerOrderId: constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20.OrderId,
 						},
 					},

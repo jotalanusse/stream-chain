@@ -11,6 +11,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	ocutypes "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates/types"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared"
@@ -326,7 +327,7 @@ func (m *MemClobPriceTimePriority) mustUpdateMemclobStateWithMatches(
 		}
 
 		// Update the memclob fields for match bookkeeping with the new matches.
-		matchedQuantums := satypes.BaseQuantums(newFill.GetFillAmount())
+		matchedQuantums := satypes.BaseQuantums(newFill.GetFillAmount().BigInt().Uint64())
 
 		// Sanity checks.
 		if matchedQuantums == 0 {
@@ -1851,7 +1852,7 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		// 3.
 		newMakerFills = append(newMakerFills, types.MakerFill{
 			MakerOrderId: makerOrderId,
-			FillAmount:   matchedAmount.ToUint64(),
+			FillAmount:   dtypes.NewIntFromBigInt(matchedAmount.ToBigInt()),
 		})
 
 		// 4.

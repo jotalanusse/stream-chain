@@ -107,7 +107,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   100_000_000,
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -152,7 +152,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   100_000_000,
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -195,7 +195,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   100_000_000,
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -237,7 +237,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   100_000_000,
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -536,7 +536,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   1_000_000_000,
+								FillAmount:   constants.OneBillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -551,7 +551,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   100_000_000,
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -625,7 +625,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   1_000_000_000,
+								FillAmount:   constants.OneBillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -679,7 +679,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -725,7 +725,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				PositionBlockLimits:  constants.PositionBlockLimits_No_Limit,
 				SubaccountBlockLimits: types.SubaccountBlockLimits{
 					MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
-					MaxQuantumsInsuranceLost: dtypes.NewIntFromString("50_000_000"), // $50
+					MaxQuantumsInsuranceLost: constants.FiftyMillionQuantumsSerializableInt, // $50
 				},
 			},
 			placedMatchableOrders: []types.MatchableOrder{
@@ -753,7 +753,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   1_000_000_000,
+								FillAmount:   constants.OneBillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -808,7 +808,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -990,7 +990,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -1078,7 +1078,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -1404,7 +1404,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.GetOrderId(),
-							FillAmount:   100_000_000,
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1482,7 +1482,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.GetOrderId(),
-							FillAmount:   25_000_000,
+							FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1540,7 +1540,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						Fills: []types.MatchPerpetualDeleveraging_Fill{
 							{
 								OffsettingSubaccountId: constants.Dave_Num0,
-								FillAmount:             100_000_000,
+								FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -1624,7 +1624,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50498_GTB11.GetOrderId(),
-							FillAmount:   25_000_000,
+							FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1755,7 +1755,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Sell025BTC_Price49999_GTB10.GetOrderId(),
-							FillAmount:   25_000_000,
+							FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1835,7 +1835,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						Fills: []types.MatchPerpetualDeleveraging_Fill{
 							{
 								OffsettingSubaccountId: constants.Dave_Num1,
-								FillAmount:             50_000_000,
+								FillAmount:             constants.FiftyMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -1920,7 +1920,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50498_GTB11.GetOrderId(),
-							FillAmount:   25_000_000,
+							FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1984,11 +1984,11 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50498_GTB11.GetOrderId(),
-							FillAmount:   25_000_000,
+							FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50500_GTB10.GetOrderId(),
-							FillAmount:   75_000_000,
+							FillAmount:   constants.SeventyFiveMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2082,7 +2082,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.GetOrderId(),
-							FillAmount:   25_000_000,
+							FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -4740,11 +4740,11 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   50_000_000,
+								FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 							},
 							{
 								MakerOrderId: types.OrderId{},
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},

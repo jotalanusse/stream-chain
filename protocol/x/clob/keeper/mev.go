@@ -515,7 +515,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						),
 
 						ClobPairId: takerOrder.OrderId.ClobPairId,
-						FillAmount: fill.FillAmount,
+						FillAmount: fill.FillAmount.BigInt().Uint64(),
 					}
 					mevMatches = append(mevMatches, mevMatch)
 				}
@@ -533,7 +533,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						matchLiquidation.Liquidated,
 						matchLiquidation.PerpetualId,
 						liquidationIsBuy,
-						fill.FillAmount,
+						fill.FillAmount.BigInt().Uint64(),
 						makerOrder.GetOrderSubticks(),
 					)
 					if err != nil {
@@ -562,7 +562,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						),
 
 						ClobPairId: matchLiquidation.ClobPairId,
-						FillAmount: fill.FillAmount,
+						FillAmount: fill.FillAmount.BigInt().Uint64(),
 					}
 					mevLiquidationMatches = append(mevLiquidationMatches, mevLiquidationMatch)
 				}
@@ -725,7 +725,7 @@ func (k Keeper) CalculateSubaccountPnLForMatches(
 				isBuy := !position.GetIsLong()
 
 				for _, fill := range matchDeleveraging.Fills {
-					deltaQuantums := new(big.Int).SetUint64(fill.FillAmount)
+					deltaQuantums := fill.FillAmount.BigInt()
 					if !isBuy {
 						deltaQuantums.Neg(deltaQuantums)
 					}
@@ -751,7 +751,7 @@ func (k Keeper) CalculateSubaccountPnLForMatches(
 							p.subaccountId,
 							p.isBuy,
 							absQuoteQuantums,
-							satypes.BaseQuantums(fill.FillAmount),
+							satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64()),
 							p.feePpm,
 						); err != nil {
 							return err

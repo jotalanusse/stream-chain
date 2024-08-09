@@ -167,14 +167,14 @@ func createMatchExpectationsFromOperations(
 			case *types.ClobMatch_MatchOrders:
 				// For each fill, add the fill amount to the maker and taker order's filled amount.
 				for _, fill := range match.MatchOrders.Fills {
-					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount)
-					expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId] += satypes.BaseQuantums(fill.FillAmount)
+					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
+					expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
 				}
 			case *types.ClobMatch_MatchPerpetualLiquidation:
 				// For each fill, add the fill amount to the maker order's filled amount.
 				// Note we skip the taker order because it's a liquidation order.
 				for _, fill := range match.MatchPerpetualLiquidation.Fills {
-					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount)
+					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
 				}
 			default:
 				panic(

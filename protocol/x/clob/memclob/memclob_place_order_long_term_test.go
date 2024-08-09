@@ -132,7 +132,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -149,7 +149,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -238,11 +238,11 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10.OrderId,
-							FillAmount:   40,
+							FillAmount:   constants.FourtyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -262,11 +262,11 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10.OrderId,
-							FillAmount:   40,
+							FillAmount:   constants.FourtyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -330,7 +330,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -347,7 +347,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -440,7 +440,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -461,7 +461,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -536,7 +536,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -553,7 +553,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),

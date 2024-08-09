@@ -473,7 +473,7 @@ func (k Keeper) PersistMatchOrdersToState(
 		matchWithOrders := types.MatchWithOrders{
 			TakerOrder: &takerOrder,
 			MakerOrder: &makerOrder,
-			FillAmount: satypes.BaseQuantums(makerFill.GetFillAmount()),
+			FillAmount: satypes.BaseQuantums(makerFill.GetFillAmount().BigInt().Uint64()),
 		}
 
 		_, _, _, _, err = k.ProcessSingleMatch(ctx, &matchWithOrders)
@@ -557,7 +557,7 @@ func (k Keeper) PersistMatchLiquidationToState(
 		matchWithOrders := types.MatchWithOrders{
 			MakerOrder: &makerOrder,
 			TakerOrder: takerOrder,
-			FillAmount: satypes.BaseQuantums(fill.FillAmount),
+			FillAmount: satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64()),
 		}
 
 		// Write the position updates and state fill amounts for this match.
@@ -708,7 +708,7 @@ func (k Keeper) PersistMatchDeleveragingToState(
 	}
 
 	for _, fill := range matchDeleveraging.GetFills() {
-		deltaBaseQuantums := new(big.Int).SetUint64(fill.FillAmount)
+		deltaBaseQuantums := fill.FillAmount.BigInt()
 		if deltaBaseQuantumsIsNegative {
 			deltaBaseQuantums.Neg(deltaBaseQuantums)
 		}

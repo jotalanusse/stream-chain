@@ -6,6 +6,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -241,7 +242,7 @@ func (validator *operationsQueueValidator) validateMatchOrdersOperation(
 
 	for _, fill := range fills {
 		// Fill amount must be greater than zero.
-		if fill.GetFillAmount() == 0 {
+		if fill.GetFillAmount().Cmp(dtypes.NewInt(0)) == 0 {
 			return ErrFillAmountIsZero
 		}
 		makerOrderId := fill.GetMakerOrderId()
@@ -319,10 +320,10 @@ func (validator *operationsQueueValidator) validateMatchPerpetualLiquidationOper
 	for _, fill := range fills {
 		fillAmt := fill.GetFillAmount()
 		// Fill amount cannot be zero.
-		if fillAmt == 0 {
+		if fillAmt.Cmp(dtypes.ZeroInt()) == 0 {
 			return ErrFillAmountIsZero
 		}
-		bigQuantumsFilled.Add(bigQuantumsFilled, new(big.Int).SetUint64(fill.FillAmount))
+		bigQuantumsFilled.Add(bigQuantumsFilled, fill.FillAmount.BigInt())
 
 		fillMakerOrderId := fill.GetMakerOrderId()
 

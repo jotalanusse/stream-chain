@@ -46,7 +46,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -78,7 +78,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -113,7 +113,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 							{
 								// Maker order is a long-term order.
 								MakerOrderId: constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-								FillAmount:   100_000_000, // 1 BTC
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 							},
 						},
 					},
@@ -154,7 +154,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -188,7 +188,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -226,7 +226,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_FOK.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -260,7 +260,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_IOC.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -315,7 +315,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 								OrderFlags:   types.OrderIdFlags_LongTerm,
 								ClobPairId:   1, // ETH.
 							},
-							FillAmount: 100_000_000, // 1 BTC
+							FillAmount: constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -370,7 +370,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   50_000_000,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -413,7 +413,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -445,7 +445,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -480,7 +480,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 							{
 								// Maker order is a conditional order.
 								MakerOrderId: constants.ConditionalOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-								FillAmount:   100_000_000, // 1 BTC
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 							},
 						},
 					},
@@ -516,7 +516,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -556,7 +556,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -611,7 +611,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 								OrderFlags:   types.OrderIdFlags_Conditional,
 								ClobPairId:   1, // ETH.
 							},
-							FillAmount: 100_000_000, // 1 BTC
+							FillAmount: constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -666,7 +666,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   50_000_000,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 						},
 					},
 				),

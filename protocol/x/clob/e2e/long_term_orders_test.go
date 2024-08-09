@@ -936,8 +936,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount: PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.
-														Order.GetBaseQuantums().ToUint64(),
+													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()), // $ amount
 													MakerOrderId: PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
 												},
 											},
@@ -1289,8 +1288,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount: PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.
-														Order.GetBaseQuantums().ToUint64(),
+													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()), // $ amount
 													MakerOrderId: PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
 												},
 											},
@@ -1463,8 +1461,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount: PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.
-														Order.GetBaseQuantums().ToUint64(),
+													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()),
 													MakerOrderId: LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.OrderId,
 												},
 											},
@@ -1882,8 +1879,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 											&Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount: LongTermPlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.
-														Order.GetBaseQuantums().ToUint64(),
+													FillAmount:   dtypes.NewIntFromBigInt(LongTermPlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()),
 													MakerOrderId: LongTermPlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
 												},
 											},

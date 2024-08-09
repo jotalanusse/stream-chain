@@ -34,7 +34,7 @@ func TestClearOperationsQueue(t *testing.T) {
 					constants.Order_Alice_Num0_Id5_Clob1_Sell25_Price15_GTB20,
 					[]types.MakerFill{
 						{
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 							MakerOrderId: constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20.GetOrderId(),
 						},
 					},
@@ -440,14 +440,14 @@ func TestMustAddMatchToOperationsQueue(t *testing.T) {
 			{
 				Order: shortTermOrder1,
 				MakerFill: types.MakerFill{
-					FillAmount:   50_000_000,
+					FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 					MakerOrderId: shortTermOrder1.OrderId,
 				},
 			},
 			{
 				Order: shortTermOrder2,
 				MakerFill: types.MakerFill{
-					FillAmount:   1_000,
+					FillAmount:   constants.OneThousandQuantumsSerializableInt,
 					MakerOrderId: shortTermOrder2.OrderId,
 				},
 			},
@@ -463,7 +463,7 @@ func TestMustAddMatchToOperationsQueue(t *testing.T) {
 			{
 				Order: shortTermOrder3,
 				MakerFill: types.MakerFill{
-					FillAmount:   50_000_000,
+					FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 					MakerOrderId: shortTermOrder3.OrderId,
 				},
 			},
@@ -479,7 +479,7 @@ func TestMustAddMatchToOperationsQueue(t *testing.T) {
 			{
 				Order: longTermOrder2,
 				MakerFill: types.MakerFill{
-					FillAmount:   50_000_000,
+					FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 					MakerOrderId: longTermOrder2.OrderId,
 				},
 			},
@@ -494,7 +494,7 @@ func TestMustAddMatchToOperationsQueue(t *testing.T) {
 			{
 				Order: shortTermOrder3,
 				MakerFill: types.MakerFill{
-					FillAmount:   50_000_000,
+					FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 					MakerOrderId: shortTermOrder3.OrderId,
 				},
 			},
@@ -521,7 +521,7 @@ func TestMustAddMatchToOperationsQueue_PanicsOnTakerOrderNotInOperationsQueue(t 
 					{
 						Order: makerOrder,
 						MakerFill: types.MakerFill{
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 							MakerOrderId: makerOrder.OrderId,
 						},
 					},
@@ -550,7 +550,7 @@ func TestMustAddMatchToOperationsQueue_PanicsOnMakerOrderNotInOperationsQueue(t 
 					{
 						Order: makerOrder,
 						MakerFill: types.MakerFill{
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 							MakerOrderId: makerOrder.OrderId,
 						},
 					},
@@ -608,7 +608,7 @@ func TestMustAddDeleveraingToOperationsQueue(t *testing.T) {
 		[]types.MatchPerpetualDeleveraging_Fill{
 			{
 				OffsettingSubaccountId: constants.Bob_Num0,
-				FillAmount:             5,
+				FillAmount:             constants.FiveQuantumsSerializableInt,
 			},
 		},
 		false,
@@ -641,7 +641,7 @@ func TestMustAddDeleveragingToOperationsQueue_Panics(t *testing.T) {
 			fills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Bob_Num0,
-					FillAmount:             0,
+					FillAmount:             constants.ZeroQuantumsSerializableInt,
 				},
 			},
 
@@ -652,7 +652,7 @@ func TestMustAddDeleveragingToOperationsQueue_Panics(t *testing.T) {
 				0,
 				types.MatchPerpetualDeleveraging_Fill{
 					OffsettingSubaccountId: constants.Bob_Num0,
-					FillAmount:             0,
+					FillAmount:             constants.ZeroQuantumsSerializableInt,
 				},
 			),
 		},
@@ -662,7 +662,7 @@ func TestMustAddDeleveragingToOperationsQueue_Panics(t *testing.T) {
 			fills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Alice_Num0,
-					FillAmount:             5,
+					FillAmount:             constants.FiveQuantumsSerializableInt,
 				},
 			},
 
@@ -673,7 +673,7 @@ func TestMustAddDeleveragingToOperationsQueue_Panics(t *testing.T) {
 				0,
 				types.MatchPerpetualDeleveraging_Fill{
 					OffsettingSubaccountId: constants.Alice_Num0,
-					FillAmount:             5,
+					FillAmount:             constants.FiveQuantumsSerializableInt,
 				},
 			),
 		},
@@ -683,11 +683,11 @@ func TestMustAddDeleveragingToOperationsQueue_Panics(t *testing.T) {
 			fills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Bob_Num0,
-					FillAmount:             5,
+					FillAmount:             constants.FiveQuantumsSerializableInt,
 				},
 				{
 					OffsettingSubaccountId: constants.Bob_Num0,
-					FillAmount:             5,
+					FillAmount:             constants.FiveQuantumsSerializableInt,
 				},
 			},
 
@@ -698,7 +698,7 @@ func TestMustAddDeleveragingToOperationsQueue_Panics(t *testing.T) {
 				0,
 				types.MatchPerpetualDeleveraging_Fill{
 					OffsettingSubaccountId: constants.Bob_Num0,
-					FillAmount:             5,
+					FillAmount:             constants.FiveQuantumsSerializableInt,
 				},
 			),
 		},
@@ -840,7 +840,7 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 				makerFillsWithOrders := []types.MakerFillWithOrder{
 					{
 						MakerFill: types.MakerFill{
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 							MakerOrderId: makerOrder.OrderId,
 						},
 						Order: makerOrder,
@@ -863,7 +863,7 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -882,7 +882,7 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 					[]types.MakerFillWithOrder{
 						{
 							MakerFill: types.MakerFill{
-								FillAmount:   5,
+								FillAmount:   constants.FiveQuantumsSerializableInt,
 								MakerOrderId: makerOrder.OrderId,
 							},
 							Order: makerOrder,
@@ -898,7 +898,7 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 					&constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
 					[]types.MakerFill{
 						{
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 							MakerOrderId: constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15.OrderId,
 						},
 					},
@@ -914,7 +914,7 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 					[]types.MatchPerpetualDeleveraging_Fill{
 						{
 							OffsettingSubaccountId: constants.Bob_Num0,
-							FillAmount:             10,
+							FillAmount:             constants.TenQuantumsSerializableInt,
 						},
 					},
 					false,
@@ -931,7 +931,7 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 									Fills: []types.MatchPerpetualDeleveraging_Fill{
 										{
 											OffsettingSubaccountId: constants.Bob_Num0,
-											FillAmount:             10,
+											FillAmount:             constants.TenQuantumsSerializableInt,
 										},
 									},
 								},
@@ -1015,7 +1015,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 				makerFillsWithOrders := []types.MakerFillWithOrder{
 					{
 						MakerFill: types.MakerFill{
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 							MakerOrderId: makerOrder.OrderId,
 						},
 						Order: makerOrder,
@@ -1041,7 +1041,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 									TakerOrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16.OrderId,
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   5,
+											FillAmount:   constants.FiveQuantumsSerializableInt,
 											MakerOrderId: constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15.OrderId,
 										},
 									},
@@ -1063,7 +1063,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 					[]types.MakerFillWithOrder{
 						{
 							MakerFill: types.MakerFill{
-								FillAmount:   5,
+								FillAmount:   constants.FiveQuantumsSerializableInt,
 								MakerOrderId: makerOrder.OrderId,
 							},
 							Order: makerOrder,
@@ -1084,7 +1084,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 									IsBuy:       false,
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   5,
+											FillAmount:   constants.FiveQuantumsSerializableInt,
 											MakerOrderId: constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15.OrderId,
 										},
 									},
@@ -1103,7 +1103,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 					[]types.MatchPerpetualDeleveraging_Fill{
 						{
 							OffsettingSubaccountId: constants.Bob_Num0,
-							FillAmount:             10,
+							FillAmount:             constants.TenQuantumsSerializableInt,
 						},
 					},
 					false,
@@ -1120,7 +1120,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 									Fills: []types.MatchPerpetualDeleveraging_Fill{
 										{
 											OffsettingSubaccountId: constants.Bob_Num0,
-											FillAmount:             10,
+											FillAmount:             constants.TenQuantumsSerializableInt,
 										},
 									},
 								},

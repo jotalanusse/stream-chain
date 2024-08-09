@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
@@ -279,7 +280,7 @@ func (o *OperationsToPropose) MustAddDeleveragingToOperationsQueue(
 
 	seenSubaccountIds := make(map[satypes.SubaccountId]bool)
 	for _, fill := range fills {
-		if fill.FillAmount == 0 {
+		if fill.FillAmount.Cmp(dtypes.NewInt(0)) == 0 {
 			panic(
 				fmt.Sprintf(
 					"MustAddDeleveragingToOperationsQueue: fill amount is zero. "+

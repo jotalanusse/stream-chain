@@ -485,7 +485,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -508,7 +508,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -591,7 +591,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -614,7 +614,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -749,7 +749,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   30,
+							FillAmount:   constants.ThirtyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -766,7 +766,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   30,
+							FillAmount:   constants.ThirtyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -952,7 +952,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id0_Clob0_Sell5_Price10_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -973,7 +973,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id10_Clob0_Sell25_Price15_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -988,7 +988,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1017,7 +1017,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id0_Clob0_Sell5_Price10_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1032,7 +1032,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id10_Clob0_Sell25_Price15_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1047,7 +1047,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1146,7 +1146,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1169,7 +1169,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1313,7 +1313,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1334,7 +1334,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   20,
+							FillAmount:   constants.TwentyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1357,7 +1357,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1372,7 +1372,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   20,
+							FillAmount:   constants.TwentyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1453,7 +1453,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1473,7 +1473,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),

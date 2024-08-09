@@ -22,7 +22,7 @@ func TestPerformStatelessMatchPerpetualDeleveragingValidation(t *testing.T) {
 				Fills: []types.MatchPerpetualDeleveraging_Fill{
 					{
 						OffsettingSubaccountId: constants.Bob_Num0,
-						FillAmount:             10,
+						FillAmount:             constants.TenQuantumsSerializableInt,
 					},
 				},
 			},
@@ -43,7 +43,7 @@ func TestPerformStatelessMatchPerpetualDeleveragingValidation(t *testing.T) {
 				Fills: []types.MatchPerpetualDeleveraging_Fill{
 					{
 						OffsettingSubaccountId: constants.Alice_Num0,
-						FillAmount:             10,
+						FillAmount:             constants.TenQuantumsSerializableInt,
 					},
 				},
 			},
@@ -56,11 +56,11 @@ func TestPerformStatelessMatchPerpetualDeleveragingValidation(t *testing.T) {
 				Fills: []types.MatchPerpetualDeleveraging_Fill{
 					{
 						OffsettingSubaccountId: constants.Bob_Num0,
-						FillAmount:             10,
+						FillAmount:             constants.TenQuantumsSerializableInt,
 					},
 					{
 						OffsettingSubaccountId: constants.Bob_Num0,
-						FillAmount:             5,
+						FillAmount:             constants.FiveQuantumsSerializableInt,
 					},
 				},
 			},
@@ -73,11 +73,11 @@ func TestPerformStatelessMatchPerpetualDeleveragingValidation(t *testing.T) {
 				Fills: []types.MatchPerpetualDeleveraging_Fill{
 					{
 						OffsettingSubaccountId: constants.Bob_Num0,
-						FillAmount:             10,
+						FillAmount:             constants.TenQuantumsSerializableInt,
 					},
 					{
 						OffsettingSubaccountId: constants.Bob_Num1,
-						FillAmount:             0,
+						FillAmount:             constants.ZeroQuantumsSerializableInt,
 					},
 				},
 			},
@@ -90,11 +90,11 @@ func TestPerformStatelessMatchPerpetualDeleveragingValidation(t *testing.T) {
 				Fills: []types.MatchPerpetualDeleveraging_Fill{
 					{
 						OffsettingSubaccountId: constants.Bob_Num0,
-						FillAmount:             10,
+						FillAmount:             constants.TenQuantumsSerializableInt,
 					},
 					{
 						OffsettingSubaccountId: constants.Bob_Num1,
-						FillAmount:             5,
+						FillAmount:             constants.FiveQuantumsSerializableInt,
 					},
 				},
 			},
@@ -107,11 +107,11 @@ func TestPerformStatelessMatchPerpetualDeleveragingValidation(t *testing.T) {
 				Fills: []types.MatchPerpetualDeleveraging_Fill{
 					{
 						OffsettingSubaccountId: constants.InvalidSubaccountIdNumber,
-						FillAmount:             10,
+						FillAmount:             constants.TenQuantumsSerializableInt,
 					},
 					{
 						OffsettingSubaccountId: constants.Bob_Num1,
-						FillAmount:             5,
+						FillAmount:             constants.FiveQuantumsSerializableInt,
 					},
 				},
 			},

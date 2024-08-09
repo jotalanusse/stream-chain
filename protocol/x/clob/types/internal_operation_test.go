@@ -70,7 +70,7 @@ func TestNewMatchOrdersInternalOperation(t *testing.T) {
 	makerOrder := constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15
 	makerFills := []types.MakerFill{
 		{
-			FillAmount:   5,
+			FillAmount:   constants.FiveQuantumsSerializableInt,
 			MakerOrderId: makerOrder.OrderId,
 		},
 	}
@@ -118,7 +118,7 @@ func TestNewMatchPerpetualLiquidationInternalOperation(t *testing.T) {
 	makerOrder := constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15
 	makerFills := []types.MakerFill{
 		{
-			FillAmount:   5,
+			FillAmount:   constants.FiveQuantumsSerializableInt,
 			MakerOrderId: makerOrder.OrderId,
 		},
 	}
