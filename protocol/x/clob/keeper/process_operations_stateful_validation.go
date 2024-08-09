@@ -110,7 +110,7 @@ func (k Keeper) ValidateLiquidationOrderAgainstProposedLiquidation(
 		)
 	}
 
-	if order.GetBaseQuantums() != satypes.BaseQuantums(proposedMatch.TotalSize) {
+	if order.GetBaseQuantums() != satypes.BaseQuantums(proposedMatch.TotalSize.BigInt().Uint64()) {
 		return errorsmod.Wrapf(
 			types.ErrInvalidLiquidationOrderTotalSize,
 			"Order Size: %v, Match Size: %v",

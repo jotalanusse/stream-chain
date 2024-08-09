@@ -22,7 +22,6 @@ message ClobMatch {
 // MakerFill represents the filled amount of a matched maker order.
 message MakerFill {
   // The filled amount of the matched maker order, in base quantums.
-  // uint64 fill_amount = 1;
   bytes fill_amount = 1 [
     (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
                               "protocol/dtypes.SerializableInt",
@@ -51,7 +50,11 @@ message MatchPerpetualLiquidation {
   // The ID of the perpetual involved in the liquidation.
   uint32 perpetual_id = 3;
   // The total size of the liquidation order including any unfilled size.
-  uint64 total_size = 4;
+  bytes total_size = 4 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                                "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+  ];
   // `true` if liquidating a short position, `false` otherwise.
   bool is_buy = 5;
   // An ordered list of fills created by this liquidation.

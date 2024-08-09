@@ -600,7 +600,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 						Liquidated:  constants.Carl_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   100_000_000, // 1 BTC
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						IsBuy:       true,
 						Fills: []types.MakerFill{
 							{
@@ -686,7 +686,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 						Liquidated:  constants.Carl_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   100_000_000, // 1 BTC
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						IsBuy:       true,
 						Fills: []types.MakerFill{
 							{

@@ -889,7 +889,7 @@ func TestLiquidateSubaccounts(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -965,7 +965,7 @@ func TestLiquidateSubaccounts(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   10_000_000,
+						TotalSize:   constants.TenMillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num1,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -980,7 +980,7 @@ func TestLiquidateSubaccounts(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{

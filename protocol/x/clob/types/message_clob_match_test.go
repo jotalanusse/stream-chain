@@ -28,7 +28,7 @@ func TestNewClobMatchFromMatchPerpetualLiquidation(t *testing.T) {
 	msgMatchPerpetualLiquidation := &types.MatchPerpetualLiquidation{
 		ClobPairId:  5,
 		IsBuy:       true,
-		TotalSize:   30,
+		TotalSize:   constants.ThirtyQuantumsSerializableInt,
 		Liquidated:  constants.Alice_Num1,
 		PerpetualId: 1,
 		Fills: []types.MakerFill{

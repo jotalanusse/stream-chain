@@ -101,7 +101,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -146,7 +146,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -189,7 +189,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -231,7 +231,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -530,7 +530,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Eth.Id,
 						IsBuy:       true,
-						TotalSize:   1_000_000_000,
+						TotalSize:   constants.OneBillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Eth.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -545,7 +545,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       true,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -619,7 +619,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Eth.Id,
 						IsBuy:       true,
-						TotalSize:   1_000_000_000,
+						TotalSize:   constants.OneBillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Eth.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -673,7 +673,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       true,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -747,7 +747,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Eth.Id,
 						IsBuy:       true,
-						TotalSize:   1_000_000_000,
+						TotalSize:   constants.OneBillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Eth.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -802,7 +802,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       true,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -984,7 +984,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       true,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -1072,7 +1072,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
@@ -4734,7 +4734,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{

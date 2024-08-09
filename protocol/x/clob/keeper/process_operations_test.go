@@ -765,7 +765,7 @@ func TestProcessProposerOperations(t *testing.T) {
 						Liquidated:  constants.Carl_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						IsBuy:       true,
 						Fills: []types.MakerFill{
 							{
@@ -884,7 +884,7 @@ func TestProcessProposerOperations(t *testing.T) {
 						Liquidated:  constants.Carl_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						IsBuy:       true,
 						Fills: []types.MakerFill{
 							{
@@ -1883,7 +1883,7 @@ func TestProcessProposerOperations(t *testing.T) {
 						Liquidated:  constants.Alice_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   10,
+						TotalSize:   constants.TenQuantumsSerializableInt,
 						IsBuy:       false,
 						Fills: []types.MakerFill{
 							{

@@ -8,6 +8,15 @@ import (
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
 
+// Getter for total size. Returns 0 as default. Getters are
+// not currently generated automatically by protobuf.
+func (m *MatchPerpetualLiquidation) GetTotalSize() dtypes.SerializableInt {
+	if m != nil {
+		return m.TotalSize
+	}
+	return dtypes.ZeroInt()
+}
+
 // Getter for fill amount. Returns 0 as default. Getters are
 // not currently generated automatically by protobuf.
 func (m *MakerFill) GetFillAmount() dtypes.SerializableInt {

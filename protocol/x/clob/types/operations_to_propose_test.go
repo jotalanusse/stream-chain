@@ -1080,7 +1080,7 @@ func TestGetOperationsToPropose_Success(t *testing.T) {
 									Liquidated:  constants.Alice_Num0,
 									ClobPairId:  constants.ClobPair_Btc.Id,
 									PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().GetPerpetualId(),
-									TotalSize:   20,
+									TotalSize:   constants.TwentyQuantumsSerializableInt,
 									IsBuy:       false,
 									Fills: []types.MakerFill{
 										{

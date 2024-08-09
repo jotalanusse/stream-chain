@@ -305,7 +305,7 @@ func (validator *operationsQueueValidator) validateMatchPerpetualLiquidationOper
 
 	// Make sure the total size greater than zero.
 	totalSize := liquidationMatch.GetTotalSize()
-	if totalSize == 0 {
+	if totalSize.Cmp(dtypes.NewInt(0)) == 0 {
 		return errorsmod.Wrapf(
 			ErrInvalidLiquidationOrderTotalSize,
 			"Liquidation match total size is zero. match: %+v",
@@ -343,7 +343,7 @@ func (validator *operationsQueueValidator) validateMatchPerpetualLiquidationOper
 		return err
 	}
 
-	if bigQuantumsFilled.Cmp(new(big.Int).SetUint64(totalSize)) == 1 {
+	if bigQuantumsFilled.Cmp(totalSize.BigInt()) == 1 {
 		return errorsmod.Wrapf(
 			ErrTotalFillAmountExceedsOrderSize,
 			"Total fill size: %v match total size: %v",

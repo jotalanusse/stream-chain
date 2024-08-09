@@ -216,7 +216,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 									Liquidated:  constants.Carl_Num0,
 									ClobPairId:  0,
 									PerpetualId: 0,
-									TotalSize:   1,
+									TotalSize:   constants.OneQuantumSerializableInt,
 									IsBuy:       true,
 									Fills: []types.MakerFill{
 										{
@@ -390,7 +390,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   100_000_000, // 1 BTCw
+					TotalSize:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTCw
 					IsBuy:       true,
 					Fills: []types.MakerFill{
 						{
@@ -417,7 +417,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   0, // Total size is zero.
+					TotalSize:   constants.ZeroQuantumsSerializableInt, // Total size is zero.
 					IsBuy:       true,
 					Fills: []types.MakerFill{
 						{
@@ -436,7 +436,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   100,
+					TotalSize:   constants.OneHundredQuantumsSerializableInt,
 					IsBuy:       true,
 					Fills: []types.MakerFill{
 						{
@@ -455,7 +455,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   100,
+					TotalSize:   constants.OneHundredQuantumsSerializableInt,
 					IsBuy:       true,
 					Fills:       []types.MakerFill{},
 				}),
