@@ -93,7 +93,7 @@ func (k Keeper) InitializeCumulativePnLsFromRequest(
 		clobPairId := types.ClobPairId(clobMidPrice.ClobPair.Id)
 		clobMetadata[clobPairId] = ClobMetadata{
 			ClobPair: clobMidPrice.ClobPair,
-			MidPrice: types.Subticks(clobMidPrice.Subticks),
+			MidPrice: types.Subticks(clobMidPrice.Subticks.BigInt().Uint64()),
 		}
 	}
 

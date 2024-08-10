@@ -41,11 +41,11 @@ func TestMevNodeToNodeCalculation(t *testing.T) {
 					ClobMidPrices: []types.ClobMidPrice{
 						{
 							ClobPair: constants.ClobPair_Btc,
-							Subticks: 50_000_000_000, // $50,000 / BTC
+							Subticks: constants.FiftyBillionQuantumsSerializableInt, // $50,000 / BTC
 						},
 						{
 							ClobPair: constants.ClobPair_Eth,
-							Subticks: 3_000_000_000, // $3000 / ETH
+							Subticks: constants.ThreeBillionQuantumsSerializableInt, // $3000 / ETH
 						},
 					},
 				},
@@ -76,19 +76,19 @@ func TestMevNodeToNodeCalculation(t *testing.T) {
 								TakerFeePpm:            0,
 
 								MakerOrderSubaccountId: &constants.Bob_Num0,
-								MakerOrderSubticks:     49_000_000_000, // $49,000 / BTC
+								MakerOrderSubticks:     constants.FortyNineBillionQuantumsSerializableInt, // $49,000 / BTC
 								MakerOrderIsBuy:        true,
 								MakerFeePpm:            0,
 
 								ClobPairId: 0,
-								FillAmount: 100_000_000, // 1 BTC
+								FillAmount: constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 							},
 						},
 					},
 					ClobMidPrices: []types.ClobMidPrice{
 						{
 							ClobPair: constants.ClobPair_Btc,
-							Subticks: 50_000_000_000, // $50,000 / BTC
+							Subticks: constants.FiftyBillionQuantumsSerializableInt, // $50,000 / BTC
 						},
 					},
 				},
@@ -97,15 +97,15 @@ func TestMevNodeToNodeCalculation(t *testing.T) {
 					LiquidationMatches: []types.MEVLiquidationMatch{
 						{
 							LiquidatedSubaccountId:          constants.Alice_Num0,
-							InsuranceFundDeltaQuoteQuantums: 0, // $0 paid to insurance fund
+							InsuranceFundDeltaQuoteQuantums: constants.ZeroQuantumsSerializableInt, // $0 paid to insurance fund
 
 							MakerOrderSubaccountId: constants.Carl_Num0,
-							MakerOrderSubticks:     48_000_000_000, // $48,000 / BTC
+							MakerOrderSubticks:     constants.FortyEightBillionQuantumsSerializableInt, // $48,000 / BTC
 							MakerOrderIsBuy:        true,
 							MakerFeePpm:            0,
 
 							ClobPairId: 0,
-							FillAmount: 100_000_000, // 1 BTC
+							FillAmount: constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				},
