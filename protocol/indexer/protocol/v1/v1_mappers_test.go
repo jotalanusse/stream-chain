@@ -326,8 +326,8 @@ func TestOrderToIndexerOrderV1(t *testing.T) {
 					OrderFlags: shortTermOrder.OrderId.OrderFlags,
 				},
 				Side:     v1.OrderSideToIndexerOrderSide(shortTermOrder.Side),
-				Quantums: shortTermOrder.Quantums,
-				Subticks: shortTermOrder.Subticks,
+				Quantums: shortTermOrder.Quantums.BigInt().Uint64(),
+				Subticks: shortTermOrder.Subticks.BigInt().Uint64(),
 				GoodTilOneof: &v1types.IndexerOrder_GoodTilBlock{
 					GoodTilBlock: shortTermOrder.GoodTilOneof.(*clobtypes.Order_GoodTilBlock).GoodTilBlock,
 				},
@@ -335,7 +335,7 @@ func TestOrderToIndexerOrderV1(t *testing.T) {
 				ReduceOnly:                      shortTermOrder.ReduceOnly,
 				ClientMetadata:                  shortTermOrder.ClientMetadata,
 				ConditionType:                   v1.OrderConditionTypeToIndexerOrderConditionType(shortTermOrder.ConditionType),
-				ConditionalOrderTriggerSubticks: shortTermOrder.ConditionalOrderTriggerSubticks,
+				ConditionalOrderTriggerSubticks: shortTermOrder.ConditionalOrderTriggerSubticks.BigInt().Uint64(),
 			},
 		},
 		"Maps stateful order to IndexerOrderV1": {
@@ -351,8 +351,8 @@ func TestOrderToIndexerOrderV1(t *testing.T) {
 					OrderFlags: statefulOrder.OrderId.OrderFlags,
 				},
 				Side:     v1.OrderSideToIndexerOrderSide(statefulOrder.Side),
-				Quantums: statefulOrder.Quantums,
-				Subticks: statefulOrder.Subticks,
+				Quantums: statefulOrder.Quantums.BigInt().Uint64(),
+				Subticks: statefulOrder.Subticks.BigInt().Uint64(),
 				GoodTilOneof: &v1types.IndexerOrder_GoodTilBlockTime{
 					GoodTilBlockTime: statefulOrder.GoodTilOneof.(*clobtypes.Order_GoodTilBlockTime).GoodTilBlockTime,
 				},
@@ -360,7 +360,7 @@ func TestOrderToIndexerOrderV1(t *testing.T) {
 				ReduceOnly:                      statefulOrder.ReduceOnly,
 				ClientMetadata:                  statefulOrder.ClientMetadata,
 				ConditionType:                   v1.OrderConditionTypeToIndexerOrderConditionType(statefulOrder.ConditionType),
-				ConditionalOrderTriggerSubticks: statefulOrder.ConditionalOrderTriggerSubticks,
+				ConditionalOrderTriggerSubticks: statefulOrder.ConditionalOrderTriggerSubticks.BigInt().Uint64(),
 			},
 		},
 	}

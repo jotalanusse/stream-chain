@@ -68,8 +68,8 @@ func TestProcessProposerMatches_Liquidation_Undercollateralized_Determinism(t *t
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10,
-					Subticks:     90_000_000_000,
+					Quantums:     constants.TenQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_90_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 				},
 			),
@@ -81,8 +81,8 @@ func TestProcessProposerMatches_Liquidation_Undercollateralized_Determinism(t *t
 						ClobPairId:   1,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     1000,
-					Subticks:     200_000_000_000,
+					Quantums:     constants.OneThousandQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_200_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 				},
 			),
@@ -919,8 +919,8 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 							ClobPairId:   0,
 						},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     25_000_000,
-						Subticks:     50_000_000_000,
+						Quantums:     constants.TwentyFiveMillionQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_50_000,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 11},
 					},
 				),
@@ -1090,8 +1090,8 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId,
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     9, // StepBaseQuantums is 5
-						Subticks:     50_000_000_000,
+						Quantums:     constants.NineQuantumsSerializableInt, // StepBaseQuantums is 5
+						Subticks:     constants.Dollars_Uusdc_50_000,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 				),
@@ -1130,8 +1130,8 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId,
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     10,
-						Subticks:     50_000_000_000,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_50_000,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 				),
@@ -1170,8 +1170,8 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Carl_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     10,
-						Subticks:     90_000_000_000,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_90_000,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 				),
@@ -1179,8 +1179,8 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Carl_Num0, ClientId: 1, ClobPairId: 0},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     10,
-						Subticks:     200_000_000_000,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_200_000,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 				),
@@ -1610,8 +1610,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     1000,
-						Subticks:     1000,
+						Quantums:     constants.OneThousandQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_001,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 					},
 				),
@@ -1667,8 +1667,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 						// For this reason, we need for this account to spend at least
 						// 10,000 quote quantums in order to lower their `QuoteBalance` and bring
 						// them under their margin requirement by a single Quote Quantum.
-						Quantums:     10,              // 5,000 quote quantums worth of BTC
-						Subticks:     100_010_000_000, // Spending 10,001 quote quantums
+						Quantums:     constants.TenQuantumsSerializableInt, // 5,000 quote quantums worth of BTC
+						Subticks:     constants.Dollars_Uusdc_100_010,      // Spending 10,001 quote quantums
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 				),
@@ -1791,8 +1791,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 1},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     1000,
-						Subticks:     1000,
+						Quantums:     constants.OneThousandQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_001,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 					},
 				),
@@ -1835,8 +1835,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     100_000_000,
-						Subticks:     50_000_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_50_000,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 					},
 				),
@@ -1879,8 +1879,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Dave_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000,
-						Subticks:     1_000_000_000_000, // Maker order selling at $1,000,000, higher than fillable price
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_1_000_000, // Maker order selling at $1,000,000, higher than fillable price
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 					},
 				),
@@ -1924,8 +1924,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Carl_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     100_000_000,
-						Subticks:     500_000_000, // Maker order buying at $500, lower than fillable price
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_500, // Maker order buying at $500, lower than fillable price
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 					},
 				),
@@ -2261,8 +2261,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Dave_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     25_000_000,
-						Subticks:     50_498_000_000,
+						Quantums:     constants.TwentyFiveMillionQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_50_498,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 					},
 				),
@@ -2271,8 +2271,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Dave_Num0, ClientId: 2, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     75_000_000,
-						Subticks:     50_500_000_000,
+						Quantums:     constants.SeventyFiveMillionQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_50_500,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 12},
 					},
 				),

@@ -396,9 +396,15 @@ func (k Keeper) GetClobMetadata(
 
 		// Use the oracle price instead of the mid price if the mid price doesn't exist or
 		// the spread is greater-than-or-equal-to the max spread.
+		bestAskBestBidSpread := big.NewInt(0).Sub(
+			bestAsk.Subticks.BigInt(),
+			bestBid.Subticks.BigInt(),
+		)
+		bestBidSubticksBig := bestBid.Subticks.BigInt()
+
 		if !exist || new(big.Rat).SetFrac(
-			new(big.Int).SetUint64(uint64(bestAsk.Subticks-bestBid.Subticks)),
-			new(big.Int).SetUint64(uint64(bestBid.Subticks)), // Note that bestBid cannot be 0 if exist is true.
+			bestAskBestBidSpread,
+			bestBidSubticksBig, // Note that bestBid cannot be 0 if exist is true.
 		).Cmp(MAX_SPREAD_BEFORE_FALLING_BACK_TO_ORACLE) >= 0 {
 			metrics.IncrCounterWithLabels(
 				metrics.MevFallbackToOracle,
@@ -507,7 +513,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						),
 
 						MakerOrderSubaccountId: &makerOrder.OrderId.SubaccountId,
-						MakerOrderSubticks:     dtypes.NewIntFromUint64(makerOrder.Subticks),
+						MakerOrderSubticks:     makerOrder.Subticks,
 						MakerOrderIsBuy:        makerOrder.IsBuy(),
 						MakerFeePpm: k.feeTiersKeeper.GetPerpetualFeePpm(
 							ctx,
@@ -553,7 +559,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						InsuranceFundDeltaQuoteQuantums: dtypes.NewIntFromBigInt(insuranceFundDelta),
 
 						MakerOrderSubaccountId: makerOrder.OrderId.SubaccountId,
-						MakerOrderSubticks:     dtypes.NewIntFromUint64(makerOrder.Subticks),
+						MakerOrderSubticks:     makerOrder.Subticks,
 						MakerOrderIsBuy:        makerOrder.IsBuy(),
 						MakerFeePpm: k.feeTiersKeeper.GetPerpetualFeePpm(
 							ctx,

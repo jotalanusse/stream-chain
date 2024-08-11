@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -69,8 +70,8 @@ func CmdPlaceOrder() *cobra.Command {
 						ClobPairId: argClobPairId,
 					},
 					Side:         types.Order_Side(argSide),
-					Quantums:     argQuantums,
-					Subticks:     argSubticks,
+					Quantums:     dtypes.NewIntFromUint64(argQuantums),
+					Subticks:     dtypes.NewIntFromUint64(argSubticks),
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: argGoodTilBlock},
 				},
 			)

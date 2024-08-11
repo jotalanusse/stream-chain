@@ -47,8 +47,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 5},
 		},
 		testapp.DefaultGenesis(),
@@ -57,8 +57,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 		testapp.DefaultGenesis(),
@@ -67,8 +67,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 23},
 		},
 		testapp.DefaultGenesis(),
@@ -77,8 +77,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 24},
 		},
 		testapp.DefaultGenesis(),
@@ -87,8 +87,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 27},
 		},
 		testapp.DefaultGenesis(),
@@ -97,8 +97,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num1, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 		testapp.DefaultGenesis(),
@@ -107,8 +107,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     6,
-			Subticks:     10,
+			Quantums:     constants.SixQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 		testapp.DefaultGenesis(),
@@ -118,8 +118,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 21},
 		},
 		testapp.DefaultGenesis(),
@@ -129,8 +129,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     7,
-			Subticks:     10,
+			Quantums:     constants.SevenQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 21},
 		},
 		testapp.DefaultGenesis(),
@@ -140,8 +140,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_SELL,
-			Quantums:     6,
-			Subticks:     10,
+			Quantums:     constants.SixQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 21},
 		},
 		testapp.DefaultGenesis(),
@@ -150,8 +150,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 1},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 		testapp.DefaultGenesis(),
@@ -216,8 +216,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_SELL,
-			Quantums:     5,
-			Subticks:     10,
+			Quantums:     constants.FiveQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 		testapp.DefaultGenesis(),
@@ -226,8 +226,8 @@ var (
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_SELL,
-			Quantums:     4,
-			Subticks:     10,
+			Quantums:     constants.FourQuantumSerializableInt,
+			Subticks:     constants.Serializable_Int_10,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 		testapp.DefaultGenesis(),
@@ -702,8 +702,8 @@ func TestConcurrentMatchesAndCancels(t *testing.T) {
 			expectedFills[i] = testapp.MustScaleOrder(clobtypes.Order{
 				OrderId:      orderId,
 				Side:         side,
-				Quantums:     quantums,
-				Subticks:     20,
+				Quantums:     dtypes.NewIntFromUint64(quantums),
+				Subticks:     constants.Serializable_Int_20,
 				GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 			}, Clob_0)
 			msg := clobtypes.NewMsgPlaceOrder(expectedFills[i])
@@ -727,8 +727,8 @@ func TestConcurrentMatchesAndCancels(t *testing.T) {
 				expectedCancels[idx] = testapp.MustScaleOrder(clobtypes.Order{
 					OrderId:      orderId,
 					Side:         clobtypes.Order_SIDE_BUY,
-					Quantums:     1,
-					Subticks:     10,
+					Quantums:     constants.OneQuantumSerializableInt,
+					Subticks:     constants.Serializable_Int_10,
 					GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 				},
 					Clob_0)
@@ -736,8 +736,8 @@ func TestConcurrentMatchesAndCancels(t *testing.T) {
 				expectedCancels[idx] = testapp.MustScaleOrder(clobtypes.Order{
 					OrderId:      orderId,
 					Side:         clobtypes.Order_SIDE_SELL,
-					Quantums:     1,
-					Subticks:     30,
+					Quantums:     constants.OneQuantumSerializableInt,
+					Subticks:     constants.Serializable_Int_30,
 					GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 				},
 					Clob_0)
@@ -979,8 +979,8 @@ func TestStats(t *testing.T) {
 			clobtypes.Order{
 				OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: clientId, ClobPairId: 0},
 				Side:         clobtypes.Order_SIDE_BUY,
-				Quantums:     5000,
-				Subticks:     1000,
+				Quantums:     constants.FiveThousandQuantumsSerializableInt,
+				Subticks:     constants.Serializable_Int_1_000,
 				GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 			},
 			testapp.DefaultGenesis(),
@@ -991,8 +991,8 @@ func TestStats(t *testing.T) {
 			clobtypes.Order{
 				OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: clientId, ClobPairId: 0},
 				Side:         clobtypes.Order_SIDE_SELL,
-				Quantums:     5000,
-				Subticks:     1000,
+				Quantums:     constants.FiveThousandQuantumsSerializableInt,
+				Subticks:     constants.Serializable_Int_1_000,
 				GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 			},
 			testapp.DefaultGenesis(),

@@ -3,9 +3,17 @@ package types
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sample"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/stretchr/testify/require"
+)
+
+var (
+	NegTenSerializableInt    = dtypes.NewInt(-10)
+	EightSerializableInt     = dtypes.NewInt(8)
+	TenSerializableInt       = dtypes.NewInt(10)
+	FourtyTwoSerializableInt = dtypes.NewInt(42)
 )
 
 func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
@@ -110,6 +118,21 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 			},
 			err: ErrInvalidOrderQuantums,
 		},
+		"negative quantums": {
+			msg: MsgPlaceOrder{
+				Order: Order{
+					OrderId: OrderId{
+						SubaccountId: satypes.SubaccountId{
+							Owner:  sample.AccAddress(),
+							Number: uint32(0),
+						},
+					},
+					Side:     Order_SIDE_BUY,
+					Quantums: NegTenSerializableInt,
+				},
+			},
+			err: ErrInvalidOrderQuantums,
+		},
 		"zero GoodTilBlock": {
 			msg: MsgPlaceOrder{
 				Order: Order{
@@ -120,7 +143,7 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						},
 					},
 					Side:     Order_SIDE_BUY,
-					Quantums: uint64(42),
+					Quantums: FourtyTwoSerializableInt,
 				},
 			},
 			err: ErrInvalidOrderGoodTilBlock,
@@ -136,7 +159,7 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: uint32(999),
 					},
 					Side:     Order_SIDE_BUY,
-					Quantums: uint64(42),
+					Quantums: FourtyTwoSerializableInt,
 				},
 			},
 			err: ErrInvalidOrderFlag,
@@ -152,7 +175,7 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_LongTerm,
 					},
 					Side:     Order_SIDE_BUY,
-					Quantums: uint64(42),
+					Quantums: FourtyTwoSerializableInt,
 				},
 			},
 			err: ErrInvalidStatefulOrderGoodTilBlockTime,
@@ -168,7 +191,7 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_Conditional,
 					},
 					Side:     Order_SIDE_BUY,
-					Quantums: uint64(42),
+					Quantums: FourtyTwoSerializableInt,
 				},
 			},
 			err: ErrInvalidStatefulOrderGoodTilBlockTime,
@@ -184,7 +207,7 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_LongTerm,
 					},
 					Side:     Order_SIDE_BUY,
-					Quantums: uint64(42),
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
@@ -204,7 +227,7 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_LongTerm,
 					},
 					Side:     Order_SIDE_BUY,
-					Quantums: uint64(42),
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
@@ -223,7 +246,24 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						},
 					},
 					Side:         Order_SIDE_BUY,
-					Quantums:     uint64(42),
+					Quantums:     FourtyTwoSerializableInt,
+					GoodTilOneof: &Order_GoodTilBlock{GoodTilBlock: uint32(100)},
+				},
+			},
+			err: ErrInvalidOrderSubticks,
+		},
+		"negative subticks": {
+			msg: MsgPlaceOrder{
+				Order: Order{
+					OrderId: OrderId{
+						SubaccountId: satypes.SubaccountId{
+							Owner:  sample.AccAddress(),
+							Number: uint32(0),
+						},
+					},
+					Side:         Order_SIDE_BUY,
+					Quantums:     FourtyTwoSerializableInt,
+					Subticks:     NegTenSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlock{GoodTilBlock: uint32(100)},
 				},
 			},
@@ -239,9 +279,9 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						},
 					},
 					Side:         Order_SIDE_BUY,
-					Quantums:     uint64(42),
+					Quantums:     FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlock{GoodTilBlock: uint32(100)},
-					Subticks:     uint64(10),
+					Subticks:     TenSerializableInt,
 				},
 			},
 		},
@@ -255,9 +295,9 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						},
 					},
 					Side:         Order_SIDE_BUY,
-					Quantums:     uint64(42),
+					Quantums:     FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlock{GoodTilBlock: uint32(100)},
-					Subticks:     uint64(10),
+					Subticks:     TenSerializableInt,
 					TimeInForce:  Order_TIME_IN_FORCE_FILL_OR_KILL,
 					ReduceOnly:   false,
 				},
@@ -274,9 +314,9 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_ShortTerm,
 					},
 					Side:         Order_SIDE_BUY,
-					Quantums:     uint64(42),
+					Quantums:     FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlock{GoodTilBlock: uint32(100)},
-					Subticks:     uint64(10),
+					Subticks:     TenSerializableInt,
 					TimeInForce:  Order_TIME_IN_FORCE_FILL_OR_KILL,
 					ReduceOnly:   true,
 				},
@@ -293,9 +333,9 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_ShortTerm,
 					},
 					Side:         Order_SIDE_BUY,
-					Quantums:     uint64(42),
+					Quantums:     FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlock{GoodTilBlock: uint32(100)},
-					Subticks:     uint64(10),
+					Subticks:     TenSerializableInt,
 					TimeInForce:  Order_TIME_IN_FORCE_IOC,
 					ReduceOnly:   true,
 				},
@@ -312,9 +352,9 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_LongTerm,
 					},
 					Side:         Order_SIDE_BUY,
-					Quantums:     uint64(42),
+					Quantums:     FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{GoodTilBlockTime: uint32(100)},
-					Subticks:     uint64(10),
+					Subticks:     TenSerializableInt,
 					TimeInForce:  Order_TIME_IN_FORCE_UNSPECIFIED,
 					ReduceOnly:   true,
 				},
@@ -332,12 +372,12 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_Conditional,
 					},
 					Side:                            Order_SIDE_BUY,
-					Quantums:                        uint64(42),
+					Quantums:                        FourtyTwoSerializableInt,
 					GoodTilOneof:                    &Order_GoodTilBlockTime{GoodTilBlockTime: uint32(100)},
-					Subticks:                        uint64(10),
+					Subticks:                        TenSerializableInt,
 					TimeInForce:                     Order_TIME_IN_FORCE_UNSPECIFIED,
 					ConditionType:                   Order_CONDITION_TYPE_STOP_LOSS,
-					ConditionalOrderTriggerSubticks: uint64(8),
+					ConditionalOrderTriggerSubticks: EightSerializableInt,
 					ReduceOnly:                      true,
 				},
 			},
@@ -354,13 +394,13 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_Conditional,
 					},
 					Side:     Order_SIDE_BUY,
-					Subticks: uint64(10),
-					Quantums: uint64(42),
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
 					ConditionType:                   Order_CONDITION_TYPE_TAKE_PROFIT,
-					ConditionalOrderTriggerSubticks: uint64(10),
+					ConditionalOrderTriggerSubticks: TenSerializableInt,
 				},
 			},
 		},
@@ -375,8 +415,8 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_Conditional,
 					},
 					Side:     Order_SIDE_BUY,
-					Subticks: uint64(10),
-					Quantums: uint64(42),
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
@@ -395,12 +435,34 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_Conditional,
 					},
 					Side:     Order_SIDE_BUY,
-					Subticks: uint64(10),
-					Quantums: uint64(42),
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
 					ConditionType: Order_CONDITION_TYPE_TAKE_PROFIT,
+				},
+			},
+			err: ErrInvalidConditionalOrderTriggerSubticks,
+		},
+		"conditional: negative ConditionalOrderTriggerSubticks": {
+			msg: MsgPlaceOrder{
+				Order: Order{
+					OrderId: OrderId{
+						SubaccountId: satypes.SubaccountId{
+							Owner:  sample.AccAddress(),
+							Number: uint32(0),
+						},
+						OrderFlags: OrderIdFlags_Conditional,
+					},
+					Side:     Order_SIDE_BUY,
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
+					GoodTilOneof: &Order_GoodTilBlockTime{
+						GoodTilBlockTime: uint32(100),
+					},
+					ConditionType:                   Order_CONDITION_TYPE_TAKE_PROFIT,
+					ConditionalOrderTriggerSubticks: NegTenSerializableInt,
 				},
 			},
 			err: ErrInvalidConditionalOrderTriggerSubticks,
@@ -416,8 +478,8 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_LongTerm,
 					},
 					Side:     Order_SIDE_BUY,
-					Subticks: uint64(10),
-					Quantums: uint64(42),
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
@@ -437,12 +499,33 @@ func TestMsgPlaceOrder_ValidateBasic(t *testing.T) {
 						OrderFlags: OrderIdFlags_LongTerm,
 					},
 					Side:     Order_SIDE_BUY,
-					Subticks: uint64(10),
-					Quantums: uint64(42),
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
 					GoodTilOneof: &Order_GoodTilBlockTime{
 						GoodTilBlockTime: uint32(100),
 					},
-					ConditionalOrderTriggerSubticks: uint64(10),
+					ConditionalOrderTriggerSubticks: TenSerializableInt,
+				},
+			},
+			err: ErrInvalidConditionalOrderTriggerSubticks,
+		},
+		"non-conditional: less than zero ConditionalOrderTriggerSubticks": {
+			msg: MsgPlaceOrder{
+				Order: Order{
+					OrderId: OrderId{
+						SubaccountId: satypes.SubaccountId{
+							Owner:  sample.AccAddress(),
+							Number: uint32(0),
+						},
+						OrderFlags: OrderIdFlags_LongTerm,
+					},
+					Side:     Order_SIDE_BUY,
+					Subticks: TenSerializableInt,
+					Quantums: FourtyTwoSerializableInt,
+					GoodTilOneof: &Order_GoodTilBlockTime{
+						GoodTilBlockTime: uint32(100),
+					},
+					ConditionalOrderTriggerSubticks: NegTenSerializableInt,
 				},
 			},
 			err: ErrInvalidConditionalOrderTriggerSubticks,

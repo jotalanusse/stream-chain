@@ -233,7 +233,8 @@ func (k Keeper) statUnverifiedOrderRemoval(
 	)
 	telemetry.IncrCounterWithLabels(
 		[]string{types.ModuleName, metrics.ProcessOperations, metrics.UnverifiedStatefulOrderRemoval, metrics.BaseQuantums},
-		float32(orderToRemove.Quantums),
+		// TODO: [YBCP-38] Converting BigInt to Int64 and then to float32 needs to be fixed.
+		float32(orderToRemove.Quantums.BigInt().Int64()),
 		append(
 			orderRemoval.OrderId.GetOrderIdLabels(),
 			metrics.GetLabelForStringValue(metrics.RemovalReason, orderRemoval.GetRemovalReason().String()),

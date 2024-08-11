@@ -509,8 +509,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 				ClobPairId:   0,
 			},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     10_000_000_000, // 1 BTC, assuming atomic resolution of -10
-			Subticks:     500_000_000,    // 50k USDC / BTC, assuming QCE of -8
+			Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC, assuming atomic resolution of -10
+			Subticks:     constants.Serializable_Int_500_000_000,      // 50k USDC / BTC, assuming QCE of -8
 			GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
 		},
 	)
@@ -523,8 +523,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 				ClobPairId:   0,
 			},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     20_000_000_000,
-			Subticks:     500_000_000,
+			Quantums:     constants.TwentyBillionQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_500_000_000,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
 		},
 	)
@@ -532,8 +532,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 0, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_SELL,
-			Quantums:     10_000_000_000,
-			Subticks:     500_000_000,
+			Quantums:     constants.TenBillionQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_500_000_000,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 	)
@@ -541,8 +541,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 		clobtypes.Order{
 			OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 1, ClobPairId: 0},
 			Side:         clobtypes.Order_SIDE_SELL,
-			Quantums:     10_000_000_000,
-			Subticks:     500_000_000,
+			Quantums:     constants.TenBillionQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_500_000_000,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 		},
 	)
@@ -555,8 +555,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 				ClobPairId:   0,
 			},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     10_000_000_000,
-			Subticks:     499_990_000,
+			Quantums:     constants.TenBillionQuantumsSerializableInt,
+			Subticks:     constants.Serializable_Int_499_990_000,
 			GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
 			TimeInForce:  clobtypes.Order_TIME_IN_FORCE_POST_ONLY,
 		},
@@ -695,9 +695,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 					Id: &constants.Alice_Num0,
 					PerpetualPositions: []*satypes.PerpetualPosition{
 						{
-							PerpetualId: Clob_0.MustGetPerpetualId(),
-							Quantums: dtypes.NewInt(int64(
-								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+							PerpetualId:  Clob_0.MustGetPerpetualId(),
+							Quantums:     LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 							FundingIndex: dtypes.NewInt(0),
 							YieldIndex:   big.NewRat(0, 1).String(),
 						},
@@ -722,9 +721,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 					Id: &constants.Bob_Num0,
 					PerpetualPositions: []*satypes.PerpetualPosition{
 						{
-							PerpetualId: Clob_0.MustGetPerpetualId(),
-							Quantums: dtypes.NewInt(-int64(
-								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+							PerpetualId:  Clob_0.MustGetPerpetualId(),
+							Quantums:     LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 							FundingIndex: dtypes.NewInt(0),
 							YieldIndex:   big.NewRat(0, 1).String(),
 						},
@@ -828,9 +826,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&constants.Alice_Num0,
 											[]*satypes.PerpetualPosition{
 												{
-													PerpetualId: Clob_0.MustGetPerpetualId(),
-													Quantums: dtypes.NewInt(int64(
-														LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+													PerpetualId:  Clob_0.MustGetPerpetualId(),
+													Quantums:     LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -863,9 +860,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&constants.Bob_Num0,
 											[]*satypes.PerpetualPosition{
 												{
-													PerpetualId: Clob_0.MustGetPerpetualId(),
-													Quantums: dtypes.NewInt(-int64(
-														LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+													PerpetualId:  Clob_0.MustGetPerpetualId(),
+													Quantums:     LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -1033,9 +1029,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 					Id: &constants.Alice_Num0,
 					PerpetualPositions: []*satypes.PerpetualPosition{
 						{
-							PerpetualId: Clob_0.MustGetPerpetualId(),
-							Quantums: dtypes.NewInt(int64(
-								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.GetQuantums())),
+							PerpetualId:  Clob_0.MustGetPerpetualId(),
+							Quantums:     LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.GetQuantums(),
 							FundingIndex: dtypes.NewInt(0),
 							YieldIndex:   big.NewRat(0, 1).String(),
 						},
@@ -1062,10 +1057,14 @@ func TestPlaceLongTermOrder(t *testing.T) {
 					PerpetualPositions: []*satypes.PerpetualPosition{
 						{
 							PerpetualId: Clob_0.MustGetPerpetualId(),
-							Quantums: dtypes.NewInt(-int64(
-								PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums() +
-									PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums(),
-							)),
+							Quantums: dtypes.NewIntFromBigInt(
+								big.NewInt(0).Neg(
+									big.NewInt(0).Add(
+										PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums().BigInt(),
+										PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums().BigInt(),
+									),
+								),
+							),
 							FundingIndex: dtypes.NewInt(0),
 							YieldIndex:   big.NewRat(0, 1).String(),
 						},
@@ -1180,9 +1179,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&constants.Alice_Num0,
 											[]*satypes.PerpetualPosition{
 												{
-													PerpetualId: Clob_0.MustGetPerpetualId(),
-													Quantums: dtypes.NewInt(int64(
-														PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums())),
+													PerpetualId:  Clob_0.MustGetPerpetualId(),
+													Quantums:     PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -1215,9 +1213,8 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&constants.Bob_Num0,
 											[]*satypes.PerpetualPosition{
 												{
-													PerpetualId: Clob_0.MustGetPerpetualId(),
-													Quantums: dtypes.NewInt(-int64(
-														PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums())),
+													PerpetualId:  Clob_0.MustGetPerpetualId(),
+													Quantums:     PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -1349,10 +1346,14 @@ func TestPlaceLongTermOrder(t *testing.T) {
 													PerpetualId: Clob_0.MustGetPerpetualId(),
 													// perpetual position size should equal sum of base quantums of Bob's orders
 													// because they are both fully filled
-													Quantums: dtypes.NewInt(-int64(
-														PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums() +
-															PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums(),
-													)),
+													Quantums: dtypes.NewIntFromBigInt(
+														big.NewInt(0).Neg(
+															big.NewInt(0).Add(
+																PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums().BigInt(),
+																PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums().BigInt(),
+															),
+														),
+													),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -1388,8 +1389,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 												{
 													PerpetualId: Clob_0.MustGetPerpetualId(),
 													// Order was fully filled
-													Quantums: dtypes.NewInt(int64(
-														LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.GetQuantums())),
+													Quantums:     LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -1594,8 +1594,8 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 				ClobPairId:   0,
 			},
 			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     10_000_000_000, // 1 BTC, assuming atomic resolution of -10
-			Subticks:     500_000_000,    // 50k USDC / BTC, assuming QCE of -8
+			Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC, assuming atomic resolution of -10
+			Subticks:     constants.Serializable_Int_500_000_000,      // 50k USDC / BTC, assuming QCE of -8
 			GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
 		},
 	)
@@ -1622,8 +1622,8 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 				ClobPairId:   0,
 			},
 			Side:     clobtypes.Order_SIDE_SELL,
-			Quantums: 10_000_000_000,
-			Subticks: 500_000_000,
+			Quantums: constants.TenBillionQuantumsSerializableInt,
+			Subticks: constants.Serializable_Int_500_000_000,
 			// Invalid time in force
 			TimeInForce:  clobtypes.Order_TimeInForce(uint32(999)),
 			GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
@@ -1660,9 +1660,8 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 					Id: &constants.Alice_Num0,
 					PerpetualPositions: []*satypes.PerpetualPosition{
 						{
-							PerpetualId: Clob_0.MustGetPerpetualId(),
-							Quantums: dtypes.NewInt(int64(
-								Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+							PerpetualId:  Clob_0.MustGetPerpetualId(),
+							Quantums:     Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 							FundingIndex: dtypes.NewInt(0),
 							YieldIndex:   big.NewRat(0, 1).String(),
 						},
@@ -1687,9 +1686,8 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 					Id: &constants.Bob_Num0,
 					PerpetualPositions: []*satypes.PerpetualPosition{
 						{
-							PerpetualId: Clob_0.MustGetPerpetualId(),
-							Quantums: dtypes.NewInt(-int64(
-								Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+							PerpetualId:  Clob_0.MustGetPerpetualId(),
+							Quantums:     Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 							FundingIndex: dtypes.NewInt(0),
 							YieldIndex:   big.NewRat(0, 1).String(),
 						},
@@ -1776,9 +1774,8 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 											&constants.Alice_Num0,
 											[]*satypes.PerpetualPosition{
 												{
-													PerpetualId: Clob_0.MustGetPerpetualId(),
-													Quantums: dtypes.NewInt(int64(
-														Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+													PerpetualId:  Clob_0.MustGetPerpetualId(),
+													Quantums:     Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},
@@ -1811,9 +1808,8 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 											&constants.Bob_Num0,
 											[]*satypes.PerpetualPosition{
 												{
-													PerpetualId: Clob_0.MustGetPerpetualId(),
-													Quantums: dtypes.NewInt(-int64(
-														Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
+													PerpetualId:  Clob_0.MustGetPerpetualId(),
+													Quantums:     Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums(),
 													FundingIndex: dtypes.NewInt(0),
 												},
 											},

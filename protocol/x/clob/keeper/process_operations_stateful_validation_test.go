@@ -290,8 +290,8 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 						ClobPairId:   1, // ETH.
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 10},
 				},
 			},
@@ -586,8 +586,8 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 						ClobPairId:   1, // ETH.
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 10},
 				},
 			},

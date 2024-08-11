@@ -805,7 +805,13 @@ func (k Keeper) PerformStatefulOrderValidation(
 		)
 	}
 
-	if order.Subticks%uint64(clobPair.SubticksPerTick) != 0 {
+	// TODO: [YBCP-39]
+	subticksModBySubticksPerTick := big.NewInt(0).Mod(
+		order.Subticks.BigInt(),
+		big.NewInt(0).SetUint64(uint64(clobPair.SubticksPerTick)),
+	)
+
+	if subticksModBySubticksPerTick.Cmp(big.NewInt(0)) != 0 {
 		return errorsmod.Wrapf(
 			types.ErrInvalidPlaceOrder,
 			"Order subticks %v must be a multiple of the ClobPair's SubticksPerTick %v",
@@ -814,7 +820,13 @@ func (k Keeper) PerformStatefulOrderValidation(
 		)
 	}
 
-	if order.Quantums%clobPair.StepBaseQuantums != 0 {
+	// TODO: [YBCP-39]
+	quantumsModByStepBaseQuantums := big.NewInt(0).Mod(
+		order.Quantums.BigInt(),
+		big.NewInt(0).SetUint64(clobPair.StepBaseQuantums),
+	)
+
+	if quantumsModByStepBaseQuantums.Cmp(big.NewInt(0)) != 0 {
 		return errorsmod.Wrapf(
 			types.ErrInvalidPlaceOrder,
 			"Order Quantums %v must be a multiple of the ClobPair's StepBaseQuantums %v",
@@ -935,7 +947,14 @@ func (k Keeper) PerformStatefulOrderValidation(
 		}
 
 		if order.IsConditionalOrder() {
-			if order.ConditionalOrderTriggerSubticks%uint64(clobPair.SubticksPerTick) != 0 {
+
+			// TODO: [YBCP-39]
+			triggerSubticksModBySubticksPerTick := big.NewInt(0).Mod(
+				order.ConditionalOrderTriggerSubticks.BigInt(),
+				big.NewInt(0).SetUint64(uint64(clobPair.SubticksPerTick)),
+			)
+
+			if triggerSubticksModBySubticksPerTick.Cmp(big.NewInt(0)) != 0 {
 				return errorsmod.Wrapf(
 					types.ErrInvalidPlaceOrder,
 					"Conditional order trigger subticks %v must be a multiple of the ClobPair's SubticksPerTick %v",

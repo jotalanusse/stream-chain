@@ -459,7 +459,7 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 			orderbook,
 			false, // isBuy
 		)
-		if hasBid && hasAsk && bestBid.Value.Order.Subticks >= bestAsk.Value.Order.Subticks {
+		if hasBid && hasAsk && bestBid.Value.Order.Subticks.Cmp(bestAsk.Value.Order.Subticks) >= 0 {
 			panic(
 				fmt.Sprintf(
 					"PlaceOrder: orderbook ID %v is crossed. Best bid: (%+v), best ask: (%+v), placed order: (%+v)",
@@ -2356,7 +2356,7 @@ func (m *MemClobPriceTimePriority) GetPricePremium(
 		return 0, nil
 	}
 
-	if hasBid && hasAsk && bestBid.Value.Order.Subticks >= bestAsk.Value.Order.Subticks {
+	if hasBid && hasAsk && bestBid.Value.Order.Subticks.Cmp(bestAsk.Value.Order.Subticks) >= 0 {
 		panic(fmt.Sprintf(
 			"GetPricePremium: crossing orderbook. ClobPairId = (%+v), bestBid = (%+v), bestAsk = (%+v)",
 			clobPair.Id,

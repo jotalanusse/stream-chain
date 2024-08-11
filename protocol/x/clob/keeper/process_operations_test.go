@@ -147,8 +147,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -156,8 +156,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -165,8 +165,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					&types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 					[]types.MakerFill{
@@ -183,15 +183,15 @@ func TestProcessProposerOperations(t *testing.T) {
 						TakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_SELL,
-							Quantums:     100_000_000,
-							Subticks:     50_000_000,
+							Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_50,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 						MakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_BUY,
-							Quantums:     100_000_000,
-							Subticks:     50_000_000,
+							Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_50,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 						FillAmount: 100_000_000,
@@ -273,8 +273,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_BUY,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -282,8 +282,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -291,8 +291,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					&types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 					[]types.MakerFill{
@@ -309,15 +309,15 @@ func TestProcessProposerOperations(t *testing.T) {
 						TakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_SELL,
-							Quantums:     100_000_000,
-							Subticks:     50_000_000,
+							Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_50,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 						MakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_BUY,
-							Quantums:     100_000_000,
-							Subticks:     50_000_000,
+							Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_50,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 						FillAmount: 100_000_000,
@@ -401,8 +401,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     10,
-						Subticks:     10,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_000_010,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -410,8 +410,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					&types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     10,
-						Subticks:     10,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_000_010,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 					[]types.MakerFill{
@@ -428,8 +428,8 @@ func TestProcessProposerOperations(t *testing.T) {
 						TakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_SELL,
-							Quantums:     10,
-							Subticks:     10,
+							Quantums:     constants.TenQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_0_000_010,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 						MakerOrder: &constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15,
@@ -620,8 +620,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     10,
-						Subticks:     10,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_000_010,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -629,8 +629,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					&types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     10,
-						Subticks:     10,
+						Quantums:     constants.TenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_000_010,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 					[]types.MakerFill{
@@ -644,8 +644,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Carl_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     15,
-						Subticks:     10,
+						Quantums:     constants.FifteenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_000_010,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -653,8 +653,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					&types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Carl_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     15,
-						Subticks:     10,
+						Quantums:     constants.FifteenQuantumsSerializableInt,
+						Subticks:     constants.Dollars_Uusdc_0_000_010,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 					[]types.MakerFill{
@@ -671,8 +671,8 @@ func TestProcessProposerOperations(t *testing.T) {
 						TakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_SELL,
-							Quantums:     10,
-							Subticks:     10,
+							Quantums:     constants.TenQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_0_000_010,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 						MakerOrder: &constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy100_Price10_GTBT15,
@@ -686,8 +686,8 @@ func TestProcessProposerOperations(t *testing.T) {
 						TakerOrder: &types.Order{
 							OrderId:      types.OrderId{SubaccountId: constants.Carl_Num0, ClientId: 14, ClobPairId: 0},
 							Side:         types.Order_SIDE_SELL,
-							Quantums:     15,
-							Subticks:     10,
+							Quantums:     constants.FifteenQuantumsSerializableInt,
+							Subticks:     constants.Dollars_Uusdc_0_000_010,
 							GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 						},
 
@@ -1344,9 +1344,9 @@ func TestProcessProposerOperations(t *testing.T) {
 				clobtest.NewShortTermOrderPlacementOperationRaw(
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 14, ClobPairId: 0},
-						Side:         types.Order_SIDE_UNSPECIFIED, // Note this side is invalid.
-						Quantums:     100_000_000,                  // 1 BTC
-						Subticks:     50_000_000,
+						Side:         types.Order_SIDE_UNSPECIFIED,                       // Note this side is invalid.
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -1354,8 +1354,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 				),
@@ -1363,8 +1363,8 @@ func TestProcessProposerOperations(t *testing.T) {
 					&types.Order{
 						OrderId:      types.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 14, ClobPairId: 0},
 						Side:         types.Order_SIDE_SELL,
-						Quantums:     100_000_000, // 1 BTC
-						Subticks:     50_000_000,
+						Quantums:     constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
+						Subticks:     constants.Dollars_Uusdc_50,
 						GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 25},
 					},
 					[]types.MakerFill{

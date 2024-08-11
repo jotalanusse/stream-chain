@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
@@ -2899,7 +2900,7 @@ func TestUpdateOrderbookStateWithMatchedMakerOrder_PanicsOnInvalidFillAmount(t *
 	require.Panics(t, func() {
 		memclob.mustUpdateOrderbookStateWithMatchedMakerOrder(
 			ctx,
-			types.Order{Quantums: 1},
+			types.Order{Quantums: dtypes.NewInt(1)},
 		)
 	})
 }
@@ -4150,8 +4151,8 @@ func TestPlaceOrder_Telemetry(t *testing.T) {
 				ClobPairId:   clobPairId,
 			},
 			Side:         types.Order_SIDE_BUY,
-			Quantums:     100,
-			Subticks:     5,
+			Quantums:     constants.OneHundredQuantumsSerializableInt,
+			Subticks:     constants.Dollars_Uusdc_0_000_005,
 			GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 5},
 		}
 		orders = append(orders, order)

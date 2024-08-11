@@ -6,6 +6,7 @@ import (
 	"math"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/msgsender"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	ocutypes "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates/types"
@@ -1610,10 +1611,11 @@ func doesLiquidationCrossOrder(
 	liquidationOrder types.LiquidationOrder,
 	order types.Order,
 ) bool {
+	liquidationOrderSubticks := dtypes.NewIntFromBigInt(liquidationOrder.GetOrderSubticks().ToBigInt())
 	if liquidationOrder.IsBuy() {
-		return order.Subticks <= liquidationOrder.GetOrderSubticks().ToUint64()
+		return order.Subticks.Cmp(liquidationOrderSubticks) <= 0
 	} else {
-		return order.Subticks >= liquidationOrder.GetOrderSubticks().ToUint64()
+		return order.Subticks.Cmp(liquidationOrderSubticks) >= 0
 	}
 }
 

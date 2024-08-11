@@ -144,14 +144,14 @@ func orderToIndexerOrder_GoodTilBlock(
 	return v1types.IndexerOrder{
 		OrderId:                         OrderIdToIndexerOrderId(order.OrderId),
 		Side:                            OrderSideToIndexerOrderSide(order.Side),
-		Quantums:                        order.Quantums,
-		Subticks:                        order.Subticks,
+		Quantums:                        order.Quantums.BigInt().Uint64(),
+		Subticks:                        order.Subticks.BigInt().Uint64(),
 		GoodTilOneof:                    &goodTilBlock,
 		TimeInForce:                     OrderTimeInForceToIndexerOrderTimeInForce(order.TimeInForce),
 		ReduceOnly:                      order.ReduceOnly,
 		ClientMetadata:                  order.ClientMetadata,
 		ConditionType:                   OrderConditionTypeToIndexerOrderConditionType(order.ConditionType),
-		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks,
+		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks.BigInt().Uint64(),
 	}
 }
 
@@ -162,14 +162,14 @@ func orderToIndexerOrder_GoodTilBlockTime(
 	return v1types.IndexerOrder{
 		OrderId:                         OrderIdToIndexerOrderId(order.OrderId),
 		Side:                            OrderSideToIndexerOrderSide(order.Side),
-		Quantums:                        order.Quantums,
-		Subticks:                        order.Subticks,
+		Quantums:                        order.Quantums.BigInt().Uint64(),
+		Subticks:                        order.Subticks.BigInt().Uint64(),
 		GoodTilOneof:                    &goodTilBlockTime,
 		TimeInForce:                     OrderTimeInForceToIndexerOrderTimeInForce(order.TimeInForce),
 		ReduceOnly:                      order.ReduceOnly,
 		ClientMetadata:                  order.ClientMetadata,
 		ConditionType:                   OrderConditionTypeToIndexerOrderConditionType(order.ConditionType),
-		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks,
+		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks.BigInt().Uint64(),
 	}
 }
 

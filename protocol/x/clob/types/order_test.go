@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -16,7 +17,7 @@ import (
 
 func TestOrder_GetBaseQuantums(t *testing.T) {
 	order := types.Order{
-		Quantums: 100,
+		Quantums: dtypes.NewInt(100),
 	}
 
 	quantums := order.GetBaseQuantums()
@@ -26,41 +27,51 @@ func TestOrder_GetBaseQuantums(t *testing.T) {
 func TestOrder_GetBigQuantums(t *testing.T) {
 	tests := map[string]struct {
 		// Order parameters.
-		quantums uint64
+		quantums dtypes.SerializableInt
 		side     bool
 
 		// Expectations.
 		expectedBigQuantums *big.Int
 	}{
 		"Buy order": {
-			quantums:            10,
+			quantums:            constants.TenQuantumsSerializableInt,
 			side:                true,
 			expectedBigQuantums: big.NewInt(10),
 		},
 		"Sell order": {
-			quantums:            10,
+			quantums:            constants.TenQuantumsSerializableInt,
 			side:                true,
 			expectedBigQuantums: big.NewInt(10),
 		},
 		"Quantums of 0 returns 0 for buy order": {
-			quantums:            0,
+			quantums:            constants.ZeroQuantumsSerializableInt,
 			side:                true,
 			expectedBigQuantums: big.NewInt(0),
 		},
 		"Quantums of 0 returns 0 for sell order": {
-			quantums:            0,
+			quantums:            constants.ZeroQuantumsSerializableInt,
 			side:                false,
 			expectedBigQuantums: big.NewInt(0),
 		},
 		"Max Uint64 buy order": {
-			quantums:            math.MaxUint64,
+			quantums:            constants.MaxUint64SerializableInt,
 			side:                true,
 			expectedBigQuantums: new(big.Int).SetUint64(math.MaxUint64),
 		},
 		"Max Uint64 sell order": {
-			quantums:            math.MaxUint64,
+			quantums:            constants.MaxUint64SerializableInt,
 			side:                false,
 			expectedBigQuantums: constants.BigNegMaxUint64(),
+		},
+		"Max Uint256 buy order": {
+			quantums:            constants.MaxUint256SerializableInt,
+			side:                true,
+			expectedBigQuantums: constants.MaxUint256BigInt,
+		},
+		"Max Uint256 sell order": {
+			quantums:            constants.MaxUint256SerializableInt,
+			side:                false,
+			expectedBigQuantums: constants.NegMaxUint256BigInt,
 		},
 	}
 	for name, tc := range tests {
@@ -81,7 +92,7 @@ func TestOrder_GetBigQuantums(t *testing.T) {
 
 func TestOrder_GetOrderSubticks(t *testing.T) {
 	order := types.Order{
-		Subticks: uint64(100),
+		Subticks: dtypes.NewInt(100),
 	}
 
 	subticks := order.GetOrderSubticks()
@@ -189,13 +200,13 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 			r: -1,
 		},
 		"Short-Term Hash -1": {
-			x: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: 1},
-			y: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: 2},
+			x: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: constants.OneQuantumSerializableInt},
+			y: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: constants.TwoQuantumSerializableInt},
 			r: -1,
 		},
 		"Short-Term Hash 1": {
-			x: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: 2},
-			y: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: 1},
+			x: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: constants.TwoQuantumSerializableInt},
+			y: types.Order{GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1}, Subticks: constants.OneQuantumSerializableInt},
 			r: 1,
 		},
 		"Short-Term Equal": {
@@ -227,12 +238,12 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 		},
 		"Long-Term Hash -1": {
 			x: types.Order{
-				Subticks:     1,
+				Subticks:     constants.OneQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			y: types.Order{
-				Subticks:     2,
+				Subticks:     constants.TwoQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
@@ -240,12 +251,12 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 		},
 		"Long-Term Hash 1": {
 			x: types.Order{
-				Subticks:     2,
+				Subticks:     constants.TwoQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			y: types.Order{
-				Subticks:     1,
+				Subticks:     constants.OneQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
@@ -286,12 +297,12 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 		},
 		"Conditional Hash -1": {
 			x: types.Order{
-				Subticks:     2,
+				Subticks:     constants.TwoQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			y: types.Order{
-				Subticks:     1,
+				Subticks:     constants.OneQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
@@ -299,12 +310,12 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 		},
 		"Conditional Hash 1": {
 			x: types.Order{
-				Subticks:     1,
+				Subticks:     constants.OneQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			y: types.Order{
-				Subticks:     2,
+				Subticks:     constants.TwoQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},

@@ -69,8 +69,8 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 					clobtypes.Order{
 						OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         clobtypes.Order_SIDE_SELL,
-						Quantums:     4,
-						Subticks:     10,
+						Quantums:     constants.FourQuantumSerializableInt,
+						Subticks:     constants.Serializable_Int_10,
 						GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 					testapp.DefaultGenesis(),
@@ -106,8 +106,8 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 					clobtypes.Order{
 						OrderId:      clobtypes.OrderId{SubaccountId: constants.Bob_Num0, ClientId: 0, ClobPairId: 0},
 						Side:         clobtypes.Order_SIDE_SELL,
-						Quantums:     4,
-						Subticks:     10,
+						Quantums:     constants.FourQuantumSerializableInt,
+						Subticks:     constants.Serializable_Int_10,
 						GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 					},
 					testapp.DefaultGenesis(),

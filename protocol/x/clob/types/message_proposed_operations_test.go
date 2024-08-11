@@ -148,8 +148,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      constants.InvalidSubaccountIdOwner_OrderId,
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 			},
@@ -246,8 +246,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_Side(uint32(999)),
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -260,8 +260,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 			operations: []types.OperationRaw{
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -286,8 +286,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     0,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.ZeroQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -301,8 +301,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.TenQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 0},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -316,8 +316,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10,
-					Subticks:     0,
+					Quantums:     constants.TenQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_0,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -382,8 +382,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      constants.OrderId_Alice_Num0_ClientId0_Clob0,
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     150_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredAndFiftyMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 11},
 				}),
 				clobtestutils.NewMatchOperationRawFromPerpetualLiquidation(types.MatchPerpetualLiquidation{
