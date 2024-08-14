@@ -141,17 +141,32 @@ func orderToIndexerOrder_GoodTilBlock(
 	order clobtypes.Order,
 	goodTilBlock v1types.IndexerOrder_GoodTilBlock,
 ) v1types.IndexerOrder {
+	quantums := uint64(0)
+	if !order.Quantums.IsNil() {
+		quantums = order.Quantums.BigInt().Uint64()
+	}
+
+	subticks := uint64(0)
+	if !order.Subticks.IsNil() {
+		subticks = order.Subticks.BigInt().Uint64()
+	}
+
+	conditionalOrderTriggerSubticks := uint64(0)
+	if !order.ConditionalOrderTriggerSubticks.IsNil() {
+		conditionalOrderTriggerSubticks = order.ConditionalOrderTriggerSubticks.BigInt().Uint64()
+	}
+
 	return v1types.IndexerOrder{
 		OrderId:                         OrderIdToIndexerOrderId(order.OrderId),
 		Side:                            OrderSideToIndexerOrderSide(order.Side),
-		Quantums:                        order.Quantums.BigInt().Uint64(),
-		Subticks:                        order.Subticks.BigInt().Uint64(),
+		Quantums:                        quantums,
+		Subticks:                        subticks,
 		GoodTilOneof:                    &goodTilBlock,
 		TimeInForce:                     OrderTimeInForceToIndexerOrderTimeInForce(order.TimeInForce),
 		ReduceOnly:                      order.ReduceOnly,
 		ClientMetadata:                  order.ClientMetadata,
 		ConditionType:                   OrderConditionTypeToIndexerOrderConditionType(order.ConditionType),
-		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks.BigInt().Uint64(),
+		ConditionalOrderTriggerSubticks: conditionalOrderTriggerSubticks,
 	}
 }
 
@@ -159,17 +174,32 @@ func orderToIndexerOrder_GoodTilBlockTime(
 	order clobtypes.Order,
 	goodTilBlockTime v1types.IndexerOrder_GoodTilBlockTime,
 ) v1types.IndexerOrder {
+	quantums := uint64(0)
+	if !order.Quantums.IsNil() {
+		quantums = order.Quantums.BigInt().Uint64()
+	}
+
+	subticks := uint64(0)
+	if !order.Subticks.IsNil() {
+		subticks = order.Subticks.BigInt().Uint64()
+	}
+
+	conditionalOrderTriggerSubticks := uint64(0)
+	if !order.ConditionalOrderTriggerSubticks.IsNil() {
+		conditionalOrderTriggerSubticks = order.ConditionalOrderTriggerSubticks.BigInt().Uint64()
+	}
+
 	return v1types.IndexerOrder{
 		OrderId:                         OrderIdToIndexerOrderId(order.OrderId),
 		Side:                            OrderSideToIndexerOrderSide(order.Side),
-		Quantums:                        order.Quantums.BigInt().Uint64(),
-		Subticks:                        order.Subticks.BigInt().Uint64(),
+		Quantums:                        quantums,
+		Subticks:                        subticks,
 		GoodTilOneof:                    &goodTilBlockTime,
 		TimeInForce:                     OrderTimeInForceToIndexerOrderTimeInForce(order.TimeInForce),
 		ReduceOnly:                      order.ReduceOnly,
 		ClientMetadata:                  order.ClientMetadata,
 		ConditionType:                   OrderConditionTypeToIndexerOrderConditionType(order.ConditionType),
-		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks.BigInt().Uint64(),
+		ConditionalOrderTriggerSubticks: conditionalOrderTriggerSubticks,
 	}
 }
 

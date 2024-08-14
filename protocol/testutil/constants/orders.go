@@ -8,18 +8,20 @@ import (
 var (
 	// Short-term orders.
 	Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 16},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 16},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id0_Clob1_Buy5_Price10_GTB15 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 1},
@@ -36,18 +38,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
 	}
 	Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id0_Clob0_Sell5_Price10_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id0_Clob0_Buy5_Price5_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
@@ -57,11 +61,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     SixQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        SixQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
+	}
+	Order_Alice_Num0_Id0_Clob0_Buy7_Price10_GTB20 = clobtypes.Order{
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        SevenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id0_Clob0_Buy35_Price10_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 0, ClobPairId: 0},
@@ -71,32 +84,36 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Alice_Num0_Id1_Clob0_Sell5_Price15_GTB15 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 1, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 1, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 1, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 1, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 2, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 2, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 3, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 3, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 15},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id4_Clob1_Buy25_Price5_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 4, ClobPairId: 1},
@@ -127,18 +144,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 7, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TwentyFiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 7, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TwentyFiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id8_Clob1_Sell25_PriceMax_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 8, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TwentyFiveQuantumsSerializableInt,
-		Subticks:     dtypes.MaxUint256SerializableInt(),
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 8, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TwentyFiveQuantumsSerializableInt,
+		Subticks:                        dtypes.MaxUint256SerializableInt(),
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id9_Clob1_Buy15_Price45_GTB19 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 9, ClobPairId: 1},
@@ -148,11 +167,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 19},
 	}
 	Order_Alice_Num0_Id10_Clob0_Sell25_Price15_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TwentyFiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TwentyFiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num0_Id10_Clob0_Sell35_Price15_GTB25 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num0, ClientId: 10, ClobPairId: 0},
@@ -197,11 +217,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
 	}
 	Order_Alice_Num1_Id0_Clob0_Sell10_Price15_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id2_Clob1_Buy10_Price10_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 2, ClobPairId: 1},
@@ -218,11 +239,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 26},
 	}
 	Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 1, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 1, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id2_Clob1_Buy67_Price5_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 2, ClobPairId: 1},
@@ -239,11 +261,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 4, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_045,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 4, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_045,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id5_Clob1_Sell50_Price40_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 5, ClobPairId: 1},
@@ -253,25 +276,28 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 6, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     FifteenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_022,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 6, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        FifteenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_022,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 7, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     ThirtyFiveQuantumsSerializableInt,
-		Subticks:     dtypes.MaxUint256SerializableInt(),
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 7, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        ThirtyFiveQuantumsSerializableInt,
+		Subticks:                        dtypes.MaxUint256SerializableInt(),
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 8, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FifteenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_025,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 31},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 8, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FifteenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_025,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 31},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id9_Clob0_Sell10_Price10_GTB31 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 9, ClobPairId: 0},
@@ -281,25 +307,28 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 31},
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB31 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 31},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 31},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy6_Price30_GTB32 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     SixQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        SixQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy7_Price30_GTB33 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
@@ -309,18 +338,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 33},
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB33 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 33},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 33},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FifteenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 33},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FifteenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 33},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB34 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
@@ -330,18 +361,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 34},
 	}
 	Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB34 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 34},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 10, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 34},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 11, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_045,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 11, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_045,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id12_Clob0_Sell20_Price5_GTB25 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 12, ClobPairId: 0},
@@ -351,18 +384,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 25},
 	}
 	Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 13, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     ThirtyQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_050,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 25},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 13, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        ThirtyQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_050,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 25},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id13_Clob0_Buy50_Price50_GTB30 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 13, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiftyQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_050,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 13, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiftyQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_050,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 0, ClobPairId: 0},
@@ -400,11 +435,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 23},
 	}
 	Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 0, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 0, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id0_Clob2_Sell10_Price15_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 0, ClobPairId: 2},
@@ -442,18 +478,20 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 10},
 	}
 	Order_Bob_Num0_Id3_Clob1_Buy10_Price10_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 3, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 3, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 4, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TwentyQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_035,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 4, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TwentyQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_035,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id5_Clob0_Buy20_Price10_GTB22 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 5, ClobPairId: 0},
@@ -473,7 +511,7 @@ var (
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 7, ClobPairId: 0},
 		Side:         clobtypes.Order_SIDE_BUY,
 		Quantums:     TwentyQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_001,
+		Subticks:     Dollars_Uusdc_0_010,
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
 	}
 	Order_Bob_Num0_Id8_Clob1_Sell5_Price10_GTB22 = clobtypes.Order{
@@ -491,11 +529,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
 	}
 	Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 8, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TwentyQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 8, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TwentyQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id9_Clob0_Sell20_Price1000 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 9, ClobPairId: 0},
@@ -519,11 +558,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 11, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_040,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 11, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_040,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id12_Clob0_Buy5_Price5_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 12, ClobPairId: 0},
@@ -547,11 +587,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 11, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     FiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_040,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 11, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        FiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_040,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id12_Clob0_Sell20_Price5_GTB20 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 12, ClobPairId: 0},
@@ -575,11 +616,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 32},
 	}
 	Order_Bob_Num0_Id13_Clob0_Sell35_Price35_GTB30 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 13, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     ThirtyFiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_035,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 13, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        ThirtyFiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_035,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 30},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Bob_Num0_Id14_Clob0_Sell10_Price10_GTB25 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Bob_Num0, ClientId: 14, ClobPairId: 0},
@@ -1178,12 +1220,13 @@ var (
 		TimeInForce:  clobtypes.Order_TIME_IN_FORCE_IOC,
 	}
 	Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 1, ClobPairId: 1},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_015,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
-		TimeInForce:  clobtypes.Order_TIME_IN_FORCE_IOC,
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 1, ClobPairId: 1},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_015,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		TimeInForce:                     clobtypes.Order_TIME_IN_FORCE_IOC,
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB21_IOC = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 1, ClobPairId: 1},
@@ -1430,12 +1473,13 @@ var (
 		ReduceOnly:   true,
 	}
 	Order_Alice_Num1_Id2_Clob0_Buy20_Price30_GTB20_RO = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 2, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TwentyQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
-		ReduceOnly:   true,
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 2, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TwentyQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
+		ReduceOnly:                      true,
 	}
 	Order_Alice_Num1_Id3_Clob1_Buy30_Price35_GTB25_RO = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 3, ClobPairId: 1},

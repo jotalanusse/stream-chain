@@ -261,17 +261,17 @@ func TestPlaceOrder_AddOrderToOrderbook(t *testing.T) {
 				&constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20,
 			},
 
-			order: constants.Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20,
+			order: constants.Order_Alice_Num0_Id0_Clob0_Buy7_Price10_GTB20,
 
 			expectedErr:            types.ErrInvalidReplacement,
 			expectedToReplaceOrder: false,
 		},
 		"Replacing an order succeeds if OrderHash is greater than existing order but GoodTilBlock is the same": {
 			existingOrders: []types.MatchableOrder{
-				&constants.Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20,
+				&constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20,
 			},
 
-			order: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20,
+			order: constants.Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20,
 
 			collateralizationCheck: satypes.Success,
 			expectedOrderStatus:    types.Success,

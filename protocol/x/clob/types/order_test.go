@@ -236,31 +236,31 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 			},
 			r: -1,
 		},
-		"Long-Term Hash -1": {
-			x: types.Order{
-				Subticks:     constants.OneQuantumSerializableInt,
-				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
-				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
-			},
-			y: types.Order{
-				Subticks:     constants.TwoQuantumSerializableInt,
-				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
-				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
-			},
-			r: -1,
-		},
 		"Long-Term Hash 1": {
 			x: types.Order{
-				Subticks:     constants.TwoQuantumSerializableInt,
+				Subticks:     constants.OneQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			y: types.Order{
-				Subticks:     constants.OneQuantumSerializableInt,
+				Subticks:     constants.TwoQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			r: 1,
+		},
+		"Long-Term Hash -1": {
+			x: types.Order{
+				Subticks:     constants.TwoQuantumSerializableInt,
+				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
+				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
+			},
+			y: types.Order{
+				Subticks:     constants.OneQuantumSerializableInt,
+				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_LongTerm},
+				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
+			},
+			r: -1,
 		},
 		"Long-Term Equal": {
 			x: types.Order{
@@ -295,31 +295,31 @@ func TestOrder_MustCmpReplacementOrder(t *testing.T) {
 			},
 			r: -1,
 		},
-		"Conditional Hash -1": {
-			x: types.Order{
-				Subticks:     constants.TwoQuantumSerializableInt,
-				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
-				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
-			},
-			y: types.Order{
-				Subticks:     constants.OneQuantumSerializableInt,
-				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
-				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
-			},
-			r: -1,
-		},
 		"Conditional Hash 1": {
 			x: types.Order{
-				Subticks:     constants.OneQuantumSerializableInt,
+				Subticks:     constants.TwoQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			y: types.Order{
-				Subticks:     constants.TwoQuantumSerializableInt,
+				Subticks:     constants.OneQuantumSerializableInt,
 				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
 				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
 			},
 			r: 1,
+		},
+		"Conditional Hash -1": {
+			x: types.Order{
+				Subticks:     constants.OneQuantumSerializableInt,
+				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
+				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
+			},
+			y: types.Order{
+				Subticks:     constants.TwoQuantumSerializableInt,
+				OrderId:      types.OrderId{OrderFlags: types.OrderIdFlags_Conditional},
+				GoodTilOneof: &types.Order_GoodTilBlockTime{GoodTilBlockTime: 1},
+			},
+			r: -1,
 		},
 		"Conditional Equal": {
 			x: types.Order{
@@ -522,7 +522,7 @@ func TestOrder_MustGetOrderJson(t *testing.T) {
 	require.Equal(t,
 		"order_id: <\n  subaccount_id: <\n    "+
 			"owner: \"dydx199tqg4wdlnu4qjlxchpd7seg454937hjrknju4\"\n  >\n  order_flags: 64\n>"+
-			"\nside: SIDE_BUY\nquantums: 5\nsubticks: 10\ngood_til_block_time: 15\n",
+			"\nside: SIDE_BUY\nquantums: \"\\002\\005\"\nsubticks: \"\\002\\n\"\ngood_til_block_time: 15\nconditional_order_trigger_subticks: \"\\002\"\n",
 		expectedOrder.GetOrderTextString(),
 	)
 }

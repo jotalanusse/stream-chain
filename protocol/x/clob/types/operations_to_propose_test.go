@@ -6,6 +6,7 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/stretchr/testify/require"
 )
@@ -949,7 +950,6 @@ func TestGetOperationsToReplay_Success(t *testing.T) {
 			// Setup the test.
 			otp := types.NewOperationsToPropose()
 			tc.setup(otp)
-
 			// Verify expectations.
 			operation, shortTermOrdersTxBytes := otp.GetOperationsToReplay()
 			require.Equal(t, tc.expectedOperations, operation)

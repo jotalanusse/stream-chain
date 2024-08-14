@@ -1,6 +1,7 @@
 package funding_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -376,6 +377,8 @@ func TestFunding(t *testing.T) {
 				ConversionRate: rate,
 			}
 
+			fmt.Println("Before for loop")
+
 			for _, checkTx := range testapp.MustMakeCheckTxsWithSdkMsg(
 				ctx,
 				tApp.App,
@@ -386,6 +389,7 @@ func TestFunding(t *testing.T) {
 				},
 				&msgUpdateSDAIConversionRate,
 			) {
+				fmt.Println("IN FOR LOOP")
 				resp := tApp.CheckTx(checkTx)
 				require.Conditionf(t, resp.IsOK, "Expected CheckTx to succeed. Response: %+v", resp)
 			}
@@ -401,8 +405,8 @@ func TestFunding(t *testing.T) {
 					testHumanOrder.HumanPrice,
 					testHumanOrder.HumanSize,
 				)
-
-				checkTx := testapp.MustMakeCheckTxsWithClobMsg(ctx, tApp.App, *clobtypes.NewMsgPlaceOrder(order))
+				messages := *clobtypes.NewMsgPlaceOrder(order)
+				checkTx := testapp.MustMakeCheckTxsWithClobMsg(ctx, tApp.App, messages)
 				resp := tApp.CheckTx(checkTx[0])
 				require.Conditionf(t, resp.IsOK, "Expected CheckTx to succeed. Response: %+v", resp)
 			}

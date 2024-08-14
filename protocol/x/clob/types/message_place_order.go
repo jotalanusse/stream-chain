@@ -116,7 +116,7 @@ func (msg *MsgPlaceOrder) ValidateBasic() (err error) {
 			)
 		}
 
-		if msg.Order.ConditionalOrderTriggerSubticks.Cmp(dtypes.NewInt(0)) == -1 {
+		if !msg.Order.ConditionalOrderTriggerSubticks.IsNil() && msg.Order.ConditionalOrderTriggerSubticks.Cmp(dtypes.NewInt(0)) == -1 {
 			return errorsmod.Wrapf(
 				ErrInvalidConditionalOrderTriggerSubticks,
 				"conditional order trigger subticks less than 0 for non-conditional order",

@@ -1,6 +1,7 @@
 package constants
 
 import (
+	dtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 )
 
@@ -289,10 +290,11 @@ var (
 			OrderFlags:   clobtypes.OrderIdFlags_LongTerm,
 			ClobPairId:   0,
 		},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     TwentyFiveQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_030,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 10},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        TwentyFiveQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_030,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 10},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	LongTermOrder_Bob_Num0_Id0_Clob0_Buy35_Price30_GTBT11 = clobtypes.Order{
 		OrderId: clobtypes.OrderId{
@@ -373,10 +375,11 @@ var (
 			OrderFlags:   clobtypes.OrderIdFlags_LongTerm,
 			ClobPairId:   0,
 		},
-		Side:         clobtypes.Order_SIDE_BUY,
-		Quantums:     OneHundredMillionQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_50_000,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 10},
+		Side:                            clobtypes.Order_SIDE_BUY,
+		Quantums:                        OneHundredMillionQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_50_000,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 10},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	LongTermOrder_Dave_Num0_Id0_Clob0_Sell025BTC_Price50000_GTBT10 = clobtypes.Order{
 		OrderId: clobtypes.OrderId{

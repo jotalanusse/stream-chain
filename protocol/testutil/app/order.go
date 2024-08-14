@@ -52,7 +52,11 @@ func MustMakeOrderFromHumanInput(
 		perp.Params.AtomicResolution,
 		lib.QuoteCurrencyAtomicResolution,
 	)
+
 	order.Subticks = dtypes.NewIntFromBigInt(subticks.Num())
+	if order.ConditionalOrderTriggerSubticks.IsNil() {
+		order.ConditionalOrderTriggerSubticks = dtypes.NewInt(0)
+	}
 	return order
 }
 

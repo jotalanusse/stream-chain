@@ -8,6 +8,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	gometrics "github.com/hashicorp/go-metrics"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/msgsender"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	ocutypes "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates/types"
@@ -806,6 +807,9 @@ func (k Keeper) PerformStatefulOrderValidation(
 	}
 
 	// TODO: [YBCP-39]
+	if order.Subticks.IsNil() {
+		order.Subticks = dtypes.NewInt(0)
+	}
 	subticksModBySubticksPerTick := big.NewInt(0).Mod(
 		order.Subticks.BigInt(),
 		big.NewInt(0).SetUint64(uint64(clobPair.SubticksPerTick)),
