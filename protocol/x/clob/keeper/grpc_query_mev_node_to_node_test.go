@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
@@ -56,12 +57,12 @@ func TestMevNodeToNodeCalculation(t *testing.T) {
 					{
 						ClobPairId: constants.ClobPair_Btc.Id,
 						Mev:        0,
-						Volume:     0,
+						Volume:     dtypes.NewInt(0),
 					},
 					{
 						ClobPairId: constants.ClobPair_Eth.Id,
 						Mev:        0,
-						Volume:     0,
+						Volume:     dtypes.NewInt(0),
 					},
 				},
 			},
@@ -114,8 +115,8 @@ func TestMevNodeToNodeCalculation(t *testing.T) {
 				Results: []types.MevNodeToNodeCalculationResponse_MevAndVolumePerClob{
 					{
 						ClobPairId: constants.ClobPair_Btc.Id,
-						Mev:        2_000_000_000,  // $2,000 of MEV
-						Volume:     49_000_000_000, // $49,000 of volume
+						Mev:        2_000_000_000,                  // $2,000 of MEV
+						Volume:     constants.Dollars_Uusdc_49_000, // $49,000 of volume
 					},
 				},
 			},
