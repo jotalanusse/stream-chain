@@ -105,11 +105,45 @@ var (
 	))
 	PlaceOrder_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20 = *clobtypes.NewMsgPlaceOrder(testapp.MustScaleOrder(
 		clobtypes.Order{
-			OrderId:      clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
-			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     constants.SixQuantumsSerializableInt,
-			Subticks:     constants.Serializable_Int_10,
-			GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+			OrderId:                         clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
+			Side:                            clobtypes.Order_SIDE_BUY,
+			Quantums:                        constants.SixQuantumsSerializableInt,
+			Subticks:                        constants.Serializable_Int_10,
+			GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+			ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
+		},
+		testapp.DefaultGenesis(),
+	))
+	PlaceOrder_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB21 = *clobtypes.NewMsgPlaceOrder(testapp.MustScaleOrder(
+		clobtypes.Order{
+			OrderId:                         clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
+			Side:                            clobtypes.Order_SIDE_BUY,
+			Quantums:                        constants.SixQuantumsSerializableInt,
+			Subticks:                        constants.Serializable_Int_10,
+			GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 21},
+			ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
+		},
+		testapp.DefaultGenesis(),
+	))
+	PlaceOrder_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB22 = *clobtypes.NewMsgPlaceOrder(testapp.MustScaleOrder(
+		clobtypes.Order{
+			OrderId:                         clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
+			Side:                            clobtypes.Order_SIDE_BUY,
+			Quantums:                        constants.SixQuantumsSerializableInt,
+			Subticks:                        constants.Serializable_Int_10,
+			GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 22},
+			ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
+		},
+		testapp.DefaultGenesis(),
+	))
+	PlaceOrder_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB23 = *clobtypes.NewMsgPlaceOrder(testapp.MustScaleOrder(
+		clobtypes.Order{
+			OrderId:                         clobtypes.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
+			Side:                            clobtypes.Order_SIDE_BUY,
+			Quantums:                        constants.SixQuantumsSerializableInt,
+			Subticks:                        constants.Serializable_Int_10,
+			GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 23},
+			ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 		},
 		testapp.DefaultGenesis(),
 	))
@@ -800,7 +834,7 @@ func TestConcurrentMatchesAndCancels(t *testing.T) {
 	for _, expectedFill := range expectedFills {
 		exists, amount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, expectedFill.OrderId)
 		require.True(t, exists)
-		require.Equal(t, expectedFill.Quantums, amount.ToUint64())
+		require.Equal(t, expectedFill.Quantums, dtypes.NewIntFromBigInt(amount.ToBigInt()))
 	}
 	for _, expectedCancel := range expectedCancels {
 		exists, amount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, expectedCancel.OrderId)

@@ -117,6 +117,10 @@ func MustScaleOrder[
 		),
 	)
 
+	if msgPlaceOrder.Order.ConditionalOrderTriggerSubticks.IsNil() {
+		msgPlaceOrder.Order.ConditionalOrderTriggerSubticks = dtypes.ZeroInt()
+	}
+
 	orderConditionalOrderTriggerSubticks := dtypes.NewIntFromBigInt(
 		big.NewInt(0).Mul(
 			msgPlaceOrder.Order.ConditionalOrderTriggerSubticks.BigInt(),

@@ -388,7 +388,6 @@ func (o *OperationsToPropose) GetOperationsToReplay() (
 	shortTermOrderTxBytesMap := make(map[OrderHash][]byte)
 
 	for _, operation := range o.OperationsQueue {
-		fmt.Printf("Operation being added details are are %+v\n", operation.Operation)
 		operations = append(operations, operation)
 
 		if shortTermOrder := operation.GetShortTermOrderPlacement(); shortTermOrder != nil {

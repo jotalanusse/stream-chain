@@ -1,7 +1,6 @@
 package funding_test
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
@@ -376,9 +375,6 @@ func TestFunding(t *testing.T) {
 				Sender:         constants.Alice_Num0.Owner,
 				ConversionRate: rate,
 			}
-
-			fmt.Println("Before for loop")
-
 			for _, checkTx := range testapp.MustMakeCheckTxsWithSdkMsg(
 				ctx,
 				tApp.App,
@@ -389,7 +385,6 @@ func TestFunding(t *testing.T) {
 				},
 				&msgUpdateSDAIConversionRate,
 			) {
-				fmt.Println("IN FOR LOOP")
 				resp := tApp.CheckTx(checkTx)
 				require.Conditionf(t, resp.IsOK, "Expected CheckTx to succeed. Response: %+v", resp)
 			}

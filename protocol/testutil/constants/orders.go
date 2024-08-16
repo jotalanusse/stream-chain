@@ -203,11 +203,12 @@ var (
 		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
 	}
 	Order_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20 = clobtypes.Order{
-		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 0, ClobPairId: 0},
-		Side:         clobtypes.Order_SIDE_SELL,
-		Quantums:     TenQuantumsSerializableInt,
-		Subticks:     Dollars_Uusdc_0_000_010,
-		GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		OrderId:                         clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 0, ClobPairId: 0},
+		Side:                            clobtypes.Order_SIDE_SELL,
+		Quantums:                        TenQuantumsSerializableInt,
+		Subticks:                        Dollars_Uusdc_0_000_010,
+		GoodTilOneof:                    &clobtypes.Order_GoodTilBlock{GoodTilBlock: 20},
+		ConditionalOrderTriggerSubticks: dtypes.NewInt(0),
 	}
 	Order_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB30 = clobtypes.Order{
 		OrderId:      clobtypes.OrderId{SubaccountId: Alice_Num1, ClientId: 0, ClobPairId: 0},
