@@ -1,8 +1,11 @@
 package types_test
 
 import (
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"testing"
+
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/stretchr/testify/require"
@@ -20,7 +23,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 				Authority: lib.GovModuleAddress.String(),
 				ClobPair: types.ClobPair{
 					Metadata:         &types.ClobPair_SpotClobMetadata{},
-					StepBaseQuantums: 1,
+					StepBaseQuantums: constants.Serializable_Int_1,
 					SubticksPerTick:  1,
 					Status:           types.ClobPair_STATUS_ACTIVE,
 				},
@@ -33,7 +36,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 				Authority: "",
 				ClobPair: types.ClobPair{
 					Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-					StepBaseQuantums: 1,
+					StepBaseQuantums: constants.Serializable_Int_1,
 					SubticksPerTick:  1,
 					Status:           types.ClobPair_STATUS_ACTIVE,
 				},
@@ -46,7 +49,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 				Authority: lib.GovModuleAddress.String(),
 				ClobPair: types.ClobPair{
 					Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-					StepBaseQuantums: 1,
+					StepBaseQuantums: constants.Serializable_Int_1,
 					SubticksPerTick:  1,
 					Status:           types.ClobPair_STATUS_PAUSED,
 				},
@@ -59,7 +62,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 				Authority: lib.GovModuleAddress.String(),
 				ClobPair: types.ClobPair{
 					Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-					StepBaseQuantums: 0,
+					StepBaseQuantums: dtypes.NewInt(0),
 					SubticksPerTick:  1,
 					Status:           types.ClobPair_STATUS_ACTIVE,
 				},
@@ -72,7 +75,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 				Authority: lib.GovModuleAddress.String(),
 				ClobPair: types.ClobPair{
 					Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-					StepBaseQuantums: 1,
+					StepBaseQuantums: constants.Serializable_Int_1,
 					SubticksPerTick:  0,
 					Status:           types.ClobPair_STATUS_ACTIVE,
 				},
@@ -85,7 +88,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 				Authority: lib.GovModuleAddress.String(),
 				ClobPair: types.ClobPair{
 					Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-					StepBaseQuantums: 1,
+					StepBaseQuantums: constants.Serializable_Int_1,
 					SubticksPerTick:  1,
 					Status:           types.ClobPair_STATUS_ACTIVE,
 				},

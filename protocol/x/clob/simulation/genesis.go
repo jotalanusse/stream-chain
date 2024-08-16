@@ -46,11 +46,11 @@ func genRandomClob(
 		sim_helpers.PickGenesisParameter(sim_helpers.MinQuantumConversionExponent, isReasonableGenesis),
 		sim_helpers.PickGenesisParameter(sim_helpers.MaxQuantumConversionExponent, isReasonableGenesis)+1,
 	))
-	clobPair.StepBaseQuantums = uint64(simtypes.RandIntBetween(
+	clobPair.StepBaseQuantums = dtypes.NewIntFromUint64(uint64(simtypes.RandIntBetween(
 		r,
 		sim_helpers.PickGenesisParameter(sim_helpers.MinStepBaseQuantums, isReasonableGenesis),
 		sim_helpers.PickGenesisParameter(sim_helpers.MaxStepBaseQuantums, isReasonableGenesis)+1,
-	))
+	)))
 	clobPair.SubticksPerTick = uint32(simtypes.RandIntBetween(
 		r,
 		sim_helpers.PickGenesisParameter(sim_helpers.MinSubticksPerTick, isReasonableGenesis),

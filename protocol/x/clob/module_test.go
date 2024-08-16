@@ -40,7 +40,7 @@ import (
 
 func getValidGenesisStr() string {
 	gs := `{"clob_pairs":[{"id":0,"perpetual_clob_metadata":{"perpetual_id":0},"subticks_per_tick":100,`
-	gs += `"step_base_quantums":5,"status":"STATUS_ACTIVE"}],`
+	gs += `"step_base_quantums":"5","status":"STATUS_ACTIVE"}],`
 	gs += `"liquidations_config":{`
 	gs += `"max_liquidation_fee_ppm":5000,"position_block_limits":{"min_position_notional_liquidated":"1000",`
 	gs += `"max_position_portion_liquidated_ppm":1000000},"subaccount_block_limits":`
@@ -323,7 +323,7 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	require.Equal(t, uint32(0), clobPairs[0].Id)
 	require.Equal(t, uint32(0), clobPairs[0].GetPerpetualClobMetadata().PerpetualId)
 	require.Equal(t, uint32(100), clobPairs[0].SubticksPerTick)
-	require.Equal(t, uint64(5), clobPairs[0].StepBaseQuantums)
+	require.Equal(t, dtypes.NewInt(5), clobPairs[0].StepBaseQuantums)
 	require.Equal(t, clob_types.ClobPair_STATUS_ACTIVE, clobPairs[0].Status)
 
 	liquidationsConfig := keeper.GetLiquidationsConfig(ctx)

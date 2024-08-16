@@ -827,7 +827,7 @@ func (k Keeper) PerformStatefulOrderValidation(
 	// TODO: [YBCP-39]
 	quantumsModByStepBaseQuantums := big.NewInt(0).Mod(
 		order.Quantums.BigInt(),
-		big.NewInt(0).SetUint64(clobPair.StepBaseQuantums),
+		clobPair.StepBaseQuantums.BigInt(),
 	)
 
 	if quantumsModByStepBaseQuantums.Cmp(big.NewInt(0)) != 0 {

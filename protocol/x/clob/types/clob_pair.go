@@ -2,6 +2,7 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
 
@@ -50,7 +51,14 @@ func (c *ClobPair) GetClobPairSubticksPerTick() SubticksPerTick {
 }
 
 func (c *ClobPair) GetClobPairMinOrderBaseQuantums() satypes.BaseQuantums {
-	return satypes.BaseQuantums(c.StepBaseQuantums)
+	return satypes.BaseQuantums(c.StepBaseQuantums.BigInt().Uint64())
+}
+
+func (c *ClobPair) GetStepBaseQuantums() dtypes.SerializableInt {
+	if c != nil {
+		return c.StepBaseQuantums
+	}
+	return dtypes.ZeroInt()
 }
 
 // GetPerpetualId returns the `PerpetualId` for the provided `clobPair`.
@@ -99,7 +107,7 @@ func (c *ClobPair) Validate() error {
 		)
 	}
 
-	if c.StepBaseQuantums <= 0 {
+	if c.StepBaseQuantums.Cmp(dtypes.NewInt(0)) <= 0 {
 		return errorsmod.Wrapf(
 			ErrInvalidClobPairParameter,
 			"invalid ClobPair parameter: StepBaseQuantums must be > 0. Got %v",

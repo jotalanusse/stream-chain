@@ -106,7 +106,7 @@ func MustScaleOrder[
 	orderQuantums := dtypes.NewIntFromBigInt(
 		big.NewInt(0).Mul(
 			msgPlaceOrder.Order.Quantums.BigInt(),
-			big.NewInt(0).SetUint64(clobPair.StepBaseQuantums),
+			clobPair.StepBaseQuantums.BigInt(),
 		),
 	)
 

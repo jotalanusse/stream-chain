@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -21,7 +22,7 @@ func TestGetClobPairSubticksPerTick(t *testing.T) {
 
 func TestGetClobPairMinOrderBaseQuantums(t *testing.T) {
 	clobPair := types.ClobPair{
-		StepBaseQuantums: uint64(100),
+		StepBaseQuantums: dtypes.NewInt(100),
 	}
 
 	minOrderBaseQuantums := clobPair.GetClobPairMinOrderBaseQuantums()

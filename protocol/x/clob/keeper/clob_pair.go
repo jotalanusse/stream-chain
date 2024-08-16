@@ -76,7 +76,7 @@ func (k Keeper) CreatePerpetualClobPair(
 			},
 		},
 		Id:                        clobPairId,
-		StepBaseQuantums:          stepSizeBaseQuantums.ToUint64(),
+		StepBaseQuantums:          dtypes.NewIntFromBigInt(stepSizeBaseQuantums.ToBigInt()),
 		QuantumConversionExponent: quantumConversionExponent,
 		SubticksPerTick:           subticksPerTick,
 		Status:                    status,
@@ -507,7 +507,7 @@ func (k Keeper) UpdateClobPair(
 			"UpdateClobPair: cannot update ClobPair perpetual id",
 		)
 	}
-	if clobPair.StepBaseQuantums != oldClobPair.StepBaseQuantums {
+	if clobPair.StepBaseQuantums.Cmp(oldClobPair.StepBaseQuantums) != 0 {
 		return errorsmod.Wrapf(
 			types.ErrInvalidClobPairUpdate,
 			"UpdateClobPair: cannot update ClobPair step base quantums",
@@ -554,7 +554,7 @@ func (k Keeper) UpdateClobPair(
 				clobPair.Status,
 				clobPair.QuantumConversionExponent,
 				types.SubticksPerTick(clobPair.GetSubticksPerTick()),
-				satypes.BaseQuantums(clobPair.GetStepBaseQuantums()),
+				satypes.BaseQuantums(clobPair.GetStepBaseQuantums().BigInt().Uint64()),
 			),
 		),
 	)

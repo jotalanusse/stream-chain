@@ -94,7 +94,13 @@ func (k Keeper) ProcessSingleMatch(
 	}
 
 	// Verify that the `fillAmount` is divisible by the `StepBaseQuantums` of the `clobPair`.
-	if fillAmount.ToUint64()%clobPair.StepBaseQuantums != 0 {
+	fillAmountModByStepBaseQuantums := big.NewInt(0).Mod(
+		fillAmount.ToBigInt(),
+		clobPair.StepBaseQuantums.BigInt(),
+	)
+
+	// TODO: [YBCP-39]
+	if fillAmountModByStepBaseQuantums.Cmp(big.NewInt(0)) != 0 {
 		return false,
 			takerUpdateResult,
 			makerUpdateResult,

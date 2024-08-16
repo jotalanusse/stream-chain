@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/stretchr/testify/require"
@@ -25,7 +26,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_SpotClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  1,
 				Status:           types.ClobPair_STATUS_ACTIVE,
 			},
@@ -36,7 +37,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  1,
 				Status:           types.ClobPair_STATUS_PAUSED,
 			},
@@ -47,7 +48,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  1,
 				Status:           -1,
 			},
@@ -58,7 +59,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  1,
 				Status:           100,
 			},
@@ -69,7 +70,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 0,
+				StepBaseQuantums: dtypes.NewInt(0),
 				SubticksPerTick:  1,
 				Status:           types.ClobPair_STATUS_ACTIVE,
 			},
@@ -80,7 +81,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  0,
 				Status:           types.ClobPair_STATUS_ACTIVE,
 			},
@@ -90,7 +91,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			desc: "Invalid authority",
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  1,
 				Status:           types.ClobPair_STATUS_ACTIVE,
 			},
@@ -101,7 +102,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_PerpetualClobMetadata{},
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				SubticksPerTick:  1,
 				Status:           types.ClobPair_STATUS_ACTIVE,
 			},

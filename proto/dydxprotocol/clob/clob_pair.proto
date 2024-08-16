@@ -1,6 +1,7 @@
 syntax = "proto3";
 package dydxprotocol.clob;
 
+import "gogoproto/gogo.proto";
 import "amino/amino.proto";
 
 option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types";
@@ -42,7 +43,11 @@ message ClobPair {
   }
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
-  uint64 step_base_quantums = 4;
+  bytes step_base_quantums = 4 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+  ];
 
   // Defines the tick size of the orderbook by defining how many subticks
   // are in one tick. That is, the subticks of any valid order must be a

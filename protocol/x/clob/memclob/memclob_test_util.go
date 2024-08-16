@@ -12,6 +12,7 @@ import (
 	ocutypes "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates/types"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	testutil_memclob "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/memclob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -555,7 +556,7 @@ func createOrderbooks(
 		clobPair := types.ClobPair{
 			Id:               clobPairId,
 			SubticksPerTick:  5,
-			StepBaseQuantums: 5,
+			StepBaseQuantums: constants.Serializable_Int_5,
 			Metadata: &types.ClobPair_PerpetualClobMetadata{
 				PerpetualClobMetadata: &types.PerpetualClobMetadata{
 					// Set the `PerpetualId` field to be the same as the CLOB pair ID.
@@ -584,7 +585,7 @@ func createAllOrderbooksForMatchableOrders(
 			clobPair := types.ClobPair{
 				Id:               order.GetClobPairId().ToUint32(),
 				SubticksPerTick:  5,
-				StepBaseQuantums: 5,
+				StepBaseQuantums: constants.Serializable_Int_5,
 				Metadata: &types.ClobPair_PerpetualClobMetadata{
 					PerpetualClobMetadata: &types.PerpetualClobMetadata{
 						PerpetualId: 0,
@@ -612,7 +613,7 @@ func createAllOrderbooksForOrders(
 			clobPair := types.ClobPair{
 				Id:               order.GetClobPairId().ToUint32(),
 				SubticksPerTick:  5,
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				Metadata: &types.ClobPair_PerpetualClobMetadata{
 					PerpetualClobMetadata: &types.PerpetualClobMetadata{
 						PerpetualId: 0,

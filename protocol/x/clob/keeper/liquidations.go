@@ -845,7 +845,7 @@ func (k Keeper) GetLiquidatablePositionSizeDelta(
 	// Return the full position to avoid any rounding errors.
 	if bigQuoteQuantums.CmpAbs(bigMaxQuoteQuantumsLiquidatable) <= 0 ||
 		perpetualPosition.GetBigQuantums().CmpAbs(
-			new(big.Int).SetUint64(clobPair.StepBaseQuantums),
+			clobPair.StepBaseQuantums.BigInt(),
 		) <= 0 {
 		return new(big.Int).Neg(perpetualPosition.GetBigQuantums()), nil
 	}
@@ -863,7 +863,7 @@ func (k Keeper) GetLiquidatablePositionSizeDelta(
 	// Round to the nearest step size.
 	absDeltaQuantums = lib.BigIntRoundToMultiple(
 		absDeltaQuantums,
-		new(big.Int).SetUint64(clobPair.StepBaseQuantums),
+		clobPair.StepBaseQuantums.BigInt(),
 		false,
 	)
 
@@ -871,7 +871,7 @@ func (k Keeper) GetLiquidatablePositionSizeDelta(
 	// in case there's rounding errors.
 	absDeltaQuantums = lib.BigIntClamp(
 		absDeltaQuantums,
-		new(big.Int).SetUint64(clobPair.StepBaseQuantums),
+		clobPair.StepBaseQuantums.BigInt(),
 		new(big.Int).Abs(perpetualPosition.GetBigQuantums()),
 	)
 

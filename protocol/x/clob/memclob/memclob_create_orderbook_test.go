@@ -3,6 +3,7 @@ package memclob
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	sdktest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sdk"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
@@ -29,7 +30,7 @@ func TestCreateOrderbook_MultiplePerpetualClobPairSucceeds(t *testing.T) {
 	clobPair_Btc2 := types.ClobPair{
 		Id:               100,
 		SubticksPerTick:  120,
-		StepBaseQuantums: 1,
+		StepBaseQuantums: constants.Serializable_Int_1,
 		Metadata: &types.ClobPair_PerpetualClobMetadata{
 			PerpetualClobMetadata: &types.PerpetualClobMetadata{
 				PerpetualId: 0,
@@ -92,7 +93,7 @@ func TestCreateOrderbook_PanicsWhenSubticksPerTickIsZero(t *testing.T) {
 	clobPair := types.ClobPair{
 		Id:               0,
 		SubticksPerTick:  0,
-		StepBaseQuantums: 10,
+		StepBaseQuantums: constants.Serializable_Int_10,
 		Metadata: &types.ClobPair_PerpetualClobMetadata{
 			PerpetualClobMetadata: &types.PerpetualClobMetadata{
 				PerpetualId: 0,
@@ -112,7 +113,7 @@ func TestCreateOrderbook_PanicsWhenStepBaseQuantumsIsZero(t *testing.T) {
 	clobPair := types.ClobPair{
 		Id:               0,
 		SubticksPerTick:  10,
-		StepBaseQuantums: 0,
+		StepBaseQuantums: dtypes.NewInt(0),
 		Metadata: &types.ClobPair_PerpetualClobMetadata{
 			PerpetualClobMetadata: &types.PerpetualClobMetadata{
 				PerpetualId: 0,

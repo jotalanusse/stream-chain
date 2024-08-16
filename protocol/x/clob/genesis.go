@@ -23,7 +23,7 @@ func InitGenesis(ctx sdk.Context, k *keeper.Keeper, genState types.GenesisState)
 			ctx,
 			elem.Id,
 			perpetualId,
-			satypes.BaseQuantums(elem.StepBaseQuantums),
+			satypes.BaseQuantums(elem.StepBaseQuantums.BigInt().Uint64()),
 			elem.QuantumConversionExponent,
 			elem.SubticksPerTick,
 			elem.Status,
