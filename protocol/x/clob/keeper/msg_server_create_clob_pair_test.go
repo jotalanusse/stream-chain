@@ -61,7 +61,7 @@ func TestCreateClobPair(t *testing.T) {
 							testClobPair1.QuantumConversionExponent,
 							testPerp1.Params.AtomicResolution,
 							testClobPair1.SubticksPerTick,
-							testClobPair1.StepBaseQuantums,
+							testClobPair1.StepBaseQuantums.BigInt().Uint64(),
 							testPerp1.Params.LiquidityTier,
 							testPerp1.Params.MarketType,
 						),

@@ -1,9 +1,11 @@
 package constants
 
 import (
-	"math"
+	"math/big"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	big_testutil "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/big"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 )
 
@@ -18,20 +20,28 @@ var (
 		SpreadToMaintenanceMarginRatioPpm: lib.OneMillion,
 	}
 	PositionBlockLimits_Default = clobtypes.PositionBlockLimits{
-		MinPositionNotionalLiquidated:   1_000,
+		MinPositionNotionalLiquidated: dtypes.NewIntFromBigInt(
+			big_testutil.MustFirst(new(big.Int).SetString("1000", 10)), // $0.001
+		),
 		MaxPositionPortionLiquidatedPpm: 1_000_000,
 	}
 	SubaccountBlockLimits_Default = clobtypes.SubaccountBlockLimits{
-		MaxNotionalLiquidated:    100_000_000_000_000,
-		MaxQuantumsInsuranceLost: 100_000_000_000_000,
+		MaxNotionalLiquidated: dtypes.NewIntFromBigInt(
+			big_testutil.MustFirst(new(big.Int).SetString("100000000000000", 10)),
+		),
+		MaxQuantumsInsuranceLost: dtypes.NewIntFromBigInt(
+			big_testutil.MustFirst(new(big.Int).SetString("100000000000000", 10)),
+		),
 	}
 	PositionBlockLimits_No_Limit = clobtypes.PositionBlockLimits{
-		MinPositionNotionalLiquidated:   1,
+		MinPositionNotionalLiquidated: dtypes.NewIntFromBigInt(
+			big_testutil.MustFirst(new(big.Int).SetString("1", 10)), // $0.000001
+		),
 		MaxPositionPortionLiquidatedPpm: lib.OneMillion,
 	}
 	SubaccountBlockLimits_No_Limit = clobtypes.SubaccountBlockLimits{
-		MaxNotionalLiquidated:    math.MaxUint64,
-		MaxQuantumsInsuranceLost: math.MaxUint64,
+		MaxNotionalLiquidated:    dtypes.MaxUint256SerializableInt(),
+		MaxQuantumsInsuranceLost: dtypes.MaxUint256SerializableInt(),
 	}
 	// Liquidation Configs.
 	LiquidationsConfig_No_Limit = clobtypes.LiquidationsConfig{
@@ -50,7 +60,9 @@ var (
 		MaxLiquidationFeePpm: 5_000,
 		FillablePriceConfig:  FillablePriceConfig_Default,
 		PositionBlockLimits: clobtypes.PositionBlockLimits{
-			MinPositionNotionalLiquidated:   10_000_000, // $10
+			MinPositionNotionalLiquidated: dtypes.NewIntFromBigInt(
+				big_testutil.MustFirst(new(big.Int).SetString("10000000", 10)), // $10
+			),
 			MaxPositionPortionLiquidatedPpm: 500_000,
 		},
 		SubaccountBlockLimits: SubaccountBlockLimits_No_Limit,
@@ -60,8 +72,12 @@ var (
 		FillablePriceConfig:  FillablePriceConfig_Default,
 		PositionBlockLimits:  PositionBlockLimits_No_Limit,
 		SubaccountBlockLimits: clobtypes.SubaccountBlockLimits{
-			MaxNotionalLiquidated:    10_000_000_000, // $10,000
-			MaxQuantumsInsuranceLost: 10_000_000_000, // $10,000
+			MaxNotionalLiquidated: dtypes.NewIntFromBigInt(
+				big_testutil.MustFirst(new(big.Int).SetString("10000000000", 10)), // $10,000
+			),
+			MaxQuantumsInsuranceLost: dtypes.NewIntFromBigInt(
+				big_testutil.MustFirst(new(big.Int).SetString("10000000000", 10)), // $10,000
+			),
 		},
 	}
 )

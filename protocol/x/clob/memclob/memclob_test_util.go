@@ -6,11 +6,13 @@ import (
 	"math"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/msgsender"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	ocutypes "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates/types"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	testutil_memclob "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/memclob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -167,14 +169,14 @@ func createMatchExpectationsFromOperations(
 			case *types.ClobMatch_MatchOrders:
 				// For each fill, add the fill amount to the maker and taker order's filled amount.
 				for _, fill := range match.MatchOrders.Fills {
-					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount)
-					expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId] += satypes.BaseQuantums(fill.FillAmount)
+					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
+					expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
 				}
 			case *types.ClobMatch_MatchPerpetualLiquidation:
 				// For each fill, add the fill amount to the maker order's filled amount.
 				// Note we skip the taker order because it's a liquidation order.
 				for _, fill := range match.MatchPerpetualLiquidation.Fills {
-					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount)
+					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
 				}
 			default:
 				panic(
@@ -554,7 +556,7 @@ func createOrderbooks(
 		clobPair := types.ClobPair{
 			Id:               clobPairId,
 			SubticksPerTick:  5,
-			StepBaseQuantums: 5,
+			StepBaseQuantums: constants.Serializable_Int_5,
 			Metadata: &types.ClobPair_PerpetualClobMetadata{
 				PerpetualClobMetadata: &types.PerpetualClobMetadata{
 					// Set the `PerpetualId` field to be the same as the CLOB pair ID.
@@ -583,7 +585,7 @@ func createAllOrderbooksForMatchableOrders(
 			clobPair := types.ClobPair{
 				Id:               order.GetClobPairId().ToUint32(),
 				SubticksPerTick:  5,
-				StepBaseQuantums: 5,
+				StepBaseQuantums: constants.Serializable_Int_5,
 				Metadata: &types.ClobPair_PerpetualClobMetadata{
 					PerpetualClobMetadata: &types.PerpetualClobMetadata{
 						PerpetualId: 0,
@@ -611,7 +613,7 @@ func createAllOrderbooksForOrders(
 			clobPair := types.ClobPair{
 				Id:               order.GetClobPairId().ToUint32(),
 				SubticksPerTick:  5,
-				StepBaseQuantums: 1,
+				StepBaseQuantums: constants.Serializable_Int_1,
 				Metadata: &types.ClobPair_PerpetualClobMetadata{
 					PerpetualClobMetadata: &types.PerpetualClobMetadata{
 						PerpetualId: 0,
@@ -1610,10 +1612,11 @@ func doesLiquidationCrossOrder(
 	liquidationOrder types.LiquidationOrder,
 	order types.Order,
 ) bool {
+	liquidationOrderSubticks := dtypes.NewIntFromBigInt(liquidationOrder.GetOrderSubticks().ToBigInt())
 	if liquidationOrder.IsBuy() {
-		return order.Subticks <= liquidationOrder.GetOrderSubticks().ToUint64()
+		return order.Subticks.Cmp(liquidationOrderSubticks) <= 0
 	} else {
-		return order.Subticks >= liquidationOrder.GetOrderSubticks().ToUint64()
+		return order.Subticks.Cmp(liquidationOrderSubticks) >= 0
 	}
 }
 

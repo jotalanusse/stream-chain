@@ -5,6 +5,7 @@ package types
 
 import (
 	fmt "fmt"
+	github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	types "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
@@ -26,14 +27,14 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // MEVMatch represents all necessary data to calculate MEV for a regular match.
 type MEVMatch struct {
-	TakerOrderSubaccountId *types.SubaccountId `protobuf:"bytes,1,opt,name=taker_order_subaccount_id,json=takerOrderSubaccountId,proto3" json:"taker_order_subaccount_id,omitempty"`
-	TakerFeePpm            int32               `protobuf:"varint,2,opt,name=taker_fee_ppm,json=takerFeePpm,proto3" json:"taker_fee_ppm,omitempty"`
-	MakerOrderSubaccountId *types.SubaccountId `protobuf:"bytes,3,opt,name=maker_order_subaccount_id,json=makerOrderSubaccountId,proto3" json:"maker_order_subaccount_id,omitempty"`
-	MakerOrderSubticks     uint64              `protobuf:"varint,4,opt,name=maker_order_subticks,json=makerOrderSubticks,proto3" json:"maker_order_subticks,omitempty"`
-	MakerOrderIsBuy        bool                `protobuf:"varint,5,opt,name=maker_order_is_buy,json=makerOrderIsBuy,proto3" json:"maker_order_is_buy,omitempty"`
-	MakerFeePpm            int32               `protobuf:"varint,6,opt,name=maker_fee_ppm,json=makerFeePpm,proto3" json:"maker_fee_ppm,omitempty"`
-	ClobPairId             uint32              `protobuf:"varint,7,opt,name=clob_pair_id,json=clobPairId,proto3" json:"clob_pair_id,omitempty"`
-	FillAmount             uint64              `protobuf:"varint,8,opt,name=fill_amount,json=fillAmount,proto3" json:"fill_amount,omitempty"`
+	TakerOrderSubaccountId *types.SubaccountId                                                            `protobuf:"bytes,1,opt,name=taker_order_subaccount_id,json=takerOrderSubaccountId,proto3" json:"taker_order_subaccount_id,omitempty"`
+	TakerFeePpm            int32                                                                          `protobuf:"varint,2,opt,name=taker_fee_ppm,json=takerFeePpm,proto3" json:"taker_fee_ppm,omitempty"`
+	MakerOrderSubaccountId *types.SubaccountId                                                            `protobuf:"bytes,3,opt,name=maker_order_subaccount_id,json=makerOrderSubaccountId,proto3" json:"maker_order_subaccount_id,omitempty"`
+	MakerOrderSubticks     github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,4,opt,name=maker_order_subticks,json=makerOrderSubticks,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"maker_order_subticks"`
+	MakerOrderIsBuy        bool                                                                           `protobuf:"varint,5,opt,name=maker_order_is_buy,json=makerOrderIsBuy,proto3" json:"maker_order_is_buy,omitempty"`
+	MakerFeePpm            int32                                                                          `protobuf:"varint,6,opt,name=maker_fee_ppm,json=makerFeePpm,proto3" json:"maker_fee_ppm,omitempty"`
+	ClobPairId             uint32                                                                         `protobuf:"varint,7,opt,name=clob_pair_id,json=clobPairId,proto3" json:"clob_pair_id,omitempty"`
+	FillAmount             github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,8,opt,name=fill_amount,json=fillAmount,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"fill_amount"`
 }
 
 func (m *MEVMatch) Reset()         { *m = MEVMatch{} }
@@ -90,13 +91,6 @@ func (m *MEVMatch) GetMakerOrderSubaccountId() *types.SubaccountId {
 	return nil
 }
 
-func (m *MEVMatch) GetMakerOrderSubticks() uint64 {
-	if m != nil {
-		return m.MakerOrderSubticks
-	}
-	return 0
-}
-
 func (m *MEVMatch) GetMakerOrderIsBuy() bool {
 	if m != nil {
 		return m.MakerOrderIsBuy
@@ -118,24 +112,17 @@ func (m *MEVMatch) GetClobPairId() uint32 {
 	return 0
 }
 
-func (m *MEVMatch) GetFillAmount() uint64 {
-	if m != nil {
-		return m.FillAmount
-	}
-	return 0
-}
-
 // MEVLiquidationMatch represents all necessary data to calculate MEV for a
 // liquidation.
 type MEVLiquidationMatch struct {
-	LiquidatedSubaccountId          types.SubaccountId `protobuf:"bytes,1,opt,name=liquidated_subaccount_id,json=liquidatedSubaccountId,proto3" json:"liquidated_subaccount_id"`
-	InsuranceFundDeltaQuoteQuantums int64              `protobuf:"varint,2,opt,name=insurance_fund_delta_quote_quantums,json=insuranceFundDeltaQuoteQuantums,proto3" json:"insurance_fund_delta_quote_quantums,omitempty"`
-	MakerOrderSubaccountId          types.SubaccountId `protobuf:"bytes,3,opt,name=maker_order_subaccount_id,json=makerOrderSubaccountId,proto3" json:"maker_order_subaccount_id"`
-	MakerOrderSubticks              uint64             `protobuf:"varint,4,opt,name=maker_order_subticks,json=makerOrderSubticks,proto3" json:"maker_order_subticks,omitempty"`
-	MakerOrderIsBuy                 bool               `protobuf:"varint,5,opt,name=maker_order_is_buy,json=makerOrderIsBuy,proto3" json:"maker_order_is_buy,omitempty"`
-	MakerFeePpm                     int32              `protobuf:"varint,6,opt,name=maker_fee_ppm,json=makerFeePpm,proto3" json:"maker_fee_ppm,omitempty"`
-	ClobPairId                      uint32             `protobuf:"varint,7,opt,name=clob_pair_id,json=clobPairId,proto3" json:"clob_pair_id,omitempty"`
-	FillAmount                      uint64             `protobuf:"varint,8,opt,name=fill_amount,json=fillAmount,proto3" json:"fill_amount,omitempty"`
+	LiquidatedSubaccountId          types.SubaccountId                                                             `protobuf:"bytes,1,opt,name=liquidated_subaccount_id,json=liquidatedSubaccountId,proto3" json:"liquidated_subaccount_id"`
+	InsuranceFundDeltaQuoteQuantums github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,2,opt,name=insurance_fund_delta_quote_quantums,json=insuranceFundDeltaQuoteQuantums,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"insurance_fund_delta_quote_quantums"`
+	MakerOrderSubaccountId          types.SubaccountId                                                             `protobuf:"bytes,3,opt,name=maker_order_subaccount_id,json=makerOrderSubaccountId,proto3" json:"maker_order_subaccount_id"`
+	MakerOrderSubticks              github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,4,opt,name=maker_order_subticks,json=makerOrderSubticks,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"maker_order_subticks"`
+	MakerOrderIsBuy                 bool                                                                           `protobuf:"varint,5,opt,name=maker_order_is_buy,json=makerOrderIsBuy,proto3" json:"maker_order_is_buy,omitempty"`
+	MakerFeePpm                     int32                                                                          `protobuf:"varint,6,opt,name=maker_fee_ppm,json=makerFeePpm,proto3" json:"maker_fee_ppm,omitempty"`
+	ClobPairId                      uint32                                                                         `protobuf:"varint,7,opt,name=clob_pair_id,json=clobPairId,proto3" json:"clob_pair_id,omitempty"`
+	FillAmount                      github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,8,opt,name=fill_amount,json=fillAmount,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"fill_amount"`
 }
 
 func (m *MEVLiquidationMatch) Reset()         { *m = MEVLiquidationMatch{} }
@@ -178,25 +165,11 @@ func (m *MEVLiquidationMatch) GetLiquidatedSubaccountId() types.SubaccountId {
 	return types.SubaccountId{}
 }
 
-func (m *MEVLiquidationMatch) GetInsuranceFundDeltaQuoteQuantums() int64 {
-	if m != nil {
-		return m.InsuranceFundDeltaQuoteQuantums
-	}
-	return 0
-}
-
 func (m *MEVLiquidationMatch) GetMakerOrderSubaccountId() types.SubaccountId {
 	if m != nil {
 		return m.MakerOrderSubaccountId
 	}
 	return types.SubaccountId{}
-}
-
-func (m *MEVLiquidationMatch) GetMakerOrderSubticks() uint64 {
-	if m != nil {
-		return m.MakerOrderSubticks
-	}
-	return 0
 }
 
 func (m *MEVLiquidationMatch) GetMakerOrderIsBuy() bool {
@@ -220,17 +193,10 @@ func (m *MEVLiquidationMatch) GetClobPairId() uint32 {
 	return 0
 }
 
-func (m *MEVLiquidationMatch) GetFillAmount() uint64 {
-	if m != nil {
-		return m.FillAmount
-	}
-	return 0
-}
-
 // ClobMidPrice contains the mid price of a CLOB pair, represented by it's ID.
 type ClobMidPrice struct {
-	ClobPair ClobPair `protobuf:"bytes,1,opt,name=clob_pair,json=clobPair,proto3" json:"clob_pair"`
-	Subticks uint64   `protobuf:"varint,2,opt,name=subticks,proto3" json:"subticks,omitempty"`
+	ClobPair ClobPair                                                                       `protobuf:"bytes,1,opt,name=clob_pair,json=clobPair,proto3" json:"clob_pair"`
+	Subticks github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,2,opt,name=subticks,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"subticks"`
 }
 
 func (m *ClobMidPrice) Reset()         { *m = ClobMidPrice{} }
@@ -271,13 +237,6 @@ func (m *ClobMidPrice) GetClobPair() ClobPair {
 		return m.ClobPair
 	}
 	return ClobPair{}
-}
-
-func (m *ClobMidPrice) GetSubticks() uint64 {
-	if m != nil {
-		return m.Subticks
-	}
-	return 0
 }
 
 // ValidatorMevMatches contains all matches from the validator's local
@@ -415,52 +374,54 @@ func init() {
 func init() { proto.RegisterFile("dydxprotocol/clob/mev.proto", fileDescriptor_01e0eddc304623e6) }
 
 var fileDescriptor_01e0eddc304623e6 = []byte{
-	// 705 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x55, 0x4d, 0x4f, 0xdb, 0x30,
-	0x18, 0x6e, 0x5a, 0x3e, 0x3a, 0x03, 0x43, 0x73, 0x01, 0x75, 0x20, 0xb5, 0x5d, 0x27, 0xa1, 0x4e,
-	0x13, 0xed, 0xc4, 0x8e, 0x93, 0x26, 0x8d, 0x2f, 0x09, 0x89, 0x6c, 0x25, 0x20, 0x0e, 0x48, 0x9b,
-	0xe5, 0x24, 0x6e, 0xf1, 0x88, 0xe3, 0x90, 0x38, 0x11, 0xfd, 0x17, 0xfb, 0x2b, 0xbb, 0xee, 0xba,
-	0x0b, 0x47, 0x8e, 0x3b, 0x4d, 0x13, 0xfc, 0x8b, 0x9d, 0x26, 0x3b, 0x1f, 0x4d, 0xa1, 0x3d, 0xa0,
-	0xed, 0xb4, 0x4b, 0xe4, 0x3e, 0x7e, 0xf3, 0x3e, 0xcf, 0xe3, 0xe7, 0x6d, 0x0c, 0xd6, 0xec, 0x81,
-	0x7d, 0xe9, 0xf9, 0x5c, 0x70, 0x8b, 0x3b, 0x1d, 0xcb, 0xe1, 0x66, 0x87, 0x91, 0xa8, 0xad, 0x10,
-	0xf8, 0x24, 0xbf, 0xd9, 0x96, 0x9b, 0xab, 0x4b, 0x7d, 0xde, 0xe7, 0x0a, 0xea, 0xc8, 0x55, 0x5c,
-	0xb8, 0xfa, 0x62, 0xa4, 0x4b, 0x10, 0x9a, 0xd8, 0xb2, 0x78, 0xe8, 0x8a, 0x20, 0xb7, 0x4e, 0x4a,
-	0x9f, 0xdd, 0x27, 0x94, 0x0f, 0xe4, 0x61, 0xea, 0xc7, 0x25, 0xcd, 0x6f, 0x25, 0x50, 0xd6, 0x77,
-	0x4f, 0x74, 0x2c, 0xac, 0x33, 0x88, 0xc1, 0x53, 0x81, 0xcf, 0x89, 0x8f, 0xb8, 0x6f, 0x13, 0x1f,
-	0x0d, 0xfb, 0x21, 0x6a, 0x57, 0xb5, 0x86, 0xd6, 0x9a, 0xdb, 0x5c, 0x6f, 0x8f, 0xe8, 0xcc, 0xd1,
-	0xb7, 0x8f, 0xb2, 0xf5, 0xbe, 0x6d, 0xac, 0xa8, 0x46, 0x1f, 0x64, 0x9f, 0x3c, 0x0e, 0x9b, 0x60,
-	0x21, 0xa6, 0xe8, 0x11, 0x82, 0x3c, 0x8f, 0x55, 0x8b, 0x0d, 0xad, 0x35, 0x6d, 0xcc, 0x29, 0x70,
-	0x8f, 0x90, 0xae, 0xc7, 0xa4, 0x0c, 0x36, 0x51, 0x46, 0xe9, 0x61, 0x32, 0xd8, 0x78, 0x19, 0xaf,
-	0xc0, 0xd2, 0x1d, 0x0a, 0x41, 0xad, 0xf3, 0xa0, 0x3a, 0xd5, 0xd0, 0x5a, 0x53, 0x06, 0x1c, 0x79,
-	0x4b, 0xed, 0xc0, 0x97, 0x00, 0xe6, 0xdf, 0xa0, 0x01, 0x32, 0xc3, 0x41, 0x75, 0xba, 0xa1, 0xb5,
-	0xca, 0xc6, 0xe2, 0xb0, 0x7e, 0x3f, 0xd8, 0x0a, 0x07, 0xd2, 0x25, 0x1b, 0x71, 0x39, 0x13, 0xbb,
-	0x64, 0x39, 0x97, 0x0d, 0x30, 0x9f, 0x85, 0x21, 0x8d, 0xcd, 0x36, 0xb4, 0xd6, 0x82, 0x01, 0x24,
-	0xd6, 0xc5, 0xd4, 0xdf, 0xb7, 0x61, 0x1d, 0xcc, 0xf5, 0xa8, 0xe3, 0x20, 0xcc, 0xa4, 0xea, 0x6a,
-	0x59, 0x69, 0x03, 0x12, 0x7a, 0xa7, 0x90, 0xe6, 0xef, 0x12, 0xa8, 0xe8, 0xbb, 0x27, 0x07, 0xf4,
-	0x22, 0xa4, 0x36, 0x16, 0x94, 0xbb, 0x71, 0x8e, 0x3d, 0x50, 0x75, 0x12, 0x8c, 0xd8, 0x7f, 0x13,
-	0xe3, 0xd6, 0xd4, 0xd5, 0xcf, 0x7a, 0xc1, 0x58, 0x19, 0x76, 0x1b, 0x39, 0xc5, 0x03, 0xf0, 0x9c,
-	0xba, 0x41, 0xe8, 0x63, 0xd7, 0x22, 0xa8, 0x17, 0xba, 0x36, 0xb2, 0x89, 0x23, 0x30, 0xba, 0x08,
-	0xb9, 0x20, 0xe8, 0x22, 0xc4, 0xae, 0x08, 0x59, 0xa0, 0x22, 0x2e, 0x19, 0xf5, 0xac, 0x74, 0x2f,
-	0x74, 0xed, 0x1d, 0x59, 0x78, 0x28, 0xeb, 0x0e, 0x93, 0x32, 0xd8, 0xff, 0x67, 0xb1, 0xa7, 0xb2,
-	0xff, 0xeb, 0xf0, 0x3f, 0x83, 0xf9, 0x6d, 0x87, 0x9b, 0x3a, 0xb5, 0xbb, 0x3e, 0xb5, 0x08, 0x7c,
-	0x0b, 0x1e, 0x65, 0x2d, 0x93, 0x94, 0xd7, 0xda, 0xf7, 0x3e, 0x2a, 0xed, 0xed, 0x84, 0x22, 0x39,
-	0xa3, 0x72, 0x4a, 0x09, 0x57, 0x41, 0x39, 0x3b, 0x89, 0xa2, 0x62, 0xcb, 0x7e, 0x37, 0xbf, 0x6a,
-	0xa0, 0x72, 0x82, 0x1d, 0x39, 0x02, 0xdc, 0xd7, 0x49, 0xa4, 0xc6, 0x8c, 0x04, 0xf0, 0x0d, 0x98,
-	0x65, 0xf1, 0xb2, 0xaa, 0x35, 0x4a, 0x13, 0x18, 0xd3, 0xcf, 0x4b, 0xc2, 0x98, 0xbe, 0x01, 0x3f,
-	0x82, 0x8a, 0x33, 0x9c, 0x5c, 0x94, 0x36, 0x2a, 0xaa, 0x46, 0xeb, 0xe3, 0x1b, 0xdd, 0x1d, 0xf5,
-	0xa4, 0x27, 0x74, 0xee, 0xe0, 0x24, 0x68, 0x7e, 0x2f, 0x82, 0x25, 0x9d, 0x44, 0xef, 0xb9, 0x4d,
-	0x8e, 0xb9, 0x7c, 0xea, 0x44, 0xf8, 0xd4, 0x0a, 0xe0, 0x29, 0x58, 0x8e, 0x52, 0x2f, 0x88, 0x91,
-	0x08, 0x0d, 0x2d, 0x68, 0x13, 0x98, 0xc7, 0x78, 0x37, 0x2a, 0xd1, 0x98, 0x03, 0xd1, 0xc1, 0xa2,
-	0x0a, 0x81, 0x51, 0x1b, 0x79, 0x32, 0x96, 0xd4, 0x4f, 0x7d, 0x42, 0x14, 0x69, 0x7c, 0x89, 0x91,
-	0x05, 0x2b, 0x87, 0x05, 0xf0, 0x00, 0x3c, 0x36, 0xbd, 0x11, 0x8d, 0xa5, 0x07, 0x69, 0x9c, 0x37,
-	0xbd, 0x9c, 0xb8, 0x4d, 0xb0, 0xec, 0xf9, 0xdc, 0xe3, 0x01, 0x76, 0x90, 0x4f, 0x2c, 0x42, 0x23,
-	0x82, 0x04, 0x65, 0x24, 0x19, 0xfc, 0x4a, 0xba, 0x69, 0xc4, 0x7b, 0xc7, 0x94, 0x91, 0xad, 0x4f,
-	0x57, 0x37, 0x35, 0xed, 0xfa, 0xa6, 0xa6, 0xfd, 0xba, 0xa9, 0x69, 0x5f, 0x6e, 0x6b, 0x85, 0xeb,
-	0xdb, 0x5a, 0xe1, 0xc7, 0x6d, 0xad, 0x70, 0xba, 0xd3, 0xa7, 0xe2, 0x2c, 0x34, 0xdb, 0x16, 0x67,
-	0x9d, 0x23, 0xe1, 0x13, 0xcc, 0xf6, 0xa8, 0x2b, 0xff, 0xde, 0x1b, 0xdd, 0xec, 0x72, 0x52, 0xf0,
-	0x86, 0x75, 0x86, 0xa9, 0xdb, 0xc9, 0xee, 0xa1, 0xcb, 0xf8, 0x26, 0x12, 0x03, 0x8f, 0x04, 0xe6,
-	0x8c, 0x82, 0x5f, 0xff, 0x09, 0x00, 0x00, 0xff, 0xff, 0xf8, 0xbf, 0x64, 0x7c, 0x1c, 0x07, 0x00,
-	0x00,
+	// 751 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x56, 0x4d, 0x4f, 0x13, 0x41,
+	0x18, 0xee, 0x42, 0x81, 0x3a, 0x14, 0x89, 0x5b, 0x20, 0x15, 0x92, 0xb6, 0xd6, 0x84, 0xd4, 0x18,
+	0xb6, 0x09, 0x1e, 0x4d, 0x4c, 0x2c, 0x1f, 0x49, 0x13, 0x16, 0xcb, 0x42, 0x7a, 0x20, 0xd1, 0xc9,
+	0xec, 0xee, 0xb4, 0x4c, 0xd8, 0xd9, 0x59, 0x76, 0x67, 0x2b, 0xf5, 0xec, 0xc1, 0xa3, 0x3f, 0xc2,
+	0x3f, 0xe0, 0x5f, 0xd0, 0x0b, 0x47, 0x8e, 0xc6, 0x03, 0x31, 0x70, 0xf4, 0x4f, 0x98, 0xd9, 0xaf,
+	0x6e, 0xa1, 0x3d, 0xa0, 0x92, 0x78, 0xf0, 0xb2, 0x99, 0x3c, 0x33, 0x7d, 0x9f, 0x8f, 0xf7, 0x9d,
+	0xdd, 0x82, 0x15, 0xb3, 0x6f, 0x9e, 0x3a, 0x2e, 0xe3, 0xcc, 0x60, 0x56, 0xdd, 0xb0, 0x98, 0x5e,
+	0xa7, 0xb8, 0xa7, 0x04, 0x88, 0xfc, 0x20, 0xbd, 0xa9, 0x88, 0xcd, 0xe5, 0x85, 0x2e, 0xeb, 0xb2,
+	0x00, 0xaa, 0x8b, 0x55, 0x78, 0x70, 0xf9, 0xc9, 0x50, 0x15, 0xcf, 0xd7, 0x91, 0x61, 0x30, 0xdf,
+	0xe6, 0x5e, 0x6a, 0x1d, 0x1d, 0x7d, 0x74, 0x93, 0x50, 0x3c, 0xa0, 0x83, 0x88, 0x1b, 0x1e, 0xa9,
+	0xfe, 0xcc, 0x82, 0x9c, 0xba, 0xd5, 0x56, 0x11, 0x37, 0x8e, 0x64, 0x04, 0x1e, 0x72, 0x74, 0x8c,
+	0x5d, 0xc8, 0x5c, 0x13, 0xbb, 0x70, 0x50, 0x0f, 0x12, 0xb3, 0x28, 0x55, 0xa4, 0xda, 0xec, 0xfa,
+	0xaa, 0x32, 0xa4, 0x33, 0x45, 0xaf, 0xec, 0x27, 0xeb, 0xa6, 0xa9, 0x2d, 0x05, 0x85, 0x5e, 0x89,
+	0x3a, 0x69, 0x5c, 0xae, 0x82, 0xb9, 0x90, 0xa2, 0x83, 0x31, 0x74, 0x1c, 0x5a, 0x9c, 0xa8, 0x48,
+	0xb5, 0x29, 0x6d, 0x36, 0x00, 0xb7, 0x31, 0x6e, 0x39, 0x54, 0xc8, 0xa0, 0x63, 0x65, 0x4c, 0xde,
+	0x4e, 0x06, 0x1d, 0x2d, 0xe3, 0x83, 0x04, 0x16, 0xae, 0x71, 0x70, 0x62, 0x1c, 0x7b, 0xc5, 0x6c,
+	0x45, 0xaa, 0xe5, 0x1b, 0xed, 0xb3, 0x8b, 0x72, 0xe6, 0xfb, 0x45, 0x79, 0xb7, 0x4b, 0xf8, 0x91,
+	0xaf, 0x2b, 0x06, 0xa3, 0xf5, 0x7d, 0xee, 0x62, 0x44, 0xb7, 0x89, 0x8d, 0x6c, 0x03, 0xaf, 0xb5,
+	0x92, 0x06, 0x04, 0xf0, 0x9a, 0x71, 0x84, 0x88, 0x5d, 0x4f, 0xb2, 0x36, 0x79, 0xdf, 0xc1, 0x9e,
+	0xb2, 0x8f, 0x5d, 0x82, 0x2c, 0xf2, 0x0e, 0xe9, 0x16, 0x6e, 0xda, 0x5c, 0x93, 0x87, 0xe4, 0x04,
+	0x8c, 0xf2, 0x53, 0x20, 0xa7, 0x95, 0x10, 0x0f, 0xea, 0x7e, 0xbf, 0x38, 0x55, 0x91, 0x6a, 0x39,
+	0x6d, 0x7e, 0x70, 0xbe, 0xe9, 0x35, 0xfc, 0xbe, 0x88, 0x8f, 0x0e, 0xc5, 0x37, 0x1d, 0xc6, 0x47,
+	0x53, 0xf1, 0x55, 0x40, 0x3e, 0xe9, 0xb2, 0x48, 0x6c, 0xa6, 0x22, 0xd5, 0xe6, 0x34, 0x20, 0xb0,
+	0x16, 0x22, 0x6e, 0xd3, 0x94, 0xdf, 0x82, 0xd9, 0x0e, 0xb1, 0x2c, 0x88, 0xa8, 0x88, 0xa3, 0x98,
+	0xbb, 0x53, 0xcf, 0x40, 0x50, 0xbd, 0x0c, 0x98, 0xaa, 0xef, 0xa7, 0x41, 0x41, 0xdd, 0x6a, 0xef,
+	0x90, 0x13, 0x9f, 0x98, 0x88, 0x13, 0x66, 0x87, 0x83, 0xd7, 0x01, 0x45, 0x2b, 0xc2, 0xb0, 0xf9,
+	0x27, 0x73, 0xd7, 0xc8, 0x0a, 0x17, 0xda, 0xd2, 0xa0, 0xda, 0x50, 0xdb, 0x3f, 0x49, 0xe0, 0x31,
+	0xb1, 0x3d, 0xdf, 0x15, 0x7e, 0x60, 0xc7, 0xb7, 0x4d, 0x68, 0x62, 0x8b, 0x23, 0x78, 0xe2, 0x33,
+	0x8e, 0xe1, 0x89, 0x8f, 0x6c, 0xee, 0x53, 0x2f, 0x18, 0xca, 0xbb, 0x4b, 0xa4, 0x9c, 0x48, 0xd8,
+	0xf6, 0x6d, 0x73, 0x53, 0x08, 0xd8, 0x13, 0xfc, 0x7b, 0x11, 0xbd, 0xdc, 0xfd, 0x6b, 0x17, 0x20,
+	0xce, 0xe3, 0xff, 0x35, 0xf8, 0x97, 0xae, 0xc1, 0x17, 0x09, 0xe4, 0x37, 0x2c, 0xa6, 0xab, 0xc4,
+	0x6c, 0xb9, 0xc4, 0xc0, 0xf2, 0x0b, 0x70, 0x2f, 0xd1, 0x1a, 0x0d, 0xfc, 0x8a, 0x72, 0xe3, 0x83,
+	0xa0, 0x6c, 0x44, 0xda, 0xa3, 0xae, 0xe6, 0x62, 0x2f, 0xb2, 0x0b, 0x72, 0x49, 0xeb, 0xee, 0x76,
+	0x76, 0x13, 0x9e, 0xea, 0x67, 0x09, 0x14, 0xda, 0xc8, 0x12, 0xb7, 0x8c, 0xb9, 0x2a, 0xee, 0x05,
+	0x37, 0x19, 0x7b, 0xf2, 0x73, 0x30, 0x43, 0xc3, 0x65, 0x51, 0xaa, 0x4c, 0x8e, 0x71, 0x12, 0x7f,
+	0x72, 0x22, 0x27, 0xf1, 0x2f, 0xe4, 0xd7, 0xa0, 0x60, 0x0d, 0x5e, 0x0e, 0x30, 0x2e, 0x34, 0x11,
+	0x14, 0x5a, 0x1d, 0x5d, 0xe8, 0xfa, 0xdb, 0x24, 0xaa, 0x29, 0x5b, 0xd7, 0x70, 0xec, 0x55, 0xbf,
+	0x4e, 0x80, 0x05, 0x15, 0xf7, 0x76, 0x99, 0x89, 0x0f, 0x98, 0x78, 0xaa, 0x98, 0xbb, 0xc4, 0xf0,
+	0xe4, 0x43, 0xb0, 0xd8, 0x8b, 0xbd, 0x40, 0x8a, 0x7b, 0x70, 0x60, 0x41, 0x1a, 0xc3, 0x3c, 0xc2,
+	0xbb, 0x56, 0xe8, 0x8d, 0x08, 0x44, 0x05, 0xf3, 0x41, 0x73, 0x29, 0x31, 0xa1, 0x23, 0xda, 0x1d,
+	0xfb, 0x29, 0x8f, 0x69, 0x71, 0x3c, 0x16, 0x91, 0x91, 0x39, 0x23, 0x85, 0x79, 0xf2, 0x0e, 0xb8,
+	0xaf, 0x3b, 0x43, 0x1a, 0x27, 0x6f, 0xa5, 0x31, 0xaf, 0x3b, 0x29, 0x71, 0xeb, 0x60, 0xd1, 0x71,
+	0x99, 0xc3, 0x3c, 0x64, 0x41, 0x17, 0x1b, 0x98, 0xf4, 0x30, 0xe4, 0x84, 0xe2, 0xe0, 0x0d, 0x90,
+	0xd5, 0x0a, 0xf1, 0xa6, 0x16, 0xee, 0x1d, 0x10, 0x8a, 0x1b, 0x6f, 0xce, 0x2e, 0x4b, 0xd2, 0xf9,
+	0x65, 0x49, 0xfa, 0x71, 0x59, 0x92, 0x3e, 0x5e, 0x95, 0x32, 0xe7, 0x57, 0xa5, 0xcc, 0xb7, 0xab,
+	0x52, 0xe6, 0x70, 0xf3, 0x77, 0xa7, 0xed, 0x34, 0xfc, 0x77, 0x12, 0xcc, 0x9c, 0x3e, 0x1d, 0xc0,
+	0xcf, 0x7e, 0x05, 0x00, 0x00, 0xff, 0xff, 0xcf, 0xce, 0xa4, 0x04, 0x30, 0x09, 0x00, 0x00,
 }
 
 func (m *MEVMatch) Marshal() (dAtA []byte, err error) {
@@ -483,11 +444,16 @@ func (m *MEVMatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.FillAmount != 0 {
-		i = encodeVarintMev(dAtA, i, uint64(m.FillAmount))
-		i--
-		dAtA[i] = 0x40
+	{
+		size := m.FillAmount.Size()
+		i -= size
+		if _, err := m.FillAmount.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintMev(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x42
 	if m.ClobPairId != 0 {
 		i = encodeVarintMev(dAtA, i, uint64(m.ClobPairId))
 		i--
@@ -508,11 +474,16 @@ func (m *MEVMatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x28
 	}
-	if m.MakerOrderSubticks != 0 {
-		i = encodeVarintMev(dAtA, i, uint64(m.MakerOrderSubticks))
-		i--
-		dAtA[i] = 0x20
+	{
+		size := m.MakerOrderSubticks.Size()
+		i -= size
+		if _, err := m.MakerOrderSubticks.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintMev(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x22
 	if m.MakerOrderSubaccountId != nil {
 		{
 			size, err := m.MakerOrderSubaccountId.MarshalToSizedBuffer(dAtA[:i])
@@ -565,11 +536,16 @@ func (m *MEVLiquidationMatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.FillAmount != 0 {
-		i = encodeVarintMev(dAtA, i, uint64(m.FillAmount))
-		i--
-		dAtA[i] = 0x40
+	{
+		size := m.FillAmount.Size()
+		i -= size
+		if _, err := m.FillAmount.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintMev(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x42
 	if m.ClobPairId != 0 {
 		i = encodeVarintMev(dAtA, i, uint64(m.ClobPairId))
 		i--
@@ -590,11 +566,16 @@ func (m *MEVLiquidationMatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x28
 	}
-	if m.MakerOrderSubticks != 0 {
-		i = encodeVarintMev(dAtA, i, uint64(m.MakerOrderSubticks))
-		i--
-		dAtA[i] = 0x20
+	{
+		size := m.MakerOrderSubticks.Size()
+		i -= size
+		if _, err := m.MakerOrderSubticks.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintMev(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x22
 	{
 		size, err := m.MakerOrderSubaccountId.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -605,11 +586,16 @@ func (m *MEVLiquidationMatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0x1a
-	if m.InsuranceFundDeltaQuoteQuantums != 0 {
-		i = encodeVarintMev(dAtA, i, uint64(m.InsuranceFundDeltaQuoteQuantums))
-		i--
-		dAtA[i] = 0x10
+	{
+		size := m.InsuranceFundDeltaQuoteQuantums.Size()
+		i -= size
+		if _, err := m.InsuranceFundDeltaQuoteQuantums.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintMev(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x12
 	{
 		size, err := m.LiquidatedSubaccountId.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -643,11 +629,16 @@ func (m *ClobMidPrice) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Subticks != 0 {
-		i = encodeVarintMev(dAtA, i, uint64(m.Subticks))
-		i--
-		dAtA[i] = 0x10
+	{
+		size := m.Subticks.Size()
+		i -= size
+		if _, err := m.Subticks.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintMev(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x12
 	{
 		size, err := m.ClobPair.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -806,9 +797,8 @@ func (m *MEVMatch) Size() (n int) {
 		l = m.MakerOrderSubaccountId.Size()
 		n += 1 + l + sovMev(uint64(l))
 	}
-	if m.MakerOrderSubticks != 0 {
-		n += 1 + sovMev(uint64(m.MakerOrderSubticks))
-	}
+	l = m.MakerOrderSubticks.Size()
+	n += 1 + l + sovMev(uint64(l))
 	if m.MakerOrderIsBuy {
 		n += 2
 	}
@@ -818,9 +808,8 @@ func (m *MEVMatch) Size() (n int) {
 	if m.ClobPairId != 0 {
 		n += 1 + sovMev(uint64(m.ClobPairId))
 	}
-	if m.FillAmount != 0 {
-		n += 1 + sovMev(uint64(m.FillAmount))
-	}
+	l = m.FillAmount.Size()
+	n += 1 + l + sovMev(uint64(l))
 	return n
 }
 
@@ -832,14 +821,12 @@ func (m *MEVLiquidationMatch) Size() (n int) {
 	_ = l
 	l = m.LiquidatedSubaccountId.Size()
 	n += 1 + l + sovMev(uint64(l))
-	if m.InsuranceFundDeltaQuoteQuantums != 0 {
-		n += 1 + sovMev(uint64(m.InsuranceFundDeltaQuoteQuantums))
-	}
+	l = m.InsuranceFundDeltaQuoteQuantums.Size()
+	n += 1 + l + sovMev(uint64(l))
 	l = m.MakerOrderSubaccountId.Size()
 	n += 1 + l + sovMev(uint64(l))
-	if m.MakerOrderSubticks != 0 {
-		n += 1 + sovMev(uint64(m.MakerOrderSubticks))
-	}
+	l = m.MakerOrderSubticks.Size()
+	n += 1 + l + sovMev(uint64(l))
 	if m.MakerOrderIsBuy {
 		n += 2
 	}
@@ -849,9 +836,8 @@ func (m *MEVLiquidationMatch) Size() (n int) {
 	if m.ClobPairId != 0 {
 		n += 1 + sovMev(uint64(m.ClobPairId))
 	}
-	if m.FillAmount != 0 {
-		n += 1 + sovMev(uint64(m.FillAmount))
-	}
+	l = m.FillAmount.Size()
+	n += 1 + l + sovMev(uint64(l))
 	return n
 }
 
@@ -863,9 +849,8 @@ func (m *ClobMidPrice) Size() (n int) {
 	_ = l
 	l = m.ClobPair.Size()
 	n += 1 + l + sovMev(uint64(l))
-	if m.Subticks != 0 {
-		n += 1 + sovMev(uint64(m.Subticks))
-	}
+	l = m.Subticks.Size()
+	n += 1 + l + sovMev(uint64(l))
 	return n
 }
 
@@ -1043,10 +1028,10 @@ func (m *MEVMatch) Unmarshal(dAtA []byte) error {
 			}
 			iNdEx = postIndex
 		case 4:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MakerOrderSubticks", wireType)
 			}
-			m.MakerOrderSubticks = 0
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMev
@@ -1056,11 +1041,25 @@ func (m *MEVMatch) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MakerOrderSubticks |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if byteLen < 0 {
+				return ErrInvalidLengthMev
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMev
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MakerOrderSubticks.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MakerOrderIsBuy", wireType)
@@ -1120,10 +1119,10 @@ func (m *MEVMatch) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 8:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FillAmount", wireType)
 			}
-			m.FillAmount = 0
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMev
@@ -1133,11 +1132,25 @@ func (m *MEVMatch) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.FillAmount |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if byteLen < 0 {
+				return ErrInvalidLengthMev
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMev
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.FillAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipMev(dAtA[iNdEx:])
@@ -1222,10 +1235,10 @@ func (m *MEVLiquidationMatch) Unmarshal(dAtA []byte) error {
 			}
 			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field InsuranceFundDeltaQuoteQuantums", wireType)
 			}
-			m.InsuranceFundDeltaQuoteQuantums = 0
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMev
@@ -1235,11 +1248,25 @@ func (m *MEVLiquidationMatch) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.InsuranceFundDeltaQuoteQuantums |= int64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if byteLen < 0 {
+				return ErrInvalidLengthMev
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMev
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.InsuranceFundDeltaQuoteQuantums.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MakerOrderSubaccountId", wireType)
@@ -1274,10 +1301,10 @@ func (m *MEVLiquidationMatch) Unmarshal(dAtA []byte) error {
 			}
 			iNdEx = postIndex
 		case 4:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MakerOrderSubticks", wireType)
 			}
-			m.MakerOrderSubticks = 0
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMev
@@ -1287,11 +1314,25 @@ func (m *MEVLiquidationMatch) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MakerOrderSubticks |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if byteLen < 0 {
+				return ErrInvalidLengthMev
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMev
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MakerOrderSubticks.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MakerOrderIsBuy", wireType)
@@ -1351,10 +1392,10 @@ func (m *MEVLiquidationMatch) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 8:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FillAmount", wireType)
 			}
-			m.FillAmount = 0
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMev
@@ -1364,11 +1405,25 @@ func (m *MEVLiquidationMatch) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.FillAmount |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if byteLen < 0 {
+				return ErrInvalidLengthMev
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMev
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.FillAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipMev(dAtA[iNdEx:])
@@ -1453,10 +1508,10 @@ func (m *ClobMidPrice) Unmarshal(dAtA []byte) error {
 			}
 			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Subticks", wireType)
 			}
-			m.Subticks = 0
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMev
@@ -1466,11 +1521,25 @@ func (m *ClobMidPrice) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Subticks |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if byteLen < 0 {
+				return ErrInvalidLengthMev
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMev
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Subticks.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipMev(dAtA[iNdEx:])

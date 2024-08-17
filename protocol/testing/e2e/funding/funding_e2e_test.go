@@ -375,7 +375,6 @@ func TestFunding(t *testing.T) {
 				Sender:         constants.Alice_Num0.Owner,
 				ConversionRate: rate,
 			}
-
 			for _, checkTx := range testapp.MustMakeCheckTxsWithSdkMsg(
 				ctx,
 				tApp.App,
@@ -401,8 +400,8 @@ func TestFunding(t *testing.T) {
 					testHumanOrder.HumanPrice,
 					testHumanOrder.HumanSize,
 				)
-
-				checkTx := testapp.MustMakeCheckTxsWithClobMsg(ctx, tApp.App, *clobtypes.NewMsgPlaceOrder(order))
+				messages := *clobtypes.NewMsgPlaceOrder(order)
+				checkTx := testapp.MustMakeCheckTxsWithClobMsg(ctx, tApp.App, messages)
 				resp := tApp.CheckTx(checkTx[0])
 				require.Conditionf(t, resp.IsOK, "Expected CheckTx to succeed. Response: %+v", resp)
 			}

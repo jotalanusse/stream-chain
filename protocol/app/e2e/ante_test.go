@@ -213,8 +213,8 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 					clobtypes.Order{
 						OrderId:      orderId,
 						Side:         clobtypes.Order_SIDE_BUY,
-						Quantums:     1,
-						Subticks:     10,
+						Quantums:     constants.OneQuantumSerializableInt,
+						Subticks:     constants.Serializable_Int_10,
 						GoodTilOneof: &clobtypes.Order_GoodTilBlock{GoodTilBlock: gtb},
 					},
 					Clob_0)

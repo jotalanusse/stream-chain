@@ -5,8 +5,10 @@ package app
 
 import (
 	"fmt"
+	"math/big"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	perptest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/perpetuals"
@@ -34,7 +36,7 @@ func MustMakeOrderFromHumanInput(
 		panic(err)
 	}
 	baseQuantums := perptest.MustHumanSizeToBaseQuantums(humanSize, perp.Params.AtomicResolution)
-	order.Quantums = baseQuantums
+	order.Quantums = dtypes.NewIntFromUint64(baseQuantums)
 
 	marketParams, exists := app.PricesKeeper.GetMarketParam(ctx, perp.Params.MarketId)
 	if !exists {
@@ -50,7 +52,11 @@ func MustMakeOrderFromHumanInput(
 		perp.Params.AtomicResolution,
 		lib.QuoteCurrencyAtomicResolution,
 	)
-	order.Subticks = subticks.Num().Uint64()
+
+	order.Subticks = dtypes.NewIntFromBigInt(subticks.Num())
+	if order.ConditionalOrderTriggerSubticks.IsNil() {
+		order.ConditionalOrderTriggerSubticks = dtypes.NewInt(0)
+	}
 	return order
 }
 
@@ -97,10 +103,34 @@ func MustScaleOrder[
 	}
 
 	// Scale the order based upon the quantums and subticks passed in.
-	msgPlaceOrder.Order.Quantums = msgPlaceOrder.Order.Quantums * clobPair.StepBaseQuantums
-	msgPlaceOrder.Order.Subticks = msgPlaceOrder.Order.Subticks * uint64(clobPair.SubticksPerTick)
-	msgPlaceOrder.Order.ConditionalOrderTriggerSubticks = msgPlaceOrder.Order.ConditionalOrderTriggerSubticks *
-		uint64(clobPair.SubticksPerTick)
+	orderQuantums := dtypes.NewIntFromBigInt(
+		big.NewInt(0).Mul(
+			msgPlaceOrder.Order.Quantums.BigInt(),
+			clobPair.StepBaseQuantums.BigInt(),
+		),
+	)
+
+	orderSubticks := dtypes.NewIntFromBigInt(
+		big.NewInt(0).Mul(
+			msgPlaceOrder.Order.Subticks.BigInt(),
+			big.NewInt(0).SetUint64(uint64(clobPair.SubticksPerTick)),
+		),
+	)
+
+	if msgPlaceOrder.Order.ConditionalOrderTriggerSubticks.IsNil() {
+		msgPlaceOrder.Order.ConditionalOrderTriggerSubticks = dtypes.ZeroInt()
+	}
+
+	orderConditionalOrderTriggerSubticks := dtypes.NewIntFromBigInt(
+		big.NewInt(0).Mul(
+			msgPlaceOrder.Order.ConditionalOrderTriggerSubticks.BigInt(),
+			big.NewInt(0).SetUint64(uint64(clobPair.SubticksPerTick)),
+		),
+	)
+
+	msgPlaceOrder.Order.Quantums = orderQuantums
+	msgPlaceOrder.Order.Subticks = orderSubticks
+	msgPlaceOrder.Order.ConditionalOrderTriggerSubticks = orderConditionalOrderTriggerSubticks
 
 	// Return a type that matches what the user passed in for the order type.
 	switch any(order).(type) {

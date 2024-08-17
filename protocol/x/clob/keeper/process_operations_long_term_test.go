@@ -66,7 +66,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -139,7 +139,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -212,7 +212,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -285,7 +285,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						},
 					},
 				),
@@ -356,7 +356,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   100_000_000, // 1 BTC,
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC,
 						},
 					},
 				),
@@ -429,7 +429,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   50_000_000, // 0.5 BTC,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt, // 0.5 BTC,
 						},
 					},
 				),
@@ -512,7 +512,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   50_000_000, // 0.5 BTC,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt, // 0.5 BTC,
 						},
 					},
 				),
@@ -524,7 +524,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   50_000_000, // 0.5 BTC,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt, // 0.5 BTC,
 						},
 					},
 				),
@@ -600,12 +600,12 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 						Liquidated:  constants.Carl_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   100_000_000, // 1 BTC
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						IsBuy:       true,
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-								FillAmount:   100_000_000, // 1 BTC
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 							},
 						},
 					},
@@ -637,8 +637,8 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000, // Liquidated 1BTC at $50,000.
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // Liquidated 1BTC at $50,000.
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -686,12 +686,12 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 						Liquidated:  constants.Carl_Num0,
 						ClobPairId:  0,
 						PerpetualId: 0,
-						TotalSize:   100_000_000, // 1 BTC
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 						IsBuy:       true,
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
-								FillAmount:   100_000_000, // 1 BTC
+								FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 							},
 						},
 					},
@@ -723,8 +723,8 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
 					PerpetualsLiquidated:  []uint32{0},
-					NotionalLiquidated:    50_000_000_000, // Liquidated 1BTC at $50,000.
-					QuantumsInsuranceLost: 0,
+					NotionalLiquidated:    dtypes.NewIntFromString("50_000_000_000"), // Liquidated 1BTC at $50,000.
+					QuantumsInsuranceLost: dtypes.NewInt(0),
 				},
 				constants.Dave_Num0: {},
 			},
@@ -777,7 +777,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-							FillAmount:   50_000_000,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 						},
 					},
 				),
@@ -870,7 +870,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId,
-							FillAmount:   50_000_000,
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 						},
 					},
 				),

@@ -1,6 +1,7 @@
 package clob
 
 import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -59,7 +60,7 @@ func NewMatchOperation(
 							Liquidated:  takerMatchableOrder.GetSubaccountId(),
 							ClobPairId:  takerMatchableOrder.GetClobPairId().ToUint32(),
 							PerpetualId: takerMatchableOrder.MustGetLiquidatedPerpetualId(),
-							TotalSize:   takerMatchableOrder.GetBaseQuantums().ToUint64(),
+							TotalSize:   dtypes.NewIntFromBigInt(takerMatchableOrder.GetBaseQuantums().ToBigInt()),
 							IsBuy:       takerMatchableOrder.IsBuy(),
 							Fills:       makerFills,
 						},
@@ -173,7 +174,7 @@ func NewMatchOperationRaw(
 							Liquidated:  takerMatchableOrder.GetSubaccountId(),
 							ClobPairId:  takerMatchableOrder.GetClobPairId().ToUint32(),
 							PerpetualId: takerMatchableOrder.MustGetLiquidatedPerpetualId(),
-							TotalSize:   takerMatchableOrder.GetBaseQuantums().ToUint64(),
+							TotalSize:   dtypes.NewIntFromBigInt(takerMatchableOrder.GetBaseQuantums().ToBigInt()),
 							IsBuy:       takerMatchableOrder.IsBuy(),
 							Fills:       makerFills,
 						},

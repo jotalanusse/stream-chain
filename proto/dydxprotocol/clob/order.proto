@@ -62,7 +62,11 @@ message PotentiallyPrunableOrders {
 // state.
 message OrderFillState {
   // The current fillAmount of the order according to on-chain state.
-  uint64 fill_amount = 1;
+  bytes fill_amount = 1 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // The block height at which the fillAmount state for this order can be
   // pruned.
   uint32 prunable_block_height = 2;
@@ -131,12 +135,20 @@ message Order {
 
   // The size of this order in base quantums. Must be a multiple of
   // `ClobPair.StepBaseQuantums` (where `ClobPair.Id = orderId.ClobPairId`).
-  uint64 quantums = 3;
+  bytes quantums = 3 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The price level that this order will be placed at on the orderbook,
   // in subticks. Must be a multiple of ClobPair.SubticksPerTick
   // (where `ClobPair.Id = orderId.ClobPairId`).
-  uint64 subticks = 4;
+  bytes subticks = 4 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // Information about when the order expires.
   oneof good_til_oneof {
@@ -214,7 +226,11 @@ message Order {
   // cannot be CONDITION_TYPE_UNSPECIFIED. Value is in subticks.
   // Must be a multiple of ClobPair.SubticksPerTick (where `ClobPair.Id =
   // orderId.ClobPairId`).
-  uint64 conditional_order_trigger_subticks = 11;
+  bytes conditional_order_trigger_subticks = 11 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // TransactionOrdering represents a unique location in the block where a

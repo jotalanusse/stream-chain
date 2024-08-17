@@ -2,9 +2,11 @@ package simulation
 
 import (
 	"fmt"
-	v4module "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 	"math"
 	"math/rand"
+
+	v4module "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
@@ -44,11 +46,11 @@ func genRandomClob(
 		sim_helpers.PickGenesisParameter(sim_helpers.MinQuantumConversionExponent, isReasonableGenesis),
 		sim_helpers.PickGenesisParameter(sim_helpers.MaxQuantumConversionExponent, isReasonableGenesis)+1,
 	))
-	clobPair.StepBaseQuantums = uint64(simtypes.RandIntBetween(
+	clobPair.StepBaseQuantums = dtypes.NewIntFromUint64(uint64(simtypes.RandIntBetween(
 		r,
 		sim_helpers.PickGenesisParameter(sim_helpers.MinStepBaseQuantums, isReasonableGenesis),
 		sim_helpers.PickGenesisParameter(sim_helpers.MaxStepBaseQuantums, isReasonableGenesis)+1,
-	))
+	)))
 	clobPair.SubticksPerTick = uint32(simtypes.RandIntBetween(
 		r,
 		sim_helpers.PickGenesisParameter(sim_helpers.MinSubticksPerTick, isReasonableGenesis),
@@ -147,7 +149,7 @@ func RandomizedGenState(simState *module.SimulationState) {
 			SpreadToMaintenanceMarginRatioPpm: genRandomPositivePpm(r, true),
 		},
 		PositionBlockLimits: types.PositionBlockLimits{
-			MinPositionNotionalLiquidated: uint64(sim_helpers.GetRandomBucketValue(r, sim_helpers.MinPositionNotionalBuckets)),
+			MinPositionNotionalLiquidated: dtypes.NewIntFromUint64(uint64(sim_helpers.GetRandomBucketValue(r, sim_helpers.MinPositionNotionalBuckets))),
 			// MaxPositionPortionLiquidatedPpm determines the maximum portion of a position
 			// that can be liquidated in a block.
 			// Since we may want to liquidate as quickly as possible to avoid losing any insurance fund,
@@ -155,8 +157,8 @@ func RandomizedGenState(simState *module.SimulationState) {
 			MaxPositionPortionLiquidatedPpm: genRandomPositivePpm(r, false),
 		},
 		SubaccountBlockLimits: types.SubaccountBlockLimits{
-			MaxNotionalLiquidated:    uint64(sim_helpers.GetRandomBucketValue(r, sim_helpers.SubaccountBlockLimitsBuckets)),
-			MaxQuantumsInsuranceLost: uint64(sim_helpers.GetRandomBucketValue(r, sim_helpers.SubaccountBlockLimitsBuckets)),
+			MaxNotionalLiquidated:    dtypes.NewIntFromUint64(uint64(sim_helpers.GetRandomBucketValue(r, sim_helpers.SubaccountBlockLimitsBuckets))),
+			MaxQuantumsInsuranceLost: dtypes.NewIntFromUint64(uint64(sim_helpers.GetRandomBucketValue(r, sim_helpers.SubaccountBlockLimitsBuckets))),
 		},
 	}
 

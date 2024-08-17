@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
@@ -71,7 +72,7 @@ func (k Keeper) MevNodeToNodeCalculation(
 			types.MevNodeToNodeCalculationResponse_MevAndVolumePerClob{
 				ClobPairId: clobPairId.ToUint32(),
 				Mev:        mev,
-				Volume:     validatorVolumeQuoteQuantums.Uint64(),
+				Volume:     dtypes.NewIntFromBigInt(validatorVolumeQuoteQuantums),
 			},
 		)
 	}
@@ -93,7 +94,7 @@ func (k Keeper) InitializeCumulativePnLsFromRequest(
 		clobPairId := types.ClobPairId(clobMidPrice.ClobPair.Id)
 		clobMetadata[clobPairId] = ClobMetadata{
 			ClobPair: clobMidPrice.ClobPair,
-			MidPrice: types.Subticks(clobMidPrice.Subticks),
+			MidPrice: types.Subticks(clobMidPrice.Subticks.BigInt().Uint64()),
 		}
 	}
 

@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 
 	"cosmossdk.io/store/prefix"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
@@ -63,7 +64,7 @@ func (k Keeper) SetOrderFillAmount(
 ) {
 	// Define `OrderFillState` based on the provided arguments.
 	var orderFillState = types.OrderFillState{
-		FillAmount:          uint64(fillAmount),
+		FillAmount:          dtypes.NewIntFromBigInt(fillAmount.ToBigInt()),
 		PrunableBlockHeight: prunableBlockHeight,
 	}
 
@@ -126,7 +127,7 @@ func (k Keeper) GetOrderFillAmount(
 	var orderFillState types.OrderFillState
 	k.cdc.MustUnmarshal(orderFillStateBytes, &orderFillState)
 
-	return true, satypes.BaseQuantums(orderFillState.FillAmount), orderFillState.PrunableBlockHeight
+	return true, satypes.BaseQuantums(orderFillState.FillAmount.BigInt().Uint64()), orderFillState.PrunableBlockHeight
 }
 
 // GetPruneableOrdersStore gets a prefix store for pruneable orders at a given height.

@@ -9,6 +9,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
@@ -408,7 +409,7 @@ func (k Keeper) OffsetSubaccountPerpetualPosition(
 			deltaQuantumsRemaining.Sub(deltaQuantumsRemaining, deltaBaseQuantums)
 			fills = append(fills, types.MatchPerpetualDeleveraging_Fill{
 				OffsettingSubaccountId: *offsettingSubaccount.Id,
-				FillAmount:             new(big.Int).Abs(deltaBaseQuantums).Uint64(),
+				FillAmount:             dtypes.NewIntFromBigInt(new(big.Int).Abs(deltaBaseQuantums)),
 			})
 			// Send on-chain update for the deleveraging. The events are stored in a TransientStore which should be rolled-back
 			// if the branched state is discarded, so batching is not necessary.

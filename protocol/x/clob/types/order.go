@@ -7,6 +7,7 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	proto "github.com/cosmos/gogoproto/proto"
@@ -51,24 +52,35 @@ func (o *Order) GetOrderTextString() string {
 // GetBaseQuantums returns the quantums of this order.
 // This function is necessary for the `Order` type to implement the `MatchableOrder` interface.
 func (o *Order) GetBaseQuantums() satypes.BaseQuantums {
-	return satypes.BaseQuantums(o.Quantums)
+	return satypes.BaseQuantums(o.Quantums.BigInt().Uint64())
 }
 
 // GetBigQuantums returns the quantums of this order. The returned quantums is positive
 // if long, negative if short, and zero if `o.Quantums == 0`.
 // This function is necessary for the `Order` type to implement the `MatchableOrder` interface.
 func (o *Order) GetBigQuantums() *big.Int {
-	bigQuantums := new(big.Int).SetUint64(o.Quantums)
+	bigQuantums := o.Quantums.BigInt()
 	if !o.IsBuy() {
 		bigQuantums.Neg(bigQuantums)
 	}
 	return bigQuantums
 }
 
+// GetQuantums gets the quantums of this order as a SerializableInt.
+// Defaults to 0 if order is nil.
+// We need to implement this getter explicitly, since the protobuf
+// does not generate getters for custom types.
+func (o *Order) GetQuantums() dtypes.SerializableInt {
+	if o != nil {
+		return o.Quantums
+	}
+	return dtypes.ZeroInt()
+}
+
 // GetOrderSubticks returns the subticks of this order.
 // This function is necessary for the `Order` type to implement the `MatchableOrder` interface.
 func (o *Order) GetOrderSubticks() Subticks {
-	return Subticks(o.Subticks)
+	return Subticks(o.Subticks.BigInt().Uint64())
 }
 
 // MustCmpReplacementOrder compares x to y and returns:
@@ -178,7 +190,7 @@ func (o *Order) IsConditionalOrder() bool {
 // subticks value. Function will panic if order is not a conditional order.
 func (o *Order) CanTrigger(subticks Subticks) bool {
 	o.MustBeConditionalOrder()
-	orderTriggerSubticks := Subticks(o.ConditionalOrderTriggerSubticks)
+	orderTriggerSubticks := Subticks(o.ConditionalOrderTriggerSubticks.BigInt().Uint64())
 
 	// Take profit buys and stop loss sells trigger when the oracle price goes lower
 	// than or equal to the trigger price.

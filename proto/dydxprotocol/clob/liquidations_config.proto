@@ -33,7 +33,11 @@ message PositionBlockLimits {
   // The minimum amount of quantums to liquidate for each message (in
   // quote quantums).
   // Overridden by the maximum size of the position.
-  uint64 min_position_notional_liquidated = 1;
+  bytes min_position_notional_liquidated = 1 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The maximum portion of the position liquidated (in parts-per-
   // million). Overridden by min_position_notional_liquidated.
@@ -46,11 +50,19 @@ message PositionBlockLimits {
 message SubaccountBlockLimits {
   // The maximum notional amount that a single subaccount can have
   // liquidated (in quote quantums) per block.
-  uint64 max_notional_liquidated = 1;
+  bytes max_notional_liquidated = 1 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The maximum insurance-fund payout amount for a given subaccount
   // per block. I.e. how much it can cover for that subaccount.
-  uint64 max_quantums_insurance_lost = 2;
+  bytes max_quantums_insurance_lost = 2 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                              "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // FillablePriceConfig stores all configurable fields related to calculating

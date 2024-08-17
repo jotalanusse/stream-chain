@@ -2,6 +2,7 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -50,8 +51,12 @@ func (msg *MsgPlaceOrder) ValidateBasic() (err error) {
 		return errorsmod.Wrapf(ErrInvalidOrderSide, "UNSPECIFIED is not a valid order side")
 	}
 
-	if msg.Order.Quantums == uint64(0) {
+	if msg.Order.Quantums.Cmp(dtypes.NewInt(0)) == 0 {
 		return errorsmod.Wrapf(ErrInvalidOrderQuantums, "order size quantums cannot be 0")
+	}
+
+	if msg.Order.Quantums.Cmp(dtypes.NewInt(0)) == -1 {
+		return errorsmod.Wrapf(ErrInvalidOrderQuantums, "order size quantums cannot be negative")
 	}
 
 	orderId := msg.Order.GetOrderId()
@@ -79,8 +84,12 @@ func (msg *MsgPlaceOrder) ValidateBasic() (err error) {
 		return errorsmod.Wrapf(ErrReduceOnlyDisabled, "reduce only orders must be short term IOC or FOK orders")
 	}
 
-	if msg.Order.Subticks == uint64(0) {
+	if msg.Order.Subticks.Cmp(dtypes.NewInt(0)) == 0 {
 		return errorsmod.Wrapf(ErrInvalidOrderSubticks, "order subticks cannot be 0")
+	}
+
+	if msg.Order.Subticks.Cmp(dtypes.NewInt(0)) == -1 {
+		return errorsmod.Wrapf(ErrInvalidOrderSubticks, "order subticks cannot be negative")
 	}
 
 	if orderId.IsConditionalOrder() {
@@ -88,18 +97,29 @@ func (msg *MsgPlaceOrder) ValidateBasic() (err error) {
 			return errorsmod.Wrapf(ErrInvalidConditionType, "condition type cannot be unspecified")
 		}
 
-		if msg.Order.ConditionalOrderTriggerSubticks == uint64(0) {
+		if msg.Order.ConditionalOrderTriggerSubticks.Cmp(dtypes.NewInt(0)) == 0 {
 			return errorsmod.Wrapf(ErrInvalidConditionalOrderTriggerSubticks, "conditional order trigger subticks cannot be 0")
+		}
+
+		if msg.Order.ConditionalOrderTriggerSubticks.Cmp(dtypes.NewInt(0)) == -1 {
+			return errorsmod.Wrapf(ErrInvalidConditionalOrderTriggerSubticks, "conditional order trigger subticks cannot be negative")
 		}
 	} else {
 		if msg.Order.ConditionType != Order_CONDITION_TYPE_UNSPECIFIED {
 			return errorsmod.Wrapf(ErrInvalidConditionType, "condition type specified for non-conditional order")
 		}
 
-		if msg.Order.ConditionalOrderTriggerSubticks != uint64(0) {
+		if msg.Order.ConditionalOrderTriggerSubticks.Cmp(dtypes.NewInt(0)) == 1 {
 			return errorsmod.Wrapf(
 				ErrInvalidConditionalOrderTriggerSubticks,
 				"conditional order trigger subticks greater than 0 for non-conditional order",
+			)
+		}
+
+		if !msg.Order.ConditionalOrderTriggerSubticks.IsNil() && msg.Order.ConditionalOrderTriggerSubticks.Cmp(dtypes.NewInt(0)) == -1 {
+			return errorsmod.Wrapf(
+				ErrInvalidConditionalOrderTriggerSubticks,
+				"conditional order trigger subticks less than 0 for non-conditional order",
 			)
 		}
 	}

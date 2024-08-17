@@ -3,9 +3,37 @@ package types
 import (
 	"math/big"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
+
+// Getter for total size. Returns 0 as default. Getters are
+// not currently generated automatically by protobuf.
+func (m *MatchPerpetualLiquidation) GetTotalSize() dtypes.SerializableInt {
+	if m != nil {
+		return m.TotalSize
+	}
+	return dtypes.ZeroInt()
+}
+
+// Getter for fill amount. Returns 0 as default. Getters are
+// not currently generated automatically by protobuf.
+func (m *MakerFill) GetFillAmount() dtypes.SerializableInt {
+	if m != nil {
+		return m.FillAmount
+	}
+	return dtypes.ZeroInt()
+}
+
+// Getter for fill amount. Returns 0 as default. Getters are
+// not currently generated automatically by protobuf.
+func (m *MatchPerpetualDeleveraging_Fill) GetFillAmount() dtypes.SerializableInt {
+	if m != nil {
+		return m.FillAmount
+	}
+	return dtypes.ZeroInt()
+}
 
 // MakerFillWithOrder represents the filled amount of a matched maker order,
 // along with the `Order` representing the matched maker order.
@@ -52,7 +80,7 @@ func (m *MatchPerpetualLiquidation) GetMakerSubaccountIds() []satypes.Subaccount
 func (m *MatchPerpetualDeleveraging) GetTotalFilledQuantums() *big.Int {
 	totalQuantums := big.NewInt(0)
 	for _, fill := range m.GetFills() {
-		totalQuantums.Add(totalQuantums, new(big.Int).SetUint64(fill.GetFillAmount()))
+		totalQuantums.Add(totalQuantums, fill.GetFillAmount().BigInt())
 	}
 	return totalQuantums
 }

@@ -1,8 +1,9 @@
 package keeper_test
 
 import (
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 	"testing"
+
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 
 	"cosmossdk.io/store/prefix"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
@@ -39,7 +40,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 0,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_ACTIVE,
@@ -64,7 +65,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							types.ClobPair_STATUS_ACTIVE,
 							clobPair.QuantumConversionExponent,
 							types.SubticksPerTick(clobPair.GetSubticksPerTick()),
-							satypes.BaseQuantums(clobPair.GetStepBaseQuantums()),
+							satypes.BaseQuantums(clobPair.GetStepBaseQuantums().BigInt().Uint64()),
 						),
 					),
 				).Once().Return()
@@ -81,7 +82,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 0,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_INITIALIZING,
@@ -108,7 +109,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 0,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_ACTIVE,
@@ -126,7 +127,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 0,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_ACTIVE,
@@ -152,7 +153,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 1,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_ACTIVE,
@@ -178,7 +179,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 1,
 						},
 					},
-					StepBaseQuantums:          10,
+					StepBaseQuantums:          constants.Serializable_Int_10,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_ACTIVE,
@@ -204,7 +205,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 1,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           10,
 					QuantumConversionExponent: -8,
 					Status:                    types.ClobPair_STATUS_ACTIVE,
@@ -230,7 +231,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							PerpetualId: 1,
 						},
 					},
-					StepBaseQuantums:          5,
+					StepBaseQuantums:          constants.Serializable_Int_5,
 					SubticksPerTick:           5,
 					QuantumConversionExponent: -4,
 					Status:                    types.ClobPair_STATUS_ACTIVE,

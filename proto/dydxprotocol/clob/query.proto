@@ -97,7 +97,11 @@ message MevNodeToNodeCalculationResponse {
   message MevAndVolumePerClob {
     uint32 clob_pair_id = 1;
     float mev = 2;
-    uint64 volume = 3;
+    bytes volume = 3 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+    ];
   }
   repeated MevAndVolumePerClob results = 1 [ (gogoproto.nullable) = false ];
 }

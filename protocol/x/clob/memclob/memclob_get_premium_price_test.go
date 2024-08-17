@@ -44,8 +44,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001 (Impact Ask)
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001 (Impact Ask)
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -55,8 +55,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_990_000,     // $9_999 (Impact Bid)
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_990_000,       // $9_999 (Impact Bid)
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -80,8 +80,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001 (Impact Ask)
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001 (Impact Ask)
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -91,8 +91,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     99_990_000,    // $9_999
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_99_990_000,       // $9_999
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -102,8 +102,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_980_000,     // $9_998 (Impact Bid = $9998.2)
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_980_000,       // $9_998 (Impact Bid = $9998.2)
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -127,8 +127,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_020_000,    // $10_002 (Impact Ask = $10001.7)
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_020_000,      // $10_002 (Impact Ask = $10001.7)
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -138,8 +138,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     100_015_000,   // $10_001.5
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_100_015_000,      // $10_001.5
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -149,8 +149,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     100_010_000,   // $10_001
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -160,8 +160,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_990_000,     // $9_999
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_990_000,       // $9_999
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -185,8 +185,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -196,8 +196,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_990_000,     // $9_999
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_990_000,       // $9_999
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -221,8 +221,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -232,8 +232,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_999_000,     // $9_999.9
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_999_000,       // $9_999.9
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -257,8 +257,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -268,8 +268,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     99_999_000,    // $9_999.9
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_99_999_000,       // $9_999.9
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -279,8 +279,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 0.1 BTC
-					Subticks:     99_995_000,     // $9_999.5
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_99_995_000,       // $9_999.5
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -290,8 +290,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_990_000,     // $9_999
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_990_000,       // $9_999
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -315,8 +315,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     100_001_000,   // $10_000.1
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_100_001_000,      // $10_000.1
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -326,8 +326,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_998_000,     // $9_999.8
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_998_000,       // $9_999.8
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -351,8 +351,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_001_000,    // $10_000.1
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_001_000,      // $10_000.1
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -362,8 +362,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     99_998_000,    // $9_999.8
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_99_998_000,       // $9_999.8
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -387,8 +387,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     100_001_000,   // $10_000.1
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_100_001_000,      // $10_000.1
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -398,8 +398,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     99_998_000,    // $9_999.8
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_99_998_000,       // $9_999.8
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -436,8 +436,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -447,8 +447,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_999_000,     // $9_999.9
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_999_000,       // $9_999.9
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -472,8 +472,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -483,8 +483,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_999_000,     // $9_999.9
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_999_000,       // $9_999.9
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -508,8 +508,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     1_000_000_000, // 0.1 BTC
-					Subticks:     100_001_000,   // $10_000.1
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.1 BTC
+					Subticks:     constants.Serializable_Int_100_001_000,      // $10_000.1
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -519,8 +519,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_998_000,     // $9_999.8
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_998_000,       // $9_999.8
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -544,8 +544,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_001_000,    // $10_000.1
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_001_000,      // $10_000.1
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -555,8 +555,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     1_000_000_000, // 0.11 BTC
-					Subticks:     99_998_000,    // $9_999.8
+					Quantums:     constants.OneBillionQuantumsSerializableInt, // 0.11 BTC
+					Subticks:     constants.Serializable_Int_99_998_000,       // $9_999.8
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -580,8 +580,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001 (Impact Ask)
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001 (Impact Ask)
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},
@@ -617,8 +617,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     100_010_000,    // $10_001
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_100_010_000,      // $10_001
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 				&types.Order{
@@ -628,8 +628,8 @@ func TestGetPremiumPrice(t *testing.T) {
 						ClobPairId:   0,
 					},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10_000_000_000, // 1 BTC
-					Subticks:     99_999_000,     // $9_999.9
+					Quantums:     constants.TenBillionQuantumsSerializableInt, // 1 BTC
+					Subticks:     constants.Serializable_Int_99_999_000,       // $9_999.9
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 1},
 				},
 			},

@@ -42,7 +42,7 @@ func TestGetAllOrderFillStates(t *testing.T) {
 				{
 					OrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
 					OrderFillState: types.OrderFillState{
-						FillAmount:          100,
+						FillAmount:          constants.OneHundredQuantumsSerializableInt,
 						PrunableBlockHeight: 10,
 					},
 				},
@@ -68,14 +68,14 @@ func TestGetAllOrderFillStates(t *testing.T) {
 				{
 					OrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
 					OrderFillState: types.OrderFillState{
-						FillAmount:          100,
+						FillAmount:          constants.OneHundredQuantumsSerializableInt,
 						PrunableBlockHeight: 10,
 					},
 				},
 				{
 					OrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
 					OrderFillState: types.OrderFillState{
-						FillAmount:          101,
+						FillAmount:          constants.OneHundredAndOneQuantumsSerializableInt,
 						PrunableBlockHeight: 11,
 					},
 				},
@@ -101,7 +101,7 @@ func TestGetAllOrderFillStates(t *testing.T) {
 				{
 					OrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
 					OrderFillState: types.OrderFillState{
-						FillAmount:          102,
+						FillAmount:          constants.OneHundredAndTwoQuantumsSerializableInt,
 						PrunableBlockHeight: 12,
 					},
 				},

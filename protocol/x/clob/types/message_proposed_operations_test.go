@@ -35,7 +35,7 @@ func TestValidateBasic(t *testing.T) {
 						&constants.Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16,
 						[]types.MakerFill{
 							{
-								FillAmount:   5,
+								FillAmount:   constants.FiveQuantumsSerializableInt,
 								MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
 							},
 						},
@@ -129,7 +129,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					&constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10,
 					[]types.MakerFill{
 						{
-							FillAmount:   100_000_000, // 1 BTC
+							FillAmount:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTC
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.GetOrderId(),
 						},
 					},
@@ -148,8 +148,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      constants.InvalidSubaccountIdOwner_OrderId,
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 			},
@@ -166,7 +166,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 									TakerOrderId: constants.InvalidSubaccountIdNumber_OrderId,
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   1,
+											FillAmount:   constants.OneQuantumSerializableInt,
 											MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
 										},
 									},
@@ -189,11 +189,11 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 									TakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   1,
+											FillAmount:   constants.OneQuantumSerializableInt,
 											MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
 										},
 										{
-											FillAmount:   1,
+											FillAmount:   constants.OneQuantumSerializableInt,
 											MakerOrderId: constants.InvalidSubaccountIdOwner_OrderId,
 										},
 									},
@@ -216,12 +216,12 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 									Liquidated:  constants.Carl_Num0,
 									ClobPairId:  0,
 									PerpetualId: 0,
-									TotalSize:   1,
+									TotalSize:   constants.OneQuantumSerializableInt,
 									IsBuy:       true,
 									Fills: []types.MakerFill{
 										{
 											MakerOrderId: constants.InvalidSubaccountIdOwner_OrderId,
-											FillAmount:   1,
+											FillAmount:   constants.OneQuantumSerializableInt,
 										},
 									},
 								},
@@ -246,8 +246,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_Side(uint32(999)),
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -260,8 +260,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 			operations: []types.OperationRaw{
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
-					Quantums:     100_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -286,8 +286,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     0,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.ZeroQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -301,8 +301,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.TenQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 0},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -316,8 +316,8 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      types.OrderId{SubaccountId: constants.Alice_Num0, ClientId: 0, ClobPairId: 0},
 					Side:         types.Order_SIDE_BUY,
-					Quantums:     10,
-					Subticks:     0,
+					Quantums:     constants.TenQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_0,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				}),
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(
@@ -347,7 +347,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					&constants.Order_Carl_Num1_Id0_Clob0_Buy1BTC_Price50000,
 					[]types.MakerFill{
 						{
-							FillAmount:   0, // zero
+							FillAmount:   constants.ZeroQuantumsSerializableInt, // zero
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
 						},
 					},
@@ -363,11 +363,11 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					&constants.Order_Carl_Num1_Id0_Clob0_Buy1BTC_Price50000,
 					[]types.MakerFill{
 						{
-							FillAmount:   1,
+							FillAmount:   constants.OneQuantumSerializableInt,
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
 						},
 						{
-							FillAmount:   1,
+							FillAmount:   constants.OneQuantumSerializableInt,
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
 						},
 					},
@@ -382,33 +382,52 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 				clobtestutils.NewShortTermOrderPlacementOperationRaw(types.Order{
 					OrderId:      constants.OrderId_Alice_Num0_ClientId0_Clob0,
 					Side:         types.Order_SIDE_SELL,
-					Quantums:     150_000_000,
-					Subticks:     50_000_000_000,
+					Quantums:     constants.OneHundredAndFiftyMillionQuantumsSerializableInt,
+					Subticks:     constants.Dollars_Uusdc_50_000,
 					GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 11},
 				}),
 				clobtestutils.NewMatchOperationRawFromPerpetualLiquidation(types.MatchPerpetualLiquidation{
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   100_000_000, // 1 BTCw
+					TotalSize:   constants.OneHundredMillionQuantumsSerializableInt, // 1 BTCw
 					IsBuy:       true,
 					Fills: []types.MakerFill{
 						{
 							MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-							FillAmount:   50_000_000, // .50 BTC does not exceed order quantums
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt, // .50 BTC does not exceed order quantums
 						},
 						{
 							MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-							FillAmount:   50_000_000, // .50 BTC does not exceed order quantums
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt, // .50 BTC does not exceed order quantums
 						},
 						{
 							MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-							FillAmount:   50_000_000, // another .50 BTC EXCEEDS liquidation order size
+							FillAmount:   constants.FiftyMillionQuantumsSerializableInt, // another .50 BTC EXCEEDS liquidation order size
 						},
 					},
 				}),
 			},
 			expectedError: types.ErrTotalFillAmountExceedsOrderSize,
+		},
+		"Stateless liquidation validation: fails when total fill amount is negative": {
+			operations: []types.OperationRaw{
+				clobtestutils.NewShortTermOrderPlacementOperationRaw(constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000),
+				clobtestutils.NewMatchOperationRawFromPerpetualLiquidation(types.MatchPerpetualLiquidation{
+					Liquidated:  constants.Carl_Num0,
+					ClobPairId:  0,
+					PerpetualId: 0,
+					TotalSize:   constants.NegativeTenQuantumsSerializableInt, // Total size is negative.
+					IsBuy:       true,
+					Fills: []types.MakerFill{
+						{
+							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
+							FillAmount:   constants.OneHundredQuantumsSerializableInt,
+						},
+					},
+				}),
+			},
+			expectedError: types.ErrInvalidLiquidationOrderTotalSize,
 		},
 		"Stateless liquidation validation: fails when total fill amount is zero": {
 			operations: []types.OperationRaw{
@@ -417,12 +436,12 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   0, // Total size is zero.
+					TotalSize:   constants.ZeroQuantumsSerializableInt, // Total size is zero.
 					IsBuy:       true,
 					Fills: []types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
-							FillAmount:   100,
+							FillAmount:   constants.OneHundredQuantumsSerializableInt,
 						},
 					},
 				}),
@@ -436,12 +455,12 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   100,
+					TotalSize:   constants.OneHundredQuantumsSerializableInt,
 					IsBuy:       true,
 					Fills: []types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.GetOrderId(),
-							FillAmount:   0, // fill amount is zero
+							FillAmount:   constants.ZeroQuantumsSerializableInt, // fill amount is zero
 						},
 					},
 				}),
@@ -455,7 +474,7 @@ func TestValidateAndTransformRawOperations(t *testing.T) {
 					Liquidated:  constants.Carl_Num0,
 					ClobPairId:  0,
 					PerpetualId: 0,
-					TotalSize:   100,
+					TotalSize:   constants.OneHundredQuantumsSerializableInt,
 					IsBuy:       true,
 					Fills:       []types.MakerFill{},
 				}),

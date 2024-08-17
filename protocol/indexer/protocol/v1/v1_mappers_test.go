@@ -305,7 +305,6 @@ func TestOrderConditionTypeToIndexerOrderConditionType(t *testing.T) {
 func TestOrderToIndexerOrderV1(t *testing.T) {
 	shortTermOrder := constants.Order_Alice_Num1_Id2_Clob1_Buy67_Price5_GTB20
 	statefulOrder := constants.LongTermOrder_Bob_Num0_Id1_Clob0_Sell50_Price10_GTBT15
-
 	tests := map[string]struct {
 		// Input
 		order clobtypes.Order
@@ -326,16 +325,21 @@ func TestOrderToIndexerOrderV1(t *testing.T) {
 					OrderFlags: shortTermOrder.OrderId.OrderFlags,
 				},
 				Side:     v1.OrderSideToIndexerOrderSide(shortTermOrder.Side),
-				Quantums: shortTermOrder.Quantums,
-				Subticks: shortTermOrder.Subticks,
+				Quantums: shortTermOrder.Quantums.BigInt().Uint64(),
+				Subticks: shortTermOrder.Subticks.BigInt().Uint64(),
 				GoodTilOneof: &v1types.IndexerOrder_GoodTilBlock{
 					GoodTilBlock: shortTermOrder.GoodTilOneof.(*clobtypes.Order_GoodTilBlock).GoodTilBlock,
 				},
-				TimeInForce:                     v1.OrderTimeInForceToIndexerOrderTimeInForce(shortTermOrder.TimeInForce),
-				ReduceOnly:                      shortTermOrder.ReduceOnly,
-				ClientMetadata:                  shortTermOrder.ClientMetadata,
-				ConditionType:                   v1.OrderConditionTypeToIndexerOrderConditionType(shortTermOrder.ConditionType),
-				ConditionalOrderTriggerSubticks: shortTermOrder.ConditionalOrderTriggerSubticks,
+				TimeInForce:    v1.OrderTimeInForceToIndexerOrderTimeInForce(shortTermOrder.TimeInForce),
+				ReduceOnly:     shortTermOrder.ReduceOnly,
+				ClientMetadata: shortTermOrder.ClientMetadata,
+				ConditionType:  v1.OrderConditionTypeToIndexerOrderConditionType(shortTermOrder.ConditionType),
+				ConditionalOrderTriggerSubticks: func() uint64 {
+					if shortTermOrder.ConditionalOrderTriggerSubticks.IsNil() {
+						return 0
+					}
+					return shortTermOrder.ConditionalOrderTriggerSubticks.BigInt().Uint64()
+				}(),
 			},
 		},
 		"Maps stateful order to IndexerOrderV1": {
@@ -351,16 +355,21 @@ func TestOrderToIndexerOrderV1(t *testing.T) {
 					OrderFlags: statefulOrder.OrderId.OrderFlags,
 				},
 				Side:     v1.OrderSideToIndexerOrderSide(statefulOrder.Side),
-				Quantums: statefulOrder.Quantums,
-				Subticks: statefulOrder.Subticks,
+				Quantums: statefulOrder.Quantums.BigInt().Uint64(),
+				Subticks: statefulOrder.Subticks.BigInt().Uint64(),
 				GoodTilOneof: &v1types.IndexerOrder_GoodTilBlockTime{
 					GoodTilBlockTime: statefulOrder.GoodTilOneof.(*clobtypes.Order_GoodTilBlockTime).GoodTilBlockTime,
 				},
-				TimeInForce:                     v1.OrderTimeInForceToIndexerOrderTimeInForce(statefulOrder.TimeInForce),
-				ReduceOnly:                      statefulOrder.ReduceOnly,
-				ClientMetadata:                  statefulOrder.ClientMetadata,
-				ConditionType:                   v1.OrderConditionTypeToIndexerOrderConditionType(statefulOrder.ConditionType),
-				ConditionalOrderTriggerSubticks: statefulOrder.ConditionalOrderTriggerSubticks,
+				TimeInForce:    v1.OrderTimeInForceToIndexerOrderTimeInForce(statefulOrder.TimeInForce),
+				ReduceOnly:     statefulOrder.ReduceOnly,
+				ClientMetadata: statefulOrder.ClientMetadata,
+				ConditionType:  v1.OrderConditionTypeToIndexerOrderConditionType(statefulOrder.ConditionType),
+				ConditionalOrderTriggerSubticks: func() uint64 {
+					if statefulOrder.ConditionalOrderTriggerSubticks.IsNil() {
+						return 0
+					}
+					return statefulOrder.ConditionalOrderTriggerSubticks.BigInt().Uint64()
+				}(),
 			},
 		},
 	}

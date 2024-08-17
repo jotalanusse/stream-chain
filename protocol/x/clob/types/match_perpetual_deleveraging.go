@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
 
@@ -31,7 +32,7 @@ func (match *MatchPerpetualDeleveraging) Validate() error {
 		if _, exists := seenOffsettingSubacountIds[offsettingSubaccountId]; exists {
 			return ErrDuplicateDeleveragingFillSubaccounts
 		}
-		if fill.GetFillAmount() == 0 {
+		if fill.GetFillAmount().Cmp(dtypes.ZeroInt()) == 0 {
 			return ErrZeroDeleveragingFillAmount
 		}
 		seenOffsettingSubacountIds[offsettingSubaccountId] = struct{}{}

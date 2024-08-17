@@ -4,6 +4,7 @@ import (
 	"encoding"
 	"encoding/json"
 	"math/big"
+	"strings"
 )
 
 // SerializableInt is basically copied from cosmos-sdk/types/Int but:
@@ -48,9 +49,30 @@ func NewIntFromBigInt(i *big.Int) SerializableInt {
 	return SerializableInt{i}
 }
 
+// NewIntFromString constructs an Int from a String. The string is expected to
+// to represent a number in base 10. A string can contain underscores. Underscores
+// are interpreted as empty strings.
+func NewIntFromString(i string) SerializableInt {
+
+	i = strings.ReplaceAll(i, "_", "")
+
+	b, ok := new(big.Int).SetString(i, 10)
+	if !ok {
+		return SerializableInt{}
+	}
+
+	return NewIntFromBigInt(b)
+}
+
 // ZeroInt returns Int value with zero
 func ZeroInt() SerializableInt {
 	return SerializableInt{big.NewInt(0)}
+}
+
+// Creates the maximum serializable int (2^256 - 1)
+func MaxUint256SerializableInt() SerializableInt {
+	max := new(big.Int).Sub(new(big.Int).Exp(big.NewInt(2), big.NewInt(256), nil), big.NewInt(1))
+	return NewIntFromBigInt(max)
 }
 
 func (i SerializableInt) String() string {

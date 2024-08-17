@@ -4,6 +4,7 @@ import (
 	fmt "fmt"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/stretchr/testify/require"
@@ -70,7 +71,7 @@ func TestNewMatchOrdersInternalOperation(t *testing.T) {
 	makerOrder := constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15
 	makerFills := []types.MakerFill{
 		{
-			FillAmount:   5,
+			FillAmount:   constants.FiveQuantumsSerializableInt,
 			MakerOrderId: makerOrder.OrderId,
 		},
 	}
@@ -118,7 +119,7 @@ func TestNewMatchPerpetualLiquidationInternalOperation(t *testing.T) {
 	makerOrder := constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15
 	makerFills := []types.MakerFill{
 		{
-			FillAmount:   5,
+			FillAmount:   constants.FiveQuantumsSerializableInt,
 			MakerOrderId: makerOrder.OrderId,
 		},
 	}
@@ -132,7 +133,7 @@ func TestNewMatchPerpetualLiquidationInternalOperation(t *testing.T) {
 						Liquidated:  liquidationTakerOrder.GetSubaccountId(),
 						ClobPairId:  liquidationTakerOrder.GetClobPairId().ToUint32(),
 						PerpetualId: liquidationTakerOrder.MustGetLiquidatedPerpetualId(),
-						TotalSize:   liquidationTakerOrder.GetBaseQuantums().ToUint64(),
+						TotalSize:   dtypes.NewIntFromBigInt(liquidationTakerOrder.GetBaseQuantums().ToBigInt()),
 						IsBuy:       liquidationTakerOrder.IsBuy(),
 						Fills:       makerFills,
 					},

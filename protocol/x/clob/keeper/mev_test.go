@@ -88,7 +88,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Sell100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -135,7 +135,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Sell100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -306,7 +306,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Sell100BTC_Price102_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -318,7 +318,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Buy100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -367,7 +367,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Sell100BTC_Price102_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -379,7 +379,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Buy100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -438,7 +438,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Buy100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -491,7 +491,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Buy100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -548,7 +548,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Buy100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -685,7 +685,7 @@ func TestRecordMevMetrics(t *testing.T) {
 						[]types.MakerFill{
 							{
 								MakerOrderId: constants.Order_Dave_Num1_Id0_Clob0_Buy100BTC_Price101_GTB20.GetOrderId(),
-								FillAmount:   10_000_000_000,
+								FillAmount:   constants.TenBillionQuantumsSerializableInt,
 							},
 						},
 					),
@@ -905,7 +905,7 @@ func TestRecordMevMetrics(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -1292,7 +1292,7 @@ func TestGetMidPrices(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,

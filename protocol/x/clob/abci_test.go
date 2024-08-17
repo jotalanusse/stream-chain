@@ -12,6 +12,7 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/liquidation/api"
 	sdaiservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/sDAIOracle"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared/types"
@@ -694,7 +695,7 @@ func TestEndBlocker_Success(t *testing.T) {
 						constants.ClobPair_Btc.QuantumConversionExponent,
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
 						constants.ClobPair_Btc.SubticksPerTick,
-						constants.ClobPair_Btc.StepBaseQuantums,
+						constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64(),
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.LiquidityTier,
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.MarketType,
 					),
@@ -704,7 +705,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -727,7 +728,7 @@ func TestEndBlocker_Success(t *testing.T) {
 						constants.ClobPair_Eth.QuantumConversionExponent,
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
 						constants.ClobPair_Eth.SubticksPerTick,
-						constants.ClobPair_Eth.StepBaseQuantums,
+						constants.ClobPair_Eth.StepBaseQuantums.BigInt().Uint64(),
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.LiquidityTier,
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.MarketType,
 					),
@@ -737,7 +738,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ctx,
 				constants.ClobPair_Eth.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Eth),
-				satypes.BaseQuantums(constants.ClobPair_Eth.StepBaseQuantums),
+				satypes.BaseQuantums(constants.ClobPair_Eth.StepBaseQuantums.BigInt().Uint64()),
 				constants.ClobPair_Eth.QuantumConversionExponent,
 				constants.ClobPair_Eth.SubticksPerTick,
 				constants.ClobPair_Eth.Status,
@@ -888,17 +889,17 @@ func TestLiquidateSubaccounts(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-								FillAmount:   50_000_000,
+								FillAmount:   constants.FiftyMillionQuantumsSerializableInt,
 							},
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId1_Clob0,
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 						},
 					},
@@ -964,13 +965,13 @@ func TestLiquidateSubaccounts(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   10_000_000,
+						TotalSize:   constants.TenMillionQuantumsSerializableInt,
 						Liquidated:  constants.Carl_Num1,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-								FillAmount:   10_000_000,
+								FillAmount:   dtypes.NewIntFromString("10_000_000"),
 							},
 						},
 					},
@@ -979,21 +980,21 @@ func TestLiquidateSubaccounts(t *testing.T) {
 					&types.MatchPerpetualLiquidation{
 						ClobPairId:  constants.ClobPair_Btc.Id,
 						IsBuy:       false,
-						TotalSize:   100_000_000,
+						TotalSize:   constants.OneHundredMillionQuantumsSerializableInt,
 						Liquidated:  constants.Dave_Num0,
 						PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 						Fills: []types.MakerFill{
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId0_Clob0,
-								FillAmount:   40_000_000,
+								FillAmount:   dtypes.NewIntFromString("40_000_000"),
 							},
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId1_Clob0,
-								FillAmount:   25_000_000,
+								FillAmount:   constants.TwentyFiveMillionQuantumsSerializableInt,
 							},
 							{
 								MakerOrderId: constants.OrderId_Alice_Num0_ClientId2_Clob0,
-								FillAmount:   35_000_000,
+								FillAmount:   dtypes.NewIntFromString("35_000_000"),
 							},
 						},
 					},
@@ -1314,7 +1315,7 @@ func TestPrepareCheckState(t *testing.T) {
 					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
 					[]types.MakerFill{
 						{
-							FillAmount:   5,
+							FillAmount:   dtypes.NewIntFromString("5"),
 							MakerOrderId: constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20.OrderId,
 						},
 					},
@@ -1326,7 +1327,7 @@ func TestPrepareCheckState(t *testing.T) {
 					constants.Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16,
 					[]types.MakerFill{
 						{
-							FillAmount:   5,
+							FillAmount:   dtypes.NewIntFromString("5"),
 							MakerOrderId: constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20.OrderId,
 						},
 					},
@@ -1401,7 +1402,7 @@ func TestPrepareCheckState(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,

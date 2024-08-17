@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/process"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
@@ -339,7 +340,7 @@ func (k Keeper) RecordMevMetrics(
 				mevClobMidPrices,
 				types.ClobMidPrice{
 					ClobPair: metadata.ClobPair,
-					Subticks: metadata.MidPrice.ToUint64(),
+					Subticks: dtypes.NewIntFromBigInt(metadata.MidPrice.ToBigInt()),
 				},
 			)
 		}
@@ -395,9 +396,28 @@ func (k Keeper) GetClobMetadata(
 
 		// Use the oracle price instead of the mid price if the mid price doesn't exist or
 		// the spread is greater-than-or-equal-to the max spread.
+		var bestAskSubticksBig *big.Int
+		if bestAsk.Subticks.IsNil() {
+			bestAskSubticksBig = big.NewInt(0)
+		} else {
+			bestAskSubticksBig = bestAsk.Subticks.BigInt()
+		}
+
+		var bestBidSubticksBig *big.Int
+		if bestBid.Subticks.IsNil() {
+			bestBidSubticksBig = big.NewInt(0)
+		} else {
+			bestBidSubticksBig = bestBid.Subticks.BigInt()
+		}
+
+		bestAskBestBidSpread := big.NewInt(0).Sub(
+			bestAskSubticksBig,
+			bestBidSubticksBig,
+		)
+
 		if !exist || new(big.Rat).SetFrac(
-			new(big.Int).SetUint64(uint64(bestAsk.Subticks-bestBid.Subticks)),
-			new(big.Int).SetUint64(uint64(bestBid.Subticks)), // Note that bestBid cannot be 0 if exist is true.
+			bestAskBestBidSpread,
+			bestBidSubticksBig, // Note that bestBid cannot be 0 if exist is true.
 		).Cmp(MAX_SPREAD_BEFORE_FALLING_BACK_TO_ORACLE) >= 0 {
 			metrics.IncrCounterWithLabels(
 				metrics.MevFallbackToOracle,
@@ -515,7 +535,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						),
 
 						ClobPairId: takerOrder.OrderId.ClobPairId,
-						FillAmount: fill.FillAmount,
+						FillAmount: dtypes.NewIntFromBigInt(fill.FillAmount.BigInt()),
 					}
 					mevMatches = append(mevMatches, mevMatch)
 				}
@@ -533,7 +553,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						matchLiquidation.Liquidated,
 						matchLiquidation.PerpetualId,
 						liquidationIsBuy,
-						fill.FillAmount,
+						fill.FillAmount.BigInt().Uint64(),
 						makerOrder.GetOrderSubticks(),
 					)
 					if err != nil {
@@ -548,9 +568,8 @@ func (k Keeper) GetMEVDataFromOperations(
 					}
 
 					mevLiquidationMatch := types.MEVLiquidationMatch{
-						LiquidatedSubaccountId: matchLiquidation.Liquidated,
-						// TODO(CLOB-957): Use `SerializableInt` for insurance fund delta
-						InsuranceFundDeltaQuoteQuantums: insuranceFundDelta.Int64(),
+						LiquidatedSubaccountId:          matchLiquidation.Liquidated,
+						InsuranceFundDeltaQuoteQuantums: dtypes.NewIntFromBigInt(insuranceFundDelta),
 
 						MakerOrderSubaccountId: makerOrder.OrderId.SubaccountId,
 						MakerOrderSubticks:     makerOrder.Subticks,
@@ -562,7 +581,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						),
 
 						ClobPairId: matchLiquidation.ClobPairId,
-						FillAmount: fill.FillAmount,
+						FillAmount: dtypes.NewIntFromBigInt(fill.FillAmount.BigInt()),
 					}
 					mevLiquidationMatches = append(mevLiquidationMatches, mevLiquidationMatch)
 				}
@@ -616,8 +635,8 @@ func (k Keeper) CalculateSubaccountPnLForMevMatches(
 			if err := cumulativePnL.AddPnLForTradeWithFilledSubticks(
 				p.subaccountId,
 				p.isBuy,
-				types.Subticks(matchWithOrders.MakerOrderSubticks),
-				satypes.BaseQuantums(matchWithOrders.FillAmount),
+				types.Subticks(matchWithOrders.MakerOrderSubticks.BigInt().Uint64()),
+				satypes.BaseQuantums(matchWithOrders.FillAmount.BigInt().Uint64()),
 				p.feePpm,
 			); err != nil {
 				return err
@@ -649,8 +668,8 @@ func (k Keeper) CalculateSubaccountPnLForMevMatches(
 			if err := cumulativePnL.AddPnLForTradeWithFilledSubticks(
 				p.subaccountId,
 				p.isBuy,
-				types.Subticks(mevLiquidation.MakerOrderSubticks),
-				satypes.BaseQuantums(mevLiquidation.FillAmount),
+				types.Subticks(mevLiquidation.MakerOrderSubticks.BigInt().Uint64()),
+				satypes.BaseQuantums(mevLiquidation.FillAmount.BigInt().Uint64()),
 				p.feePpm,
 			); err != nil {
 				return err
@@ -659,7 +678,7 @@ func (k Keeper) CalculateSubaccountPnLForMevMatches(
 
 		// Note that negative insurance fund delta (insurance fund covers losses) will
 		// improve the subaccount's PnL.
-		insuranceFundDelta := big.NewInt(mevLiquidation.InsuranceFundDeltaQuoteQuantums)
+		insuranceFundDelta := mevLiquidation.InsuranceFundDeltaQuoteQuantums.BigInt()
 		cumulativePnL.AddDeltaToSubaccount(
 			mevLiquidation.LiquidatedSubaccountId,
 			new(big.Int).Neg(insuranceFundDelta),
@@ -725,7 +744,7 @@ func (k Keeper) CalculateSubaccountPnLForMatches(
 				isBuy := !position.GetIsLong()
 
 				for _, fill := range matchDeleveraging.Fills {
-					deltaQuantums := new(big.Int).SetUint64(fill.FillAmount)
+					deltaQuantums := fill.FillAmount.BigInt()
 					if !isBuy {
 						deltaQuantums.Neg(deltaQuantums)
 					}
@@ -751,7 +770,7 @@ func (k Keeper) CalculateSubaccountPnLForMatches(
 							p.subaccountId,
 							p.isBuy,
 							absQuoteQuantums,
-							satypes.BaseQuantums(fill.FillAmount),
+							satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64()),
 							p.feePpm,
 						); err != nil {
 							return err

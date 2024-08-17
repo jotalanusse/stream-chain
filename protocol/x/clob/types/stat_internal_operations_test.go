@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/stretchr/testify/require"
@@ -23,7 +24,7 @@ func TestStatMsgProposedOperations(t *testing.T) {
 									TakerOrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16.GetOrderId(),
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   5,
+											FillAmount:   constants.FiveQuantumsSerializableInt,
 											MakerOrderId: constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15.OrderId,
 										},
 									},
@@ -40,7 +41,7 @@ func TestStatMsgProposedOperations(t *testing.T) {
 									TakerOrderId: constants.LongTermOrderId_Alice_Num0_ClientId0_Clob0,
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   5,
+											FillAmount:   constants.FiveQuantumsSerializableInt,
 											MakerOrderId: constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId,
 										},
 									},
@@ -57,11 +58,11 @@ func TestStatMsgProposedOperations(t *testing.T) {
 									Liquidated:  constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetSubaccountId(),
 									ClobPairId:  constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetClobPairId().ToUint32(),
 									PerpetualId: constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.MustGetLiquidatedPerpetualId(),
-									TotalSize:   constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetBaseQuantums().ToUint64(),
+									TotalSize:   dtypes.NewIntFromBigInt(constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetBaseQuantums().ToBigInt()),
 									IsBuy:       constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.IsBuy(),
 									Fills: []types.MakerFill{
 										{
-											FillAmount:   5,
+											FillAmount:   constants.FiveQuantumsSerializableInt,
 											MakerOrderId: constants.ConditionalOrder_Alice_Num1_Id0_Clob0_Sell5_Price10_GTBT15_StopLoss15.OrderId,
 										},
 									},
@@ -79,7 +80,7 @@ func TestStatMsgProposedOperations(t *testing.T) {
 									PerpetualId: constants.ClobPair_Btc.GetPerpetualClobMetadata().PerpetualId,
 									Fills: []types.MatchPerpetualDeleveraging_Fill{
 										{
-											FillAmount:             5,
+											FillAmount:             constants.FiveQuantumsSerializableInt,
 											OffsettingSubaccountId: constants.LiquidationOrder_Dave_Num0_Clob0_Sell100BTC_Price98.GetSubaccountId(),
 										},
 									},

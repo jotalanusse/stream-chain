@@ -7,6 +7,7 @@ import (
 	"math/big"
 	"math/rand"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sim_helpers"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
@@ -112,7 +113,7 @@ func SimulateMsgPlaceOrder(
 
 		bigMinOrderQuoteQuantums := types.FillAmountToQuoteQuantums(
 			types.Subticks(clobPair.SubticksPerTick),
-			satypes.BaseQuantums(clobPair.StepBaseQuantums),
+			satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 			clobPair.QuantumConversionExponent,
 		)
 
@@ -150,7 +151,7 @@ func SimulateMsgPlaceOrder(
 			subaccountId,
 			currentPositionSizeQuantums,
 			uint64(clobPair.SubticksPerTick),
-			clobPair.StepBaseQuantums,
+			clobPair.StepBaseQuantums.BigInt().Uint64(),
 			bigMinOrderQuoteQuantums,
 			bigSubaccountMaxOrderQuoteQuantums,
 		)
@@ -286,8 +287,8 @@ func generateValidPlaceOrder(
 				ClobPairId:   clobPair.Id,
 			},
 			Side:     orderSide,
-			Quantums: quantums,
-			Subticks: subticks,
+			Quantums: dtypes.NewIntFromUint64(quantums),
+			Subticks: dtypes.NewIntFromUint64(subticks),
 			GoodTilOneof: &types.Order_GoodTilBlock{
 				GoodTilBlock: goodTilBlock,
 			},

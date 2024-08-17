@@ -233,7 +233,7 @@ func CreateTestClobPairs(
 			ctx,
 			clobPair.Id,
 			clobPair.MustGetPerpetualId(),
-			satypes.BaseQuantums(clobPair.StepBaseQuantums),
+			satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 			clobPair.QuantumConversionExponent,
 			clobPair.SubticksPerTick,
 			clobPair.Status,
@@ -262,7 +262,7 @@ func CreateNClobPair(
 			},
 		}
 		items[i].SubticksPerTick = 5
-		items[i].StepBaseQuantums = 5
+		items[i].StepBaseQuantums = constants.Serializable_Int_5
 		items[i].Status = types.ClobPair_STATUS_ACTIVE
 
 		// PerpetualMarketCreateEvents are emitted when initializing the genesis state, so we need to mock
@@ -281,7 +281,7 @@ func CreateNClobPair(
 					items[i].QuantumConversionExponent,
 					perps[i].Params.AtomicResolution,
 					items[i].SubticksPerTick,
-					items[i].StepBaseQuantums,
+					items[i].StepBaseQuantums.BigInt().Uint64(),
 					perps[i].Params.LiquidityTier,
 					perps[i].Params.MarketType,
 				),
@@ -292,7 +292,7 @@ func CreateNClobPair(
 			ctx,
 			items[i].Id,
 			clobtest.MustPerpetualId(items[i]),
-			satypes.BaseQuantums(items[i].StepBaseQuantums),
+			satypes.BaseQuantums(items[i].StepBaseQuantums.BigInt().Uint64()),
 			items[i].QuantumConversionExponent,
 			items[i].SubticksPerTick,
 			items[i].Status,

@@ -1321,7 +1321,6 @@ func MustMakeCheckTxsWithClobMsg[T clobtypes.MsgPlaceOrder | clobtypes.MsgCancel
 		default:
 			panic(fmt.Errorf("MustMakeCheckTxsWithClobMsg: Unknown message type %T", msg))
 		}
-
 		sdkMessages[i] = m
 	}
 

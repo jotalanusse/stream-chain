@@ -14,7 +14,7 @@ func TestNewClobMatchFromMatchOrders(t *testing.T) {
 		Fills: []types.MakerFill{
 			{
 				MakerOrderId: constants.OrderId_Bob_Num0_ClientId0_Clob0,
-				FillAmount:   30,
+				FillAmount:   constants.ThirtyQuantumsSerializableInt,
 			},
 		},
 	}
@@ -28,17 +28,17 @@ func TestNewClobMatchFromMatchPerpetualLiquidation(t *testing.T) {
 	msgMatchPerpetualLiquidation := &types.MatchPerpetualLiquidation{
 		ClobPairId:  5,
 		IsBuy:       true,
-		TotalSize:   30,
+		TotalSize:   constants.ThirtyQuantumsSerializableInt,
 		Liquidated:  constants.Alice_Num1,
 		PerpetualId: 1,
 		Fills: []types.MakerFill{
 			{
 				MakerOrderId: constants.OrderId_Alice_Num0_ClientId1_Clob0,
-				FillAmount:   10,
+				FillAmount:   constants.TenQuantumsSerializableInt,
 			},
 			{
 				MakerOrderId: constants.OrderId_Alice_Num0_ClientId2_Clob0,
-				FillAmount:   20,
+				FillAmount:   constants.TwentyQuantumsSerializableInt,
 			},
 		},
 	}

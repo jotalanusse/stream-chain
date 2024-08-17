@@ -1486,7 +1486,7 @@ func TestPlaceOrder_LongTermReduceOnlyRemovals(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   20,
+							FillAmount:   constants.TwentyQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1552,7 +1552,7 @@ func TestPlaceOrder_LongTermReduceOnlyRemovals(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id13_Clob0_Sell35_Price35_GTB30.OrderId,
-							FillAmount:   30,
+							FillAmount:   constants.ThirtyQuantumsSerializableInt,
 						},
 					},
 				),

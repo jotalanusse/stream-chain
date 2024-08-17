@@ -421,7 +421,7 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 							clobPair.QuantumConversionExponent,
 							perpetuals[i].Params.AtomicResolution,
 							clobPair.SubticksPerTick,
-							clobPair.StepBaseQuantums,
+							clobPair.StepBaseQuantums.BigInt().Uint64(),
 							perpetuals[i].Params.LiquidityTier,
 							perpetuals[i].Params.MarketType,
 						),
@@ -432,7 +432,7 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 					ks.Ctx,
 					clobPair.Id,
 					clobPair.MustGetPerpetualId(),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -506,7 +506,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num0,
-					FillAmount:             100_000_000,
+					FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: new(big.Int),
@@ -536,7 +536,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num0,
-					FillAmount:             100_000_000,
+					FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: new(big.Int),
@@ -602,11 +602,11 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num0,
-					FillAmount:             50_000_000,
+					FillAmount:             constants.FiftyMillionQuantumsSerializableInt,
 				},
 				{
 					OffsettingSubaccountId: constants.Dave_Num1,
-					FillAmount:             50_000_000,
+					FillAmount:             constants.FiftyMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: new(big.Int),
@@ -646,7 +646,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num0,
-					FillAmount:             100_000_000,
+					FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: new(big.Int),
@@ -686,7 +686,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num0,
-					FillAmount:             100_000_000,
+					FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: new(big.Int),
@@ -726,7 +726,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num1,
-					FillAmount:             100_000_000,
+					FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: new(big.Int),
@@ -782,7 +782,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			expectedFills: []types.MatchPerpetualDeleveraging_Fill{
 				{
 					OffsettingSubaccountId: constants.Dave_Num0,
-					FillAmount:             100_000_000,
+					FillAmount:             constants.OneHundredMillionQuantumsSerializableInt,
 				},
 			},
 			expectedQuantumsRemaining: big.NewInt(0),
@@ -851,7 +851,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 							clobPair.QuantumConversionExponent,
 							perps[i].Params.AtomicResolution,
 							clobPair.SubticksPerTick,
-							clobPair.StepBaseQuantums,
+							clobPair.StepBaseQuantums.BigInt().Uint64(),
 							perps[i].Params.LiquidityTier,
 							perps[i].Params.MarketType,
 						),
@@ -862,7 +862,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 					ks.Ctx,
 					clobPair.Id,
 					clobPair.MustGetPerpetualId(),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -879,7 +879,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			})
 			// check that an event is emitted per fill
 			for _, fill := range tc.expectedFills {
-				fillAmount := new(big.Int).SetUint64(fill.FillAmount)
+				fillAmount := fill.FillAmount.BigInt()
 				if tc.deltaQuantums.Sign() < 0 {
 					fillAmount = new(big.Int).Neg(fillAmount)
 				}
@@ -899,7 +899,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 							tc.liquidatedSubaccountId,
 							fill.OffsettingSubaccountId,
 							tc.perpetualId,
-							satypes.BaseQuantums(fill.FillAmount),
+							satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64()),
 							satypes.BaseQuantums(bankruptcyPriceQuoteQuantums.Uint64()),
 							tc.deltaQuantums.Sign() > 0,
 							false,

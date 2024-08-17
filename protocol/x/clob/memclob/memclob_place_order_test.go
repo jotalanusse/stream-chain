@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
@@ -260,17 +261,17 @@ func TestPlaceOrder_AddOrderToOrderbook(t *testing.T) {
 				&constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20,
 			},
 
-			order: constants.Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20,
+			order: constants.Order_Alice_Num0_Id0_Clob0_Buy7_Price10_GTB20,
 
 			expectedErr:            types.ErrInvalidReplacement,
 			expectedToReplaceOrder: false,
 		},
 		"Replacing an order succeeds if OrderHash is greater than existing order but GoodTilBlock is the same": {
 			existingOrders: []types.MatchableOrder{
-				&constants.Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20,
+				&constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20,
 			},
 
-			order: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB20,
+			order: constants.Order_Alice_Num0_Id0_Clob0_Buy6_Price10_GTB20,
 
 			collateralizationCheck: satypes.Success,
 			expectedOrderStatus:    types.Success,
@@ -475,7 +476,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -492,7 +493,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -541,7 +542,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -558,7 +559,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -607,7 +608,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id8_Clob1_Sell25_PriceMax_GTB20.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -624,7 +625,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id8_Clob1_Sell25_PriceMax_GTB20.OrderId,
-							FillAmount:   25,
+							FillAmount:   constants.TwentyFiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -687,11 +688,11 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -711,11 +712,11 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -758,7 +759,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -775,7 +776,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -825,7 +826,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -842,7 +843,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -910,11 +911,11 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -934,11 +935,11 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1030,15 +1031,15 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1061,15 +1062,15 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1217,7 +1218,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1229,7 +1230,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   15,
+							FillAmount:   constants.FifteenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1246,7 +1247,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1258,7 +1259,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   15,
+							FillAmount:   constants.FifteenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1329,7 +1330,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1344,7 +1345,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1356,7 +1357,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1373,7 +1374,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1388,7 +1389,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1400,7 +1401,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1456,7 +1457,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1471,7 +1472,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1488,7 +1489,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1503,7 +1504,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1562,7 +1563,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1574,7 +1575,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1591,7 +1592,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1603,7 +1604,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1667,7 +1668,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1679,7 +1680,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1696,7 +1697,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1708,7 +1709,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1757,7 +1758,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1777,7 +1778,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1823,7 +1824,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1840,7 +1841,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1886,7 +1887,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB31.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1903,7 +1904,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB31.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1956,7 +1957,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy6_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -1973,7 +1974,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy6_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2025,7 +2026,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2042,7 +2043,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2078,7 +2079,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2095,7 +2096,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2138,7 +2139,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2155,7 +2156,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2198,7 +2199,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2215,7 +2216,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2500,11 +2501,11 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2524,11 +2525,11 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20.OrderId,
-							FillAmount:   10,
+							FillAmount:   constants.TenQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2600,7 +2601,7 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2617,7 +2618,7 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2712,7 +2713,7 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2733,7 +2734,7 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -2899,7 +2900,7 @@ func TestUpdateOrderbookStateWithMatchedMakerOrder_PanicsOnInvalidFillAmount(t *
 	require.Panics(t, func() {
 		memclob.mustUpdateOrderbookStateWithMatchedMakerOrder(
 			ctx,
-			types.Order{Quantums: 1},
+			types.Order{Quantums: dtypes.NewInt(1)},
 		)
 	})
 }
@@ -3025,7 +3026,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3039,7 +3040,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3098,7 +3099,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3113,7 +3114,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3523,11 +3524,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3547,11 +3548,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3677,11 +3678,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3701,11 +3702,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3759,11 +3760,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -3783,11 +3784,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 					[]types.MakerFill{
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 						{
 							MakerOrderId: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22.OrderId,
-							FillAmount:   5,
+							FillAmount:   constants.FiveQuantumsSerializableInt,
 						},
 					},
 				),
@@ -4150,8 +4151,8 @@ func TestPlaceOrder_Telemetry(t *testing.T) {
 				ClobPairId:   clobPairId,
 			},
 			Side:         types.Order_SIDE_BUY,
-			Quantums:     100,
-			Subticks:     5,
+			Quantums:     constants.OneHundredQuantumsSerializableInt,
+			Subticks:     constants.Dollars_Uusdc_0_000_005,
 			GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 5},
 		}
 		orders = append(orders, order)

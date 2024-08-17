@@ -1,6 +1,8 @@
 package clob
 
 import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
@@ -24,7 +26,7 @@ func WithId(id uint32) ClobModifierOption {
 
 func WithStepBaseQuantums(bq satypes.BaseQuantums) ClobModifierOption {
 	return func(cp *clobtypes.ClobPair) {
-		cp.StepBaseQuantums = bq.ToUint64()
+		cp.StepBaseQuantums = dtypes.NewIntFromBigInt(bq.ToBigInt())
 	}
 }
 
@@ -86,7 +88,7 @@ func GenerateClobPair(optionalModifications ...ClobModifierOption) *clobtypes.Cl
 			},
 		},
 		Id:                        0,
-		StepBaseQuantums:          5,
+		StepBaseQuantums:          constants.Serializable_Int_5,
 		SubticksPerTick:           10,
 		QuantumConversionExponent: -8,
 		Status:                    clobtypes.ClobPair_STATUS_ACTIVE,

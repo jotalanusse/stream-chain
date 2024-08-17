@@ -114,7 +114,7 @@ func TestGenesis(t *testing.T) {
 							},
 						},
 						Id:               uint32(0),
-						StepBaseQuantums: 5,
+						StepBaseQuantums: constants.Serializable_Int_5,
 						SubticksPerTick:  5,
 						Status:           types.ClobPair_STATUS_ACTIVE,
 					},
@@ -125,7 +125,7 @@ func TestGenesis(t *testing.T) {
 							},
 						},
 						Id:               uint32(1),
-						StepBaseQuantums: 5,
+						StepBaseQuantums: constants.Serializable_Int_5,
 						SubticksPerTick:  5,
 						Status:           types.ClobPair_STATUS_ACTIVE,
 					},
@@ -160,7 +160,7 @@ func TestGenesis(t *testing.T) {
 					MaxLiquidationFeePpm: lib.OneMillion,
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits: types.PositionBlockLimits{
-						MinPositionNotionalLiquidated:   0,
+						MinPositionNotionalLiquidated:   dtypes.NewInt(0),
 						MaxPositionPortionLiquidatedPpm: lib.OneMillion,
 					},
 					SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
@@ -173,7 +173,7 @@ func TestGenesis(t *testing.T) {
 					{
 						Id:               uint32(0),
 						Metadata:         nil,
-						StepBaseQuantums: 5,
+						StepBaseQuantums: constants.Serializable_Int_5,
 						SubticksPerTick:  5,
 						Status:           types.ClobPair_STATUS_ACTIVE,
 					},
@@ -184,7 +184,7 @@ func TestGenesis(t *testing.T) {
 							},
 						},
 						Id:               uint32(1),
-						StepBaseQuantums: 5,
+						StepBaseQuantums: constants.Serializable_Int_5,
 						SubticksPerTick:  5,
 						Status:           types.ClobPair_STATUS_ACTIVE,
 					},
@@ -213,7 +213,7 @@ func TestGenesis(t *testing.T) {
 							},
 						},
 						Id:               uint32(0),
-						StepBaseQuantums: 5,
+						StepBaseQuantums: constants.Serializable_Int_5,
 						SubticksPerTick:  5,
 						Status:           types.ClobPair_STATUS_ACTIVE,
 					},
@@ -224,7 +224,7 @@ func TestGenesis(t *testing.T) {
 							},
 						},
 						Id:               uint32(1),
-						StepBaseQuantums: 5,
+						StepBaseQuantums: constants.Serializable_Int_5,
 						SubticksPerTick:  5,
 						Status:           types.ClobPair_STATUS_ACTIVE,
 					},
@@ -315,7 +315,7 @@ func TestGenesis(t *testing.T) {
 					MaxLiquidationFeePpm: lib.OneMillion,
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits: types.PositionBlockLimits{
-						MinPositionNotionalLiquidated:   10,
+						MinPositionNotionalLiquidated:   dtypes.NewIntFromString("10"), // $0.000010
 						MaxPositionPortionLiquidatedPpm: 0,
 					},
 					SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
@@ -330,7 +330,7 @@ func TestGenesis(t *testing.T) {
 					MaxLiquidationFeePpm: lib.OneMillion,
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits: types.PositionBlockLimits{
-						MinPositionNotionalLiquidated:   10,
+						MinPositionNotionalLiquidated:   dtypes.NewIntFromString("10"), // $0.00001
 						MaxPositionPortionLiquidatedPpm: lib.OneMillion + 1,
 					},
 					SubaccountBlockLimits: constants.SubaccountBlockLimits_Default,
@@ -346,8 +346,8 @@ func TestGenesis(t *testing.T) {
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits:  constants.PositionBlockLimits_Default,
 					SubaccountBlockLimits: types.SubaccountBlockLimits{
-						MaxNotionalLiquidated:    0,
-						MaxQuantumsInsuranceLost: 100_000_000_000_000,
+						MaxNotionalLiquidated:    dtypes.NewInt(0),
+						MaxQuantumsInsuranceLost: dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
 					},
 				},
 			},
@@ -361,8 +361,8 @@ func TestGenesis(t *testing.T) {
 					FillablePriceConfig:  constants.FillablePriceConfig_Default,
 					PositionBlockLimits:  constants.PositionBlockLimits_Default,
 					SubaccountBlockLimits: types.SubaccountBlockLimits{
-						MaxNotionalLiquidated:    100_000_000_000_000,
-						MaxQuantumsInsuranceLost: 0,
+						MaxNotionalLiquidated:    dtypes.NewIntFromString("100_000_000_000_000"), // $100,000,000
+						MaxQuantumsInsuranceLost: dtypes.NewInt(0),
 					},
 				},
 			},
@@ -449,7 +449,7 @@ func TestGenesis(t *testing.T) {
 								clobPair.QuantumConversionExponent,
 								perpetual.Params.AtomicResolution,
 								clobPair.SubticksPerTick,
-								clobPair.StepBaseQuantums,
+								clobPair.StepBaseQuantums.BigInt().Uint64(),
 								perpetual.Params.LiquidityTier,
 								perpetual.Params.MarketType,
 							),

@@ -9,6 +9,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 
 	"cosmossdk.io/store/prefix"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
@@ -75,7 +76,7 @@ func (k Keeper) CreatePerpetualClobPair(
 			},
 		},
 		Id:                        clobPairId,
-		StepBaseQuantums:          stepSizeBaseQuantums.ToUint64(),
+		StepBaseQuantums:          dtypes.NewIntFromBigInt(stepSizeBaseQuantums.ToBigInt()),
 		QuantumConversionExponent: quantumConversionExponent,
 		SubticksPerTick:           subticksPerTick,
 		Status:                    status,
@@ -404,9 +405,9 @@ func (k Keeper) validateOrderAgainstClobPairStatus(
 		// the oracle price. For instance without this check a user could place an ask far below the oracle
 		// price, thereby preventing any bids at or above the specified price of the ask.
 		currentOraclePriceSubticksRat := k.GetOraclePriceSubticksRat(ctx, clobPair)
-		currentOraclePriceSubticks := lib.BigRatRound(currentOraclePriceSubticksRat, false).Uint64()
+		currentOraclePriceSubticks := dtypes.NewIntFromBigInt(lib.BigRatRound(currentOraclePriceSubticksRat, false))
 		// Throw error if order is a buy and order subticks is greater than oracle price subticks
-		if order.IsBuy() && order.Subticks > currentOraclePriceSubticks {
+		if order.IsBuy() && order.Subticks.Cmp(currentOraclePriceSubticks) == 1 {
 			return errorsmod.Wrapf(
 				types.ErrOrderConflictsWithClobPairStatus,
 				"Order subticks %+v must be less than or equal to oracle price subticks %+v for clob pair with status %+v",
@@ -416,7 +417,7 @@ func (k Keeper) validateOrderAgainstClobPairStatus(
 			)
 		}
 		// Throw error if order is a sell and order subticks is less than oracle price subticks
-		if !order.IsBuy() && order.Subticks < currentOraclePriceSubticks {
+		if !order.IsBuy() && order.Subticks.Cmp(currentOraclePriceSubticks) == -1 {
 			return errorsmod.Wrapf(
 				types.ErrOrderConflictsWithClobPairStatus,
 				"Order subticks %+v must be greater than or equal to oracle price subticks %+v for clob pair with status %+v",
@@ -506,7 +507,7 @@ func (k Keeper) UpdateClobPair(
 			"UpdateClobPair: cannot update ClobPair perpetual id",
 		)
 	}
-	if clobPair.StepBaseQuantums != oldClobPair.StepBaseQuantums {
+	if clobPair.StepBaseQuantums.Cmp(oldClobPair.StepBaseQuantums) != 0 {
 		return errorsmod.Wrapf(
 			types.ErrInvalidClobPairUpdate,
 			"UpdateClobPair: cannot update ClobPair step base quantums",
@@ -553,7 +554,7 @@ func (k Keeper) UpdateClobPair(
 				clobPair.Status,
 				clobPair.QuantumConversionExponent,
 				types.SubticksPerTick(clobPair.GetSubticksPerTick()),
-				satypes.BaseQuantums(clobPair.GetStepBaseQuantums()),
+				satypes.BaseQuantums(clobPair.GetStepBaseQuantums().BigInt().Uint64()),
 			),
 		),
 	)

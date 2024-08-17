@@ -2161,7 +2161,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 										PerpetualId: 0,
 									},
 								},
-								StepBaseQuantums:          1,
+								StepBaseQuantums:          constants.Serializable_Int_1,
 								SubticksPerTick:           1,
 								QuantumConversionExponent: -8,
 								Status:                    clobtypes.ClobPair_STATUS_ACTIVE,

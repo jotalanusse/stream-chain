@@ -419,7 +419,7 @@ func TestPerformOrderCancellationStatefulValidation(t *testing.T) {
 									},
 								},
 								Status:           types.ClobPair_STATUS_ACTIVE,
-								StepBaseQuantums: 12,
+								StepBaseQuantums: constants.Serializable_Int_12,
 								SubticksPerTick:  39,
 							},
 						}

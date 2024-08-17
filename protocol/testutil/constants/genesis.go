@@ -341,7 +341,7 @@ const GenesisState = `{
           },
           "quantum_conversion_exponent": -8,
           "status": "STATUS_ACTIVE",
-          "step_base_quantums": 10,
+          "step_base_quantums": "10",
           "subticks_per_tick": 10000
         },
         {
@@ -351,7 +351,7 @@ const GenesisState = `{
           },
           "quantum_conversion_exponent": -9,
           "status": "STATUS_ACTIVE",
-          "step_base_quantums": 1000,
+          "step_base_quantums": "1000",
           "subticks_per_tick": 100000
         }
       ],
@@ -417,11 +417,11 @@ const GenesisState = `{
         "max_liquidation_fee_ppm": 5000,
         "position_block_limits": {
           "max_position_portion_liquidated_ppm": 1000000,
-          "min_position_notional_liquidated": 1000
+          "min_position_notional_liquidated": "1000"
         },
         "subaccount_block_limits": {
-          "max_notional_liquidated": 100000000000000,
-          "max_quantums_insurance_lost": 100000000000000
+          "max_notional_liquidated": "100000000000000",
+          "max_quantums_insurance_lost": "100000000000000"
         }
       }
     },

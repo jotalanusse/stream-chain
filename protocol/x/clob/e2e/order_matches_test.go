@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	sdaiservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/sDAIOracle"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	clobtestutils "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
@@ -38,7 +39,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000, // step base quantums is 1000 for ETH/USDC (ClobPair 1)
+										FillAmount:   dtypes.NewIntFromString("5_000"), // step base quantums is 1000 for ETH/USDC (ClobPair 1)
 										MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},
@@ -55,7 +56,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000,
+										FillAmount:   dtypes.NewIntFromString("5_000"),
 										MakerOrderId: constants.Order_Bob_Num0_Id12_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},
@@ -98,7 +99,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								[]clobtypes.MakerFill{
 									{
 										MakerOrderId: constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000.OrderId,
-										FillAmount:   10,
+										FillAmount:   dtypes.NewIntFromString("10"),
 									},
 								},
 							),
@@ -126,11 +127,11 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000, // step base quantums is 1000 for ETH/USDC (ClobPair 1)
+										FillAmount:   dtypes.NewIntFromString("5_000"), // step base quantums is 1000 for ETH/USDC (ClobPair 1)
 										MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 									{
-										FillAmount:   5_000,
+										FillAmount:   dtypes.NewIntFromString("5_000"),
 										MakerOrderId: constants.Order_Bob_Num0_Id12_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},
@@ -155,7 +156,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000, // step base quantums is 1000 for ETH/USDC (ClobPair 1)
+										FillAmount:   dtypes.NewIntFromString("5_000"), // step base quantums is 1000 for ETH/USDC (ClobPair 1)
 										MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},
@@ -165,7 +166,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000,
+										FillAmount:   dtypes.NewIntFromString("5_000"),
 										MakerOrderId: constants.Order_Bob_Num0_Id12_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},
@@ -193,7 +194,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000, // step base quantums is 1000 for ETH/USDC (ClobPair 1)
+										FillAmount:   dtypes.NewIntFromString("5_000"), // step base quantums is 1000 for ETH/USDC (ClobPair 1)
 										MakerOrderId: constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},
@@ -210,7 +211,7 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 								&constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK,
 								[]clobtypes.MakerFill{
 									{
-										FillAmount:   5_000,
+										FillAmount:   dtypes.NewIntFromString("5_000"),
 										MakerOrderId: constants.Order_Bob_Num0_Id12_Clob1_Buy5_Price40_GTB20.OrderId,
 									},
 								},

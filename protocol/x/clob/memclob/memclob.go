@@ -11,6 +11,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	ocutypes "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates/types"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared"
@@ -326,7 +327,7 @@ func (m *MemClobPriceTimePriority) mustUpdateMemclobStateWithMatches(
 		}
 
 		// Update the memclob fields for match bookkeeping with the new matches.
-		matchedQuantums := satypes.BaseQuantums(newFill.GetFillAmount())
+		matchedQuantums := satypes.BaseQuantums(newFill.GetFillAmount().BigInt().Uint64())
 
 		// Sanity checks.
 		if matchedQuantums == 0 {
@@ -458,7 +459,7 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 			orderbook,
 			false, // isBuy
 		)
-		if hasBid && hasAsk && bestBid.Value.Order.Subticks >= bestAsk.Value.Order.Subticks {
+		if hasBid && hasAsk && bestBid.Value.Order.Subticks.Cmp(bestAsk.Value.Order.Subticks) >= 0 {
 			panic(
 				fmt.Sprintf(
 					"PlaceOrder: orderbook ID %v is crossed. Best bid: (%+v), best ask: (%+v), placed order: (%+v)",
@@ -1851,7 +1852,7 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		// 3.
 		newMakerFills = append(newMakerFills, types.MakerFill{
 			MakerOrderId: makerOrderId,
-			FillAmount:   matchedAmount.ToUint64(),
+			FillAmount:   dtypes.NewIntFromBigInt(matchedAmount.ToBigInt()),
 		})
 
 		// 4.
@@ -2355,7 +2356,7 @@ func (m *MemClobPriceTimePriority) GetPricePremium(
 		return 0, nil
 	}
 
-	if hasBid && hasAsk && bestBid.Value.Order.Subticks >= bestAsk.Value.Order.Subticks {
+	if hasBid && hasAsk && bestBid.Value.Order.Subticks.Cmp(bestAsk.Value.Order.Subticks) >= 0 {
 		panic(fmt.Sprintf(
 			"GetPricePremium: crossing orderbook. ClobPairId = (%+v), bestBid = (%+v), bestAsk = (%+v)",
 			clobPair.Id,
