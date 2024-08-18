@@ -63,7 +63,7 @@ func (k Keeper) getUserFeeTier(ctx sdk.Context, address string) (uint32, *types.
 		bigUserTotalNotional := new(big.Int).Add(bigUserMakerNotional, bigUserTakerNotional)
 		bigGlobalNotional := new(big.Int).SetUint64(globalStats.NotionalTraded)
 
-		bigAbsVolumeRequirement := new(big.Int).SetUint64(currTier.AbsoluteVolumeRequirement)
+		bigAbsVolumeRequirement := currTier.AbsoluteVolumeRequirement.BigInt()
 		bigTotalVolumeShareRequirement := lib.BigIntMulPpm(
 			bigGlobalNotional,
 			currTier.TotalVolumeShareRequirementPpm,

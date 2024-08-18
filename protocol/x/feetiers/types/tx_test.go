@@ -1,10 +1,12 @@
 package types_test
 
 import (
+	"testing"
+
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	types "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 var (
@@ -22,7 +24,7 @@ func TestValidateBasic(t *testing.T) {
 				Params: types.PerpetualFeeParams{
 					Tiers: []*types.PerpetualFeeTier{
 						{
-							AbsoluteVolumeRequirement:      0,
+							AbsoluteVolumeRequirement:      dtypes.NewInt(0),
 							TotalVolumeShareRequirementPpm: 0,
 							MakerVolumeShareRequirementPpm: 0,
 						},

@@ -1,6 +1,7 @@
 syntax = "proto3";
 package dydxprotocol.feetiers;
 
+import "gogoproto/gogo.proto";
 option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types";
 
 // PerpetualFeeParams defines the parameters for perpetual fees.
@@ -15,7 +16,11 @@ message PerpetualFeeTier {
   string name = 1;
 
   // The trader's absolute volume requirement in quote quantums.
-  uint64 absolute_volume_requirement = 2;
+  bytes absolute_volume_requirement = 2 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+  ];
 
   // The total volume share requirement.
   uint32 total_volume_share_requirement_ppm = 3;

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 	"github.com/stretchr/testify/require"
 )
@@ -25,7 +26,7 @@ func TestSetPerpetualFeeParams_Success(t *testing.T) {
 		Tiers: []*types.PerpetualFeeTier{
 			{},
 			{
-				AbsoluteVolumeRequirement: 100,
+				AbsoluteVolumeRequirement: constants.Serializable_Int_100,
 				MakerFeePpm:               1,
 				TakerFeePpm:               1,
 			},
