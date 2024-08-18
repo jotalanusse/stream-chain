@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 	"github.com/stretchr/testify/require"
 )
@@ -22,7 +23,7 @@ func TestPerpetualFeeParams_Validate(t *testing.T) {
 			params: &types.PerpetualFeeParams{
 				Tiers: []*types.PerpetualFeeTier{
 					{
-						AbsoluteVolumeRequirement: 10,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_10,
 						MakerFeePpm:               1,
 						TakerFeePpm:               1,
 					},
@@ -35,10 +36,10 @@ func TestPerpetualFeeParams_Validate(t *testing.T) {
 				Tiers: []*types.PerpetualFeeTier{
 					{},
 					{
-						AbsoluteVolumeRequirement: 10,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_10,
 					},
 					{
-						AbsoluteVolumeRequirement: 5,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_5,
 					},
 				},
 			},
@@ -49,12 +50,12 @@ func TestPerpetualFeeParams_Validate(t *testing.T) {
 				Tiers: []*types.PerpetualFeeTier{
 					{},
 					{
-						AbsoluteVolumeRequirement: 5,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_5,
 						MakerFeePpm:               -2,
 						TakerFeePpm:               3,
 					},
 					{
-						AbsoluteVolumeRequirement: 10,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_10,
 						TakerFeePpm:               1,
 					},
 				},
@@ -69,12 +70,12 @@ func TestPerpetualFeeParams_Validate(t *testing.T) {
 						TakerFeePpm: 4,
 					},
 					{
-						AbsoluteVolumeRequirement: 5,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_5,
 						MakerFeePpm:               -2,
 						TakerFeePpm:               4,
 					},
 					{
-						AbsoluteVolumeRequirement: 10,
+						AbsoluteVolumeRequirement: constants.Serializable_Int_10,
 						TakerFeePpm:               3,
 					},
 				},

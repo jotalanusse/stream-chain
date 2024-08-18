@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 	"github.com/stretchr/testify/require"
 )
@@ -22,12 +23,12 @@ func TestGenesisState_Validate(t *testing.T) {
 					Tiers: []*types.PerpetualFeeTier{
 						{},
 						{
-							AbsoluteVolumeRequirement: 10,
+							AbsoluteVolumeRequirement: constants.Serializable_Int_10,
 							MakerFeePpm:               1,
 							TakerFeePpm:               1,
 						},
 						{
-							AbsoluteVolumeRequirement:      15,
+							AbsoluteVolumeRequirement:      constants.Serializable_Int_15,
 							TotalVolumeShareRequirementPpm: 1,
 							MakerVolumeShareRequirementPpm: 1,
 							MakerFeePpm:                    2,

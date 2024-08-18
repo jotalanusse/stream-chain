@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 )
@@ -64,7 +65,7 @@ func TestUserFeeTier(t *testing.T) {
 				Index: 0,
 				Tier: &types.PerpetualFeeTier{
 					Name:                           "1",
-					AbsoluteVolumeRequirement:      0,
+					AbsoluteVolumeRequirement:      dtypes.NewInt(0),
 					TotalVolumeShareRequirementPpm: 0,
 					MakerVolumeShareRequirementPpm: 0,
 					MakerFeePpm:                    -110,

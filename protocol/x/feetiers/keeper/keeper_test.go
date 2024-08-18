@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 	stattypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/stats/types"
 	"github.com/stretchr/testify/require"
@@ -87,13 +88,13 @@ func TestGetPerpetualFeePpm(t *testing.T) {
 						},
 						{
 							Name:                      "2",
-							AbsoluteVolumeRequirement: 1_000,
+							AbsoluteVolumeRequirement: constants.Serializable_Int_1_000,
 							TakerFeePpm:               20,
 							MakerFeePpm:               2,
 						},
 						{
 							Name:                           "3",
-							AbsoluteVolumeRequirement:      1_000_000_000,
+							AbsoluteVolumeRequirement:      constants.Serializable_Int_1_000_000_000,
 							MakerVolumeShareRequirementPpm: 500_000,
 							TakerFeePpm:                    30,
 							MakerFeePpm:                    3,
