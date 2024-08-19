@@ -129,6 +129,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(49_999_000_000 - 12_499_750_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -151,6 +152,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 12_499_750_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),

@@ -228,7 +228,7 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	am, keeper, ctx := createAppModuleWithKeeper(t)
 	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
 	msg := `{"subaccounts": [{ "id": {"owner": "foo", "number": 127 },`
-	msg += `"asset_positions":[{"asset_id": 0, "index": 0, "quantums": "1000" }], "asset_yield_index": "0/1"}]}`
+	msg += `"asset_positions":[{"asset_id": 0, "index": "0", "quantums": "1000" }], "asset_yield_index": "0/1"}]}`
 	gs := json.RawMessage(msg)
 
 	am.InitGenesis(ctx, cdc, gs)

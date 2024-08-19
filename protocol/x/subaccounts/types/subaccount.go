@@ -91,6 +91,7 @@ func (m *Subaccount) SetUsdcAssetPosition(newUsdcPosition *big.Int) {
 			m.AssetPositions = append([]*AssetPosition{usdcAssetPosition}, m.AssetPositions...)
 		}
 		usdcAssetPosition.Quantums = dtypes.NewIntFromBigInt(newUsdcPosition)
+		usdcAssetPosition.Index = dtypes.ZeroInt()
 	}
 }
 

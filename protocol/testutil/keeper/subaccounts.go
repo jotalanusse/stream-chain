@@ -127,6 +127,7 @@ func CreateUsdcAssetPosition(
 		{
 			AssetId:  assettypes.AssetUsdc.Id,
 			Quantums: dtypes.NewIntFromBigInt(quoteBalance),
+			Index:    dtypes.ZeroInt(),
 		},
 	}
 }

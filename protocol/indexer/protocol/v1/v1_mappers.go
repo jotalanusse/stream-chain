@@ -69,7 +69,12 @@ func AssetPositionToIndexerAssetPosition(
 	return &v1types.IndexerAssetPosition{
 		AssetId:  assetPosition.AssetId,
 		Quantums: assetPosition.Quantums,
-		Index:    assetPosition.Index,
+		Index: func() uint64 {
+			if assetPosition.Index.IsNil() {
+				return 0
+			}
+			return assetPosition.Index.BigInt().Uint64()
+		}(),
 	}
 }
 

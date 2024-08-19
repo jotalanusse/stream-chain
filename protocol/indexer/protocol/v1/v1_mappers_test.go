@@ -134,7 +134,12 @@ func TestAssetPositionToIndexerAssetPosition(t *testing.T) {
 	expectedAssetPosition := &v1types.IndexerAssetPosition{
 		AssetId:  position.AssetId,
 		Quantums: position.Quantums,
-		Index:    position.Index,
+		Index: func() uint64 {
+			if position.Index.IsNil() {
+				return 0
+			}
+			return position.Index.BigInt().Uint64()
+		}(),
 	}
 
 	require.Equal(
@@ -164,12 +169,12 @@ func TestAssetPositionsToIndexerAssetPositions(t *testing.T) {
 				{
 					AssetId:  position.AssetId,
 					Quantums: position.Quantums,
-					Index:    position.Index,
+					Index:    position.Index.BigInt().Uint64(),
 				},
 				{
 					AssetId:  position2.AssetId,
 					Quantums: position2.Quantums,
-					Index:    position2.Index,
+					Index:    position2.Index.BigInt().Uint64(),
 				},
 			},
 		},

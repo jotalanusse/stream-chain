@@ -144,7 +144,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 								AssetPositions: []*satypes.AssetPosition{
 									{
 										AssetId: constants.Usdc.Id,
-										Index:   0,
+										Index:   dtypes.ZeroInt(),
 										Quantums: dtypes.NewIntFromUint64(
 											tc.senderInitialBalance,
 										),
@@ -160,7 +160,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 									AssetPositions: []*satypes.AssetPosition{
 										{
 											AssetId: constants.Usdc.Id,
-											Index:   0,
+											Index:   dtypes.ZeroInt(),
 											Quantums: dtypes.NewIntFromUint64(
 												rand.NewRand().Uint64(),
 											),
