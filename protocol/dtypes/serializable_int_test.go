@@ -134,6 +134,457 @@ func TestSerializableInt_JSON(t *testing.T) {
 	}
 }
 
+func TestSerializableInt_Add_Success(t *testing.T) {
+	testCases := map[string]struct {
+		x      dtypes.SerializableInt
+		y      dtypes.SerializableInt
+		output dtypes.SerializableInt
+	}{
+		"zero plus zero": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(0),
+			output: dtypes.NewInt(0),
+		},
+		"positive plus positive": {
+			x:      dtypes.NewInt(5),
+			y:      dtypes.NewInt(3),
+			output: dtypes.NewInt(8),
+		},
+		"negative plus positive": {
+			x:      dtypes.NewInt(-10),
+			y:      dtypes.NewInt(7),
+			output: dtypes.NewInt(-3),
+		},
+		"zero plus positive": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(100),
+			output: dtypes.NewInt(100),
+		},
+		"positive plus zero": {
+			x:      dtypes.NewInt(100),
+			y:      dtypes.NewInt(0),
+			output: dtypes.NewInt(100),
+		},
+		"negative plus negative": {
+			x:      dtypes.NewInt(-50),
+			y:      dtypes.NewInt(-30),
+			output: dtypes.NewInt(-80),
+		},
+		"positive plus its negative": {
+			x:      dtypes.NewInt(1000000),
+			y:      dtypes.NewInt(-1000000),
+			output: dtypes.NewInt(0),
+		},
+		"large positive plus large positive": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("2_000_000_000_000_000_000_000_000_000"),
+		},
+		"large positive plus its negative": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("0"),
+		},
+		"large negative plus large negative": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("-2_000_000_000_000_000_000_000_000_000"),
+		},
+	}
+
+	for name, tc := range testCases {
+		t.Run(name, func(t *testing.T) {
+			z := dtypes.NewInt(0)
+			actualOutput := z.Add(
+				tc.x,
+				tc.y,
+			)
+			actualOutputEqual := tc.output.Cmp(actualOutput)
+			require.Equal(t, 0, actualOutputEqual)
+			zEqual := tc.output.Cmp(z)
+			require.Equal(t, 0, zEqual)
+		})
+	}
+}
+
+func TestSerializableInt_Add_Fail(t *testing.T) {
+	testCases := map[string]struct {
+		x dtypes.SerializableInt
+		y dtypes.SerializableInt
+	}{
+		"x is nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.SerializableInt{},
+		},
+		"x and y are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+		},
+	}
+
+	for _, tc := range testCases {
+		z := dtypes.NewInt(0)
+		require.Panics(t, func() { z.Add(tc.x, tc.y) })
+	}
+}
+
+func TestSerializableInt_Sub_Success(t *testing.T) {
+	testCases := map[string]struct {
+		x      dtypes.SerializableInt
+		y      dtypes.SerializableInt
+		output dtypes.SerializableInt
+	}{
+		"zero minus zero": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(0),
+			output: dtypes.NewInt(0),
+		},
+		"positive minus positive": {
+			x:      dtypes.NewInt(5),
+			y:      dtypes.NewInt(3),
+			output: dtypes.NewInt(2),
+		},
+		"negative minus positive": {
+			x:      dtypes.NewInt(-10),
+			y:      dtypes.NewInt(7),
+			output: dtypes.NewInt(-17),
+		},
+		"zero minus positive": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(100),
+			output: dtypes.NewInt(-100),
+		},
+		"positive minus zero": {
+			x:      dtypes.NewInt(100),
+			y:      dtypes.NewInt(0),
+			output: dtypes.NewInt(100),
+		},
+		"negative minus negative": {
+			x:      dtypes.NewInt(-50),
+			y:      dtypes.NewInt(-30),
+			output: dtypes.NewInt(-20),
+		},
+		"positive minus its negative": {
+			x:      dtypes.NewInt(1000000),
+			y:      dtypes.NewInt(-1000000),
+			output: dtypes.NewInt(2000000),
+		},
+		"large positive minus large positive": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_001"),
+			output: dtypes.NewIntFromString("-1"),
+		},
+		"large positive minus its negative": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("2_000_000_000_000_000_000_000_000_000"),
+		},
+		"large negative minus large negative": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("0"),
+		},
+	}
+
+	for name, tc := range testCases {
+		t.Run(name, func(t *testing.T) {
+			z := dtypes.NewInt(0)
+			actualOutput := z.Sub(
+				tc.x,
+				tc.y,
+			)
+			actualOutputEqual := tc.output.Cmp(actualOutput)
+			require.Equal(t, 0, actualOutputEqual)
+			zEqual := tc.output.Cmp(z)
+			require.Equal(t, 0, zEqual)
+		})
+	}
+}
+
+func TestSerializableInt_Sub_Fail(t *testing.T) {
+	testCases := map[string]struct {
+		x dtypes.SerializableInt
+		y dtypes.SerializableInt
+	}{
+		"x is nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.SerializableInt{},
+		},
+		"x and y are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+		},
+	}
+
+	for _, tc := range testCases {
+		z := dtypes.NewInt(0)
+		require.Panics(t, func() { z.Sub(tc.x, tc.y) })
+	}
+}
+
+func TestSerializableInt_Mul_Success(t *testing.T) {
+	testCases := map[string]struct {
+		x      dtypes.SerializableInt
+		y      dtypes.SerializableInt
+		output dtypes.SerializableInt
+	}{
+		"zero times zero": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(0),
+			output: dtypes.NewInt(0),
+		},
+		"positive times positive": {
+			x:      dtypes.NewInt(5),
+			y:      dtypes.NewInt(3),
+			output: dtypes.NewInt(15),
+		},
+		"negative times positive": {
+			x:      dtypes.NewInt(-10),
+			y:      dtypes.NewInt(7),
+			output: dtypes.NewInt(-70),
+		},
+		"zero times positive": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(100),
+			output: dtypes.NewInt(0),
+		},
+		"positive times zero": {
+			x:      dtypes.NewInt(100),
+			y:      dtypes.NewInt(0),
+			output: dtypes.NewInt(0),
+		},
+		"negative times negative": {
+			x:      dtypes.NewInt(-50),
+			y:      dtypes.NewInt(-30),
+			output: dtypes.NewInt(1500),
+		},
+		"positive times its negative": {
+			x:      dtypes.NewInt(1000000),
+			y:      dtypes.NewInt(-1000000),
+			output: dtypes.NewIntFromString("-1_000_000_000_000"),
+		},
+		"large positive times large positive": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000"),
+		},
+		"large positive times its negative": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000"),
+		},
+		"large negative times large negative": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000"),
+		},
+	}
+
+	for name, tc := range testCases {
+		t.Run(name, func(t *testing.T) {
+			z := dtypes.NewInt(0)
+			actualOutput := z.Mul(
+				tc.x,
+				tc.y,
+			)
+			actualOutputEqual := tc.output.Cmp(actualOutput)
+			require.Equal(t, 0, actualOutputEqual)
+			zEqual := tc.output.Cmp(z)
+			require.Equal(t, 0, zEqual)
+		})
+	}
+}
+
+func TestSerializableInt_Mul_Fail(t *testing.T) {
+	testCases := map[string]struct {
+		x dtypes.SerializableInt
+		y dtypes.SerializableInt
+	}{
+		"x is nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.SerializableInt{},
+		},
+		"x and y are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+		},
+	}
+
+	for _, tc := range testCases {
+		z := dtypes.NewInt(0)
+		require.Panics(t, func() { z.Mul(tc.x, tc.y) })
+	}
+}
+
+func TestSerializableInt_Div_Success(t *testing.T) {
+	testCases := map[string]struct {
+		x      dtypes.SerializableInt
+		y      dtypes.SerializableInt
+		output dtypes.SerializableInt
+	}{
+		"zero divided by positive": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(1),
+			output: dtypes.NewInt(0),
+		},
+		"zero divided by negative": {
+			x:      dtypes.NewInt(0),
+			y:      dtypes.NewInt(-1),
+			output: dtypes.NewInt(0),
+		},
+		"positive divided by positive not rounded": {
+			x:      dtypes.NewInt(6),
+			y:      dtypes.NewInt(3),
+			output: dtypes.NewInt(2),
+		},
+		"positive divided by positive rounded": {
+			x:      dtypes.NewInt(5),
+			y:      dtypes.NewInt(3),
+			output: dtypes.NewInt(1),
+		},
+		"positive divided by negative not rounded": {
+			x:      dtypes.NewInt(1500),
+			y:      dtypes.NewInt(-5),
+			output: dtypes.NewInt(-300),
+		},
+		"positive divided by negative rounded": {
+			x:      dtypes.NewInt(2400),
+			y:      dtypes.NewInt(-7),
+			output: dtypes.NewInt(-342),
+		},
+		"negative divided by positive not rounded": {
+			x:      dtypes.NewInt(-20),
+			y:      dtypes.NewInt(5),
+			output: dtypes.NewInt(-4),
+		},
+		"negative divided by positive rounded": {
+			x:      dtypes.NewInt(-20),
+			y:      dtypes.NewInt(7),
+			output: dtypes.NewInt(-3),
+		},
+		"negative divided by negative not rounded": {
+			x:      dtypes.NewInt(-60),
+			y:      dtypes.NewInt(-30),
+			output: dtypes.NewInt(2),
+		},
+		"negative divided by negative rounded": {
+			x:      dtypes.NewInt(-50),
+			y:      dtypes.NewInt(-30),
+			output: dtypes.NewInt(2),
+		},
+		"large positive divided by large positive not rounded": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("1"),
+		},
+		"large positive divided by large positive rounded": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_001"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("1"),
+		},
+		"large positive divided by large negative not rounded": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("-1"),
+		},
+		"large positive divided by large negative rounded": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_001"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("-1"),
+		},
+		"large negative divided by large positive not rounded": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("-1"),
+		},
+		"large negative divided by large positive rounded": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_001"),
+			y:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("-2"),
+		},
+		"large negative divided by large negative not rounded": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("1"),
+		},
+		"large negative divided by large negative rounded": {
+			x:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_001"),
+			y:      dtypes.NewIntFromString("-1_000_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("2"),
+		},
+		"large positive divided by small positive not rounded": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_000"),
+			y:      dtypes.NewIntFromString("200"),
+			output: dtypes.NewIntFromString("5_000_000_000_000_000_000_000_000"),
+		},
+		"large positive divided by small positive rounded": {
+			x:      dtypes.NewIntFromString("1_000_000_000_000_000_000_000_000_001"),
+			y:      dtypes.NewIntFromString("200"),
+			output: dtypes.NewIntFromString("5_000_000_000_000_000_000_000_000"),
+		},
+		"small positive divided by large positive rounded": {
+			x:      dtypes.NewIntFromString("2"),
+			y:      dtypes.NewIntFromString("5_000_000_000_000_000_000_000_000"),
+			output: dtypes.NewIntFromString("0"),
+		},
+	}
+
+	for name, tc := range testCases {
+		t.Run(name, func(t *testing.T) {
+			z := dtypes.NewInt(0)
+			actualOutput := z.Div(
+				tc.x,
+				tc.y,
+			)
+			actualOutputEqual := tc.output.Cmp(actualOutput)
+			require.Equal(t, 0, actualOutputEqual)
+			zEqual := tc.output.Cmp(z)
+			require.Equal(t, 0, zEqual)
+		})
+	}
+}
+
+func TestSerializableInt_Div_Fail(t *testing.T) {
+	testCases := map[string]struct {
+		x dtypes.SerializableInt
+		y dtypes.SerializableInt
+	}{
+		"y is zero": {
+			x: dtypes.NewInt(1),
+			y: dtypes.NewInt(0),
+		},
+		"x is nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.SerializableInt{},
+		},
+		"x and y are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+		},
+	}
+
+	for _, tc := range testCases {
+		z := dtypes.NewInt(0)
+		require.Panics(t, func() { z.Div(tc.x, tc.y) })
+	}
+}
+
 func bigIntFromString(s string) *big.Int {
 	bi, ok := new(big.Int).SetString(s, 10)
 	if !ok {
