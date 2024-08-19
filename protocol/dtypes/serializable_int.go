@@ -82,6 +82,96 @@ func (i SerializableInt) String() string {
 	return i.BigInt().String()
 }
 
+// Add sets z to the sum of x and y and returns z.
+// This is similar to big.Int.Add.
+func (z *SerializableInt) Add(x SerializableInt, y SerializableInt) SerializableInt {
+	if x.IsNil() {
+		panic("SerializableInt: cannot perform addition with nil-value for x")
+	}
+
+	if y.IsNil() {
+		panic("SerializableInt: cannot perform addition with nil-value for y")
+	}
+
+	bigIntAdd := big.NewInt(0).Add(
+		x.BigInt(),
+		y.BigInt(),
+	)
+
+	z.i = bigIntAdd
+
+	// TODO: [SINT-1]
+	return NewIntFromBigInt(bigIntAdd)
+}
+
+// Sub sets z to the difference of x and y and returns z.
+// This is similar to big.Int.Sub.
+func (z *SerializableInt) Sub(x SerializableInt, y SerializableInt) SerializableInt {
+	if x.IsNil() {
+		panic("SerializableInt: cannot perform subtraction with nil-value for x")
+	}
+
+	if y.IsNil() {
+		panic("SerializableInt: cannot perform subtraction with nil-value for y")
+	}
+
+	bigIntSub := big.NewInt(0).Sub(
+		x.BigInt(),
+		y.BigInt(),
+	)
+
+	z.i = bigIntSub
+
+	// TODO: [SINT-1]
+	return NewIntFromBigInt(bigIntSub)
+}
+
+// Mul sets z to the product of x and y and returns z.
+// This is similar to big.Int.Mul.
+func (z *SerializableInt) Mul(x SerializableInt, y SerializableInt) SerializableInt {
+	if x.IsNil() {
+		panic("SerializableInt: cannot perform multiplication with nil-value for x")
+	}
+
+	if y.IsNil() {
+		panic("SerializableInt: cannot perform multiplication with nil-value for y")
+	}
+
+	bigIntMul := big.NewInt(0).Mul(
+		x.BigInt(),
+		y.BigInt(),
+	)
+
+	z.i = bigIntMul
+
+	// TODO: [SINT-1]
+	return NewIntFromBigInt(bigIntMul)
+}
+
+// Div sets z to the quotient x/y for y != 0 and returns z.
+// If y == 0, a division-by-zero run-time panic occurs.
+// Div implements a Euclidean division.
+// This is similar to big.Int.Div.
+func (z *SerializableInt) Div(x SerializableInt, y SerializableInt) SerializableInt {
+	if x.IsNil() {
+		panic("SerializableInt: cannot perform division with nil-value for x")
+	}
+
+	if y.IsNil() {
+		panic("SerializableInt: cannot perform division with nil-value for y")
+	}
+
+	bigIntDiv := big.NewInt(0).Div(
+		x.BigInt(),
+		y.BigInt(),
+	)
+
+	z.i = bigIntDiv
+
+	// TODO: [SINT-1]
+	return NewIntFromBigInt(bigIntDiv)
+}
+
 // Cmp compares x and y and returns:
 //
 //	-1 if (x <  y) OR (x is nil and y is not nil)
