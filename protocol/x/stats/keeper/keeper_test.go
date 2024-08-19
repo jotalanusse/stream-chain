@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
@@ -255,15 +256,15 @@ func TestExpireOldStats(t *testing.T) {
 
 		k.ExpireOldStats(ctx)
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 30 - uint64(i+1),
-			MakerNotional: 60 - 2*uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
 		}, k.GetUserStats(ctx, "alice"))
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 60 - 2*uint64(i+1),
-			MakerNotional: 30 - uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
 		}, k.GetUserStats(ctx, "bob"))
 		require.Equal(t, &types.GlobalStats{
-			NotionalTraded: 90 - 3*uint64(i+1),
+			NotionalTraded: dtypes.NewIntFromUint64(90 - 3*uint64(i+1)),
 		}, k.GetGlobalStats(ctx))
 
 		// EpochStats removed
@@ -273,15 +274,15 @@ func TestExpireOldStats(t *testing.T) {
 
 		// Unchanged after pruning nil epoch
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 30 - uint64(i+1),
-			MakerNotional: 60 - 2*uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
 		}, k.GetUserStats(ctx, "alice"))
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 60 - 2*uint64(i+1),
-			MakerNotional: 30 - uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
 		}, k.GetUserStats(ctx, "bob"))
 		require.Equal(t, &types.GlobalStats{
-			NotionalTraded: 90 - 3*uint64(i+1),
+			NotionalTraded: dtypes.NewIntFromUint64(90 - 3*uint64(i+1)),
 		}, k.GetGlobalStats(ctx))
 	}
 

@@ -7,6 +7,7 @@ import (
 
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -58,12 +59,22 @@ func (k Keeper) getUserFeeTier(ctx sdk.Context, address string) (uint32, *types.
 	// Find the last tier we meet all requirements for
 	for i := 0; i < len(tiers); i++ {
 		currTier := tiers[i]
+		if userStats.MakerNotional.IsNil() {
+			userStats.MakerNotional = dtypes.ZeroInt()
+		}
 		bigUserMakerNotional := userStats.MakerNotional.BigInt()
+		if userStats.TakerNotional.IsNil() {
+			userStats.TakerNotional = dtypes.ZeroInt()
+		}
 		bigUserTakerNotional := userStats.TakerNotional.BigInt()
 		bigUserTotalNotional := new(big.Int).Add(bigUserMakerNotional, bigUserTakerNotional)
-		bigGlobalNotional := globalStats.NotionalTraded.BigInt()
 
+		if globalStats.NotionalTraded.IsNil() {
+			globalStats.NotionalTraded = dtypes.ZeroInt()
+		}
+		bigGlobalNotional := globalStats.NotionalTraded.BigInt()
 		bigAbsVolumeRequirement := currTier.AbsoluteVolumeRequirement.BigInt()
+
 		bigTotalVolumeShareRequirement := lib.BigIntMulPpm(
 			bigGlobalNotional,
 			currTier.TotalVolumeShareRequirementPpm,

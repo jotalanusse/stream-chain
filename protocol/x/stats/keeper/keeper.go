@@ -195,15 +195,23 @@ func (k Keeper) ProcessBlockStats(ctx sdk.Context) {
 	// required to do so is unrealistic.
 	for _, fill := range blockStats.Fills {
 		userStats := k.GetUserStats(ctx, fill.Taker)
-		newBigTakerNotional := big.NewInt(0).Add(
-			userStats.TakerNotional.BigInt(),
-			fill.Notional.BigInt(),
+		if userStats.TakerNotional.IsNil() {
+			userStats.TakerNotional = dtypes.ZeroInt()
+		}
+		userStats.TakerNotional.Add(
+			userStats.TakerNotional,
+			fill.Notional,
 		)
-		userStats.TakerNotional = dtypes.NewIntFromBigInt(newBigTakerNotional)
 		k.SetUserStats(ctx, fill.Taker, userStats)
 
 		userStats = k.GetUserStats(ctx, fill.Maker)
-		userStats.MakerNotional += fill.Notional
+		if userStats.MakerNotional.IsNil() {
+			userStats.MakerNotional = dtypes.ZeroInt()
+		}
+		userStats.MakerNotional.Add(
+			userStats.MakerNotional,
+			fill.Notional,
+		)
 		k.SetUserStats(ctx, fill.Maker, userStats)
 
 		if _, ok := userStatsMap[fill.Taker]; !ok {
@@ -218,11 +226,33 @@ func (k Keeper) ProcessBlockStats(ctx sdk.Context) {
 				Stats: &types.UserStats{},
 			}
 		}
-		userStatsMap[fill.Taker].Stats.TakerNotional += fill.Notional
-		userStatsMap[fill.Maker].Stats.MakerNotional += fill.Notional
+
+		if userStatsMap[fill.Taker].Stats.TakerNotional.IsNil() {
+			userStatsMap[fill.Taker].Stats.TakerNotional = dtypes.ZeroInt()
+		}
+		userStatsMap[fill.Taker].Stats.TakerNotional.Add(
+			userStatsMap[fill.Taker].Stats.TakerNotional,
+			fill.Notional,
+		)
+
+		if userStatsMap[fill.Maker].Stats.MakerNotional.IsNil() {
+			userStatsMap[fill.Maker].Stats.MakerNotional = dtypes.ZeroInt()
+		}
+		userStatsMap[fill.Maker].Stats.MakerNotional.Add(
+			userStatsMap[fill.Maker].Stats.MakerNotional,
+			fill.Notional,
+		)
 
 		globalStats := k.GetGlobalStats(ctx)
-		globalStats.NotionalTraded += fill.Notional
+
+		if globalStats.NotionalTraded.IsNil() {
+			globalStats.NotionalTraded = dtypes.ZeroInt()
+		}
+		globalStats.NotionalTraded.Add(
+			globalStats.NotionalTraded,
+			fill.Notional,
+		)
+
 		k.SetGlobalStats(ctx, globalStats)
 	}
 
@@ -267,12 +297,22 @@ func (k Keeper) ExpireOldStats(ctx sdk.Context) {
 	globalStats := k.GetGlobalStats(ctx)
 	for _, removedStats := range epochStats.Stats {
 		stats := k.GetUserStats(ctx, removedStats.User)
-		stats.TakerNotional -= removedStats.Stats.TakerNotional
-		stats.MakerNotional -= removedStats.Stats.MakerNotional
+		stats.TakerNotional.Sub(
+			stats.TakerNotional,
+			removedStats.Stats.TakerNotional,
+		)
+
+		stats.MakerNotional.Sub(
+			stats.MakerNotional,
+			removedStats.Stats.MakerNotional,
+		)
 		k.SetUserStats(ctx, removedStats.User, stats)
 
 		// Just remove TakerNotional to avoid double counting
-		globalStats.NotionalTraded -= removedStats.Stats.TakerNotional
+		globalStats.NotionalTraded.Sub(
+			globalStats.NotionalTraded,
+			removedStats.Stats.TakerNotional,
+		)
 	}
 	k.SetGlobalStats(ctx, globalStats)
 	k.deleteEpochStats(ctx, metadata.TrailingEpoch)
