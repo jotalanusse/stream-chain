@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +16,7 @@ func NewMsgDepositToSubaccount(
 	sender string,
 	recipient satypes.SubaccountId,
 	assetId uint32,
-	quantums uint64,
+	quantums dtypes.SerializableInt,
 ) *MsgDepositToSubaccount {
 	return &MsgDepositToSubaccount{
 		Sender:    sender,
@@ -44,8 +44,8 @@ func (msg *MsgDepositToSubaccount) ValidateBasic() error {
 		return ErrNonUsdcAssetTransferNotImplemented
 	}
 
-	// Validate that quantums is not zero.
-	if msg.Quantums == lib.ZeroUint64 {
+	// Validate that quantums is not zero or negative.
+	if msg.Quantums.Cmp(dtypes.NewInt(0)) <= 0 {
 		return ErrInvalidTransferAmount
 	}
 

@@ -3,6 +3,7 @@ package cli
 import (
 	"strconv"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -33,14 +34,7 @@ func CmdCreateTransfer() *cobra.Command {
 				return err
 			}
 
-			argAmount, err := cast.ToUint64E(args[4])
-			if err != nil {
-				return err
-			}
-
-			if err != nil {
-				return err
-			}
+			argAmount := dtypes.NewIntFromString(args[4])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

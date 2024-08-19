@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"math/big"
 	"time"
 
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
@@ -70,7 +69,7 @@ func (k Keeper) GenerateTransferEvent(transfer *types.Transfer) *indexerevents.T
 			Number: transfer.Recipient.Number,
 		},
 		transfer.AssetId,
-		satypes.BaseQuantums(transfer.Amount),
+		satypes.BaseQuantums(transfer.Amount.BigInt().Uint64()),
 	)
 }
 
@@ -95,7 +94,7 @@ func (k Keeper) ProcessDepositToSubaccount(
 		senderAccAddress,
 		msgDepositToSubaccount.Recipient,
 		msgDepositToSubaccount.AssetId,
-		new(big.Int).SetUint64(msgDepositToSubaccount.Quantums),
+		msgDepositToSubaccount.Quantums.BigInt(),
 	)
 
 	// Emit gauge metric with labels if deposit to subaccount succeeds.
@@ -106,7 +105,7 @@ func (k Keeper) ProcessDepositToSubaccount(
 			[]sdk.ExecMode{sdk.ExecModeFinalize},
 			metrics.SetGaugeWithLabels,
 			metrics.SendingProcessDepositToSubaccount,
-			float32(msgDepositToSubaccount.Quantums),
+			float32(msgDepositToSubaccount.Quantums.BigInt().Uint64()),
 			metrics.GetLabelForIntValue(metrics.AssetId, int(msgDepositToSubaccount.AssetId)),
 		)
 
@@ -133,7 +132,7 @@ func (k Keeper) GenerateDepositEvent(deposit *types.MsgDepositToSubaccount) *ind
 			Number: deposit.Recipient.Number,
 		},
 		deposit.AssetId,
-		satypes.BaseQuantums(deposit.Quantums),
+		satypes.BaseQuantums(deposit.Quantums.BigInt().Uint64()),
 	)
 }
 
@@ -158,7 +157,7 @@ func (k Keeper) ProcessWithdrawFromSubaccount(
 		msgWithdrawFromSubaccount.Sender,
 		recipientAccAddress,
 		msgWithdrawFromSubaccount.AssetId,
-		new(big.Int).SetUint64(msgWithdrawFromSubaccount.Quantums),
+		msgWithdrawFromSubaccount.Quantums.BigInt(),
 	)
 
 	// Emit gauge metric with labels if withdrawal from subaccount succeeds.
@@ -168,7 +167,7 @@ func (k Keeper) ProcessWithdrawFromSubaccount(
 				types.ModuleName,
 				metrics.ProcessWithdrawFromSubaccount,
 			},
-			float32(msgWithdrawFromSubaccount.Quantums),
+			float32(msgWithdrawFromSubaccount.Quantums.BigInt().Uint64()),
 			[]gometrics.Label{
 				metrics.GetLabelForIntValue(metrics.AssetId, int(msgWithdrawFromSubaccount.AssetId)),
 			},
@@ -197,7 +196,7 @@ func (k Keeper) GenerateWithdrawEvent(withdraw *types.MsgWithdrawFromSubaccount)
 		},
 		withdraw.Recipient,
 		withdraw.AssetId,
-		satypes.BaseQuantums(withdraw.Quantums),
+		satypes.BaseQuantums(withdraw.Quantums.BigInt().Uint64()),
 	)
 }
 

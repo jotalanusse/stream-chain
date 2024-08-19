@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -37,10 +38,7 @@ Note, the '--from' flag is ignored as it is implied from [sender_key_or_address]
 				return err
 			}
 
-			argAmount, err := cast.ToUint64E(args[3])
-			if err != nil {
-				return err
-			}
+			argAmount := dtypes.NewIntFromString(args[3])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

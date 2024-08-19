@@ -170,7 +170,7 @@ func TestConditionalOrderRemoval(t *testing.T) {
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.DaveAccAddress.String(),
 				AssetId:   constants.Usdc.Id,
-				Quantums:  10_000_000_000,
+				Quantums:  constants.Dollars_Uusdc_10_000,
 			},
 			priceUpdate: &prices.MsgUpdateMarketPrices{
 				MarketPriceUpdates: []*prices.MsgUpdateMarketPrices_MarketPrice{
@@ -199,7 +199,7 @@ func TestConditionalOrderRemoval(t *testing.T) {
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.DaveAccAddress.String(),
 				AssetId:   constants.Usdc.Id,
-				Quantums:  10_000_000_000,
+				Quantums:  constants.Dollars_Uusdc_10_000,
 			},
 			priceUpdate: &prices.MsgUpdateMarketPrices{
 				MarketPriceUpdates: []*prices.MsgUpdateMarketPrices_MarketPrice{
@@ -226,7 +226,7 @@ func TestConditionalOrderRemoval(t *testing.T) {
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.DaveAccAddress.String(),
 				AssetId:   constants.Usdc.Id,
-				Quantums:  500_000_000_000,
+				Quantums:  constants.Dollars_Uusdc_500_000,
 			},
 			priceUpdate: &prices.MsgUpdateMarketPrices{
 				MarketPriceUpdates: []*prices.MsgUpdateMarketPrices_MarketPrice{
@@ -848,7 +848,7 @@ func TestOrderRemoval(t *testing.T) {
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.DaveAccAddress.String(),
 				AssetId:   constants.Usdc.Id,
-				Quantums:  10_000_000_000,
+				Quantums:  constants.Dollars_Uusdc_10_000,
 			},
 
 			expectedFirstOrderRemoved:  false,
@@ -869,7 +869,7 @@ func TestOrderRemoval(t *testing.T) {
 				Sender:    constants.Dave_Num0,
 				Recipient: constants.DaveAccAddress.String(),
 				AssetId:   constants.Usdc.Id,
-				Quantums:  10_000_000_000,
+				Quantums:  constants.Dollars_Uusdc_10_000,
 			},
 
 			expectedFirstOrderRemoved:  false,
@@ -889,7 +889,7 @@ func TestOrderRemoval(t *testing.T) {
 				Sender:    constants.Carl_Num0,
 				Recipient: constants.CarlAccAddress.String(),
 				AssetId:   constants.Usdc.Id,
-				Quantums:  10_000_000_000,
+				Quantums:  constants.Dollars_Uusdc_10_000,
 			},
 
 			expectedFirstOrderRemoved:  true, // maker is under-collateralized

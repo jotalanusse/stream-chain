@@ -23,7 +23,11 @@ message Transfer {
   uint32 asset_id = 3;
 
   // The amount of asset to transfer
-  uint64 amount = 4;
+  bytes amount = 4 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                             "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // MsgDepositToSubaccount represents a single transfer from an `x/bank`
@@ -42,7 +46,11 @@ message MsgDepositToSubaccount {
   uint32 asset_id = 3;
 
   // The number of quantums of asset to transfer.
-  uint64 quantums = 4;
+  bytes quantums = 4 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                             "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // MsgWithdrawFromSubaccount represents a single transfer from an
@@ -61,7 +69,11 @@ message MsgWithdrawFromSubaccount {
   uint32 asset_id = 3;
 
   // The number of quantums of asset to transfer.
-  uint64 quantums = 4;
+  bytes quantums = 4 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                             "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // MsgSendFromModuleToAccount represents a single transfer from a module

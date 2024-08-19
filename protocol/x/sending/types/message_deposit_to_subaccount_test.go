@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -42,7 +43,7 @@ func TestMsgDepositToSubaccount_ValidateBasic(t *testing.T) {
 				Sender:    constants.AliceAccAddress.String(),
 				Recipient: constants.Alice_Num0,
 				AssetId:   uint32(1),
-				Quantums:  uint64(100),
+				Quantums:  constants.Serializable_Int_100,
 			},
 			err: types.ErrNonUsdcAssetTransferNotImplemented,
 		},
@@ -51,7 +52,7 @@ func TestMsgDepositToSubaccount_ValidateBasic(t *testing.T) {
 				Sender:    constants.AliceAccAddress.String(),
 				Recipient: constants.Alice_Num0,
 				AssetId:   uint32(0),
-				Quantums:  uint64(0),
+				Quantums:  dtypes.NewInt(0),
 			},
 			err: types.ErrInvalidTransferAmount,
 		},

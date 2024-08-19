@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sample"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
@@ -82,7 +83,7 @@ func TestMsgCreateTransfer_ValidateBasic(t *testing.T) {
 					Sender:    constants.Carl_Num0,
 					Recipient: constants.Carl_Num0,
 					AssetId:   assettypes.AssetUsdc.Id,
-					Amount:    uint64(500_000_000),
+					Amount:    constants.Dollars_Uusdc_500,
 				},
 			},
 			err: types.ErrSenderSameAsRecipient,
@@ -94,7 +95,7 @@ func TestMsgCreateTransfer_ValidateBasic(t *testing.T) {
 					Sender:    constants.Carl_Num0,
 					Recipient: constants.Dave_Num0,
 					AssetId:   uint32(1),
-					Amount:    uint64(100),
+					Amount:    constants.Serializable_Int_100,
 				},
 			},
 			err: types.ErrNonUsdcAssetTransferNotImplemented,
@@ -106,7 +107,7 @@ func TestMsgCreateTransfer_ValidateBasic(t *testing.T) {
 					Sender:    constants.Carl_Num0,
 					Recipient: constants.Dave_Num0,
 					AssetId:   assettypes.AssetUsdc.Id,
-					Amount:    uint64(0),
+					Amount:    dtypes.NewInt(0),
 				},
 			},
 			err: types.ErrInvalidTransferAmount,

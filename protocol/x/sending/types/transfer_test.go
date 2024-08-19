@@ -15,7 +15,7 @@ import (
 func TestGetBigQuoteQuantums(t *testing.T) {
 	transfer := constants.Transfer_Carl_Num0_Dave_Num0_Quote_500
 	bigQuoteQuantums := transfer.GetBigQuantums()
-	require.Equal(t, new(big.Int).SetUint64(500_000_000), bigQuoteQuantums)
+	require.Equal(t, constants.Dollars_Uusdc_500.BigInt(), bigQuoteQuantums)
 }
 
 func TestGetSubaccountUpdates(t *testing.T) {

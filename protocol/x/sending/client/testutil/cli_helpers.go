@@ -2,6 +2,7 @@ package testutil
 
 import (
 	"fmt"
+	"math/big"
 
 	sendingcli "github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/client/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,14 +20,14 @@ func MsgCreateTransferExec(
 	senderNumber uint32,
 	recipientOwner sdk.AccAddress,
 	recipientNumber uint32,
-	amount uint64,
+	amount *big.Int,
 ) (testutil.BufferWriter, error) {
 	args := []string{
 		senderOwner.String(),
 		fmt.Sprint(senderNumber),
 		recipientOwner.String(),
 		fmt.Sprint(recipientNumber),
-		fmt.Sprint(amount),
+		amount.String(),
 	}
 
 	args = append(args,

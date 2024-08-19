@@ -80,7 +80,7 @@ var (
 			Sender:    Carl_Num0,
 			Recipient: Dave_Num0,
 			AssetId:   assettypes.AssetUsdc.Id,
-			Amount:    500_000_000, // $500
+			Amount:    Dollars_Uusdc_500, // $500
 		},
 	}
 	Msg_Transfer_Invalid_SameSenderAndRecipient = &sendingtypes.MsgCreateTransfer{
@@ -88,7 +88,7 @@ var (
 			Sender:    Alice_Num0,
 			Recipient: Alice_Num0,
 			AssetId:   assettypes.AssetUsdc.Id,
-			Amount:    500_000_000, // $500
+			Amount:    Dollars_Uusdc_500, // $500
 		},
 	}
 	Msg_Transfer_Invalid_SameSenderAndRecipient_TxBytes []byte

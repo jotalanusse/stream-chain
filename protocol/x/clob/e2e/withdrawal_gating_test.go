@@ -299,7 +299,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 					Sender:    tc.transferOrWithdrawSubaccount,
 					Recipient: tc.transferOrWithdrawSubaccount.Owner,
 					AssetId:   constants.Usdc.Id,
-					Quantums:  1,
+					Quantums:  constants.OneQuantumSerializableInt,
 				}
 				msg = &withdrawMsg
 			} else {
@@ -308,7 +308,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 						Sender:    tc.transferOrWithdrawSubaccount,
 						Recipient: constants.Bob_Num0,
 						AssetId:   constants.Usdc.Id,
-						Amount:    1,
+						Amount:    constants.OneQuantumSerializableInt,
 					},
 				}
 				msg = &transferMsg

@@ -39,7 +39,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 	tests := map[string]struct {
 		/* Setup */
 		// Initial balance of sender subaccount.
-		senderInitialBalance uint64
+		senderInitialBalance dtypes.SerializableInt
 
 		// Whether recipient subaccount exists.
 		recipientDoesNotExist bool
@@ -54,7 +54,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 		asset assetstypes.Asset
 
 		// Amount to transfer.
-		amount uint64
+		amount dtypes.SerializableInt
 
 		/* Expectations */
 		// A string that CheckTx response should contain, if any.
@@ -67,22 +67,22 @@ func TestMsgCreateTransfer(t *testing.T) {
 		deliverTxFails bool
 	}{
 		"Success: transfer from Alice subaccount 1 to Alice subaccount 2": {
-			senderInitialBalance:  600_000_000,
+			senderInitialBalance:  constants.Dollars_Uusdc_600,
 			senderSubaccountId:    constants.Alice_Num0,
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.Usdc,
-			amount:                500_000_000,
+			amount:                constants.Dollars_Uusdc_500,
 		},
 		"Success: transfer from Bob subaccount to Carl subaccount": {
-			senderInitialBalance:  10_000_000,
+			senderInitialBalance:  constants.Dollars_Uusdc_10,
 			senderSubaccountId:    constants.Bob_Num0,
 			recipientSubaccountId: constants.Carl_Num0,
 			asset:                 *constants.Usdc,
-			amount:                7_654_321,
+			amount:                constants.Dollars_Uusdc_7_o_654_321,
 		},
 		// Transfer to a non-existent subaccount will create that subaccount and succeed.
 		"Success: transfer from Alice subaccount to non-existent subaccount": {
-			senderInitialBalance:  10_000_000,
+			senderInitialBalance:  constants.Dollars_Uusdc_10,
 			recipientDoesNotExist: true,
 			senderSubaccountId:    constants.Alice_Num0,
 			recipientSubaccountId: satypes.SubaccountId{
@@ -90,21 +90,21 @@ func TestMsgCreateTransfer(t *testing.T) {
 				Number: 104,
 			},
 			asset:  *constants.Usdc,
-			amount: 3_000_000,
+			amount: constants.Dollars_Uusdc_3,
 		},
 		"Failure: transfer more than balance": {
-			senderInitialBalance:  600_000_000,
+			senderInitialBalance:  constants.Dollars_Uusdc_600,
 			senderSubaccountId:    constants.Alice_Num0,
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.Usdc,
-			amount:                600_000_001,
+			amount:                constants.Dollars_Uusdc_600_o_000_001,
 			deliverTxFails:        true,
 		},
 		"Failure: transfer a non-USDC asset": {
 			senderSubaccountId:      constants.Alice_Num0,
 			recipientSubaccountId:   constants.Alice_Num1,
 			asset:                   *constants.BtcUsd, // non-USDC asset
-			amount:                  7_000_000,
+			amount:                  constants.Serializable_Int_7_000_000,
 			checkTxResponseContains: "Non-USDC asset transfer not implemented",
 			checkTxFails:            true,
 		},
@@ -112,7 +112,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 			senderSubaccountId:      constants.Alice_Num0,
 			recipientSubaccountId:   constants.Alice_Num1,
 			asset:                   *constants.Usdc,
-			amount:                  0,
+			amount:                  dtypes.ZeroInt(),
 			checkTxResponseContains: "Invalid transfer amount",
 			checkTxFails:            true,
 		},
@@ -120,7 +120,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 			senderSubaccountId:      constants.Bob_Num0,
 			recipientSubaccountId:   constants.Bob_Num0,
 			asset:                   *constants.Usdc,
-			amount:                  123_456,
+			amount:                  constants.Dollars_Uusdc_0_123_456,
 			checkTxResponseContains: "Sender is the same as recipient",
 			checkTxFails:            true,
 		},
@@ -143,11 +143,9 @@ func TestMsgCreateTransfer(t *testing.T) {
 								Id: &(tc.senderSubaccountId),
 								AssetPositions: []*satypes.AssetPosition{
 									{
-										AssetId: constants.Usdc.Id,
-										Index:   dtypes.ZeroInt(),
-										Quantums: dtypes.NewIntFromUint64(
-											tc.senderInitialBalance,
-										),
+										AssetId:  constants.Usdc.Id,
+										Index:    dtypes.ZeroInt(),
+										Quantums: tc.senderInitialBalance,
 									},
 								},
 							},
@@ -274,7 +272,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 				t,
 				new(big.Int).Sub(
 					senderQuantumsBeforeTransfer,
-					new(big.Int).SetUint64(tc.amount),
+					tc.amount.BigInt(),
 				),
 				senderQuantumsAfterTransfer,
 			)
@@ -285,7 +283,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 				t,
 				new(big.Int).Add(
 					recipientQuantumsBeforeTransfer,
-					new(big.Int).SetUint64(tc.amount),
+					tc.amount.BigInt(),
 				),
 				recipientQuantumsAfterTransfer,
 			)
@@ -347,7 +345,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 									tc.senderSubaccountId,
 									tc.recipientSubaccountId,
 									tc.asset.Id,
-									satypes.BaseQuantums(tc.amount),
+									satypes.BaseQuantums(tc.amount.BigInt().Uint64()),
 								),
 							),
 						},
@@ -467,7 +465,7 @@ func TestMsgDepositToSubaccount(t *testing.T) {
 				Sender:    tc.accountAccAddress.String(),
 				Recipient: tc.subaccountId,
 				AssetId:   tc.asset.Id,
-				Quantums:  tc.quantums.Uint64(),
+				Quantums:  dtypes.NewIntFromBigInt(tc.quantums),
 			}
 
 			// Invoke CheckTx.
@@ -576,7 +574,7 @@ func TestMsgDepositToSubaccount_NonExistentAccount(t *testing.T) {
 		Sender:    randomAccount.Address.String(),
 		Recipient: constants.Alice_Num1,
 		AssetId:   assetstypes.AssetUsdc.Id,
-		Quantums:  uint64(1_000_000),
+		Quantums:  constants.Dollars_Uusdc_1,
 	}
 
 	testNonExistentSender(t, tApp, ctx, &msgDepositToSubaccount, randomAccount.PrivKey)
@@ -685,7 +683,7 @@ func TestMsgWithdrawFromSubaccount(t *testing.T) {
 				Sender:    tc.subaccountId,
 				Recipient: tc.accountAccAddress.String(),
 				AssetId:   tc.asset.Id,
-				Quantums:  tc.quantums.Uint64(),
+				Quantums:  dtypes.NewIntFromBigInt(tc.quantums),
 			}
 
 			// Invoke CheckTx.
@@ -798,7 +796,7 @@ func TestMsgWithdrawFromSubaccount_NonExistentSubaccount(t *testing.T) {
 		},
 		Recipient: constants.AliceAccAddress.String(),
 		AssetId:   assetstypes.AssetUsdc.Id,
-		Quantums:  uint64(1_000_000),
+		Quantums:  constants.Dollars_Uusdc_1,
 	}
 
 	testNonExistentSender(t, tApp, ctx, &msgWithdrawFromSubaccount, randomAccount.PrivKey)
@@ -979,7 +977,7 @@ func TestWithdrawalGating_ChainOutage(t *testing.T) {
 
 			// Verify withdrawals are blocked by trying to create a transfer message that withdraws funds.
 			var msg proto.Message
-			quantumsToTransferOrWithdraw := uint64(1)
+			quantumsToTransferOrWithdraw := dtypes.NewInt(1)
 			if tc.isWithdrawal {
 				withdrawMsg := sendingtypes.MsgWithdrawFromSubaccount{
 					Sender:    *tc.subaccount.Id,
@@ -1018,10 +1016,19 @@ func TestWithdrawalGating_ChainOutage(t *testing.T) {
 			if !tc.expectedWithdrawalsGated {
 				ctx = tApp.AdvanceToBlock(4, testapp.AdvanceToBlockOptions{})
 				foundSubaccount := tApp.App.SubaccountsKeeper.GetSubaccount(ctx, *tc.subaccount.Id)
+
+				expectedPositionSize := dtypes.NewInt(0)
+				expectedPositionSize.Add(
+					tc.subaccount.GetAssetPositions()[0].Quantums,
+					quantumsToTransferOrWithdraw,
+				)
+
+				actualPositionSize := foundSubaccount.GetAssetPositions()[0].Quantums
+
 				require.Equal(
 					t,
-					tc.subaccount.GetAssetPositions()[0].Quantums.BigInt().Uint64()-quantumsToTransferOrWithdraw,
-					foundSubaccount.GetAssetPositions()[0].Quantums.BigInt().Uint64(),
+					expectedPositionSize,
+					actualPositionSize,
 				)
 
 				return

@@ -170,6 +170,7 @@ var (
 	Serializable_Int_321                 = dtypes.NewIntFromString("321")
 	Serializable_Int_1_000               = dtypes.NewIntFromString("1_000")
 	Serializable_Int_10_000              = dtypes.NewIntFromString("10_000")
+	Serializable_Int_7_000_000           = dtypes.NewIntFromString("7_000_000")
 	Serializable_Int_99_980_000          = dtypes.NewIntFromString("99_980_000")
 	Serializable_Int_99_990_000          = dtypes.NewIntFromString("99_990_000")
 	Serializable_Int_99_995_000          = dtypes.NewIntFromString("99_995_000")

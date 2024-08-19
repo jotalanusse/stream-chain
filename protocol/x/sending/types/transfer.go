@@ -37,5 +37,5 @@ func (t *Transfer) GetRecipientSubaccountUpdate() (update types.Update) {
 // GetBigQuantums returns the amount of the transfer in big notional.
 // Currently only supports quote balance update.
 func (t *Transfer) GetBigQuantums() (bigNotional *big.Int) {
-	return new(big.Int).SetUint64(t.Amount)
+	return t.Amount.BigInt()
 }
