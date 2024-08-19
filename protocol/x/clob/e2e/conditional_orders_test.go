@@ -564,6 +564,7 @@ func TestConditionalOrder(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 - 12_500_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -639,6 +640,7 @@ func TestConditionalOrder(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 + 25_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -683,6 +685,7 @@ func TestConditionalOrder(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 - 25_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -766,6 +769,7 @@ func TestConditionalOrder(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 - 12_500_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1854,6 +1858,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 - 12_500_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1929,6 +1934,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 + 25_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1973,6 +1979,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 - 25_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -2056,6 +2063,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(10_000_000_000 - 12_500_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{

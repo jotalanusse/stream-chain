@@ -150,6 +150,7 @@ var (
 			{
 				AssetId:  0,
 				Quantums: dtypes.NewInt(49_999_000_000), // $49,999
+				Index:    dtypes.ZeroInt(),
 			},
 		},
 		PerpetualPositions: []*satypes.PerpetualPosition{
@@ -516,6 +517,7 @@ var (
 			{
 				AssetId:  0,
 				Quantums: dtypes.NewInt(-50_000_000_000), // -$50,000
+				Index:    dtypes.NewInt(0),
 			},
 		},
 		PerpetualPositions: []*satypes.PerpetualPosition{

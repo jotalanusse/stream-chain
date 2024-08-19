@@ -715,6 +715,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 									),
 								),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					MarginEnabled:   true,
@@ -741,6 +742,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 									),
 								),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					MarginEnabled:   true,
@@ -845,6 +847,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -879,6 +882,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -1050,6 +1054,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 									),
 								),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					MarginEnabled:   true,
@@ -1084,6 +1089,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 									),
 								),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					MarginEnabled:   true,
@@ -1198,6 +1204,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -1232,6 +1239,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -1372,6 +1380,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -1408,6 +1417,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -1680,6 +1690,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 									),
 								),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					MarginEnabled:   true,
@@ -1706,6 +1717,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 									),
 								),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					MarginEnabled:   true,
@@ -1793,6 +1805,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments
@@ -1827,6 +1840,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 															),
 														),
 													),
+													Index: dtypes.ZeroInt(),
 												},
 											},
 											nil, // no funding payments

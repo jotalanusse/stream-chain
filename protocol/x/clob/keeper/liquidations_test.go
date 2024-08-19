@@ -492,6 +492,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(54_999_000_000), // $54,999
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -575,6 +576,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(54_999_000_000), // $54,999
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -703,6 +705,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(53_000_000_000), // $53,000
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1101,6 +1104,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(54_999_000_000), // $54,999
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1382,6 +1386,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_499_000_000 - 50_000_000_000 - 250_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),
@@ -1392,6 +1397,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(100_000_000_000), // $100,000
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),
@@ -1442,6 +1448,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_499_000_000 - 12_500_000_000 - 62_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1460,6 +1467,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 12_500_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1527,6 +1535,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 50_499_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),
@@ -1584,6 +1593,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_499_000_000 - (50_498_000_000 / 4) - 250_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1602,6 +1612,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + (50_498_000_000 / 4)),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1713,6 +1724,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(49_999_000_000 - 12_499_750_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1741,6 +1753,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 12_499_750_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),
@@ -1795,6 +1808,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(49_999_000_000 - 24_999_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1822,6 +1836,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 24_999_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),
@@ -1880,6 +1895,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_499_000_000 - (50_498_000_000 / 4) - 250_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1898,6 +1914,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + (50_498_000_000 / 4)),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -1967,6 +1984,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 50_499_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(0, 1).String(),
@@ -2042,6 +2060,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 										constants.LiquidationsConfig_No_Limit.MaxLiquidationFeePpm,
 									).Int64(),
 							),
+							Index: dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -2060,6 +2079,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 50_000_000_000/4),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{

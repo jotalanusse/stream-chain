@@ -362,6 +362,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100), // 100 USDC
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -369,6 +370,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -402,6 +404,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(-100), // 100 USDC
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -409,6 +412,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -448,6 +452,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(-2100), // 2100 USDC
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
@@ -469,6 +474,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-2100), // 2100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -509,6 +515,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(-92),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
@@ -530,6 +537,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-92),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -637,6 +645,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(0),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -690,6 +699,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(50_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -697,6 +707,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(50_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -744,6 +755,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(75_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -751,6 +763,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(75_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -799,6 +812,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(50_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -806,6 +820,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(50_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -872,6 +887,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -900,6 +916,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				&types.AssetPosition{
 					AssetId:  constants.BtcUsd.Id,
 					Quantums: dtypes.NewInt(50_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			),
 			expectedQuoteBalance:     big.NewInt(200_000_000_000), // $200,000
@@ -909,6 +926,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(200_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -916,11 +934,13 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(200_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 					// Asset position closed
 					{
 						AssetId:  uint32(1),
 						Quantums: dtypes.NewInt(0),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -991,6 +1011,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(50_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -998,6 +1019,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(50_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1050,6 +1072,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(50_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -1057,6 +1080,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(50_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1103,6 +1127,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(150_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -1110,6 +1135,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(150_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1170,6 +1196,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1236,6 +1263,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1308,6 +1336,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1380,6 +1409,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1455,6 +1485,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(99_999_700_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1543,6 +1574,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1607,6 +1639,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -1614,6 +1647,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 				{
@@ -1623,6 +1657,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(500_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1704,6 +1739,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 							new(big.Int).SetUint64(1),
 						),
 					),
+					Index: dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -1721,6 +1757,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 								new(big.Int).SetUint64(1),
 							),
 						),
+						Index: dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1767,6 +1804,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 						new(big.Int).SetUint64(math.MaxUint64),
 						new(big.Int).SetInt64(1),
 					)),
+					Index: dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
@@ -1791,6 +1829,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 							new(big.Int).SetUint64(math.MaxUint64),
 							new(big.Int).SetInt64(1),
 						)),
+						Index: dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1857,6 +1896,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  0,
 					Quantums: dtypes.NewInt(1),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedPerpetualPositions: []*types.PerpetualPosition{
@@ -1902,6 +1942,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(1),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -1991,6 +2032,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					// = 100_000_000_000 - 4_000 - 500
 					// = 99_999_995_500
 					Quantums: dtypes.NewInt(99_999_995_500),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2068,6 +2110,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					// = 100_000_000_000 - 4_000
 					// = 99_999_996_000
 					Quantums: dtypes.NewInt(99_999_996_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2146,6 +2189,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					// = 100_000_000_000 - 2_000 - 500
 					// = 99_999_997_500
 					Quantums: dtypes.NewInt(99_999_997_500),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2194,6 +2238,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2262,6 +2307,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2293,6 +2339,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2324,6 +2371,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2371,6 +2419,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2414,6 +2463,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2457,6 +2507,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2512,6 +2563,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(999_900_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -2519,6 +2571,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(999_900_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -2579,6 +2632,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -2586,6 +2640,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(1_000_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -2618,6 +2673,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2664,6 +2720,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(1_000_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			updates: []types.Update{
@@ -2730,6 +2787,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(5_400_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -2737,6 +2795,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(5_400_000_000_000),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 				constants.Bob_Num0: {
@@ -2840,6 +2899,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(5_000_000_000), // 5_000 USDC
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -2847,6 +2907,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(5_000_000_000), // 5_000 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 				constants.Bob_Num0: {
@@ -2948,6 +3009,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId:  uint32(0),
 					Quantums: dtypes.NewInt(5_000_000_000), // 5_000 USDC
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
@@ -2955,6 +3017,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(5_000_000_000), // 5_000 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 				constants.Bob_Num0: {
@@ -3226,6 +3289,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3234,6 +3298,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3265,6 +3330,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3273,6 +3339,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3304,6 +3371,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3312,6 +3380,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3410,6 +3479,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3455,6 +3525,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3463,6 +3534,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3502,6 +3574,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3510,6 +3583,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(-100), // 100 USDC
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3790,6 +3864,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(0),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3855,6 +3930,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(0),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -3920,6 +3996,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					{
 						AssetId:  uint32(0),
 						Quantums: dtypes.NewInt(0),
+						Index:    dtypes.ZeroInt(),
 					},
 				},
 			},
@@ -4682,6 +4759,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					AssetId: uint32(0),
 					// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 					Quantums: dtypes.NewInt(900_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			additionalTestSubaccounts: []types.Subaccount{
@@ -4692,6 +4770,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 							AssetId: uint32(0),
 							// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 							Quantums: dtypes.NewInt(900_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 				},
@@ -4743,6 +4822,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					AssetId: uint32(0),
 					// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 					Quantums: dtypes.NewInt(900_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			additionalTestSubaccounts: []types.Subaccount{
@@ -4753,6 +4833,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 							AssetId: uint32(0),
 							// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 							Quantums: dtypes.NewInt(900_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 				},
@@ -4811,6 +4892,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					AssetId: uint32(0),
 					// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 					Quantums: dtypes.NewInt(900_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			additionalTestSubaccounts: []types.Subaccount{
@@ -4821,6 +4903,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 							AssetId: uint32(0),
 							// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 							Quantums: dtypes.NewInt(900_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 				},
@@ -4881,6 +4964,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					AssetId: uint32(0),
 					// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 					Quantums: dtypes.NewInt(900_000_000_000),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 			additionalTestSubaccounts: []types.Subaccount{
@@ -4891,6 +4975,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 							AssetId: uint32(0),
 							// 900_000 USDC (just enough to colalteralize 90 BTC at $50_000 and 20% IMF)
 							Quantums: dtypes.NewInt(900_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 				},
@@ -4950,7 +5035,9 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 				{
 					AssetId: uint32(0),
 					// 4_500_000 USDC (just enough to collateralize 90 BTC at $50_000 and 100% IMF)
-					Quantums: dtypes.NewInt(4_500_000_000_000)},
+					Quantums: dtypes.NewInt(4_500_000_000_000),
+					Index:    dtypes.ZeroInt(),
+				},
 			},
 			additionalTestSubaccounts: []types.Subaccount{
 				{
@@ -4960,6 +5047,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 							AssetId: uint32(0),
 							// 4_500_000 USDC (just enough to collateralize 90 BTC at $50_000 and 100% IMF)
 							Quantums: dtypes.NewInt(4_500_000_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 				},

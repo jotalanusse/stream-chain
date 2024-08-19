@@ -67,6 +67,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(95_000_550_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -85,6 +86,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(504_997_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -132,6 +134,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(95_000_550_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -150,6 +153,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(504_997_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -197,6 +201,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(9_250_0825_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -215,6 +220,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(507_496_250_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -265,6 +271,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(9_250_0825_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -283,6 +290,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(507_496_250_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -331,6 +339,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(9_250_0825_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -349,6 +358,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(507_496_250_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -405,6 +415,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(250_027_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -423,6 +434,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(749_875_000_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -479,6 +491,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(375_013_750_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{
@@ -497,6 +510,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(624_937_500_000),
+							Index:    dtypes.ZeroInt(),
 						},
 					},
 					PerpetualPositions: []*satypes.PerpetualPosition{

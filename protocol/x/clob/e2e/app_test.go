@@ -583,6 +583,7 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 			{
 				AssetId:  0,
 				Quantums: dtypes.NewInt(100_000_000_000 - 50_000_000_000),
+				Index:    dtypes.ZeroInt(),
 			},
 		},
 		PerpetualPositions: []*satypes.PerpetualPosition{
@@ -603,6 +604,7 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 			{
 				AssetId:  0,
 				Quantums: dtypes.NewInt(500_000_000_000 + 50_000_000_000),
+				Index:    dtypes.ZeroInt(),
 			},
 		},
 		PerpetualPositions: []*satypes.PerpetualPosition{

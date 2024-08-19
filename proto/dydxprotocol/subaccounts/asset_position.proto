@@ -19,5 +19,9 @@ message AssetPosition {
   // The `Index` (either `LongIndex` or `ShortIndex`) of the `Asset` the last
   // time this position was settled
   // TODO(DEC-582): pending margin trading being added.
-  uint64 index = 3;
+  bytes index  = 3 [
+    (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                             "protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }

@@ -1192,7 +1192,7 @@ const GenesisState = `{
           "asset_positions": [
             {
               "asset_id": 0,
-              "index": 0,
+              "index": "0",
               "quantums": "100000000000000000"
             }
           ],
@@ -1207,7 +1207,7 @@ const GenesisState = `{
           "asset_positions": [
             {
               "asset_id": 0,
-              "index": 0,
+              "index": "0",
               "quantums": "100000000000000000"
             }
           ],
@@ -1222,7 +1222,7 @@ const GenesisState = `{
           "asset_positions": [
             {
               "asset_id": 0,
-              "index": 0,
+              "index": "0",
               "quantums": "100000000000000000"
             }
           ],
@@ -1237,7 +1237,7 @@ const GenesisState = `{
           "asset_positions": [
             {
               "asset_id": 0,
-              "index": 0,
+              "index": "0",
               "quantums": "100000000000000000"
             }
           ],
@@ -1252,7 +1252,7 @@ const GenesisState = `{
           "asset_positions": [
             {
               "asset_id": 0,
-              "index": 0,
+              "index": "0",
               "quantums": "900000000000000000"
             }
           ],

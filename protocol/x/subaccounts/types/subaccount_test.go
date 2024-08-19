@@ -214,7 +214,11 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 			subaccount:      &constants.Carl_Num0_599USD,
 			newQuoteBalance: big.NewInt(10_000_000_000),
 			expectedAssetPositions: []*types.AssetPosition{
-				&constants.Usdc_Asset_10_000,
+				{
+					AssetId:  constants.Usdc_Asset_10_000.AssetId,
+					Quantums: constants.Usdc_Asset_10_000.Quantums,
+					Index:    dtypes.ZeroInt(),
+				},
 			},
 		},
 		"can set negative quote balance": {
@@ -224,6 +228,7 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 				{
 					AssetId:  assettypes.AssetUsdc.Id,
 					Quantums: dtypes.NewInt(-10_000_000_000), // $10,000
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 		},
@@ -234,6 +239,7 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 				{
 					AssetId:  assettypes.AssetUsdc.Id,
 					Quantums: dtypes.NewIntFromUint64(math.MaxUint64),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 		},
@@ -244,6 +250,7 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 				{
 					AssetId:  assettypes.AssetUsdc.Id,
 					Quantums: dtypes.NewIntFromBigInt(constants.BigNegMaxUint64()),
+					Index:    dtypes.ZeroInt(),
 				},
 			},
 		},
@@ -261,8 +268,16 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 			},
 			newQuoteBalance: big.NewInt(10_000_000_000),
 			expectedAssetPositions: []*types.AssetPosition{
-				&constants.Usdc_Asset_10_000,
-				&constants.Long_Asset_1BTC,
+				{
+					AssetId:  constants.Usdc_Asset_10_000.AssetId,
+					Quantums: constants.Usdc_Asset_10_000.Quantums,
+					Index:    dtypes.ZeroInt(),
+				},
+				{
+					AssetId:  constants.Long_Asset_1BTC.AssetId,
+					Quantums: constants.Long_Asset_1BTC.Quantums,
+					Index:    dtypes.ZeroInt(),
+				},
 			},
 		},
 		"succeed if new quote balance overflows uint64": {
@@ -282,6 +297,7 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 							big.NewInt(1),
 						),
 					),
+					Index: dtypes.ZeroInt(),
 				},
 			},
 		},
@@ -302,6 +318,7 @@ func TestSetSubaccountQuoteBalance(t *testing.T) {
 							big.NewInt(-1),
 						),
 					),
+					Index: dtypes.ZeroInt(),
 				},
 			},
 		},
