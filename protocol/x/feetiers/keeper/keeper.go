@@ -58,10 +58,10 @@ func (k Keeper) getUserFeeTier(ctx sdk.Context, address string) (uint32, *types.
 	// Find the last tier we meet all requirements for
 	for i := 0; i < len(tiers); i++ {
 		currTier := tiers[i]
-		bigUserMakerNotional := new(big.Int).SetUint64(userStats.MakerNotional)
-		bigUserTakerNotional := new(big.Int).SetUint64(userStats.TakerNotional)
+		bigUserMakerNotional := userStats.MakerNotional.BigInt()
+		bigUserTakerNotional := userStats.TakerNotional.BigInt()
 		bigUserTotalNotional := new(big.Int).Add(bigUserMakerNotional, bigUserTakerNotional)
-		bigGlobalNotional := new(big.Int).SetUint64(globalStats.NotionalTraded)
+		bigGlobalNotional := globalStats.NotionalTraded.BigInt()
 
 		bigAbsVolumeRequirement := currTier.AbsoluteVolumeRequirement.BigInt()
 		bigTotalVolumeShareRequirement := lib.BigIntMulPpm(

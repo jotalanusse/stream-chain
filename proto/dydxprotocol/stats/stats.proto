@@ -17,7 +17,11 @@ message BlockStats {
     string maker = 2;
 
     // Notional USDC filled in quantums
-    uint64 notional = 3;
+    bytes notional = 3 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+    ];
   }
 
   // The fills that occured on this block.
@@ -50,14 +54,26 @@ message EpochStats {
 // GlobalStats stores global stats
 message GlobalStats {
   // Notional USDC traded in quantums
-  uint64 notional_traded = 1;
+  bytes notional_traded = 1 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+  ];
 }
 
 // UserStats stores stats for a User
 message UserStats {
   // Taker USDC in quantums
-  uint64 taker_notional = 1;
+  bytes taker_notional = 1 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+  ];
 
   // Maker USDC in quantums
-  uint64 maker_notional = 2;
+  bytes maker_notional = 2 [
+      (gogoproto.customtype) = "github.com/StreamFinance-Protocol/stream-chain/"
+                               "protocol/dtypes.SerializableInt",
+      (gogoproto.nullable) = false
+  ];
 }

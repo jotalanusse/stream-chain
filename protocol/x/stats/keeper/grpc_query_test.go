@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/stats/types"
 )
 
@@ -90,7 +91,7 @@ func TestGlobalStats(t *testing.T) {
 	ctx := tApp.InitChain()
 	k := tApp.App.StatsKeeper
 	globalStats := &types.GlobalStats{
-		NotionalTraded: 10,
+		NotionalTraded: constants.Serializable_Int_10,
 	}
 	k.SetGlobalStats(ctx, globalStats)
 
@@ -130,8 +131,8 @@ func TestUserStats(t *testing.T) {
 	k := tApp.App.StatsKeeper
 	user := "alice"
 	userStats := &types.UserStats{
-		TakerNotional: 10,
-		MakerNotional: 10,
+		TakerNotional: constants.Serializable_Int_10,
+		MakerNotional: constants.Serializable_Int_10,
 	}
 	k.SetUserStats(ctx, user, userStats)
 

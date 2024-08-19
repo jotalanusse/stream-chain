@@ -9,6 +9,7 @@ import (
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/stats/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -79,7 +80,7 @@ func (k Keeper) RecordFill(ctx sdk.Context, takerAddress string, makerAddress st
 		&types.BlockStats_Fill{
 			Taker:    takerAddress,
 			Maker:    makerAddress,
-			Notional: notional.Uint64(),
+			Notional: dtypes.NewIntFromBigInt(notional),
 		},
 	)
 	k.SetBlockStats(ctx, blockStats)
@@ -194,7 +195,11 @@ func (k Keeper) ProcessBlockStats(ctx sdk.Context) {
 	// required to do so is unrealistic.
 	for _, fill := range blockStats.Fills {
 		userStats := k.GetUserStats(ctx, fill.Taker)
-		userStats.TakerNotional += fill.Notional
+		newBigTakerNotional := big.NewInt(0).Add(
+			userStats.TakerNotional.BigInt(),
+			fill.Notional.BigInt(),
+		)
+		userStats.TakerNotional = dtypes.NewIntFromBigInt(newBigTakerNotional)
 		k.SetUserStats(ctx, fill.Taker, userStats)
 
 		userStats = k.GetUserStats(ctx, fill.Maker)
