@@ -1034,22 +1034,22 @@ func TestStats(t *testing.T) {
 	}
 
 	// Check that UserStats and GlobalStats reflect the orders filled
-	requireStatsEqual := func(expectedNotional uint64) {
+	requireStatsEqual := func(expectedNotional *big.Int) {
 		require.Equal(t, &stattypes.UserStats{
-			TakerNotional: 0,
-			MakerNotional: expectedNotional,
+			TakerNotional: dtypes.NewInt(0),
+			MakerNotional: dtypes.NewIntFromBigInt(expectedNotional),
 		}, tApp.App.StatsKeeper.GetUserStats(ctx, aliceAddress))
 		require.Equal(t, &stattypes.UserStats{
-			TakerNotional: expectedNotional,
-			MakerNotional: 0,
+			TakerNotional: dtypes.NewIntFromBigInt(expectedNotional),
+			MakerNotional: dtypes.NewInt(0),
 		}, tApp.App.StatsKeeper.GetUserStats(ctx, bobAddress))
 		require.Equal(t, &stattypes.GlobalStats{
-			NotionalTraded: expectedNotional,
+			NotionalTraded: dtypes.NewIntFromBigInt(expectedNotional),
 		}, tApp.App.StatsKeeper.GetGlobalStats(ctx))
 	}
 
 	// Check that the correct epoch stats exist
-	requireEpochStatsEqual := func(epoch uint32, expectedNotional uint64) {
+	requireEpochStatsEqual := func(epoch uint32, expectedNotional *big.Int) {
 		require.Equal(t, &stattypes.EpochStats{
 			EpochEndTime: time.Unix(0, 0).
 				Add((time.Duration((epoch + 1) * epochtypes.StatsEpochDuration)) * time.Second).
@@ -1059,15 +1059,15 @@ func TestStats(t *testing.T) {
 				{
 					User: bobAddress,
 					Stats: &stattypes.UserStats{
-						TakerNotional: expectedNotional,
-						MakerNotional: 0,
+						TakerNotional: dtypes.NewIntFromBigInt(expectedNotional),
+						MakerNotional: dtypes.NewInt(0),
 					},
 				},
 				{
 					User: aliceAddress,
 					Stats: &stattypes.UserStats{
-						TakerNotional: 0,
-						MakerNotional: expectedNotional,
+						TakerNotional: dtypes.NewInt(0),
+						MakerNotional: dtypes.NewIntFromBigInt(expectedNotional),
 					},
 				},
 			},
@@ -1091,8 +1091,8 @@ func TestStats(t *testing.T) {
 	ctx = tApp.AdvanceToBlock(5, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(10000)
-	requireEpochStatsEqual(0, 10000)
+	requireStatsEqual(big.NewInt(10000))
+	requireEpochStatsEqual(0, big.NewInt(10000))
 
 	orderMsgs = []*clobtypes.MsgPlaceOrder{
 		createAliceBuyOrder(2),
@@ -1109,15 +1109,15 @@ func TestStats(t *testing.T) {
 	ctx = tApp.AdvanceToBlock(6, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(15000)
-	requireEpochStatsEqual(0, 15000)
+	requireStatsEqual(big.NewInt(15000))
+	requireEpochStatsEqual(0, big.NewInt(15000))
 
 	// Advance epoch without adding stats
 	currTime = currTime.Add(time.Duration(epochtypes.StatsEpochDuration) * time.Second)
 	ctx = tApp.AdvanceToBlock(7, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(15000)
+	requireStatsEqual(big.NewInt(15000))
 
 	orderMsgs = []*clobtypes.MsgPlaceOrder{
 		createAliceBuyOrder(3),
@@ -1133,8 +1133,8 @@ func TestStats(t *testing.T) {
 	ctx = tApp.AdvanceToBlock(8, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(20000)
-	requireEpochStatsEqual(2, 5000)
+	requireStatsEqual(big.NewInt(20000))
+	requireEpochStatsEqual(2, big.NewInt(5000))
 
 	// Advance the window one epoch at a time and check to make sure stats fall out of the window
 	windowDuration := tApp.App.StatsKeeper.GetWindowDuration(ctx)
@@ -1142,24 +1142,24 @@ func TestStats(t *testing.T) {
 	ctx = tApp.AdvanceToBlock(10, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(20000)
+	requireStatsEqual(big.NewInt(20000))
 
 	currTime = currTime.Add(time.Duration(epochtypes.StatsEpochDuration) * time.Second)
 	ctx = tApp.AdvanceToBlock(11, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(5000)
+	requireStatsEqual(big.NewInt(5000))
 
 	// Recall that we made an epoch without any fills
 	currTime = currTime.Add(time.Duration(epochtypes.StatsEpochDuration) * time.Second)
 	ctx = tApp.AdvanceToBlock(12, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(5000)
+	requireStatsEqual(big.NewInt(5000))
 
 	currTime = currTime.Add(time.Duration(epochtypes.StatsEpochDuration) * time.Second)
 	ctx = tApp.AdvanceToBlock(13, testapp.AdvanceToBlockOptions{
 		BlockTime: currTime,
 	})
-	requireStatsEqual(0)
+	requireStatsEqual(big.NewInt(0))
 }

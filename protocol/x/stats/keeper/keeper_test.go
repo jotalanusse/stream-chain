@@ -5,7 +5,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/stats/types"
 	"github.com/stretchr/testify/assert"
@@ -46,7 +48,7 @@ func TestRecordFill(t *testing.T) {
 					{
 						Taker:    "taker",
 						Maker:    "maker",
-						Notional: 123,
+						Notional: constants.Serializable_Int_123,
 					},
 				},
 			},
@@ -61,12 +63,12 @@ func TestRecordFill(t *testing.T) {
 					{
 						Taker:    "alice",
 						Maker:    "bob",
-						Notional: 123,
+						Notional: constants.Serializable_Int_123,
 					},
 					{
 						Taker:    "bob",
 						Maker:    "alice",
-						Notional: 321,
+						Notional: constants.Serializable_Int_321,
 					},
 				},
 			},
@@ -104,27 +106,27 @@ func TestProcessBlockStats(t *testing.T) {
 			{
 				Taker:    "alice",
 				Maker:    "bob",
-				Notional: 5,
+				Notional: constants.Serializable_Int_5,
 			},
 			{
 				Taker:    "bob",
 				Maker:    "alice",
-				Notional: 10,
+				Notional: constants.Serializable_Int_10,
 			},
 		},
 	})
 	k.ProcessBlockStats(ctx)
 
 	assert.Equal(t, &types.GlobalStats{
-		NotionalTraded: 15,
+		NotionalTraded: constants.Serializable_Int_15,
 	}, k.GetGlobalStats(ctx))
 	assert.Equal(t, &types.UserStats{
-		TakerNotional: 5,
-		MakerNotional: 10,
+		TakerNotional: constants.Serializable_Int_5,
+		MakerNotional: constants.Serializable_Int_10,
 	}, k.GetUserStats(ctx, "alice"))
 	assert.Equal(t, &types.UserStats{
-		TakerNotional: 10,
-		MakerNotional: 5,
+		TakerNotional: constants.Serializable_Int_10,
+		MakerNotional: constants.Serializable_Int_5,
 	}, k.GetUserStats(ctx, "bob"))
 	assert.Equal(t, &types.EpochStats{
 		EpochEndTime: time.Unix(7200, 0).UTC(),
@@ -132,15 +134,15 @@ func TestProcessBlockStats(t *testing.T) {
 			{
 				User: "alice",
 				Stats: &types.UserStats{
-					TakerNotional: 5,
-					MakerNotional: 10,
+					TakerNotional: constants.Serializable_Int_5,
+					MakerNotional: constants.Serializable_Int_10,
 				},
 			},
 			{
 				User: "bob",
 				Stats: &types.UserStats{
-					TakerNotional: 10,
-					MakerNotional: 5,
+					TakerNotional: constants.Serializable_Int_10,
+					MakerNotional: constants.Serializable_Int_5,
 				},
 			},
 		},
@@ -151,21 +153,21 @@ func TestProcessBlockStats(t *testing.T) {
 			{
 				Taker:    "bob",
 				Maker:    "alice",
-				Notional: 10,
+				Notional: constants.Serializable_Int_10,
 			},
 		},
 	})
 	k.ProcessBlockStats(ctx)
 	assert.Equal(t, &types.GlobalStats{
-		NotionalTraded: 25,
+		NotionalTraded: constants.Serializable_Int_25,
 	}, k.GetGlobalStats(ctx))
 	assert.Equal(t, &types.UserStats{
-		TakerNotional: 5,
-		MakerNotional: 20,
+		TakerNotional: constants.Serializable_Int_5,
+		MakerNotional: constants.Serializable_Int_20,
 	}, k.GetUserStats(ctx, "alice"))
 	assert.Equal(t, &types.UserStats{
-		TakerNotional: 20,
-		MakerNotional: 5,
+		TakerNotional: constants.Serializable_Int_20,
+		MakerNotional: constants.Serializable_Int_5,
 	}, k.GetUserStats(ctx, "bob"))
 	assert.Equal(t, &types.EpochStats{
 		EpochEndTime: time.Unix(7200, 0).UTC(),
@@ -173,15 +175,15 @@ func TestProcessBlockStats(t *testing.T) {
 			{
 				User: "alice",
 				Stats: &types.UserStats{
-					TakerNotional: 5,
-					MakerNotional: 20,
+					TakerNotional: constants.Serializable_Int_5,
+					MakerNotional: constants.Serializable_Int_20,
 				},
 			},
 			{
 				User: "bob",
 				Stats: &types.UserStats{
-					TakerNotional: 20,
-					MakerNotional: 5,
+					TakerNotional: constants.Serializable_Int_20,
+					MakerNotional: constants.Serializable_Int_5,
 				},
 			},
 		},
@@ -217,30 +219,30 @@ func TestExpireOldStats(t *testing.T) {
 				{
 					User: "alice",
 					Stats: &types.UserStats{
-						TakerNotional: 1,
-						MakerNotional: 2,
+						TakerNotional: constants.Serializable_Int_1,
+						MakerNotional: constants.Serializable_Int_2,
 					},
 				},
 				{
 					User: "bob",
 					Stats: &types.UserStats{
-						TakerNotional: 2,
-						MakerNotional: 1,
+						TakerNotional: constants.Serializable_Int_2,
+						MakerNotional: constants.Serializable_Int_1,
 					},
 				},
 			},
 		})
 	}
 	k.SetUserStats(ctx, "alice", &types.UserStats{
-		TakerNotional: 30,
-		MakerNotional: 60,
+		TakerNotional: constants.Serializable_Int_30,
+		MakerNotional: constants.Serializable_Int_60,
 	})
 	k.SetUserStats(ctx, "bob", &types.UserStats{
-		TakerNotional: 60,
-		MakerNotional: 30,
+		TakerNotional: constants.Serializable_Int_60,
+		MakerNotional: constants.Serializable_Int_30,
 	})
 	k.SetGlobalStats(ctx, &types.GlobalStats{
-		NotionalTraded: 90,
+		NotionalTraded: constants.Serializable_Int_90,
 	})
 	k.SetStatsMetadata(ctx, &types.StatsMetadata{
 		TrailingEpoch: 0,
@@ -254,15 +256,15 @@ func TestExpireOldStats(t *testing.T) {
 
 		k.ExpireOldStats(ctx)
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 30 - uint64(i+1),
-			MakerNotional: 60 - 2*uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
 		}, k.GetUserStats(ctx, "alice"))
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 60 - 2*uint64(i+1),
-			MakerNotional: 30 - uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
 		}, k.GetUserStats(ctx, "bob"))
 		require.Equal(t, &types.GlobalStats{
-			NotionalTraded: 90 - 3*uint64(i+1),
+			NotionalTraded: dtypes.NewIntFromUint64(90 - 3*uint64(i+1)),
 		}, k.GetGlobalStats(ctx))
 
 		// EpochStats removed
@@ -272,15 +274,15 @@ func TestExpireOldStats(t *testing.T) {
 
 		// Unchanged after pruning nil epoch
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 30 - uint64(i+1),
-			MakerNotional: 60 - 2*uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
 		}, k.GetUserStats(ctx, "alice"))
 		require.Equal(t, &types.UserStats{
-			TakerNotional: 60 - 2*uint64(i+1),
-			MakerNotional: 30 - uint64(i+1),
+			TakerNotional: dtypes.NewIntFromUint64(60 - 2*uint64(i+1)),
+			MakerNotional: dtypes.NewIntFromUint64(30 - uint64(i+1)),
 		}, k.GetUserStats(ctx, "bob"))
 		require.Equal(t, &types.GlobalStats{
-			NotionalTraded: 90 - 3*uint64(i+1),
+			NotionalTraded: dtypes.NewIntFromUint64(90 - 3*uint64(i+1)),
 		}, k.GetGlobalStats(ctx))
 	}
 

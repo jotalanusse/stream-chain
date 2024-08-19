@@ -27,44 +27,44 @@ func TestGetPerpetualFeePpm(t *testing.T) {
 	}{
 		"first tier": {
 			&stattypes.UserStats{
-				TakerNotional: 10,
-				MakerNotional: 10,
+				TakerNotional: constants.Serializable_Int_10,
+				MakerNotional: constants.Serializable_Int_10,
 			},
 			&stattypes.GlobalStats{
-				NotionalTraded: 10_000,
+				NotionalTraded: constants.Serializable_Int_10_000,
 			},
 			10,
 			1,
 		},
 		"increased tier": {
 			&stattypes.UserStats{
-				TakerNotional: 1_000,
-				MakerNotional: 150,
+				TakerNotional: constants.Serializable_Int_1_000,
+				MakerNotional: constants.Serializable_Int_150,
 			},
 			&stattypes.GlobalStats{
-				NotionalTraded: 10_000,
+				NotionalTraded: constants.Serializable_Int_10_000,
 			},
 			20,
 			2,
 		},
 		"partial requirements doesn't increase tier": {
 			&stattypes.UserStats{
-				TakerNotional: 1_000,
-				MakerNotional: 1_000_000_000,
+				TakerNotional: constants.Serializable_Int_1_000,
+				MakerNotional: constants.Serializable_Int_1_000_000_000,
 			},
 			&stattypes.GlobalStats{
-				NotionalTraded: 10_000_000_000,
+				NotionalTraded: constants.Serializable_Int_10_000_000_000,
 			},
 			20,
 			2,
 		},
 		"top tier": {
 			&stattypes.UserStats{
-				TakerNotional: 1_000,
-				MakerNotional: 1_000_000_000,
+				TakerNotional: constants.Serializable_Int_1_000,
+				MakerNotional: constants.Serializable_Int_1_000_000_000,
 			},
 			&stattypes.GlobalStats{
-				NotionalTraded: 2_000_000_000,
+				NotionalTraded: constants.Serializable_Int_2_000_000_000,
 			},
 			30,
 			3,
