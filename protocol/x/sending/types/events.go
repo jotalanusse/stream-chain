@@ -3,6 +3,7 @@ package types
 import (
 	fmt "fmt"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -26,7 +27,7 @@ func NewCreateTransferEvent(
 	sender satypes.SubaccountId,
 	recipient satypes.SubaccountId,
 	assetId uint32,
-	quantums uint64,
+	quantums dtypes.SerializableInt,
 ) sdk.Event {
 	return sdk.NewEvent(
 		EventTypeCreateTransfer,
@@ -35,7 +36,7 @@ func NewCreateTransferEvent(
 		sdk.NewAttribute(AttributeKeyRecipient, recipient.Owner),
 		sdk.NewAttribute(AttributeKeyRecipientNumber, fmt.Sprintf("%d", recipient.Number)),
 		sdk.NewAttribute(AttributeKeyAssetId, fmt.Sprintf("%d", assetId)),
-		sdk.NewAttribute(AttributeKeyQuantums, fmt.Sprintf("%d", quantums)),
+		sdk.NewAttribute(AttributeKeyQuantums, fmt.Sprintf("%v", quantums)),
 	)
 }
 
@@ -44,7 +45,7 @@ func NewDepositToSubaccountEvent(
 	sender sdk.Address,
 	recipient satypes.SubaccountId,
 	assetId uint32,
-	quantums uint64,
+	quantums dtypes.SerializableInt,
 ) sdk.Event {
 	return sdk.NewEvent(
 		EventTypeDepositToSubaccount,
@@ -52,7 +53,7 @@ func NewDepositToSubaccountEvent(
 		sdk.NewAttribute(AttributeKeyRecipient, recipient.Owner),
 		sdk.NewAttribute(AttributeKeyRecipientNumber, fmt.Sprintf("%d", recipient.Number)),
 		sdk.NewAttribute(AttributeKeyAssetId, fmt.Sprintf("%d", assetId)),
-		sdk.NewAttribute(AttributeKeyQuantums, fmt.Sprintf("%d", quantums)),
+		sdk.NewAttribute(AttributeKeyQuantums, fmt.Sprintf("%v", quantums)),
 	)
 }
 
@@ -61,7 +62,7 @@ func NewWithdrawFromSubaccountEvent(
 	sender satypes.SubaccountId,
 	recipient sdk.Address,
 	assetId uint32,
-	quantums uint64,
+	quantums dtypes.SerializableInt,
 ) sdk.Event {
 	return sdk.NewEvent(
 		EventTypeWithdrawFromSubaccount,
@@ -69,6 +70,6 @@ func NewWithdrawFromSubaccountEvent(
 		sdk.NewAttribute(AttributeKeySenderNumber, fmt.Sprintf("%d", sender.Number)),
 		sdk.NewAttribute(AttributeKeyRecipient, recipient.String()),
 		sdk.NewAttribute(AttributeKeyAssetId, fmt.Sprintf("%d", assetId)),
-		sdk.NewAttribute(AttributeKeyQuantums, fmt.Sprintf("%d", quantums)),
+		sdk.NewAttribute(AttributeKeyQuantums, fmt.Sprintf("%v", quantums)),
 	)
 }

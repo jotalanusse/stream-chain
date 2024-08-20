@@ -10,31 +10,31 @@ var (
 		Sender:    Carl_Num0,
 		Recipient: Dave_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Amount:    500_000_000, // $500
+		Amount:    Dollars_Uusdc_500, // $500
 	}
 	Transfer_Carl_Num0_Dave_Num0_Quote_600 = types.Transfer{
 		Sender:    Carl_Num0,
 		Recipient: Dave_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Amount:    600_000_000, // $600
+		Amount:    Dollars_Uusdc_600, // $600
 	}
 	Transfer_Carl_Num0_Dave_Num0_Asset_600 = types.Transfer{
 		Sender:    Carl_Num0,
 		Recipient: Dave_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Amount:    600_000_000, // $600
+		Amount:    Dollars_Uusdc_600, // $600
 	}
 	Transfer_Dave_Num0_Carl_Num0_Asset_500 = types.Transfer{
 		Sender:    Dave_Num0,
 		Recipient: Carl_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Amount:    500_000_000, // $500
+		Amount:    Dollars_Uusdc_500, // $500
 	}
 	Transfer_Dave_Num0_Carl_Num0_Asset_500_GTB_20 = types.Transfer{
 		Sender:    Dave_Num0,
 		Recipient: Carl_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Amount:    500_000_000, // $500
+		Amount:    Dollars_Uusdc_500, // $500
 	}
 )
 
@@ -44,13 +44,13 @@ var (
 		Sender:    AliceAccAddress.String(),
 		Recipient: Alice_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Quantums:  500_000_000, // $500
+		Quantums:  Dollars_Uusdc_500, // $500
 	}
 	MsgDepositToSubaccount_Alice_To_Carl_Num0_750 = types.MsgDepositToSubaccount{
 		Sender:    AliceAccAddress.String(),
 		Recipient: Carl_Num0,
 		AssetId:   assettypes.AssetUsdc.Id,
-		Quantums:  750_000_000, // $750
+		Quantums:  Dollars_Uusdc_750, // $750
 	}
 )
 
@@ -60,12 +60,12 @@ var (
 		Sender:    Alice_Num0,
 		Recipient: AliceAccAddress.String(),
 		AssetId:   assettypes.AssetUsdc.Id,
-		Quantums:  500_000_000, // $500
+		Quantums:  Dollars_Uusdc_500, // $500
 	}
 	MsgWithdrawFromSubaccount_Carl_Num0_To_Alice_750 = types.MsgWithdrawFromSubaccount{
 		Sender:    Carl_Num0,
 		Recipient: AliceAccAddress.String(),
 		AssetId:   assettypes.AssetUsdc.Id,
-		Quantums:  750_000_000, // $750
+		Quantums:  Dollars_Uusdc_750, // $750
 	}
 )

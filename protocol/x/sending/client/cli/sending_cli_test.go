@@ -65,9 +65,9 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Success() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNumberOne,
-		uint64(1_000_000),
-		new(big.Int).SetUint64(499_000_000),
-		new(big.Int).SetUint64(501_000_000),
+		big.NewInt(1_000_000),
+		big.NewInt(499_000_000),
+		big.NewInt(501_000_000),
 	)
 	network.CleanupCustomNetwork()
 }
@@ -80,9 +80,9 @@ func (s *SendingIntegrationTestSuite) TestCLISending_InsufficientBalance() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNumberOne,
-		uint64(501_000_000), // Sender only has $500
-		new(big.Int).SetUint64(500_000_000),
-		new(big.Int).SetUint64(500_000_000),
+		big.NewInt(501_000_000), // Sender only has $500
+		big.NewInt(500_000_000),
+		big.NewInt(500_000_000),
 	)
 	network.CleanupCustomNetwork()
 }
@@ -95,9 +95,9 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Nonexistent() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNonExistent,
-		uint64(1_000_000),
-		new(big.Int).SetUint64(499_000_000),
-		new(big.Int).SetUint64(1_000_000),
+		big.NewInt(1_000_000),
+		big.NewInt(499_000_000),
+		big.NewInt(1_000_000),
 	)
 	network.CleanupCustomNetwork()
 }
@@ -105,7 +105,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Nonexistent() {
 func (s *SendingIntegrationTestSuite) sendTransferAndVerifyBalance(
 	senderSubaccountNumber uint32,
 	recipientSubaccountNumber uint32,
-	amount uint64,
+	amount *big.Int,
 	expectedSenderQuoteBalance *big.Int,
 	expectedRecipientQuoteBalance *big.Int,
 ) {
@@ -113,7 +113,7 @@ func (s *SendingIntegrationTestSuite) sendTransferAndVerifyBalance(
 	transferTx := fmt.Sprintf(
 		"docker exec interchain-security-instance interchain-security-cd"+
 			" tx sending create-transfer dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6 %d"+
-			" dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6 %d %d --from dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6"+
+			" dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6 %d %v --from dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6"+
 			" --chain-id consu --home /consu/validatoralice --keyring-backend test -y",
 		senderSubaccountNumber, recipientSubaccountNumber, amount)
 	_, _, err := network.QueryCustomNetwork(transferTx)

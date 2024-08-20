@@ -2,6 +2,7 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -33,7 +34,7 @@ func (msg *MsgCreateTransfer) ValidateBasic() error {
 		return ErrNonUsdcAssetTransferNotImplemented
 	}
 
-	if msg.Transfer.Amount == uint64(0) {
+	if msg.Transfer.Amount.Cmp(dtypes.NewInt(0)) <= 0 {
 		return ErrInvalidTransferAmount
 	}
 

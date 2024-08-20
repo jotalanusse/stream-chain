@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +16,7 @@ func NewMsgWithdrawFromSubaccount(
 	sender satypes.SubaccountId,
 	recipient string,
 	assetId uint32,
-	quantums uint64,
+	quantums dtypes.SerializableInt,
 ) *MsgWithdrawFromSubaccount {
 	return &MsgWithdrawFromSubaccount{
 		Sender:    sender,
@@ -45,7 +45,7 @@ func (msg *MsgWithdrawFromSubaccount) ValidateBasic() error {
 	}
 
 	// Validate that quantums is not zero.
-	if msg.Quantums == lib.ZeroUint64 {
+	if msg.Quantums.Cmp(dtypes.ZeroInt()) <= 0 {
 		return ErrInvalidTransferAmount
 	}
 

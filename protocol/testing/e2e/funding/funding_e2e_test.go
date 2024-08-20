@@ -5,6 +5,7 @@ import (
 	"time"
 
 	sdaiservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/sDAIOracle"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
@@ -27,11 +28,11 @@ const (
 	BlockTimeDuration             = 2 * time.Second
 	NumBlocksPerMinute            = int64(time.Minute / BlockTimeDuration) // 30
 	BlockHeightAtFirstFundingTick = 1000
-	TestTransferUsdcForSettlement = 10_000_000_000_000
 	TestMarketId                  = 0
 )
 
 var (
+	TestTransferUsdcForSettlement                   = dtypes.NewIntFromString("10_000_000_000_000")
 	OrderTemplate_Alice_Num0_Id0_Clob0_Buy_LongTerm = clobtypes.Order{
 		OrderId: clobtypes.OrderId{
 			SubaccountId: constants.Alice_Num0,
@@ -132,11 +133,11 @@ var (
 
 type expectedSettlements struct {
 	SubaccountId satypes.SubaccountId
-	Settlement   int64
+	Settlement   dtypes.SerializableInt
 }
 
-func getSubaccountUsdcBalance(subaccount satypes.Subaccount) int64 {
-	return subaccount.AssetPositions[0].Quantums.BigInt().Int64()
+func getSubaccountUsdcBalance(subaccount satypes.Subaccount) dtypes.SerializableInt {
+	return subaccount.AssetPositions[0].Quantums
 }
 
 func TestFunding(t *testing.T) {
@@ -206,21 +207,21 @@ func TestFunding(t *testing.T) {
 					// Alice is long 0.8 BTC, pays funding
 					// Theoretical (from funding rate): 0.00143 / 8 * 27_000 * 0.8 ~= $3.864
 					// Actual (from funding index): 482 * 8e9 (base quantums) / 1e6 (quote atomic) = $3.856
-					Settlement: -3_856_000,
+					Settlement: dtypes.NewIntFromString("-3_856_000"),
 				},
 				{
 					SubaccountId: constants.Bob_Num0,
 					// Bob is short 1 BTC, receives funding
 					// Theoretical (from funding rate): 0.00143 / 8 * 27_000 * 1 ~= $4.82625
 					// Actual (from funding index): 482 * 1e10 (base quantums) / 1e6 (quote atomic) = $4.82
-					Settlement: 4_820_000,
+					Settlement: dtypes.NewIntFromString("4_820_000"),
 				},
 				{
 					SubaccountId: constants.Carl_Num0,
 					// Carl is long 0.2 BTC, pays funding
 					// Theoretical (from funding rate): 0.00143 / 8 * 27_000 * 0.2 ~= $0.96525
 					// Actual (from funding index): 482 * 2e9 (base quantums) / 1e6 (quote atomic) = $0.964
-					Settlement: -964_000,
+					Settlement: dtypes.NewIntFromString("-964_000"),
 				},
 			},
 		},
@@ -280,21 +281,21 @@ func TestFunding(t *testing.T) {
 					// Alice is long 0.8 BTC, receives funding
 					// Theoretical (from funding rate): 0.12 / 8 * 33_500 * 0.8 = $402
 					// Actual (from funding index): 50_250 * 8e9 (base quantums) / 1e6 (quote atomic) = $402
-					Settlement: 402_000_000,
+					Settlement: dtypes.NewIntFromString("402_000_000"),
 				},
 				{
 					SubaccountId: constants.Bob_Num0,
 					// Bob is short 1 BTC, pays funding
 					// Theoretical (from funding rate): 0.12 / 8 * 33_500 * 1 = $502.5
 					// Actual (from funding index): 50_250 * 1e10 (base quantums) / 1e6 (quote atomic) = $502.5
-					Settlement: -502_500_000,
+					Settlement: dtypes.NewIntFromString("-502_500_000"),
 				},
 				{
 					SubaccountId: constants.Carl_Num0,
 					// Carl is long 0.2 BTC, receives funding
 					// Theoretical (from funding rate): 0.12 / 8 * 33_500 * 0.2 = $100.5
 					// Actual (from funding index): 50_250 * 2e9 (base quantums) / 1e6 (quote atomic) = $100.5
-					Settlement: 100_500_000,
+					Settlement: dtypes.NewIntFromString("100_500_000"),
 				},
 			},
 		},
@@ -342,15 +343,15 @@ func TestFunding(t *testing.T) {
 			expectedSubaccountSettlements: []expectedSettlements{
 				{
 					SubaccountId: constants.Alice_Num0,
-					Settlement:   0,
+					Settlement:   dtypes.ZeroInt(),
 				},
 				{
 					SubaccountId: constants.Bob_Num0,
-					Settlement:   0,
+					Settlement:   dtypes.ZeroInt(),
 				},
 				{
 					SubaccountId: constants.Carl_Num0,
-					Settlement:   0,
+					Settlement:   dtypes.ZeroInt(),
 				},
 			},
 		},
@@ -489,14 +490,17 @@ func TestFunding(t *testing.T) {
 			require.Equal(t, tc.expectedFundingIndex, btcPerp.FundingIndex.BigInt().Int64())
 
 			subaccsBeforeSettlement := []satypes.Subaccount{}
-			totalUsdcBalanceBeforeSettlement := int64(0)
+			totalUsdcBalanceBeforeSettlement := dtypes.ZeroInt()
 			for _, expectedSettlements := range tc.expectedSubaccountSettlements {
 				subaccBeforeSettlement := tApp.App.SubaccountsKeeper.GetSubaccount(ctx, expectedSettlements.SubaccountId)
 				// Before settlement, each perpetual position should have zero funding index, since these positions
 				// were opened when BTC perpetual has zero funding idnex.
 				require.Equal(t, int64(0), subaccBeforeSettlement.PerpetualPositions[0].FundingIndex.BigInt().Int64())
 				subaccsBeforeSettlement = append(subaccsBeforeSettlement, subaccBeforeSettlement)
-				totalUsdcBalanceBeforeSettlement += getSubaccountUsdcBalance(subaccBeforeSettlement)
+				totalUsdcBalanceBeforeSettlement.Add(
+					totalUsdcBalanceBeforeSettlement,
+					getSubaccountUsdcBalance(subaccBeforeSettlement),
+				)
 			}
 
 			// Send transfers from Dave to subaccounts that has positions, so that funding is settled for these accounts.
@@ -518,7 +522,7 @@ func TestFunding(t *testing.T) {
 
 			ctx = tApp.AdvanceToBlock(uint32(ctx.BlockHeight()+1), testapp.AdvanceToBlockOptions{})
 
-			totalUsdcBalanceAfterSettlement := int64(0)
+			totalUsdcBalanceAfterSettlement := dtypes.ZeroInt()
 			for i, expectedSettlements := range tc.expectedSubaccountSettlements {
 				subaccAfterSettlement := tApp.App.SubaccountsKeeper.GetSubaccount(
 					ctx,
@@ -532,27 +536,71 @@ func TestFunding(t *testing.T) {
 					tc.expectedFundingIndex,
 					subaccAfterSettlement.PerpetualPositions[0].FundingIndex.BigInt().Int64(),
 				)
-				totalUsdcBalanceAfterSettlement += getSubaccountUsdcBalance(subaccAfterSettlement)
+				totalUsdcBalanceAfterSettlement.Add(
+					totalUsdcBalanceAfterSettlement,
+					getSubaccountUsdcBalance(subaccAfterSettlement),
+				)
+
+				expectedBalance := dtypes.ZeroInt()
+				expectedBalance.Add(
+					getSubaccountUsdcBalance(subaccsBeforeSettlement[i]),
+					expectedSettlements.Settlement,
+				)
+
+				actualBalance := dtypes.ZeroInt()
+				actualBalance.Sub(
+					getSubaccountUsdcBalance(subaccAfterSettlement),
+					TestTransferUsdcForSettlement,
+				)
+
+				settlementAmount := getSubaccountUsdcBalance(subaccAfterSettlement)
+				settlementAmount.Sub(
+					settlementAmount,
+					TestTransferUsdcForSettlement,
+				)
+				settlementAmount.Sub(
+					settlementAmount,
+					getSubaccountUsdcBalance(subaccsBeforeSettlement[i]),
+				)
+
+				preSettlementBalance := getSubaccountUsdcBalance(subaccsBeforeSettlement[i])
+
+				postTransferBalance := dtypes.ZeroInt()
+				postTransferBalance.Sub(
+					getSubaccountUsdcBalance(subaccAfterSettlement),
+					TestTransferUsdcForSettlement,
+				)
 
 				require.Equal(t,
-					getSubaccountUsdcBalance(subaccsBeforeSettlement[i])+expectedSettlements.Settlement,
-					getSubaccountUsdcBalance(subaccAfterSettlement)-TestTransferUsdcForSettlement,
+					expectedBalance,
+					actualBalance,
 					"subaccount id: %v, expected settlement: %v, got settlement: %v,"+
 						"balance before settlement: %v, balance after (minus test transfer): %v",
 					expectedSettlements.SubaccountId,
 					expectedSettlements.Settlement,
-					getSubaccountUsdcBalance(subaccAfterSettlement)-TestTransferUsdcForSettlement-
-						getSubaccountUsdcBalance(subaccsBeforeSettlement[i]),
-					getSubaccountUsdcBalance(subaccsBeforeSettlement[i]),
-					getSubaccountUsdcBalance(subaccAfterSettlement)-TestTransferUsdcForSettlement,
+					settlementAmount,
+					preSettlementBalance,
+					postTransferBalance,
 				)
 			}
 
 			// Check that the involved subaccounts has the same total balance before and after the transfer
 			// (besides transfers from Dave).
+			transferAmountTimesThree := dtypes.NewInt(0)
+			transferAmountTimesThree.Mul(
+				TestTransferUsdcForSettlement,
+				dtypes.NewInt(3),
+			)
+
+			postSettlementBalance := dtypes.NewInt(0)
+			postSettlementBalance.Sub(
+				totalUsdcBalanceAfterSettlement,
+				transferAmountTimesThree,
+			)
+
 			require.Equal(t,
 				totalUsdcBalanceBeforeSettlement,
-				totalUsdcBalanceAfterSettlement-TestTransferUsdcForSettlement*3,
+				postSettlementBalance,
 			)
 		})
 	}

@@ -162,7 +162,7 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 							},
 							Recipient: simAccount.Address.String(),
 							AssetId:   constants.Usdc.Id,
-							Quantums:  constants.Usdc_Asset_1.Quantums.BigInt().Uint64(),
+							Quantums:  constants.Usdc_Asset_1.Quantums,
 						},
 					},
 					constants.TestFeeCoins_5Cents,

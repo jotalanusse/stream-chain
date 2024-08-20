@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -13,7 +14,7 @@ import (
 func TestNewCreateTransferEvent(t *testing.T) {
 	sender := constants.Alice_Num1
 	receiver := constants.Bob_Num2
-	quantums := uint64(100000000)
+	quantums := dtypes.NewInt(100000000)
 	assetId := uint32(1)
 
 	event := types.NewCreateTransferEvent(sender, receiver, assetId, quantums)
@@ -49,7 +50,7 @@ func TestNewCreateTransferEvent(t *testing.T) {
 func TestNewDepositToSubaccountEvent(t *testing.T) {
 	sender := sdk.MustAccAddressFromBech32(constants.Alice_Num1.Owner)
 	receiver := constants.Bob_Num2
-	quantums := uint64(100000000)
+	quantums := dtypes.NewInt(100000000)
 	assetId := uint32(1)
 
 	event := types.NewDepositToSubaccountEvent(sender, receiver, assetId, quantums)
@@ -81,7 +82,7 @@ func TestNewDepositToSubaccountEvent(t *testing.T) {
 func TestNewWithdrawFromSubaccountEvent(t *testing.T) {
 	sender := constants.Alice_Num1
 	receiver := sdk.MustAccAddressFromBech32(constants.Bob_Num2.Owner)
-	quantums := uint64(100000000)
+	quantums := dtypes.NewInt(100000000)
 	assetId := uint32(1)
 
 	event := types.NewWithdrawFromSubaccountEvent(sender, receiver, assetId, quantums)

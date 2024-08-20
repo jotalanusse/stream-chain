@@ -293,7 +293,7 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 			Number: uint32(0),
 		},
 		AssetId: assettypes.AssetUsdc.Id,
-		Amount:  500_000_000, // $500
+		Amount:  constants.Dollars_Uusdc_500, // $500
 	}
 	err = ks.SendingKeeper.ProcessTransfer(ks.Ctx, &transfer)
 	require.NoError(t, err)
@@ -339,7 +339,7 @@ func TestProcessDepositToSubaccount(t *testing.T) {
 				Sender:    "1234567", // bad address string
 				Recipient: constants.Alice_Num0,
 				AssetId:   assettypes.AssetUsdc.Id,
-				Quantums:  750_000_000,
+				Quantums:  constants.Dollars_Uusdc_750,
 			},
 			expectedErrContains: "decoding bech32 failed",
 		},
@@ -360,7 +360,7 @@ func TestProcessDepositToSubaccount(t *testing.T) {
 					sdk.MustAccAddressFromBech32(msg.Sender),
 					msg.Recipient,
 					msg.AssetId,
-					new(big.Int).SetUint64(msg.Quantums),
+					msg.Quantums.BigInt(),
 				)
 				tc.setUpMocks(mockCall)
 			}
@@ -424,7 +424,7 @@ func TestProcessWithdrawFromSubaccount(t *testing.T) {
 				Sender:    constants.Alice_Num0,
 				Recipient: "1234567", // bad address string
 				AssetId:   assettypes.AssetUsdc.Id,
-				Quantums:  750_000_000,
+				Quantums:  constants.Dollars_Uusdc_750,
 			},
 			expectedErrContains: "decoding bech32 failed",
 		},
@@ -445,7 +445,7 @@ func TestProcessWithdrawFromSubaccount(t *testing.T) {
 					msg.Sender,
 					sdk.MustAccAddressFromBech32(msg.Recipient),
 					msg.AssetId,
-					new(big.Int).SetUint64(msg.Quantums),
+					msg.Quantums.BigInt(),
 				)
 				tc.setUpMocks(mockCall)
 			}
