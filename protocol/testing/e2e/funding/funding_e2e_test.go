@@ -548,7 +548,7 @@ func TestFunding(t *testing.T) {
 				)
 
 				actualBalance := dtypes.ZeroInt()
-				actualBalance.Add(
+				actualBalance.Sub(
 					getSubaccountUsdcBalance(subaccAfterSettlement),
 					TestTransferUsdcForSettlement,
 				)
@@ -593,7 +593,7 @@ func TestFunding(t *testing.T) {
 			)
 
 			postSettlementBalance := dtypes.NewInt(0)
-			postSettlementBalance.Add(
+			postSettlementBalance.Sub(
 				totalUsdcBalanceAfterSettlement,
 				transferAmountTimesThree,
 			)

@@ -103,6 +103,8 @@ func TestCreateTransfer(t *testing.T) {
 					ctx := lib.UnwrapSDKContext(goCtx, types.ModuleName)
 					require.Len(t, ctx.EventManager().Events(), 1)
 					event := ctx.EventManager().Events()[0]
+					fmt.Println("EVENT IS ", event)
+					fmt.Println("EVENT ATTRIBUTES ARE ", event.Attributes)
 					require.Equal(t, event.Type, types.EventTypeCreateTransfer)
 					require.Equal(t, event.Attributes, []abci.EventAttribute{
 						{
@@ -127,7 +129,7 @@ func TestCreateTransfer(t *testing.T) {
 						},
 						{
 							Key:   types.AttributeKeyQuantums,
-							Value: fmt.Sprintf("%d", msg.Transfer.Amount),
+							Value: fmt.Sprintf("%v", msg.Transfer.Amount),
 						},
 					})
 				}
@@ -187,7 +189,7 @@ func TestDepositToSubaccount(t *testing.T) {
 						},
 						{
 							Key:   types.AttributeKeyQuantums,
-							Value: fmt.Sprintf("%d", msg.Quantums),
+							Value: fmt.Sprintf("%v", msg.Quantums),
 						},
 					})
 				}
@@ -247,7 +249,7 @@ func TestWithdrawFromSubaccount(t *testing.T) {
 						},
 						{
 							Key:   types.AttributeKeyQuantums,
-							Value: fmt.Sprintf("%d", msg.Quantums),
+							Value: fmt.Sprintf("%v", msg.Quantums),
 						},
 					})
 				}

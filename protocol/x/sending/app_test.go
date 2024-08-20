@@ -1018,7 +1018,7 @@ func TestWithdrawalGating_ChainOutage(t *testing.T) {
 				foundSubaccount := tApp.App.SubaccountsKeeper.GetSubaccount(ctx, *tc.subaccount.Id)
 
 				expectedPositionSize := dtypes.NewInt(0)
-				expectedPositionSize.Add(
+				expectedPositionSize.Sub(
 					tc.subaccount.GetAssetPositions()[0].Quantums,
 					quantumsToTransferOrWithdraw,
 				)
