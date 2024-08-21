@@ -314,7 +314,7 @@ func TestPlaceOrder_AddOrderToOrderbook(t *testing.T) {
 					tc.order.OrderId.SubaccountId: tc.collateralizationCheck,
 				}
 			}
-			addOrderToOrderbookSize := satypes.BaseQuantums(0)
+			addOrderToOrderbookSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			// If we don't expect an error, then `PlaceOrder` should attempt to place the order on the orderbook.
 			if tc.expectedErr == nil {
 				addOrderToOrderbookSize = tc.order.GetBaseQuantums()
@@ -381,8 +381,8 @@ func TestPlaceOrder_AddOrderToOrderbook(t *testing.T) {
 				memclob,
 				tc.order,
 				numCollateralChecks,
-				0, // expectedFilledSize is 0 since no matches are expected.
-				0, // expectedTotalFilledSize is 0 since no matches are expected.
+				constants.BaseQuantums_0, // expectedFilledSize is 0 since no matches are expected.
+				constants.BaseQuantums_0, // expectedTotalFilledSize is 0 since no matches are expected.
 				tc.expectedOrderStatus,
 				tc.expectedErr,
 				expectedNumCollateralizationChecks,
@@ -402,7 +402,7 @@ func TestPlaceOrder_AddOrderToOrderbook(t *testing.T) {
 				tc.existingOrders,
 				collatCheckFailures,
 				tc.expectedErr,
-				0,
+				constants.BaseQuantums_0,
 				tc.expectedOrderStatus,
 				[]expectedMatch{},
 				[]expectedMatch{},
@@ -441,19 +441,19 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:  5,
+			expectedFilledSize:  constants.BaseQuantums_5,
 			expectedOrderStatus: types.Success,
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -461,7 +461,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -507,27 +507,27 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 
-			expectedFilledSize:    5,
+			expectedFilledSize:    constants.BaseQuantums_5,
 			expectedOrderStatus:   types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -573,12 +573,12 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
 
-			expectedFilledSize:  25,
+			expectedFilledSize:  constants.BaseQuantums_25,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -586,14 +586,14 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id8_Clob1_Sell25_PriceMax_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
-					matchedQuantums: 25,
+					matchedQuantums: constants.BaseQuantums_25,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id8_Clob1_Sell25_PriceMax_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
-					matchedQuantums: 25,
+					matchedQuantums: constants.BaseQuantums_25,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -640,12 +640,12 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 
-			expectedFilledSize:  10,
+			expectedFilledSize:  constants.BaseQuantums_10,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -653,24 +653,24 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -729,7 +729,7 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 
-			expectedFilledSize:    10,
+			expectedFilledSize:    constants.BaseQuantums_10,
 			expectedOrderStatus:   types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -737,14 +737,14 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -791,12 +791,12 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
 
-			expectedFilledSize:  10,
+			expectedFilledSize:  constants.BaseQuantums_10,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -804,14 +804,14 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id7_Clob1_Buy35_PriceMax_GTB30,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -858,42 +858,42 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:  10,
+			expectedFilledSize:  constants.BaseQuantums_10,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id5_Clob1_Sell50_Price40_GTB20,
-					RemainingSize: 50,
+					RemainingSize: constants.BaseQuantums_50,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -957,60 +957,60 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:  20,
+			expectedFilledSize:  constants.BaseQuantums_20,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id2_Clob1_Buy67_Price5_GTB20,
-					RemainingSize: 67,
+					RemainingSize: constants.BaseQuantums_67,
 				},
 				{
 					Order:         constants.Order_Alice_Num0_Id4_Clob1_Buy25_Price5_GTB20,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.Order_Alice_Num1_Id5_Clob1_Sell50_Price40_GTB20,
-					RemainingSize: 50,
+					RemainingSize: constants.BaseQuantums_50,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -1081,9 +1081,12 @@ func TestPlaceOrder_MatchOrders(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			// Setup memclob state and test expectations.
-			addOrderToOrderbookSize := satypes.BaseQuantums(0)
+			addOrderToOrderbookSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			if tc.expectedOrderStatus.IsSuccess() {
-				addOrderToOrderbookSize = tc.order.GetBaseQuantums() - tc.expectedFilledSize
+				addOrderToOrderbookSize.Sub(
+					tc.order.GetBaseQuantums(),
+					tc.expectedFilledSize,
+				)
 			}
 			memclob, fakeMemClobKeeper, expectedNumCollateralizationChecks, numCollateralChecks := placeOrderTestSetup(
 				t,
@@ -1174,21 +1177,21 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
 
-			expectedFilledSize:      15,
-			expectedTotalFilledSize: 15,
+			expectedFilledSize:      constants.BaseQuantums_15,
+			expectedTotalFilledSize: constants.BaseQuantums_15,
 			expectedOrderStatus:     types.Success,
 			expectedRemainingBids:   []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id9_Clob0_Sell10_Price10_GTB31,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
-					matchedQuantums: 15,
+					matchedQuantums: constants.BaseQuantums_15,
 				},
 			},
 			expectedExistingMatches: []expectedMatch{
@@ -1196,14 +1199,14 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
-					matchedQuantums: 15,
+					matchedQuantums: constants.BaseQuantums_15,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -1280,13 +1283,13 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:      10,
-			expectedTotalFilledSize: 10,
+			expectedFilledSize:      constants.BaseQuantums_10,
+			expectedTotalFilledSize: constants.BaseQuantums_10,
 			expectedOrderStatus:     types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -1294,7 +1297,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedExistingMatches: []expectedMatch{
@@ -1302,20 +1305,20 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				// Match #2: This match is generated before the test case.
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id6_Clob1_Sell15_Price22_GTB30,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -1418,8 +1421,8 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 
 			order: constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 
-			expectedFilledSize:      5,
-			expectedTotalFilledSize: 5,
+			expectedFilledSize:      constants.BaseQuantums_5,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.Success,
 			expectedRemainingBids:   []OrderWithRemainingSize{},
 			expectedRemainingAsks:   []OrderWithRemainingSize{},
@@ -1427,7 +1430,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedExistingMatches: []expectedMatch{
@@ -1435,14 +1438,14 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id0_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedNewMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -1523,8 +1526,8 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// This order should fully match and no order should remain on the book.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB33,
 
-			expectedFilledSize:      5,
-			expectedTotalFilledSize: 10,
+			expectedFilledSize:      constants.BaseQuantums_5,
+			expectedTotalFilledSize: constants.BaseQuantums_10,
 			expectedOrderStatus:     types.Success,
 			expectedRemainingBids:   []OrderWithRemainingSize{},
 			expectedRemainingAsks:   []OrderWithRemainingSize{},
@@ -1532,7 +1535,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB33,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedExistingMatches: []expectedMatch{
@@ -1540,7 +1543,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{
@@ -1548,7 +1551,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB33,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -1623,13 +1626,13 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// This order should fully fill the crossing order and have its remaining size placed on the book.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
 
-			expectedFilledSize:      5,
-			expectedTotalFilledSize: 10,
+			expectedFilledSize:      constants.BaseQuantums_5,
+			expectedTotalFilledSize: constants.BaseQuantums_10,
 			expectedOrderStatus:     types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -1637,7 +1640,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedExistingMatches: []expectedMatch{
@@ -1645,7 +1648,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{
@@ -1653,7 +1656,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -1726,13 +1729,13 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// This order replaces the existing partially-matched order with an order that decreases the size.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB34,
 
-			expectedFilledSize:      0,
-			expectedTotalFilledSize: 5,
+			expectedFilledSize:      constants.BaseQuantums_0,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id10_Clob0_Buy10_Price30_GTB34,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -1742,7 +1745,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell5_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{},
@@ -1797,8 +1800,8 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// the replacement has a smaller GTB. The existing order is _not_ on the book, but only in the match queue.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB31,
 
-			expectedFilledSize:      0,
-			expectedTotalFilledSize: 5,
+			expectedFilledSize:      constants.BaseQuantums_0,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedRemainingBids:   []OrderWithRemainingSize{},
 			expectedRemainingAsks:   []OrderWithRemainingSize{},
@@ -1808,7 +1811,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell5_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{},
@@ -1860,8 +1863,8 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// The order is therefore already fully filled and an error is returned.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 
-			expectedFilledSize:      0,
-			expectedTotalFilledSize: 5,
+			expectedFilledSize:      constants.BaseQuantums_0,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedRemainingBids:   []OrderWithRemainingSize{},
 			expectedRemainingAsks:   []OrderWithRemainingSize{},
@@ -1871,7 +1874,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB31,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell5_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{},
@@ -1925,13 +1928,13 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// of size 2, which is lower than the `MinOrderBaseQuantums` of the orderbook, therefore an error is returned.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy7_Price30_GTB33,
 
-			expectedFilledSize:      0,
-			expectedTotalFilledSize: 5,
+			expectedFilledSize:      constants.BaseQuantums_0,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id10_Clob0_Buy6_Price30_GTB32,
-					RemainingSize: 1,
+					RemainingSize: constants.BaseQuantums_1,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -1941,7 +1944,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy6_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell5_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{},
@@ -1994,13 +1997,13 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 			// error is returned.
 			order: constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB34,
 
-			expectedFilledSize:      0,
-			expectedTotalFilledSize: 5,
+			expectedFilledSize:      constants.BaseQuantums_0,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -2010,7 +2013,7 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy15_Price30_GTB33,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell5_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedNewMatches: []expectedMatch{},
@@ -2058,13 +2061,13 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB21_IOC,
 
-			expectedTotalFilledSize: 5,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedExistingMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -2112,19 +2115,19 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB21_IOC,
 
-			expectedTotalFilledSize: 5,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedExistingMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -2172,19 +2175,19 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB21_FOK,
 
-			expectedTotalFilledSize: 5,
+			expectedTotalFilledSize: constants.BaseQuantums_5,
 			expectedOrderStatus:     types.InternalError,
 			expectedExistingMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB20,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -2253,9 +2256,12 @@ func TestPlaceOrder_MatchOrders_PreexistingMatches(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			// Setup memclob state and test expectations.
-			addOrderToOrderbookSize := satypes.BaseQuantums(0)
+			addOrderToOrderbookSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			if tc.expectedOrderStatus.IsSuccess() {
-				addOrderToOrderbookSize = tc.order.GetBaseQuantums() - tc.expectedTotalFilledSize
+				addOrderToOrderbookSize.Sub(
+					tc.order.GetBaseQuantums(),
+					tc.expectedTotalFilledSize,
+				)
 			}
 
 			memclob, _, expectedNumCollateralizationChecks, numCollateralChecks := placeOrderTestSetup(
@@ -2352,12 +2358,12 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -2365,17 +2371,17 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedMatches:            []expectedMatch{},
@@ -2396,28 +2402,28 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:    0,
+			expectedFilledSize:    constants.BaseQuantums_0,
 			expectedOrderStatus:   types.Undercollateralized,
 			expectedRemainingBids: []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedMatches:            []expectedMatch{},
@@ -2440,47 +2446,47 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 
 			order: constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
 
-			expectedFilledSize:  15,
+			expectedFilledSize:  constants.BaseQuantums_15,
 			expectedOrderStatus: types.Undercollateralized,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id9_Clob0_Sell20_Price1000,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 					takerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
 					takerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 					takerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -2553,37 +2559,37 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:    5,
+			expectedFilledSize:    constants.BaseQuantums_5,
 			expectedOrderStatus:   types.InternalError,
 			expectedRemainingBids: []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -2639,25 +2645,25 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 
 			order: constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.Undercollateralized,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id2_Clob1_Buy67_Price5_GTB20,
-					RemainingSize: 67,
+					RemainingSize: constants.BaseQuantums_67,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedMatches:            []expectedMatch{},
@@ -2678,12 +2684,12 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -2691,14 +2697,14 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedMatches: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id10_Clob0_Buy5_Price30_GTB32,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -2745,9 +2751,12 @@ func TestPlaceOrder_MatchOrders_CollatCheckFailure(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			// Setup memclob state and test expectations.
-			addOrderToOrderbookSize := satypes.BaseQuantums(0)
+			addOrderToOrderbookSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			if tc.expectedOrderStatus.IsSuccess() {
-				addOrderToOrderbookSize = tc.order.GetBaseQuantums() - tc.expectedFilledSize
+				addOrderToOrderbookSize.Sub(
+					tc.order.GetBaseQuantums(),
+					tc.expectedFilledSize,
+				)
 			}
 			memclob, _, expectedNumCollateralizationChecks, numCollateralChecks := placeOrderTestSetup(
 				t,
@@ -2935,7 +2944,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 			},
 			expectedRemainingAsks:      []OrderWithRemainingSize{},
@@ -2955,11 +2964,11 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -2967,12 +2976,12 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedExistingMatches:    []expectedMatch{},
@@ -3001,13 +3010,13 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id1_Clob0_Buy15_Price10_GTB18_PO,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3015,7 +3024,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Buy15_Price10_GTB18_PO,
-					matchedQuantums: 15,
+					matchedQuantums: constants.BaseQuantums_15,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -3069,26 +3078,26 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{}, // PO order crossed and was canceled.
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Carl_Num0_Id2_Clob0_Sell5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id8_Clob0_Sell20_Price10_GTB22,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Buy15_Price10_GTB18_PO,
-					matchedQuantums: 15,
+					matchedQuantums: constants.BaseQuantums_15,
 				},
 				{
 					makerOrder:      &constants.Order_Carl_Num0_Id2_Clob0_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Buy15_Price10_GTB18_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -3131,7 +3140,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3139,7 +3148,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedExistingMatches:    []expectedMatch{},
@@ -3171,7 +3180,7 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3179,17 +3188,17 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedExistingMatches:    []expectedMatch{},
@@ -3219,24 +3228,24 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22_PO,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedExistingMatches:    []expectedMatch{},
@@ -3250,9 +3259,9 @@ func TestPlaceOrder_PostOnly(t *testing.T) {
 			// Setup memclob state and test expectations.
 			addOrderToOrderbookSize := tc.order.GetBaseQuantums()
 			if !tc.expectedOrderStatus.IsSuccess() || tc.expectedErr != nil {
-				addOrderToOrderbookSize = 0
+				addOrderToOrderbookSize = satypes.BaseQuantums(dtypes.ZeroInt())
 			}
-			expectedFilledSize := satypes.BaseQuantums(0)
+			expectedFilledSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			order := tc.order
 			memclob, fakeMemClobKeeper, expectedNumCollateralizationChecks, numCollateralChecks := placeOrderTestSetup(
 				t,
@@ -3330,7 +3339,7 @@ func TestPlaceOrder_ImmediateOrCancel(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 
-			expectedFilledSize:    0,
+			expectedFilledSize:    constants.BaseQuantums_0,
 			expectedOrderStatus:   types.ImmediateOrCancelWouldRestOnBook,
 			expectedRemainingBids: []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3343,12 +3352,12 @@ func TestPlaceOrder_ImmediateOrCancel(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 
-			expectedFilledSize:  10,
+			expectedFilledSize:  constants.BaseQuantums_10,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3356,12 +3365,12 @@ func TestPlaceOrder_ImmediateOrCancel(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 		},
@@ -3373,12 +3382,12 @@ func TestPlaceOrder_ImmediateOrCancel(t *testing.T) {
 
 			order: constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
 
-			expectedFilledSize:  5,
+			expectedFilledSize:  constants.BaseQuantums_5,
 			expectedOrderStatus: types.ImmediateOrCancelWouldRestOnBook,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id4_Clob1_Buy25_Price5_GTB20,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3386,7 +3395,7 @@ func TestPlaceOrder_ImmediateOrCancel(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_IOC,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 		},
@@ -3395,7 +3404,7 @@ func TestPlaceOrder_ImmediateOrCancel(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			// Setup memclob state and test expectations.
-			addOrderToOrderbookSize := satypes.BaseQuantums(0)
+			addOrderToOrderbookSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			order := tc.order
 			require.Equal(t, types.Order_TIME_IN_FORCE_IOC, order.TimeInForce)
 			memclob, _, expectedNumCollateralizationChecks, numCollateralChecks := placeOrderTestSetup(
@@ -3493,7 +3502,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3501,12 +3510,12 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -3570,11 +3579,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.Order_Alice_Num0_Id4_Clob1_Buy25_Price5_GTB20,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3582,7 +3591,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 		},
@@ -3609,24 +3618,24 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
-					RemainingSize: 10,
+					RemainingSize: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id1_Clob1_Buy20_Price35_GTB22_FOK,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id3_Clob1_Sell5_Price10_GTB15,
 					takerOrder:      &constants.Order_Bob_Num0_Id1_Clob1_Buy20_Price35_GTB22_FOK,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20,
 					takerOrder:      &constants.Order_Bob_Num0_Id1_Clob1_Buy20_Price35_GTB22_FOK,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 		},
@@ -3647,7 +3656,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3655,12 +3664,12 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -3729,7 +3738,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3737,12 +3746,12 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -3812,11 +3821,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.Order_Alice_Num0_Id4_Clob1_Buy25_Price5_GTB20,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3824,7 +3833,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 		},
@@ -3847,11 +3856,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20, // untouched size
+					RemainingSize: constants.BaseQuantums_20, // untouched size
 				},
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5, // untouched size
+					RemainingSize: constants.BaseQuantums_5, // untouched size
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3859,7 +3868,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5, // reduction min(ordersize, position) = 5
+					matchedQuantums: constants.BaseQuantums_5, // reduction min(ordersize, position) = 5
 				},
 			},
 		},
@@ -3880,11 +3889,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3910,7 +3919,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20, // untouched size
+					RemainingSize: constants.BaseQuantums_20, // untouched size
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3918,7 +3927,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			collateralizationCheckFailures: map[int]map[satypes.SubaccountId]satypes.UpdateResult{
@@ -3947,7 +3956,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20, // untouched size
+					RemainingSize: constants.BaseQuantums_20, // untouched size
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3955,7 +3964,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5, // reduction min(ordersize, position) = 5
+					matchedQuantums: constants.BaseQuantums_5, // reduction min(ordersize, position) = 5
 				},
 			},
 			collateralizationCheckFailures: map[int]map[satypes.SubaccountId]satypes.UpdateResult{
@@ -3981,7 +3990,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20, // untouched size
+					RemainingSize: constants.BaseQuantums_20, // untouched size
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -3989,7 +3998,7 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			collateralizationCheckFailures: map[int]map[satypes.SubaccountId]satypes.UpdateResult{
@@ -4017,11 +4026,11 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
-					RemainingSize: 20, // untouched size
+					RemainingSize: constants.BaseQuantums_20, // untouched size
 				},
 				{
 					Order:         constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
-					RemainingSize: 5, // untouched size
+					RemainingSize: constants.BaseQuantums_5, // untouched size
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -4029,12 +4038,12 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id11_Clob1_Buy5_Price40_GTB32,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id4_Clob1_Buy20_Price35_GTB22,
 					takerOrder:      &constants.Order_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20_FOK_RO,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			collateralizationCheckFailures: map[int]map[satypes.SubaccountId]satypes.UpdateResult{
@@ -4048,12 +4057,12 @@ func TestPlaceOrder_FillOrKill(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			// Setup memclob state and test expectations.
-			addOrderToOrderbookSize := satypes.BaseQuantums(0)
+			addOrderToOrderbookSize := satypes.BaseQuantums(dtypes.NewInt(0))
 			order := tc.order
 			expectedFilledSize := order.GetBaseQuantums()
 			expectedMatches := tc.expectedCollatCheck
 			if !tc.expectedOrderStatus.IsSuccess() || tc.expectedErr != nil {
-				expectedFilledSize = 0
+				expectedFilledSize = satypes.BaseQuantums(dtypes.ZeroInt())
 				expectedMatches = []expectedMatch{}
 			}
 			require.Equal(t, types.Order_TIME_IN_FORCE_FILL_OR_KILL, order.TimeInForce)

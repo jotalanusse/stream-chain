@@ -325,13 +325,13 @@ func TestUpdateSubaccounts(t *testing.T) {
 		assetPositions     []*types.AssetPosition
 
 		// collateral pool state
-		collateralPoolUsdcBalances map[string]int64
+		collateralPoolUsdcBalances map[string]dtypes.SerializableInt
 
 		// updates
 		updates []types.Update
 
 		// expectations
-		expectedCollateralPoolUsdcBalances map[string]int64
+		expectedCollateralPoolUsdcBalances map[string]dtypes.SerializableInt
 		expectedQuoteBalance               *big.Int
 		expectedPerpetualPositions         []*types.PerpetualPosition
 		expectedAssetPositions             []*types.AssetPosition
@@ -2526,14 +2526,14 @@ func TestUpdateSubaccounts(t *testing.T) {
 		`Isolated - subaccounts - empty subaccount has update to open position for isolated perpetual,
 		collateral is moved from cross-perpetual collateral pool to isolated perpetual collateral pool`: {
 			assetPositions: testutil.CreateUsdcAssetPosition(big.NewInt(1_000_000_000_000)),
-			collateralPoolUsdcBalances: map[string]int64{
-				types.ModuleAddress.String(): 1_500_000_000_000, // $1,500,000 USDC
+			collateralPoolUsdcBalances: map[string]dtypes.SerializableInt{
+				types.ModuleAddress.String(): constants.Serializable_Int_1_500_000_000_000, // $1,500,000 USDC
 			},
-			expectedCollateralPoolUsdcBalances: map[string]int64{
-				types.ModuleAddress.String(): 500_000_000_000, // $500,000 USDC
+			expectedCollateralPoolUsdcBalances: map[string]dtypes.SerializableInt{
+				types.ModuleAddress.String(): constants.Serializable_Int_500_000_000_000, // $500,000 USDC
 				authtypes.NewModuleAddress(
 					types.ModuleName + ":" + lib.UintToString(constants.PerpetualPosition_OneISOLong.PerpetualId),
-				).String(): 1_000_000_000_000, // $1,000,000 USDC
+				).String(): constants.Serializable_Int_1_000_000_000_000, // $1,000,000 USDC
 			},
 			expectedSuccess:          true,
 			expectedSuccessPerUpdate: []types.UpdateResult{types.Success},
@@ -2592,17 +2592,17 @@ func TestUpdateSubaccounts(t *testing.T) {
 		`Isolated - subaccounts - subaccount has update to close position for isolated perpetual,
 		collateral is moved from isolated perpetual collateral pool to cross perpetual collateral pool`: {
 			assetPositions: testutil.CreateUsdcAssetPosition(big.NewInt(999_900_000_000)), // $999,900 USDC
-			collateralPoolUsdcBalances: map[string]int64{
-				types.ModuleAddress.String(): 2_000_000_000_000, // $500,000 USDC
+			collateralPoolUsdcBalances: map[string]dtypes.SerializableInt{
+				types.ModuleAddress.String(): constants.Serializable_Int_2_000_000_000_000, // $500,000 USDC
 				authtypes.NewModuleAddress(
 					types.ModuleName + ":" + lib.UintToString(constants.PerpetualPosition_OneISOLong.PerpetualId),
-				).String(): 1_500_000_000_000, // $1,500,000 USDC
+				).String(): constants.Serializable_Int_1_500_000_000_000, // $1,500,000 USDC
 			},
-			expectedCollateralPoolUsdcBalances: map[string]int64{
-				types.ModuleAddress.String(): 3_000_000_000_000, // $3,000,000 USDC
+			expectedCollateralPoolUsdcBalances: map[string]dtypes.SerializableInt{
+				types.ModuleAddress.String(): constants.Serializable_Int_3_000_000_000_000, // $3,000,000 USDC
 				authtypes.NewModuleAddress(
 					types.ModuleName + ":" + lib.UintToString(constants.PerpetualPosition_OneISOLong.PerpetualId),
-				).String(): 500_000_000_000, // $500,000 USDC
+				).String(): constants.Serializable_Int_500_000_000_000, // $500,000 USDC
 			},
 			expectedSuccess:          true,
 			expectedSuccessPerUpdate: []types.UpdateResult{types.Success},
@@ -3127,7 +3127,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					ctx,
 					sdk.MustAccAddressFromBech32(collateralPoolAddr),
 					sdk.Coins{
-						sdk.NewCoin(asstypes.AssetUsdc.Denom, sdkmath.NewInt(usdcBal)),
+						sdk.NewCoin(asstypes.AssetUsdc.Denom, sdkmath.NewIntFromBigInt(usdcBal.BigInt())),
 					},
 					*bankKeeper,
 				)
@@ -3203,7 +3203,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					asstypes.AssetUsdc.Denom,
 				)
 				require.Equal(t,
-					sdk.NewCoin(asstypes.AssetUsdc.Denom, sdkmath.NewInt(expectedUsdcBal)),
+					sdk.NewCoin(asstypes.AssetUsdc.Denom, sdkmath.NewIntFromBigInt(expectedUsdcBal.BigInt())),
 					usdcBal,
 				)
 			}

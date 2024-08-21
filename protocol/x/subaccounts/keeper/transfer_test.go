@@ -1394,8 +1394,8 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 		skipSetUpUsdc bool
 
 		// Module account state.
-		subaccountModuleAccBalance int64
-		insuranceFundBalance       int64
+		subaccountModuleAccBalance *big.Int
+		insuranceFundBalance       *big.Int
 		perpetual                  perptypes.Perpetual
 		collateralPoolAddr         sdk.AccAddress
 
@@ -1405,97 +1405,97 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 		// Expectations.
 		panics                              bool
 		expectedErr                         error
-		expectedSubaccountsModuleAccBalance int64
-		expectedInsuranceFundBalance        int64
+		expectedSubaccountsModuleAccBalance *big.Int
+		expectedInsuranceFundBalance        *big.Int
 	}{
 		"success - send to insurance fund module account": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                2500,
-			subaccountModuleAccBalance:          600,
+			insuranceFundBalance:                big.NewInt(2500),
+			subaccountModuleAccBalance:          big.NewInt(600),
 			quantums:                            big.NewInt(500),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 100,  // 600 - 500
-			expectedInsuranceFundBalance:        3000, // 2500 + 500
+			expectedSubaccountsModuleAccBalance: big.NewInt(100),  // 600 - 500
+			expectedInsuranceFundBalance:        big.NewInt(3000), // 2500 + 500
 		},
 		"success - send from insurance fund module account": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                2500,
-			subaccountModuleAccBalance:          600,
+			insuranceFundBalance:                big.NewInt(2500),
+			subaccountModuleAccBalance:          big.NewInt(600),
 			quantums:                            big.NewInt(-500),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 1100, // 600 + 500
-			expectedInsuranceFundBalance:        2000, // 2500 - 500
+			expectedSubaccountsModuleAccBalance: big.NewInt(1100), // 600 + 500
+			expectedInsuranceFundBalance:        big.NewInt(2000), // 2500 - 500
 		},
 		"success - can send zero payment": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                2500,
-			subaccountModuleAccBalance:          600,
+			insuranceFundBalance:                big.NewInt(2500),
+			subaccountModuleAccBalance:          big.NewInt(600),
 			quantums:                            big.NewInt(0),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 600,
-			expectedInsuranceFundBalance:        2500,
+			expectedSubaccountsModuleAccBalance: big.NewInt(600),
+			expectedInsuranceFundBalance:        big.NewInt(2500),
 		},
 		"success - send to isolated insurance fund account": {
 			perpetual:                  constants.IsoUsd_IsolatedMarket,
-			insuranceFundBalance:       2500,
-			subaccountModuleAccBalance: 600,
+			insuranceFundBalance:       big.NewInt(2500),
+			subaccountModuleAccBalance: big.NewInt(600),
 			quantums:                   big.NewInt(500),
 			collateralPoolAddr: authtypes.NewModuleAddress(
 				types.ModuleName + ":" + lib.UintToString(constants.IsoUsd_IsolatedMarket.GetId()),
 			),
-			expectedSubaccountsModuleAccBalance: 100,  // 600 - 500
-			expectedInsuranceFundBalance:        3000, // 2500 + 500
+			expectedSubaccountsModuleAccBalance: big.NewInt(100),  // 600 - 500
+			expectedInsuranceFundBalance:        big.NewInt(3000), // 2500 + 500
 		},
 		"success - send from isolated insurance fund account": {
 			perpetual:                  constants.IsoUsd_IsolatedMarket,
-			insuranceFundBalance:       2500,
-			subaccountModuleAccBalance: 600,
+			insuranceFundBalance:       big.NewInt(2500),
+			subaccountModuleAccBalance: big.NewInt(600),
 			quantums:                   big.NewInt(-500),
 			collateralPoolAddr: authtypes.NewModuleAddress(
 				types.ModuleName + ":" + lib.UintToString(constants.IsoUsd_IsolatedMarket.GetId()),
 			),
-			expectedSubaccountsModuleAccBalance: 1100, // 600 + 500
-			expectedInsuranceFundBalance:        2000, // 2500 - 500
+			expectedSubaccountsModuleAccBalance: big.NewInt(1100), // 600 + 500
+			expectedInsuranceFundBalance:        big.NewInt(2000), // 2500 - 500
 		},
 		"failure - subaccounts module does not have sufficient funds": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                2500,
-			subaccountModuleAccBalance:          300,
+			insuranceFundBalance:                big.NewInt(2500),
+			subaccountModuleAccBalance:          big.NewInt(300),
 			quantums:                            big.NewInt(500),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 300,
-			expectedInsuranceFundBalance:        2500,
+			expectedSubaccountsModuleAccBalance: big.NewInt(300),
+			expectedInsuranceFundBalance:        big.NewInt(2500),
 			expectedErr:                         sdkerrors.ErrInsufficientFunds,
 		},
 		"failure - insurance fund does not have sufficient funds": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                300,
-			subaccountModuleAccBalance:          2500,
+			insuranceFundBalance:                big.NewInt(300),
+			subaccountModuleAccBalance:          big.NewInt(2500),
 			quantums:                            big.NewInt(-500),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 2500,
-			expectedInsuranceFundBalance:        300,
+			expectedSubaccountsModuleAccBalance: big.NewInt(2500),
+			expectedInsuranceFundBalance:        big.NewInt(300),
 			expectedErr:                         sdkerrors.ErrInsufficientFunds,
 		},
 		"failure - isolated market insurance fund does not have sufficient funds": {
 			perpetual:                           constants.IsoUsd_IsolatedMarket,
-			insuranceFundBalance:                300,
-			subaccountModuleAccBalance:          2500,
+			insuranceFundBalance:                big.NewInt(300),
+			subaccountModuleAccBalance:          big.NewInt(2500),
 			quantums:                            big.NewInt(-500),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 2500,
-			expectedInsuranceFundBalance:        300,
+			expectedSubaccountsModuleAccBalance: big.NewInt(2500),
+			expectedInsuranceFundBalance:        big.NewInt(300),
 			expectedErr:                         sdkerrors.ErrInsufficientFunds,
 		},
 		"panics - asset doesn't exist": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                1500,
+			insuranceFundBalance:                big.NewInt(1500),
 			skipSetUpUsdc:                       true,
-			subaccountModuleAccBalance:          500,
+			subaccountModuleAccBalance:          big.NewInt(500),
 			quantums:                            big.NewInt(500),
 			expectedErr:                         errorsmod.Wrap(asstypes.ErrAssetDoesNotExist, lib.UintToString(uint32(0))),
-			expectedSubaccountsModuleAccBalance: 500,
-			expectedInsuranceFundBalance:        1500,
+			expectedSubaccountsModuleAccBalance: big.NewInt(500),
+			expectedInsuranceFundBalance:        big.NewInt(1500),
 			panics:                              true,
 		},
 	}
@@ -1540,24 +1540,24 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 			require.NoError(t, err)
 
 			// Mint asset in the receipt/sender module account for transfer.
-			if tc.insuranceFundBalance > 0 {
+			if tc.insuranceFundBalance.Cmp(big.NewInt(0)) > 0 {
 				err := bank_testutil.FundAccount(
 					ctx,
 					insuranceFundAddr,
 					sdk.Coins{
-						sdk.NewInt64Coin(constants.Usdc.Denom, tc.insuranceFundBalance),
+						sdk.NewCoin(constants.Usdc.Denom, sdkmath.NewIntFromBigInt(tc.insuranceFundBalance)),
 					},
 					*bankKeeper,
 				)
 				require.NoError(t, err)
 			}
 
-			if tc.subaccountModuleAccBalance > 0 {
+			if tc.subaccountModuleAccBalance.Cmp(big.NewInt(0)) > 0 {
 				err := bank_testutil.FundAccount(
 					ctx,
 					tc.collateralPoolAddr,
 					sdk.Coins{
-						sdk.NewInt64Coin(constants.Usdc.Denom, tc.subaccountModuleAccBalance),
+						sdk.NewCoin(constants.Usdc.Denom, sdkmath.NewIntFromBigInt(tc.subaccountModuleAccBalance)),
 					},
 					*bankKeeper,
 				)
@@ -1594,7 +1594,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 			subaccountsModuleAccBalance := bankKeeper.GetBalance(ctx, tc.collateralPoolAddr, constants.Usdc.Denom)
 			require.Equal(
 				t,
-				sdk.NewInt64Coin(constants.Usdc.Denom, tc.expectedSubaccountsModuleAccBalance),
+				sdk.NewCoin(constants.Usdc.Denom, sdkmath.NewIntFromBigInt(tc.expectedSubaccountsModuleAccBalance)),
 				subaccountsModuleAccBalance,
 			)
 
@@ -1604,7 +1604,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				constants.Usdc.Denom,
 			)
 			require.Equal(t,
-				sdk.NewInt64Coin(constants.Usdc.Denom, tc.expectedInsuranceFundBalance),
+				sdk.NewCoin(constants.Usdc.Denom, sdkmath.NewIntFromBigInt(tc.expectedInsuranceFundBalance)),
 				toModuleBalance,
 			)
 		})

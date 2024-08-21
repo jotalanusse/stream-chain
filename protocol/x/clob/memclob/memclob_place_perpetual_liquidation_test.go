@@ -3,6 +3,7 @@ package memclob
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	sdktest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sdk"
@@ -41,14 +42,14 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},
@@ -89,14 +90,14 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob1_Sell70_Price10_ETH,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob1_Sell70_Price10_ETH,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},
@@ -139,31 +140,31 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price15_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 25,
+					matchedQuantums: constants.BaseQuantums_25,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id0_Clob0_Sell10_Price15_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id7_Clob0_Sell25_Price15_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 25,
+					matchedQuantums: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id9_Clob0_Sell20_Price1000,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 			},
 			expectedOperations: []types.Operation{
@@ -214,34 +215,34 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
 					takerOrder:      &constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
 					takerOrder:      &constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id5_Clob0_Buy20_Price10_GTB22,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 				{
 					Order:         constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -294,20 +295,20 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob1_Sell70_Price10_ETH,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedCollatCheck: []expectedMatch{
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id11_Clob1_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob1_Sell70_Price10_ETH,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id2_Clob1_Buy67_Price5_GTB20,
-					RemainingSize: 67,
+					RemainingSize: constants.BaseQuantums_67,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -349,7 +350,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Bob_Num0_Id3_Clob1_Buy10_Price10_GTB20,
 					takerOrder:      &constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15,
-					matchedQuantums: 5,
+					matchedQuantums: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},
@@ -400,7 +401,7 @@ func TestPlacePerpetualLiquidation_Success(t *testing.T) {
 				&tc.order,
 				tc.expectedCollatCheck,
 				tc.expectedOrderStatus,
-				satypes.BaseQuantums(0),
+				satypes.BaseQuantums(dtypes.NewInt(0)),
 				nil,
 				map[int]map[satypes.SubaccountId]satypes.UpdateResult{},
 				constants.GetStatePosition_ZeroPositionSize,
@@ -471,7 +472,7 @@ func TestPlacePerpetualLiquidation_CollatCheckFailure(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 					takerOrder:      &constants.LiquidationOrder_Bob_Num0_Clob0_Buy100_Price20_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},
@@ -500,18 +501,18 @@ func TestPlacePerpetualLiquidation_CollatCheckFailure(t *testing.T) {
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Clob0_Id4_Buy10_Price45_GTB20,
 					takerOrder:      &constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
-					matchedQuantums: 10,
+					matchedQuantums: constants.BaseQuantums_10,
 				},
 				{
 					makerOrder:      &constants.Order_Alice_Num1_Id8_Clob0_Buy15_Price25_GTB31,
 					takerOrder:      &constants.LiquidationOrder_Alice_Num0_Clob0_Sell20_Price25_BTC,
-					matchedQuantums: 15,
+					matchedQuantums: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id5_Clob0_Buy20_Price10_GTB22,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -531,7 +532,7 @@ func TestPlacePerpetualLiquidation_CollatCheckFailure(t *testing.T) {
 				&tc.order,
 				tc.expectedCollatCheck,
 				tc.expectedOrderStatus,
-				satypes.BaseQuantums(0),
+				satypes.BaseQuantums(dtypes.ZeroInt()),
 				nil,
 				tc.collateralizationCheckFailures,
 				constants.GetStatePosition_ZeroPositionSize,

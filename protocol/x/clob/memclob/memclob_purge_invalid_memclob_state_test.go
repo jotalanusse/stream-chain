@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"cosmossdk.io/log"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
@@ -73,11 +74,11 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id0_Clob1_Buy5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10,
-					RemainingSize: 45,
+					RemainingSize: constants.BaseQuantums_45,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -125,15 +126,15 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32,
-					RemainingSize: 35,
+					RemainingSize: constants.BaseQuantums_35,
 				},
 				{
 					Order:         constants.Order_Alice_Num0_Id0_Clob1_Buy5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10,
-					RemainingSize: 45,
+					RemainingSize: constants.BaseQuantums_45,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -146,8 +147,8 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 				clobtest.NewOrderPlacementOperation(constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15),
 			},
 			newOrderFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32.OrderId:           35,
-				constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15.OrderId: 5,
+				constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32.OrderId:           constants.BaseQuantums_35,
+				constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15.OrderId: constants.BaseQuantums_5,
 			},
 
 			fullyFilledOrderIds: []types.OrderId{
@@ -168,7 +169,7 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id0_Clob1_Buy5_Price10_GTB15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -179,7 +180,7 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 				clobtest.NewOrderPlacementOperation(constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32),
 			},
 			newOrderFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32.OrderId: 30,
+				constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32.OrderId: constants.BaseQuantums_30,
 			},
 
 			fullyFilledOrderIds: []types.OrderId{
@@ -191,7 +192,7 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Bob_Num0_Id1_Clob0_Buy35_Price55_GTB32,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -263,7 +264,7 @@ func TestPurgeInvalidMemclobState(t *testing.T) {
 					// Mock out the first 4 calls to GetOrderFillAmount, which is called during test setup.
 					mockMemClobKeeper.On("GetOrderFillAmount", mock.Anything, orderId).Return(
 						false,
-						satypes.BaseQuantums(0),
+						satypes.BaseQuantums(dtypes.ZeroInt()),
 						uint32(0),
 					).Times(4)
 					mockMemClobKeeper.On("AddOrderToOrderbookSubaccountUpdatesCheck", mock.Anything, mock.Anything, mock.Anything).

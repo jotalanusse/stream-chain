@@ -27,8 +27,8 @@ func NewDeleveragingEvent(
 		Liquidated:         indexerLiquidatedSubaccountId,
 		Offsetting:         indexerOffsettingSubaccountId,
 		PerpetualId:        perpetualId,
-		FillAmount:         fillAmount.ToUint64(),
-		TotalQuoteQuantums: totalQuoteQuantums.ToUint64(),
+		FillAmount:         fillAmount.BigInt().Uint64(),
+		TotalQuoteQuantums: totalQuoteQuantums.BigInt().Uint64(),
 		IsBuy:              isBuy,
 		IsFinalSettlement:  isFinalSettlement,
 	}

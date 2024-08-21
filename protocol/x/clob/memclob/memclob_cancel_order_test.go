@@ -436,7 +436,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -451,7 +451,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -459,7 +459,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -542,7 +542,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -557,7 +557,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -565,7 +565,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -647,7 +647,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -685,7 +685,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -700,7 +700,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -708,7 +708,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             false,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -724,7 +724,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          35,
 								ClobPairId:        0,
@@ -810,7 +810,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -825,7 +825,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -833,7 +833,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -849,7 +849,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -864,7 +864,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             false,
 								Subticks:          15,
 								ClobPairId:        0,
@@ -879,7 +879,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          15,
 								ClobPairId:        0,
@@ -887,7 +887,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          15,
 								ClobPairId:        0,
@@ -903,7 +903,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 10,
+								RemainingQuantums: constants.BaseQuantums_10,
 								IsBuy:             true,
 								Subticks:          45,
 								ClobPairId:        1,
@@ -918,7 +918,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          45,
 								ClobPairId:        1,
@@ -926,7 +926,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          45,
 								ClobPairId:        1,
@@ -1082,7 +1082,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1097,7 +1097,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1105,7 +1105,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1121,7 +1121,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 45,
+								RemainingQuantums: constants.BaseQuantums_45,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1207,7 +1207,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1223,7 +1223,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1231,7 +1231,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1248,7 +1248,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 20,
+								RemainingQuantums: constants.BaseQuantums_20,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -1264,7 +1264,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 20,
+								RemainingQuantums: constants.BaseQuantums_20,
 								IsBuy:             true,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -1272,7 +1272,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 20,
+								RemainingQuantums: constants.BaseQuantums_20,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -1288,7 +1288,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1389,7 +1389,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 30,
+								RemainingQuantums: constants.BaseQuantums_30,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1404,7 +1404,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1412,7 +1412,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 						},
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,
@@ -1428,7 +1428,7 @@ func TestCancelOrder_OperationsQueue(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num1: {
 							{
-								RemainingQuantums: 45,
+								RemainingQuantums: constants.BaseQuantums_45,
 								IsBuy:             true,
 								Subticks:          50,
 								ClobPairId:        0,

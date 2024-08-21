@@ -17,7 +17,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
-	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/stretchr/testify/require"
@@ -65,7 +64,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 							types.ClobPair_STATUS_ACTIVE,
 							clobPair.QuantumConversionExponent,
 							types.SubticksPerTick(clobPair.GetSubticksPerTick()),
-							satypes.BaseQuantums(clobPair.GetStepBaseQuantums().BigInt().Uint64()),
+							clobPair.GetStepBaseQuantums(),
 						),
 					),
 				).Once().Return()

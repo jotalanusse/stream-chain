@@ -21,7 +21,7 @@ func TestOrder_GetBaseQuantums(t *testing.T) {
 	}
 
 	quantums := order.GetBaseQuantums()
-	require.Equal(t, satypes.BaseQuantums(100), quantums)
+	require.Equal(t, satypes.BaseQuantums(dtypes.NewInt(100)), quantums)
 }
 
 func TestOrder_GetBigQuantums(t *testing.T) {

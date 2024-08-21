@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -14,13 +15,13 @@ var testLiquidationOrder = types.NewLiquidationOrder(
 	constants.Alice_Num0,
 	constants.ClobPair_Btc,
 	false,
-	100,
+	satypes.BaseQuantums(dtypes.NewInt(100)),
 	200,
 )
 
 func TestLiquidationOrder_GetBaseQuantums(t *testing.T) {
 	quantums := testLiquidationOrder.GetBaseQuantums()
-	require.Equal(t, satypes.BaseQuantums(100), quantums)
+	require.Equal(t, satypes.BaseQuantums(dtypes.NewInt(100)), quantums)
 }
 
 func TestLiquidationOrder_GetOrderSubticks(t *testing.T) {
@@ -48,7 +49,7 @@ func TestLiquidationOrder_IsBuy(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Btc,
 				tc.side,
-				100,
+				constants.BaseQuantums_100,
 				200,
 			)
 
@@ -72,7 +73,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Btc,
 				true,
-				10,
+				constants.BaseQuantums_10,
 				10,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number0_Perpetual0,
@@ -82,7 +83,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num1,
 				constants.ClobPair_Btc,
 				true,
-				10,
+				constants.BaseQuantums_10,
 				10,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number1_Perpetual0,
@@ -92,7 +93,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num1,
 				constants.ClobPair_Eth,
 				true,
-				10,
+				constants.BaseQuantums_10,
 				10,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number0_Perpetual1,
@@ -102,7 +103,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Btc2,
 				true,
-				10,
+				constants.BaseQuantums_10,
 				10,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number0_Perpetual0,
@@ -112,7 +113,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Btc2,
 				false,
-				10,
+				constants.BaseQuantums_10,
 				10,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number0_Perpetual0,
@@ -122,7 +123,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Btc2,
 				false,
-				77,
+				constants.BaseQuantums_77,
 				10,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number0_Perpetual0,
@@ -132,7 +133,7 @@ func TestLiquidationOrder_GetOrderHash(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Btc2,
 				false,
-				10,
+				constants.BaseQuantums_10,
 				88,
 			),
 			expectedHash: constants.LiquidationOrderHash_Alice_Number0_Perpetual0,
@@ -188,7 +189,7 @@ func TestNewLiquidationOrder_PanicsOnNonPerpetualClob(t *testing.T) {
 				constants.Alice_Num0,
 				constants.ClobPair_Asset,
 				false,
-				1,
+				constants.BaseQuantums_1,
 				1,
 			)
 		},

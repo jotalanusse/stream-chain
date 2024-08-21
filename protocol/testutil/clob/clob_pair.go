@@ -26,7 +26,7 @@ func WithId(id uint32) ClobModifierOption {
 
 func WithStepBaseQuantums(bq satypes.BaseQuantums) ClobModifierOption {
 	return func(cp *clobtypes.ClobPair) {
-		cp.StepBaseQuantums = dtypes.NewIntFromBigInt(bq.ToBigInt())
+		cp.StepBaseQuantums = dtypes.NewIntFromBigInt(bq.BigInt())
 	}
 }
 

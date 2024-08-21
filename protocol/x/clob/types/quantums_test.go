@@ -6,8 +6,10 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	big_testutil "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/big"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -22,31 +24,31 @@ func TestFillAmountToQuoteQuantums(t *testing.T) {
 		bigExpectedQuoteQuantums  *big.Int
 	}{
 		"Converts from base to quote quantums": {
-			baseQuantums:              1,
+			baseQuantums:              constants.BaseQuantums_1,
 			subticks:                  1,
 			quantumConversionExponent: 1,
 			bigExpectedQuoteQuantums:  big.NewInt(10),
 		},
 		"quantumConversionExponent is negative": {
-			baseQuantums:              1_000,
+			baseQuantums:              constants.BaseQuantums_1_000,
 			subticks:                  5_000_000,
 			quantumConversionExponent: -4,
 			bigExpectedQuoteQuantums:  big.NewInt(500000),
 		},
 		"quantumConversionExponent is zero": {
-			baseQuantums:              5_000_000,
+			baseQuantums:              constants.BaseQuantums_5_000_000,
 			subticks:                  1,
 			quantumConversionExponent: 0,
 			bigExpectedQuoteQuantums:  big.NewInt(5_000_000),
 		},
 		"Calculation rounds down and can return 0 quoteQuantums": {
-			baseQuantums:              9,
+			baseQuantums:              constants.BaseQuantums_9,
 			subticks:                  1,
 			quantumConversionExponent: -1,
 			bigExpectedQuoteQuantums:  big.NewInt(0),
 		},
-		"Calculation overflows": {
-			baseQuantums:              math.MaxUint64,
+		"Calculation handles uint64 handles overflow": {
+			baseQuantums:              satypes.BaseQuantums(dtypes.NewIntFromUint64(math.MaxUint64)),
 			subticks:                  1,
 			quantumConversionExponent: 6,
 			bigExpectedQuoteQuantums:  big_testutil.MustFirst(new(big.Int).SetString("18446744073709551615000000", 10)),

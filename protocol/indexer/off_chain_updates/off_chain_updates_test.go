@@ -21,7 +21,7 @@ var (
 	orderIdHash                    = constants.OrderIdHash_Alice_Number0_Id0
 	order                          = constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15
 	indexerOrder                   = v1.OrderToIndexerOrder(constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15)
-	totalFilledAmount              = satypes.BaseQuantums(5)
+	totalFilledAmount              = satypes.NewBaseQuantumsFromUint64(5)
 	orderStatus                    = clobtypes.Undercollateralized
 	orderError               error = nil
 	reason                         = sharedtypes.OrderRemovalReason_ORDER_REMOVAL_REASON_UNDERCOLLATERALIZED
@@ -39,7 +39,7 @@ var (
 		UpdateMessage: &ocutypes.OffChainUpdateV1_OrderUpdate{
 			OrderUpdate: &ocutypes.OrderUpdateV1{
 				OrderId:             &indexerOrder.OrderId,
-				TotalFilledQuantums: totalFilledAmount.ToUint64(),
+				TotalFilledQuantums: totalFilledAmount.BigInt().Uint64(),
 			},
 		},
 	}

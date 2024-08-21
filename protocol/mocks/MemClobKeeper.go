@@ -5,8 +5,10 @@ package mocks
 import (
 	big "math/big"
 
-	indexer_manager "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
+	dtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+
+	indexer_manager "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 
 	log "cosmossdk.io/log"
 
@@ -55,24 +57,24 @@ func (_m *MemClobKeeper) AddOrderToOrderbookSubaccountUpdatesCheck(ctx types.Con
 }
 
 // AddPreexistingStatefulOrder provides a mock function with given fields: ctx, order, memclob
-func (_m *MemClobKeeper) AddPreexistingStatefulOrder(ctx types.Context, order *clobtypes.Order, memclob clobtypes.MemClob) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
+func (_m *MemClobKeeper) AddPreexistingStatefulOrder(ctx types.Context, order *clobtypes.Order, memclob clobtypes.MemClob) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
 	ret := _m.Called(ctx, order, memclob)
 
 	if len(ret) == 0 {
 		panic("no return value specified for AddPreexistingStatefulOrder")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 clobtypes.OrderStatus
 	var r2 *clobtypes.OffchainUpdates
 	var r3 error
-	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.Order, clobtypes.MemClob) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.Order, clobtypes.MemClob) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
 		return rf(ctx, order, memclob)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.Order, clobtypes.MemClob) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.Order, clobtypes.MemClob) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, order, memclob)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, *clobtypes.Order, clobtypes.MemClob) clobtypes.OrderStatus); ok {
@@ -200,7 +202,7 @@ func (_m *MemClobKeeper) GetLongTermOrderPlacement(ctx types.Context, orderId cl
 }
 
 // GetOrderFillAmount provides a mock function with given fields: ctx, orderId
-func (_m *MemClobKeeper) GetOrderFillAmount(ctx types.Context, orderId clobtypes.OrderId) (bool, subaccountstypes.BaseQuantums, uint32) {
+func (_m *MemClobKeeper) GetOrderFillAmount(ctx types.Context, orderId clobtypes.OrderId) (bool, dtypes.SerializableInt, uint32) {
 	ret := _m.Called(ctx, orderId)
 
 	if len(ret) == 0 {
@@ -208,9 +210,9 @@ func (_m *MemClobKeeper) GetOrderFillAmount(ctx types.Context, orderId clobtypes
 	}
 
 	var r0 bool
-	var r1 subaccountstypes.BaseQuantums
+	var r1 dtypes.SerializableInt
 	var r2 uint32
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.OrderId) (bool, subaccountstypes.BaseQuantums, uint32)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.OrderId) (bool, dtypes.SerializableInt, uint32)); ok {
 		return rf(ctx, orderId)
 	}
 	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.OrderId) bool); ok {
@@ -219,10 +221,10 @@ func (_m *MemClobKeeper) GetOrderFillAmount(ctx types.Context, orderId clobtypes
 		r0 = ret.Get(0).(bool)
 	}
 
-	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.OrderId) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.OrderId) dtypes.SerializableInt); ok {
 		r1 = rf(ctx, orderId)
 	} else {
-		r1 = ret.Get(1).(subaccountstypes.BaseQuantums)
+		r1 = ret.Get(1).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(2).(func(types.Context, clobtypes.OrderId) uint32); ok {
@@ -391,24 +393,24 @@ func (_m *MemClobKeeper) ProcessSingleMatch(ctx types.Context, matchWithOrders *
 }
 
 // ReplayPlaceOrder provides a mock function with given fields: ctx, msg
-func (_m *MemClobKeeper) ReplayPlaceOrder(ctx types.Context, msg *clobtypes.MsgPlaceOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
+func (_m *MemClobKeeper) ReplayPlaceOrder(ctx types.Context, msg *clobtypes.MsgPlaceOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
 	ret := _m.Called(ctx, msg)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ReplayPlaceOrder")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 clobtypes.OrderStatus
 	var r2 *clobtypes.OffchainUpdates
 	var r3 error
-	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
 		return rf(ctx, msg)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, msg)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, *clobtypes.MsgPlaceOrder) clobtypes.OrderStatus); ok {

@@ -1,9 +1,10 @@
 package memclob
 
 import (
-	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	"math"
+
+	errorsmod "cosmossdk.io/errors"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -275,7 +276,7 @@ func (m *memclobOpenOrders) createOrderbook(
 		panic("subticksPerTick must be greater than zero")
 	}
 
-	if minOrderBaseQuantums == 0 {
+	if minOrderBaseQuantums.Cmp(satypes.ZeroBaseQuantums()) > 0 {
 		panic("minOrderBaseQuantums must be greater than zero")
 	}
 

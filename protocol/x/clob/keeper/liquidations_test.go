@@ -338,7 +338,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -446,7 +446,7 @@ func TestPlacePerpetualLiquidation_validateLiquidationAgainstClobPairStatus(t *t
 				ctx,
 				clobPair.Id,
 				clobtest.MustPerpetualId(clobPair),
-				satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(clobPair.StepBaseQuantums),
 				clobPair.QuantumConversionExponent,
 				clobPair.SubticksPerTick,
 				tc.status,
@@ -1242,7 +1242,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -1272,7 +1272,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				ctx,
 				constants.ClobPair_Eth.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Eth),
-				satypes.BaseQuantums(constants.ClobPair_Eth.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Eth.StepBaseQuantums),
 				constants.ClobPair_Eth.QuantumConversionExponent,
 				constants.ClobPair_Eth.SubticksPerTick,
 				constants.ClobPair_Eth.Status,
@@ -1370,7 +1370,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(100_000_000),
+			expectedFilledSize:  constants.BaseQuantums_100_000_000,
 			expectedOrderStatus: types.Success,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1432,7 +1432,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(25_000_000),
+			expectedFilledSize:  constants.BaseQuantums_25_000_000,
 			expectedOrderStatus: types.Success,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1515,7 +1515,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(0),
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1577,7 +1577,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(25_000_000),
+			expectedFilledSize:  constants.BaseQuantums_25_000_000,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1658,7 +1658,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(0),
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1707,7 +1707,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(25_000_000),
+			expectedFilledSize:  constants.BaseQuantums_25_000_000,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1792,7 +1792,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(0),
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1879,7 +1879,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(25_000_000),
+			expectedFilledSize:  constants.BaseQuantums_25_000_000,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -1964,7 +1964,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			},
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price50500, // Liquidation order at $50,500
 
-			expectedFilledSize:  satypes.BaseQuantums(100_000_000),
+			expectedFilledSize:  constants.BaseQuantums_100_000_000,
 			expectedOrderStatus: types.Success,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -2038,7 +2038,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			// attempt to fill against the high price order above.
 			order: constants.LiquidationOrder_Carl_Num0_Clob0_Buy1BTC_Price60000,
 
-			expectedFilledSize:  satypes.BaseQuantums(25_000_000),
+			expectedFilledSize:  constants.BaseQuantums_25_000_000,
 			expectedOrderStatus: types.LiquidationRequiresDeleveraging,
 			expectedSubaccountLiquidationInfo: map[satypes.SubaccountId]types.SubaccountLiquidationInfo{
 				constants.Carl_Num0: {
@@ -2232,7 +2232,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -2280,7 +2280,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 				)
 			}
 
-			if tc.expectedFilledSize == 0 {
+			if tc.expectedFilledSize.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 				// Bankruptcy price in DeleveragingEvent is not exposed by API. It is also
 				// being tested in other e2e tests. So we don't test it here.
 				mockIndexerEventManager.On("AddTxnEvent",
@@ -2352,7 +2352,7 @@ func TestPlacePerpetualLiquidation_SendOffchainMessages(t *testing.T) {
 		ctx,
 		constants.ClobPair_Btc.Id,
 		clobtest.MustPerpetualId(constants.ClobPair_Btc),
-		satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+		satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 		constants.ClobPair_Btc.QuantumConversionExponent,
 		constants.ClobPair_Btc.SubticksPerTick,
 		constants.ClobPair_Btc.Status,
@@ -2361,7 +2361,7 @@ func TestPlacePerpetualLiquidation_SendOffchainMessages(t *testing.T) {
 
 	order := constants.LiquidationOrder_Dave_Num0_Clob0_Sell1BTC_Price50000
 	memClob.On("PlacePerpetualLiquidation", ctx, order).Return(
-		satypes.BaseQuantums(100_000_000),
+		constants.BaseQuantums_100_000_000,
 		types.Success,
 		constants.TestOffchainUpdates,
 		nil,
@@ -3474,7 +3474,7 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		// Parameters.
 		perpetualId uint32
 		isBuy       bool
-		fillAmount  uint64
+		fillAmount  dtypes.SerializableInt
 		subticks    types.Subticks
 
 		liquidationConfig *types.LiquidationsConfig
@@ -3493,8 +3493,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		`Fully closing one long position above the bankruptcy price and pays max liquidation fee`: {
 			perpetualId: 0,
 			isBuy:       false,
-			fillAmount:  10_000_000,     // -0.1 BTC delta.
-			subticks:    56_100_000_000, // 10% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // -0.1 BTC delta.
+			subticks:    56_100_000_000,                    // 10% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3517,8 +3517,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		when MaxLiquidationFeePpm is 25_000`: {
 			perpetualId: 0,
 			isBuy:       false,
-			fillAmount:  10_000_000,     // -0.1 BTC delta.
-			subticks:    56_100_000_000, // 10% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // -0.1 BTC delta.
+			subticks:    56_100_000_000,                    // 10% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3547,8 +3547,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		when MaxLiquidationFeePpm is one million`: {
 			perpetualId: 0,
 			isBuy:       false,
-			fillAmount:  10_000_000,     // -0.1 BTC delta.
-			subticks:    56_100_000_000, // 10% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // -0.1 BTC delta.
+			subticks:    56_100_000_000,                    // 10% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3576,8 +3576,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		`Fully closing one short position above the bankruptcy price and pays max liquidation fee`: {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000,     // 0.1 BTC delta.
-			subticks:    44_100_000_000, // 10% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    44_100_000_000,                    // 10% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3600,8 +3600,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		when MaxLiquidationFeePpm is 25_000`: {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000,     // 0.1 BTC delta.
-			subticks:    44_100_000_000, // 10% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    44_100_000_000,                    // 10% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3630,8 +3630,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		when MaxLiquidationFeePpm is one million`: {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000,     // 0.1 BTC delta.
-			subticks:    44_100_000_000, // 10% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    44_100_000_000,                    // 10% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3660,8 +3660,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		liquidation fee`: {
 			perpetualId: 0,
 			isBuy:       false,
-			fillAmount:  10_000_000,     // -0.1 BTC delta.
-			subticks:    51_051_000_000, // 0.1% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // -0.1 BTC delta.
+			subticks:    51_051_000_000,                    // 0.1% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3684,8 +3684,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		liquidation fee`: {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000,     // 0.1 BTC delta.
-			subticks:    48_951_000_000, // 0.1% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    48_951_000_000,                    // 0.1% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3707,8 +3707,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		`Fully closing one long position at the bankruptcy price and the delta is 0`: {
 			perpetualId: 0,
 			isBuy:       false,
-			fillAmount:  10_000_000,     // -0.1 BTC delta.
-			subticks:    51_000_000_000, // 0% above bankruptcy price (equal).
+			fillAmount:  constants.BaseQuantums_10_000_000, // -0.1 BTC delta.
+			subticks:    51_000_000_000,                    // 0% above bankruptcy price (equal).
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3730,8 +3730,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		`Fully closing one short position above the bankruptcy price and the delta is 0`: {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000,     // 0.1 BTC delta.
-			subticks:    49_000_000_000, // 0% above bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    49_000_000_000,                    // 0% above bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3754,8 +3754,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		cover the loss`: {
 			perpetualId: 0,
 			isBuy:       false,
-			fillAmount:  10_000_000,     // -0.1 BTC delta.
-			subticks:    50_490_000_000, // 1% below bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // -0.1 BTC delta.
+			subticks:    50_490_000_000,                    // 1% below bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3777,8 +3777,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		cover the loss`: {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000,     // 0.1 BTC delta.
-			subticks:    49_490_000_000, // 1% below bankruptcy price.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    49_490_000_000,                    // 1% below bankruptcy price.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3799,7 +3799,7 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		"Returns error when delta quantums is zero": {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  0,
+			fillAmount:  constants.BaseQuantums_0,
 			subticks:    50_000_000_000,
 
 			perpetuals: []perptypes.Perpetual{
@@ -3817,8 +3817,8 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 		"Succeeds when delta quote quantums is zero": {
 			perpetualId: 0,
 			isBuy:       true,
-			fillAmount:  10_000_000, // 0.1 BTC delta.
-			subticks:    1,          // Quote quantums for 0.1 BTC is 1/10, rounded to zero.
+			fillAmount:  constants.BaseQuantums_10_000_000, // 0.1 BTC delta.
+			subticks:    1,                                 // Quote quantums for 0.1 BTC is 1/10, rounded to zero.
 
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
@@ -3893,7 +3893,7 @@ func TestGetLiquidationInsuranceFundDelta(t *testing.T) {
 				ks.Ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -4634,7 +4634,7 @@ func TestGetPerpetualPositionToLiquidate(t *testing.T) {
 					ks.Ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -4872,7 +4872,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -5210,7 +5210,7 @@ func TestGetMaxAndMinPositionNotionalLiquidatable(t *testing.T) {
 				ks.Ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -5366,7 +5366,7 @@ func TestSortLiquidationOrders(t *testing.T) {
 				ks.Ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,

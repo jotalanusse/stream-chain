@@ -36,7 +36,7 @@ func TestConditionalOrder(t *testing.T) {
 
 		// these expectations are asserted after all blocks are processed
 		expectedExistInState    map[clobtypes.OrderId]bool
-		expectedOrderFillAmount map[clobtypes.OrderId]uint64
+		expectedOrderFillAmount map[clobtypes.OrderId]satypes.BaseQuantums
 		expectedSubaccounts     []satypes.Subaccount
 	}{
 		"TakeProfit/Buy conditional order is placed but not triggered (no price update)": {
@@ -415,9 +415,9 @@ func TestConditionalOrder(t *testing.T) {
 				3: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: true},
 				4: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    25_000_000,
-				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"StopLoss/Buy conditional order is placed, triggered, and partially matched": {
@@ -444,9 +444,9 @@ func TestConditionalOrder(t *testing.T) {
 				3: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: true},
 				4: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    25_000_000,
-				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"TakeProfit/Sell conditional order is placed, triggered, and partially matched": {
@@ -473,9 +473,9 @@ func TestConditionalOrder(t *testing.T) {
 				3: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: true},
 				4: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          25_000_000,
-				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"StopLoss/Sell conditional order is placed, triggered, and partially matched": {
@@ -502,9 +502,9 @@ func TestConditionalOrder(t *testing.T) {
 				3: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: true},
 				4: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          25_000_000,
-				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"Triggered conditional orders can not be untriggered": {
@@ -759,8 +759,8 @@ func TestConditionalOrder(t *testing.T) {
 			expectedExistInState: map[clobtypes.OrderId]bool{
 				constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTBT10_TP_49999_PO.OrderId: true,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTBT10_TP_49999_PO.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTBT10_TP_49999_PO.OrderId: constants.BaseQuantums_25_000_000,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -1100,7 +1100,7 @@ func TestConditionalOrder(t *testing.T) {
 			for orderId, expectedFillAmount := range tc.expectedOrderFillAmount {
 				exists, fillAmount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, orderId)
 				require.True(t, exists)
-				require.Equal(t, expectedFillAmount, fillAmount.ToUint64())
+				require.Equal(t, expectedFillAmount, fillAmount)
 			}
 
 			for _, subaccount := range tc.expectedSubaccounts {
@@ -1121,7 +1121,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 
 		// these expectations are asserted after all blocks are processed
 		expectedExistInState    map[clobtypes.OrderId]bool
-		expectedOrderFillAmount map[clobtypes.OrderId]uint64
+		expectedOrderFillAmount map[clobtypes.OrderId]satypes.BaseQuantums
 		expectedSubaccounts     []satypes.Subaccount
 	}{
 		"TakeProfit/Buy conditional order is placed and not triggered by matched price": {
@@ -1730,9 +1730,9 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 				3: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: true},
 				4: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    25_000_000,
-				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_TP_49999.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"StopLoss/Buy conditional order is placed, triggered, and partially matched": {
@@ -1761,9 +1761,9 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 				3: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: true},
 				4: {constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    25_000_000,
-				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50000_GTB11.OrderId:                    constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Alice_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10_SL_50001.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"TakeProfit/Sell conditional order is placed, triggered, and partially matched": {
@@ -1792,9 +1792,9 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 				3: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: true},
 				4: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          25_000_000,
-				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_TP_50001.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"StopLoss/Sell conditional order is placed, triggered, and partially matched": {
@@ -1823,9 +1823,9 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 				3: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: true},
 				4: {constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: true},
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          25_000_000,
-				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price50000.OrderId:                          constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Bob_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10_SL_49999.OrderId: constants.BaseQuantums_25_000_000,
 			},
 		},
 		"StopLoss/Buy IOC conditional order can place, trigger, partially match, and be removed from state": {
@@ -2053,8 +2053,8 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 			expectedExistInState: map[clobtypes.OrderId]bool{
 				constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTBT10_TP_49999_PO.OrderId: true,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTBT10_TP_49999_PO.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTBT10_TP_49999_PO.OrderId: constants.BaseQuantums_25_000_000,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -2276,7 +2276,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 			for orderId, expectedFillAmount := range tc.expectedOrderFillAmount {
 				exists, fillAmount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, orderId)
 				require.True(t, exists)
-				require.Equal(t, expectedFillAmount, fillAmount.ToUint64())
+				require.Equal(t, expectedFillAmount, fillAmount)
 			}
 
 			for _, subaccount := range tc.expectedSubaccounts {

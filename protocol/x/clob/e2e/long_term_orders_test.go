@@ -379,7 +379,7 @@ func TestCancelStatefulOrder(t *testing.T) {
 				tc.expectations.orderId,
 			)
 			require.False(t, exists)
-			require.Equal(t, uint64(0), fillAmount.ToUint64())
+			require.Equal(t, constants.BaseQuantums_0, fillAmount)
 		})
 	}
 }
@@ -625,13 +625,13 @@ func TestPlaceLongTermOrder(t *testing.T) {
 
 		// Expectations to verify at end of test
 		orderShouldRestOnOrderbook bool
-		expectedOrderFillAmount    uint64
+		expectedOrderFillAmount    satypes.BaseQuantums
 		expectedSubaccounts        []satypes.Subaccount
 	}{
 		"Test placing an order": {
 			order:                      LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order,
 			orderShouldRestOnOrderbook: true,
-			expectedOrderFillAmount:    0,
+			expectedOrderFillAmount:    constants.BaseQuantums_0,
 			expectedSubaccounts:        []satypes.Subaccount{aliceSubaccount},
 
 			ordersAndExpectationsPerBlock: []ordersAndExpectations{
@@ -647,7 +647,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 						off_chain_updates.MustCreateOrderUpdateMessage(
 							ctx,
 							LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.OrderId,
-							0,
+							constants.BaseQuantums_0,
 						),
 					},
 					// Stateful order placement event is an onchain event
@@ -692,7 +692,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 		"Test matching an order fully as taker": {
 			order:                      LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order,
 			orderShouldRestOnOrderbook: false,
-			expectedOrderFillAmount:    0, // order is fully-filled and removed from state
+			expectedOrderFillAmount:    constants.BaseQuantums_0, // order is fully-filled and removed from state
 			expectedSubaccounts: []satypes.Subaccount{
 				{
 					Id: &constants.Alice_Num0,
@@ -768,7 +768,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 						off_chain_updates.MustCreateOrderUpdateMessage(
 							ctx,
 							PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
-							0,
+							constants.BaseQuantums_0,
 						).AddHeader(msgsender.MessageHeader{
 							Key:   msgsender.TransactionHashHeaderKey,
 							Value: tmhash.Sum(CheckTx_PlaceOrder_Bob_Num0_Id0_Sell1_Price50000_GTB20.Tx),
@@ -939,7 +939,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()), // $ amount
+													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().BigInt()), // $ amount
 													MakerOrderId: PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
 												},
 											},
@@ -955,7 +955,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 		"Test post-only order placed on the book": {
 			order:                      LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy10_Price49999_GTBT15_PO.Order,
 			orderShouldRestOnOrderbook: true,
-			expectedOrderFillAmount:    0,
+			expectedOrderFillAmount:    constants.BaseQuantums_0,
 			expectedSubaccounts:        []satypes.Subaccount{aliceSubaccount, bobSubaccount},
 
 			ordersAndExpectationsPerBlock: []ordersAndExpectations{
@@ -976,7 +976,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 						off_chain_updates.MustCreateOrderUpdateMessage(
 							ctx,
 							PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
-							0,
+							constants.BaseQuantums_0,
 						).AddHeader(msgsender.MessageHeader{
 							Key:   msgsender.TransactionHashHeaderKey,
 							Value: tmhash.Sum(CheckTx_PlaceOrder_Bob_Num0_Id0_Sell1_Price50000_GTB20.Tx),
@@ -987,7 +987,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 						off_chain_updates.MustCreateOrderUpdateMessage(
 							ctx,
 							LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy10_Price49999_GTBT15_PO.Order.OrderId,
-							0,
+							constants.BaseQuantums_0,
 						),
 					},
 					expectedOnchainMessagesAfterBlock: []msgsender.Message{indexer_manager.CreateIndexerBlockEventMessage(
@@ -1030,7 +1030,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 			order:                      LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order,
 			orderShouldRestOnOrderbook: false,
 			// order is fully-filled and removed from state, resulting in zero fill amount in state
-			expectedOrderFillAmount: 0,
+			expectedOrderFillAmount: constants.BaseQuantums_0,
 			expectedSubaccounts: []satypes.Subaccount{
 				{
 					Id: &constants.Alice_Num0,
@@ -1117,7 +1117,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 						off_chain_updates.MustCreateOrderUpdateMessage(
 							ctx,
 							PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
-							0,
+							constants.BaseQuantums_0,
 						).AddHeader(msgsender.MessageHeader{
 							Key:   msgsender.TransactionHashHeaderKey,
 							Value: tmhash.Sum(CheckTx_PlaceOrder_Bob_Num0_Id0_Sell1_Price50000_GTB20.Tx),
@@ -1296,7 +1296,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()), // $ amount
+													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().BigInt()), // $ amount
 													MakerOrderId: PlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
 												},
 											},
@@ -1474,7 +1474,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 											&PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()),
+													FillAmount:   dtypes.NewIntFromBigInt(PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().BigInt()),
 													MakerOrderId: LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.OrderId,
 												},
 											},
@@ -1569,7 +1569,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 			require.Equal(
 				t,
 				tc.expectedOrderFillAmount,
-				fillAmount.ToUint64(),
+				fillAmount,
 				"Fill amount should be %d, not %d",
 				tc.expectedOrderFillAmount,
 				fillAmount,
@@ -1892,7 +1892,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 											&Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order,
 											[]clobtypes.MakerFill{
 												{
-													FillAmount:   dtypes.NewIntFromBigInt(LongTermPlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().ToBigInt()),
+													FillAmount:   dtypes.NewIntFromBigInt(LongTermPlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.GetBaseQuantums().BigInt()),
 													MakerOrderId: LongTermPlaceOrder_Bob_Num0_Id0_Clob0_Sell1_Price50000_GTB20.Order.OrderId,
 												},
 											},
@@ -1997,7 +1997,7 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 			require.Equal(
 				t,
 				tc.expectedOrderFillAmount,
-				fillAmount.ToUint64(),
+				fillAmount,
 				"Fill amount should be %d, not %d",
 				tc.expectedOrderFillAmount,
 				fillAmount,

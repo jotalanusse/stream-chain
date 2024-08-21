@@ -29,7 +29,7 @@ func NewTransferEvent(
 			},
 		},
 		AssetId: assetId,
-		Amount:  amount.ToUint64(),
+		Amount:  amount.BigInt().Uint64(),
 	}
 }
 
@@ -44,7 +44,7 @@ func NewDepositEvent(
 	indexerRecipientSubaccountId := v1.SubaccountIdToIndexerSubaccountId(recipientSubaccountId)
 	return &TransferEventV1{
 		AssetId: assetId,
-		Amount:  amount.ToUint64(),
+		Amount:  amount.BigInt().Uint64(),
 		Sender: &SourceOfFunds{
 			Source: &SourceOfFunds_Address{
 				Address: senderAddress,
@@ -69,7 +69,7 @@ func NewWithdrawEvent(
 	indexerSenderSubaccountId := v1.SubaccountIdToIndexerSubaccountId(senderSubaccountId)
 	return &TransferEventV1{
 		AssetId: assetId,
-		Amount:  amount.ToUint64(),
+		Amount:  amount.BigInt().Uint64(),
 		Sender: &SourceOfFunds{
 			Source: &SourceOfFunds_SubaccountId{
 				SubaccountId: &indexerSenderSubaccountId,

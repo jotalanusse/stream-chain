@@ -191,7 +191,7 @@ func TestGetPricePremiumForPerpetual(t *testing.T) {
 				ks.Ctx,
 				tc.args.clobPair.Id,
 				clobtest.MustPerpetualId(tc.args.clobPair),
-				satypes.BaseQuantums(tc.args.clobPair.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(tc.args.clobPair.StepBaseQuantums),
 				tc.args.clobPair.QuantumConversionExponent,
 				tc.args.clobPair.SubticksPerTick,
 				tc.args.clobPair.Status,

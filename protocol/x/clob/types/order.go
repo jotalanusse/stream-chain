@@ -52,7 +52,7 @@ func (o *Order) GetOrderTextString() string {
 // GetBaseQuantums returns the quantums of this order.
 // This function is necessary for the `Order` type to implement the `MatchableOrder` interface.
 func (o *Order) GetBaseQuantums() satypes.BaseQuantums {
-	return satypes.BaseQuantums(o.Quantums.BigInt().Uint64())
+	return satypes.BaseQuantums(o.Quantums)
 }
 
 // GetBigQuantums returns the quantums of this order. The returned quantums is positive

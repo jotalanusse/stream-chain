@@ -4,6 +4,7 @@ import (
 	"math"
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	testutil_memclob "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/memclob"
@@ -68,9 +69,15 @@ func TestRemoveOrderIfFilled(t *testing.T) {
 			existingOrders: []types.Order{
 				constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
 			},
-			order:               constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
-			orderFilledQuantums: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.GetBaseQuantums() * 2,
-
+			order: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
+			orderFilledQuantums: func() satypes.BaseQuantums {
+				baseQuantums := dtypes.ZeroInt()
+				baseQuantums.Mul(
+					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.GetBaseQuantums(),
+					dtypes.NewInt(2),
+				)
+				return baseQuantums
+			}(),
 			expectedTotalLevels:                          0,
 			expectedBestBid:                              0,
 			expectedBestAsk:                              math.MaxUint64,
@@ -84,9 +91,15 @@ func TestRemoveOrderIfFilled(t *testing.T) {
 			existingOrders: []types.Order{
 				constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
 			},
-			order:               constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
-			orderFilledQuantums: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.GetBaseQuantums() - 1,
-
+			order: constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15,
+			orderFilledQuantums: func() satypes.BaseQuantums {
+				baseQuantums := dtypes.ZeroInt()
+				baseQuantums.Sub(
+					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.GetBaseQuantums(),
+					dtypes.NewInt(1),
+				)
+				return baseQuantums
+			}(),
 			expectedTotalLevels:                          1,
 			expectedBestBid:                              10,
 			expectedBestAsk:                              math.MaxUint64,
@@ -116,9 +129,15 @@ func TestRemoveOrderIfFilled(t *testing.T) {
 			existingOrders: []types.Order{
 				constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 			},
-			order:               constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
-			orderFilledQuantums: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.GetBaseQuantums() * 2,
-
+			order: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
+			orderFilledQuantums: func() satypes.BaseQuantums {
+				baseQuantums := dtypes.ZeroInt()
+				baseQuantums.Mul(
+					constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.GetBaseQuantums(),
+					dtypes.NewInt(2),
+				)
+				return baseQuantums
+			}(),
 			expectedTotalLevels:                          0,
 			expectedBestBid:                              0,
 			expectedBestAsk:                              math.MaxUint64,
@@ -132,9 +151,15 @@ func TestRemoveOrderIfFilled(t *testing.T) {
 			existingOrders: []types.Order{
 				constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
 			},
-			order:               constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
-			orderFilledQuantums: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.GetBaseQuantums() - 1,
-
+			order: constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15,
+			orderFilledQuantums: func() satypes.BaseQuantums {
+				baseQuantums := dtypes.ZeroInt()
+				baseQuantums.Sub(
+					constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.GetBaseQuantums(),
+					dtypes.NewInt(1),
+				)
+				return baseQuantums
+			}(),
 			expectedTotalLevels:                          1,
 			expectedBestBid:                              0,
 			expectedBestAsk:                              15,
@@ -334,7 +359,7 @@ func TestRemoveOrderIfFilled(t *testing.T) {
 
 			// Set initial fill amount to `0` for all orders.
 			initialCall := memClobKeeper.On("GetOrderFillAmount", mock.Anything, mock.Anything).
-				Return(true, satypes.BaseQuantums(0), uint32(0))
+				Return(true, satypes.ZeroBaseQuantums(), uint32(0))
 
 			// Create all unique orderbooks.
 			createAllOrderbooksForOrders(

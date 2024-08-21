@@ -108,7 +108,7 @@ func createCollatCheckExpectationsFromPendingMatches(
 
 	// If this is not a liquidation and taker order size will be added to the book, populate the
 	// expected parameters of the collateralization check for adding an order to the orderbook.
-	if !order.IsLiquidation() && addToOrderbookSize > 0 {
+	if !order.IsLiquidation() && addToOrderbookSize.Cmp(satypes.ZeroBaseQuantums()) == 1 {
 		orderbookPendingMatches := []types.PendingOpenOrder{
 			{
 				RemainingQuantums: addToOrderbookSize,
@@ -138,10 +138,21 @@ func createMatchExpectationsFromMatches(
 
 	for _, em := range expectedMatches {
 		// Update the filled size of the maker order.
-		expectedOrderIdToFilledAmount[em.makerOrder.MustGetOrder().OrderId] += em.matchedQuantums
+		newMakerExpectedOrderToFillAmount := dtypes.NewInt(0)
+		newMakerExpectedOrderToFillAmount.Add(
+			expectedOrderIdToFilledAmount[em.makerOrder.MustGetOrder().OrderId],
+			em.matchedQuantums,
+		)
+		expectedOrderIdToFilledAmount[em.makerOrder.MustGetOrder().OrderId] = newMakerExpectedOrderToFillAmount
+
 		// If it's not a liquidation order, update the filled size of the taker order.
 		if !em.takerOrder.IsLiquidation() {
-			expectedOrderIdToFilledAmount[em.takerOrder.MustGetOrder().OrderId] += em.matchedQuantums
+			newTakerExpectedOrderToFillAmount := dtypes.NewInt(0)
+			newTakerExpectedOrderToFillAmount.Add(
+				expectedOrderIdToFilledAmount[em.takerOrder.MustGetOrder().OrderId],
+				em.matchedQuantums,
+			)
+			expectedOrderIdToFilledAmount[em.takerOrder.MustGetOrder().OrderId] = newTakerExpectedOrderToFillAmount
 		}
 	}
 
@@ -169,14 +180,30 @@ func createMatchExpectationsFromOperations(
 			case *types.ClobMatch_MatchOrders:
 				// For each fill, add the fill amount to the maker and taker order's filled amount.
 				for _, fill := range match.MatchOrders.Fills {
-					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
-					expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
+					newMakerOrderFillAmount := satypes.ZeroBaseQuantums()
+					newMakerOrderFillAmount.Add(
+						expectedOrderIdToFilledAmount[fill.MakerOrderId],
+						fill.FillAmount,
+					)
+					expectedOrderIdToFilledAmount[fill.MakerOrderId] = newMakerOrderFillAmount
+
+					newMatchOrderFillAmount := satypes.ZeroBaseQuantums()
+					newMakerOrderFillAmount.Add(
+						expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId],
+						fill.FillAmount,
+					)
+					expectedOrderIdToFilledAmount[match.MatchOrders.TakerOrderId] = newMatchOrderFillAmount
 				}
 			case *types.ClobMatch_MatchPerpetualLiquidation:
 				// For each fill, add the fill amount to the maker order's filled amount.
 				// Note we skip the taker order because it's a liquidation order.
 				for _, fill := range match.MatchPerpetualLiquidation.Fills {
-					expectedOrderIdToFilledAmount[fill.MakerOrderId] += satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64())
+					newMakerOrderFillAmount := satypes.ZeroBaseQuantums()
+					newMakerOrderFillAmount.Add(
+						expectedOrderIdToFilledAmount[fill.MakerOrderId],
+						fill.FillAmount,
+					)
+					expectedOrderIdToFilledAmount[fill.MakerOrderId] = newMakerOrderFillAmount
 				}
 			default:
 				panic(
@@ -455,7 +482,7 @@ func AssertMemclobHasOrders(
 
 			// Verify the order has nonzero remaining size.
 			quantums := order.RemainingSize
-			if quantums == 0 {
+			if quantums.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 				require.Fail(t, fmt.Sprintf("Bid with order ID %s has 0 remaining quantums", orderId.String()))
 			}
 
@@ -1417,7 +1444,10 @@ func assertPlaceOrderOffchainMessages(
 		// If there is an existing match for the maker order, the update message should contain the
 		// sum of the existing match's fill and the new match's fill
 		if existingFilled, exists := existingFilledAmounts[makerOrderId]; exists {
-			totalFilled += existingFilled
+			totalFilled.Add(
+				totalFilled,
+				existingFilled,
+			)
 		}
 
 		updateMessage := off_chain_updates.MustCreateOrderUpdateMessage(

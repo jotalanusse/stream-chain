@@ -15,16 +15,18 @@ const (
 )
 
 // BaseQuantums is used to represent an amount in base quantums.
-type BaseQuantums uint64
+type BaseQuantums = dtypes.SerializableInt
 
-// Get the BaseQuantum value in *big.Int.
-func (bq BaseQuantums) ToBigInt() *big.Int {
-	return new(big.Int).SetUint64(bq.ToUint64())
+func NewBaseQuantumsFromUint64(i uint64) BaseQuantums {
+	return dtypes.NewIntFromUint64(i)
 }
 
-// Get the BaseQuantum value in uint64.
-func (bq BaseQuantums) ToUint64() uint64 {
-	return uint64(bq)
+func NewBaseQuantumsFromBigInt(i *big.Int) BaseQuantums {
+	return dtypes.NewIntFromBigInt((i))
+}
+
+func ZeroBaseQuantums() BaseQuantums {
+	return dtypes.ZeroInt()
 }
 
 func (m *SubaccountId) Validate() error {

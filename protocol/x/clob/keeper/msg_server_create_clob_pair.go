@@ -7,7 +7,6 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
@@ -37,7 +36,7 @@ func (k msgServer) CreateClobPair(
 		msg.ClobPair.Id,
 		// `MsgCreateClobPair.ValidateBasic` ensures that `msg.ClobPair.Metadata` is `PerpetualClobMetadata`.
 		perpetualId,
-		satypes.BaseQuantums(msg.ClobPair.StepBaseQuantums.BigInt().Uint64()),
+		msg.ClobPair.StepBaseQuantums,
 		msg.ClobPair.QuantumConversionExponent,
 		msg.ClobPair.SubticksPerTick,
 		msg.ClobPair.Status,

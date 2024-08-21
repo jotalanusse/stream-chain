@@ -14,7 +14,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/memclob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -44,7 +43,7 @@ func createPartiallyFilledStatefulOrderInState(
 		timestamp,
 		order.OrderId,
 	)
-	k.SetOrderFillAmount(ctx, order.OrderId, satypes.BaseQuantums(10), uint32(20))
+	k.SetOrderFillAmount(ctx, order.OrderId, constants.BaseQuantums_10, uint32(20))
 	k.SetLongTermOrderPlacement(ctx, order, uint32(30))
 }
 

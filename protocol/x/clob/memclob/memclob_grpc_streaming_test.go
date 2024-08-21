@@ -7,7 +7,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	sdktest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sdk"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -20,7 +19,7 @@ func TestGetOffchainUpdatesForOrderbookSnapshot_Buy(t *testing.T) {
 		"GetOrderFillAmount",
 		mock.Anything,
 		mock.Anything,
-	).Return(false, satypes.BaseQuantums(0), uint32(0))
+	).Return(false, constants.BaseQuantums_0, uint32(0))
 	clobKeeper.On("SendOrderbookUpdates", mock.Anything, mock.Anything).Return()
 
 	memclob := NewMemClobPriceTimePriority(false)
@@ -60,7 +59,7 @@ func TestGetOffchainUpdatesForOrderbookSnapshot_Sell(t *testing.T) {
 		"GetOrderFillAmount",
 		mock.Anything,
 		mock.Anything,
-	).Return(false, satypes.BaseQuantums(0), uint32(0))
+	).Return(false, constants.BaseQuantums_0, uint32(0))
 	clobKeeper.On("SendOrderbookUpdates", mock.Anything, mock.Anything).Return()
 
 	memclob := NewMemClobPriceTimePriority(false)

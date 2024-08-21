@@ -69,7 +69,7 @@ func (k Keeper) GenerateTransferEvent(transfer *types.Transfer) *indexerevents.T
 			Number: transfer.Recipient.Number,
 		},
 		transfer.AssetId,
-		satypes.BaseQuantums(transfer.Amount.BigInt().Uint64()),
+		satypes.BaseQuantums(transfer.Amount),
 	)
 }
 
@@ -132,7 +132,7 @@ func (k Keeper) GenerateDepositEvent(deposit *types.MsgDepositToSubaccount) *ind
 			Number: deposit.Recipient.Number,
 		},
 		deposit.AssetId,
-		satypes.BaseQuantums(deposit.Quantums.BigInt().Uint64()),
+		satypes.BaseQuantums(deposit.Quantums),
 	)
 }
 
@@ -196,7 +196,7 @@ func (k Keeper) GenerateWithdrawEvent(withdraw *types.MsgWithdrawFromSubaccount)
 		},
 		withdraw.Recipient,
 		withdraw.AssetId,
-		satypes.BaseQuantums(withdraw.Quantums.BigInt().Uint64()),
+		satypes.BaseQuantums(withdraw.Quantums),
 	)
 }
 

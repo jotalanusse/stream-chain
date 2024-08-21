@@ -357,7 +357,7 @@ func TestProcessProposerMatches_LongTerm_StatefulValidation_Failure(t *testing.T
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-					50_000_001,
+					constants.BaseQuantums_50_000_001,
 					math.MaxUint32,
 				)
 			},
@@ -653,7 +653,7 @@ func TestProcessProposerMatches_Conditional_Validation_Failure(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.ConditionalOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-					50_000_001,
+					constants.BaseQuantums_50_000_001,
 					math.MaxUint32,
 				)
 			},

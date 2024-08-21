@@ -3,6 +3,7 @@ package events_test
 import (
 	"testing"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
@@ -15,7 +16,7 @@ var (
 	liquidatedSubaccountId = constants.Alice_Num0
 	offsettingSubaccountId = constants.Bob_Num0
 	perpetualId            = uint32(1)
-	totalQuoteQuantums     = satypes.BaseQuantums(1000)
+	totalQuoteQuantums     = satypes.BaseQuantums(dtypes.NewInt(1000))
 	isBuy                  = true
 )
 
@@ -35,8 +36,8 @@ func TestNewDeleveragingEvent_Success(t *testing.T) {
 		Liquidated:         indexerLiquidatedSubaccountId,
 		Offsetting:         indexerOffsettingSubaccountId,
 		PerpetualId:        perpetualId,
-		FillAmount:         fillAmount.ToUint64(),
-		TotalQuoteQuantums: totalQuoteQuantums.ToUint64(),
+		FillAmount:         fillAmount.BigInt().Uint64(),
+		TotalQuoteQuantums: totalQuoteQuantums.BigInt().Uint64(),
 		IsBuy:              isBuy,
 	}
 	require.Equal(t, expectedDeleveragingEventProto, deleveragingEvent)

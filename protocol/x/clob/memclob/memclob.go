@@ -19,6 +19,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -218,7 +219,7 @@ func (m *MemClobPriceTimePriority) GetOrderFilledAmount(
 ) satypes.BaseQuantums {
 	exists, orderStateFilledAmount, _ := m.clobKeeper.GetOrderFillAmount(ctx, orderId)
 	if !exists {
-		orderStateFilledAmount = 0
+		orderStateFilledAmount = satypes.BaseQuantums(dtypes.ZeroInt())
 	}
 
 	return orderStateFilledAmount
@@ -327,12 +328,12 @@ func (m *MemClobPriceTimePriority) mustUpdateMemclobStateWithMatches(
 		}
 
 		// Update the memclob fields for match bookkeeping with the new matches.
-		matchedQuantums := satypes.BaseQuantums(newFill.GetFillAmount().BigInt().Uint64())
+		matchedQuantums := satypes.BaseQuantums(newFill.GetFillAmount())
 
 		// Sanity checks.
-		if matchedQuantums == 0 {
+		if matchedQuantums.Cmp(satypes.ZeroBaseQuantums()) <= 0 {
 			panic(fmt.Sprintf(
-				"mustUpdateMemclobStateWithMatches: Fill has 0 quantums. Fill %v and maker order %v",
+				"mustUpdateMemclobStateWithMatches: Fill has 0 quantums or less. Fill %v and maker order %v",
 				newFill,
 				matchedMakerOrder,
 			))
@@ -355,7 +356,7 @@ func (m *MemClobPriceTimePriority) mustUpdateMemclobStateWithMatches(
 				bigTotalMatchedQuantums = big.NewInt(0)
 			}
 
-			bigMatchedQuantums := matchedQuantums.ToBigInt()
+			bigMatchedQuantums := matchedQuantums.BigInt()
 			if order.IsBuy() {
 				bigTotalMatchedQuantums = bigTotalMatchedQuantums.Add(bigTotalMatchedQuantums, bigMatchedQuantums)
 			} else {
@@ -476,7 +477,7 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 
 	// Validate the order and return an error if any validation fails.
 	if err := m.validateNewOrder(ctx, order); err != nil {
-		return 0, 0, offchainUpdates, err
+		return constants.BaseQuantums_0, 0, offchainUpdates, err
 	}
 
 	if m.generateOffchainUpdates {
@@ -546,7 +547,7 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 			}
 		}
 
-		return 0, 0, offchainUpdates, err
+		return constants.BaseQuantums_0, 0, offchainUpdates, err
 	}
 
 	remainingSize := takerOrderStatus.RemainingQuantums
@@ -581,7 +582,7 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 	}
 
 	// If the order has no remaining size, we do not have to add the order to the orderbook and we can return early.
-	if remainingSize == 0 {
+	if remainingSize.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 		// If the status of the taker order after matching is success and the order has no remaining size, send an
 		// off-chain message with the total filled size of the order equal to the size of the order.
 		// This is needed to account for the case where an order was partially matched, rewound, then was fully matched
@@ -673,13 +674,18 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 	// Add the order to the orderbook and all other bookkeeping data structures.
 	m.mustAddOrderToOrderbook(ctx, order, false)
 
+	totalFilled := big.NewInt(0).Sub(
+		order.GetBaseQuantums().BigInt(),
+		remainingSize.BigInt(),
+	)
+
 	// If the taker order is added to the orderbook successfully, send an off-chain message with
 	// the total filled size of the order (size of order - remaining size).
 	if m.generateOffchainUpdates {
 		if message, success := off_chain_updates.CreateOrderUpdateMessage(
 			ctx,
 			order.OrderId,
-			order.GetBaseQuantums()-remainingSize,
+			satypes.NewBaseQuantumsFromBigInt(totalFilled),
 		); success {
 			offchainUpdates.AddUpdateMessage(order.OrderId, message)
 		}
@@ -718,7 +724,7 @@ func (m *MemClobPriceTimePriority) PlacePerpetualLiquidation(
 	// TODO(DEC-1157): Update liquidations flow to send off-chain indexer messages.
 	liquidationOrderStatus, offchainUpdates, _, err := m.matchOrder(ctx, &liquidationOrder)
 	if err != nil {
-		return 0, 0, nil, err
+		return constants.BaseQuantums_0, 0, nil, err
 	}
 
 	return liquidationOrderStatus.OrderOptimisticallyFilledQuantums,
@@ -839,7 +845,7 @@ func (m *MemClobPriceTimePriority) matchOrder(
 	// (e.g. failed a collateralization check).
 	if !order.IsLiquidation() &&
 		order.MustGetOrder().TimeInForce == types.Order_TIME_IN_FORCE_FILL_OR_KILL &&
-		takerOrderStatus.RemainingQuantums > 0 {
+		takerOrderStatus.RemainingQuantums.Cmp(satypes.ZeroBaseQuantums()) > 0 {
 		// FOK orders _must_ return an error here if they are not fully filled regardless
 		// of the reason why they were not fully filled. If an error is not returned here, then
 		// any partial matches that occurred during matching will be committed to state, and included
@@ -1430,7 +1436,7 @@ func (m *MemClobPriceTimePriority) validateNewOrder(
 	// is considered fully filled and cannot be placed/replaced.
 	orderbook := m.openOrders.mustGetOrderbook(ctx, order.GetClobPairId())
 	remainingAmount, hasRemainingAmount := m.GetOrderRemainingAmount(ctx, order)
-	if !hasRemainingAmount || remainingAmount < orderbook.MinOrderBaseQuantums {
+	if !hasRemainingAmount || remainingAmount.Cmp(orderbook.MinOrderBaseQuantums) == -1 {
 		return errorsmod.Wrapf(
 			types.ErrOrderFullyFilled,
 			"Order remaining amount is less than `MinOrderBaseQuantums`. Remaining amount: %d. Order: %+v",
@@ -1441,14 +1447,18 @@ func (m *MemClobPriceTimePriority) validateNewOrder(
 
 	// Immediate-or-cancel and fill-or-kill orders may only be filled once. The remaining size becomes unfillable.
 	// This prevents the case where an IOC order is partially filled multiple times over the course of multiple blocks.
-	if order.RequiresImmediateExecution() && remainingAmount < order.GetBaseQuantums() {
+	if order.RequiresImmediateExecution() && remainingAmount.Cmp(order.GetBaseQuantums()) == -1 {
 		// Prevent IOC/FOK orders from replacing partially filled orders.
 		if restingOrderExists {
+			fillAmount := big.NewInt(0).Sub(
+				order.GetBaseQuantums().BigInt(),
+				remainingAmount.BigInt(),
+			)
 			return errorsmod.Wrapf(
 				types.ErrInvalidReplacement,
 				"Cannot replace partially filled order with IOC order. Size: %d, Fill Amount: %d.",
 				order.GetBaseQuantums(),
-				order.GetBaseQuantums()-remainingAmount,
+				satypes.NewBaseQuantumsFromBigInt(fillAmount),
 			)
 		}
 
@@ -1682,7 +1692,7 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 
 		// The matched amount is the minimum of the remaining amount of both orders.
 		var matchedAmount satypes.BaseQuantums
-		if takerRemainingSize >= makerRemainingSize {
+		if takerRemainingSize.Cmp(makerRemainingSize) >= 0 {
 			matchedAmount = makerRemainingSize
 		} else {
 			matchedAmount = takerRemainingSize
@@ -1705,7 +1715,7 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 			// would have increased the maker's position size and we need to find the next best maker
 			// order. This can happen if the maker has previous matches within this matching loop
 			// that changed their position side, meaning all their resting reduce-only orders are invalid.
-			if resizedMatchAmount == 0 {
+			if resizedMatchAmount.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 				// TODO(DEC-1415): Revert this reduce-only bug patch.
 				makerOrdersToRemove = append(
 					makerOrdersToRemove,
@@ -1733,7 +1743,7 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 
 			// If the taker reduce-only order was resized to 0, that indicates the order is on the
 			// same side as the taker's position side and this order should have failed validation.
-			if resizedMatchAmount == 0 {
+			if resizedMatchAmount.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 				panic("mustPerformTakerOrderMatching: taker reduce-only order resized to 0")
 			}
 
@@ -1827,12 +1837,15 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		//    size of the reduce-only order, and stop matching.
 
 		// 1.
-		takerRemainingSize -= matchedAmount
+		takerRemainingSize.Sub(
+			takerRemainingSize,
+			matchedAmount,
+		)
 
 		if newTakerOrder.IsBuy() {
-			bigTotalMatchedAmount.Add(bigTotalMatchedAmount, matchedAmount.ToBigInt())
+			bigTotalMatchedAmount.Add(bigTotalMatchedAmount, matchedAmount.BigInt())
 		} else {
-			bigTotalMatchedAmount.Sub(bigTotalMatchedAmount, matchedAmount.ToBigInt())
+			bigTotalMatchedAmount.Sub(bigTotalMatchedAmount, matchedAmount.BigInt())
 		}
 
 		// 2.
@@ -1852,11 +1865,11 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		// 3.
 		newMakerFills = append(newMakerFills, types.MakerFill{
 			MakerOrderId: makerOrderId,
-			FillAmount:   dtypes.NewIntFromBigInt(matchedAmount.ToBigInt()),
+			FillAmount:   matchedAmount,
 		})
 
 		// 4.
-		if newTakerOrder.IsReduceOnly() && takerRemainingSize > 0 {
+		if newTakerOrder.IsReduceOnly() && takerRemainingSize.Cmp(satypes.ZeroBaseQuantums()) == 1 {
 			takerStatePositionSize := m.clobKeeper.GetStatePosition(ctx, takerSubaccountId, clobPairId)
 			if takerStatePositionSize.Sign() == 0 {
 				// TODO(DEC-847): Update logic to properly remove stateful taker reduce-only orders.
@@ -1866,14 +1879,17 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		}
 
 		// If the taker order was fully matched, stop matching.
-		if takerRemainingSize == 0 {
+		if takerRemainingSize.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 			break
 		}
 	}
 
 	// Update the remaining size of the taker order now that matching has ended.
 	takerOrderStatus.RemainingQuantums = takerRemainingSize
-	takerOrderStatus.OrderOptimisticallyFilledQuantums = takerRemainingSizeBeforeMatching - takerRemainingSize
+	takerOrderStatus.OrderOptimisticallyFilledQuantums.Sub(
+		takerRemainingSizeBeforeMatching,
+		takerRemainingSize,
+	)
 
 	return newMakerFills,
 		matchedOrderHashToOrder,
@@ -1998,7 +2014,7 @@ func (m *MemClobPriceTimePriority) mustUpdateOrderbookStateWithMatchedMakerOrder
 	newTotalFilledAmount := m.GetOrderFilledAmount(ctx, makerOrder.OrderId)
 
 	// If the filled amount of the maker order is greater than the order size, panic to avoid silent failure.
-	if newTotalFilledAmount > makerOrderBaseQuantums {
+	if newTotalFilledAmount.Cmp(makerOrderBaseQuantums) == 1 {
 		panic("Total filled size of maker order greater than the order size")
 	}
 
@@ -2059,11 +2075,16 @@ func (m *MemClobPriceTimePriority) GetOrderRemainingAmount(
 	totalFillAmount := m.GetOrderFilledAmount(ctx, order.OrderId)
 
 	// Case: order is completely filled.
-	if totalFillAmount >= order.GetBaseQuantums() {
-		return 0, false
+	if totalFillAmount.Cmp(order.GetBaseQuantums()) >= 0 {
+		return constants.BaseQuantums_0, false
 	}
 
-	return order.GetBaseQuantums() - totalFillAmount, true
+	remainingAmount.Sub(
+		order.GetBaseQuantums(),
+		totalFillAmount,
+	)
+
+	return remainingAmount, true
 }
 
 // RemoveOrderIfFilled removes an order from the orderbook if it currently fully filled in state.
@@ -2099,7 +2120,7 @@ func (m *MemClobPriceTimePriority) RemoveOrderIfFilled(
 
 	// Case: order is now completely filled and can be removed.
 	order := levelOrder.Value.Order
-	if orderStateFillAmount >= order.GetBaseQuantums() {
+	if orderStateFillAmount.Cmp(order.GetBaseQuantums()) >= 0 {
 		m.mustRemoveOrder(ctx, order.OrderId)
 	}
 }
@@ -2240,7 +2261,7 @@ func (m *MemClobPriceTimePriority) getImpactPriceSubticks(
 		if remainingImpactQuoteQuantums.Cmp(quoteQuantumsIfFullyMatched) > 0 {
 			accumulatedBaseQuantums.Add(
 				accumulatedBaseQuantums,
-				new(big.Rat).SetUint64(makerRemainingSize.ToUint64()),
+				new(big.Rat).SetInt(makerRemainingSize.BigInt()),
 			)
 		} else {
 			lastFillFraction := new(big.Rat).SetFrac(
@@ -2250,7 +2271,7 @@ func (m *MemClobPriceTimePriority) getImpactPriceSubticks(
 
 			fractionalBaseQuantums := lastFillFraction.Mul(
 				lastFillFraction,
-				new(big.Rat).SetInt(makerRemainingSize.ToBigInt()),
+				new(big.Rat).SetInt(makerRemainingSize.BigInt()),
 			)
 
 			accumulatedBaseQuantums.Add(
@@ -2490,7 +2511,7 @@ func (m *MemClobPriceTimePriority) resizeReduceOnlyMatchIfNecessary(
 	isBuy bool,
 ) satypes.BaseQuantums {
 	// Get the signed size of the new match.
-	newMatchSize := newlyMatchedAmount.ToBigInt()
+	newMatchSize := newlyMatchedAmount.BigInt()
 	if !isBuy {
 		newMatchSize.Neg(newMatchSize)
 	}
@@ -2499,7 +2520,7 @@ func (m *MemClobPriceTimePriority) resizeReduceOnlyMatchIfNecessary(
 	// Note that this can occur for reduce-only maker orders if the maker subaccount's position side
 	// changes during the matching loop, and this should never happen for taker orders.
 	if currentPositionSize.Sign()*newMatchSize.Sign() != -1 {
-		return satypes.BaseQuantums(0)
+		return constants.BaseQuantums_0
 	}
 
 	// The match is on the opposite side of the position. Return the minimum of the match size and
@@ -2507,5 +2528,5 @@ func (m *MemClobPriceTimePriority) resizeReduceOnlyMatchIfNecessary(
 	absPositionSize := new(big.Int).Abs(currentPositionSize)
 	absNewMatchSize := new(big.Int).Abs(newMatchSize)
 	maxMatchSize := lib.BigMin(absPositionSize, absNewMatchSize)
-	return satypes.BaseQuantums(maxMatchSize.Uint64())
+	return satypes.NewBaseQuantumsFromBigInt(maxMatchSize)
 }

@@ -85,6 +85,10 @@ func (i SerializableInt) String() string {
 // Add sets z to the sum of x and y and returns z.
 // This is similar to big.Int.Add.
 func (z *SerializableInt) Add(x SerializableInt, y SerializableInt) SerializableInt {
+	if z.IsNil() {
+		panic("SerializableInt: cannot perform addition with nil-value for z")
+	}
+
 	if x.IsNil() {
 		panic("SerializableInt: cannot perform addition with nil-value for x")
 	}
@@ -107,6 +111,10 @@ func (z *SerializableInt) Add(x SerializableInt, y SerializableInt) Serializable
 // Sub sets z to the difference of x and y and returns z.
 // This is similar to big.Int.Sub.
 func (z *SerializableInt) Sub(x SerializableInt, y SerializableInt) SerializableInt {
+	if z.IsNil() {
+		panic("SerializableInt: cannot perform subtraction with nil-value for z")
+	}
+
 	if x.IsNil() {
 		panic("SerializableInt: cannot perform subtraction with nil-value for x")
 	}
@@ -129,6 +137,10 @@ func (z *SerializableInt) Sub(x SerializableInt, y SerializableInt) Serializable
 // Mul sets z to the product of x and y and returns z.
 // This is similar to big.Int.Mul.
 func (z *SerializableInt) Mul(x SerializableInt, y SerializableInt) SerializableInt {
+	if z.IsNil() {
+		panic("SerializableInt: cannot perform multiplication with nil-value for z")
+	}
+
 	if x.IsNil() {
 		panic("SerializableInt: cannot perform multiplication with nil-value for x")
 	}
@@ -153,6 +165,10 @@ func (z *SerializableInt) Mul(x SerializableInt, y SerializableInt) Serializable
 // Div implements a Euclidean division.
 // This is similar to big.Int.Div.
 func (z *SerializableInt) Div(x SerializableInt, y SerializableInt) SerializableInt {
+	if z.IsNil() {
+		panic("SerializableInt: cannot perform division with nil-value for z")
+	}
+
 	if x.IsNil() {
 		panic("SerializableInt: cannot perform division with nil-value for x")
 	}

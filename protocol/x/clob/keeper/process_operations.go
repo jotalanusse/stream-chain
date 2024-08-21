@@ -7,6 +7,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared"
@@ -61,7 +62,7 @@ func (k Keeper) ProcessProposerOperations(
 			if !fillAmountExists {
 				panic("ProcessProposerOperations: Order fill amount does not exist in state")
 			}
-			if orderStateFillAmount > orderPlacement.Order.GetBaseQuantums() {
+			if orderStateFillAmount.Cmp(orderPlacement.Order.GetBaseQuantums()) > 0 {
 				panic("ProcessProposerOperations: Order fill amount exceeds order amount")
 			}
 
@@ -454,7 +455,7 @@ func (k Keeper) PersistMatchOrdersToState(
 
 	if takerOrder.RequiresImmediateExecution() {
 		_, fillAmount, _ := k.GetOrderFillAmount(ctx, takerOrder.OrderId)
-		if fillAmount != 0 {
+		if fillAmount.Cmp(satypes.ZeroBaseQuantums()) != 0 {
 			return errorsmod.Wrapf(
 				types.ErrImmediateExecutionOrderAlreadyFilled,
 				"Order %s",
@@ -474,7 +475,7 @@ func (k Keeper) PersistMatchOrdersToState(
 		matchWithOrders := types.MatchWithOrders{
 			TakerOrder: &takerOrder,
 			MakerOrder: &makerOrder,
-			FillAmount: satypes.BaseQuantums(makerFill.GetFillAmount().BigInt().Uint64()),
+			FillAmount: makerFill.GetFillAmount(),
 		}
 
 		_, _, _, _, err = k.ProcessSingleMatch(ctx, &matchWithOrders)
@@ -558,7 +559,7 @@ func (k Keeper) PersistMatchLiquidationToState(
 		matchWithOrders := types.MatchWithOrders{
 			MakerOrder: &makerOrder,
 			TakerOrder: takerOrder,
-			FillAmount: satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64()),
+			FillAmount: fill.FillAmount,
 		}
 
 		// Write the position updates and state fill amounts for this match.
@@ -757,8 +758,8 @@ func (k Keeper) PersistMatchDeleveragingToState(
 					liquidatedSubaccountId,
 					fill.OffsettingSubaccountId,
 					perpetualId,
-					satypes.BaseQuantums(new(big.Int).Abs(deltaBaseQuantums).Uint64()),
-					satypes.BaseQuantums(deltaQuoteQuantums.Uint64()),
+					dtypes.NewIntFromBigInt(new(big.Int).Abs(deltaBaseQuantums)),
+					dtypes.NewIntFromBigInt(deltaQuoteQuantums),
 					deltaBaseQuantums.Sign() > 0,
 					matchDeleveraging.IsFinalSettlement,
 				),

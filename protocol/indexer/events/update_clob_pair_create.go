@@ -23,6 +23,6 @@ func NewUpdateClobPairEvent(
 		Status:                    v1.ConvertToClobPairStatus(status),
 		QuantumConversionExponent: quantumConversionExponent,
 		SubticksPerTick:           uint32(subticksPerTick),
-		StepBaseQuantums:          uint64(stepBaseQuantums),
+		StepBaseQuantums:          stepBaseQuantums.BigInt().Uint64(),
 	}
 }

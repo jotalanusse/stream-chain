@@ -16,6 +16,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/cometbft/cometbft/crypto/tmhash"
@@ -207,13 +208,13 @@ func (k Keeper) PlaceShortTermOrder(
 	// Perform stateful validation.
 	err = k.PerformStatefulOrderValidation(ctx, &order, nextBlockHeight, true)
 	if err != nil {
-		return 0, 0, err
+		return constants.BaseQuantums_0, 0, err
 	}
 
 	// Validate that adding the order wouldn't exceed subaccount equity tier limits.
 	err = k.ValidateSubaccountEquityTierLimitForNewOrder(ctx, order)
 	if err != nil {
-		return 0, 0, err
+		return constants.BaseQuantums_0, 0, err
 	}
 
 	// Place the order on the memclob and return the result.
@@ -232,7 +233,7 @@ func (k Keeper) PlaceShortTermOrder(
 		metrics.SendPlaceOrderOffchainUpdates,
 	)
 
-	if orderSizeOptimisticallyFilledFromMatchingQuantums > 0 {
+	if orderSizeOptimisticallyFilledFromMatchingQuantums.Cmp(satypes.ZeroBaseQuantums()) > 0 {
 		telemetry.IncrCounterWithLabels(
 			[]string{types.ModuleName, metrics.PlaceOrder, metrics.Matched},
 			1,
@@ -449,7 +450,7 @@ func (k Keeper) ReplayPlaceOrder(
 	// Perform stateful validation.
 	err = k.PerformStatefulOrderValidation(ctx, &order, nextBlockHeight, true)
 	if err != nil {
-		return 0, 0, nil, err
+		return constants.BaseQuantums_0, 0, nil, err
 	}
 
 	// Place the order on the memclob and return the result.
@@ -479,7 +480,7 @@ func (k Keeper) AddPreexistingStatefulOrder(
 	// Block height is not used when validating stateful orders, so always pass in zero.
 	err = k.PerformStatefulOrderValidation(ctx, order, 0, true)
 	if err != nil {
-		return 0, 0, nil, err
+		return constants.BaseQuantums_0, 0, nil, err
 	}
 
 	// Place the order on the memclob and return the result. Note that we shouldn't perform
@@ -1091,7 +1092,7 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 				panic(err)
 			}
 
-			bigFillAmount := openOrder.RemainingQuantums.ToBigInt()
+			bigFillAmount := openOrder.RemainingQuantums.BigInt()
 			addPerpetualFillAmountStart := time.Now()
 			pendingUpdates.AddPerpetualFill(
 				subaccountId,
@@ -1263,7 +1264,7 @@ func (k Keeper) InitStatefulOrders(
 		// is enabled (`msgSender.Enabled()` returns true).
 		k.SendOffchainMessages(offchainUpdates, nil, metrics.SendPlaceOrderOffchainUpdates)
 
-		if orderSizeOptimisticallyFilledFromMatchingQuantums > 0 {
+		if orderSizeOptimisticallyFilledFromMatchingQuantums.Cmp(satypes.ZeroBaseQuantums()) > 0 {
 			telemetry.IncrCounter(1, types.ModuleName, metrics.PlaceOrder, metrics.Hydrate, metrics.Matched)
 		}
 	}

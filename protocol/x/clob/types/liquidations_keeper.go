@@ -62,7 +62,7 @@ type LiquidationsKeeper interface {
 		subaccountId satypes.SubaccountId,
 		perpetualId uint32,
 		isBuy bool,
-		fillAmount uint64,
+		fillAmount satypes.BaseQuantums,
 		subticks Subticks,
 	) (
 		insuranceFundDeltaQuoteQuantums *big.Int,

@@ -291,7 +291,7 @@ func newOrderUpdateMessage(
 		UpdateMessage: &ocutypes.OffChainUpdateV1_OrderUpdate{
 			OrderUpdate: &ocutypes.OrderUpdateV1{
 				OrderId:             &indexerOrderId,
-				TotalFilledQuantums: totalFilled.ToUint64(),
+				TotalFilledQuantums: totalFilled.BigInt().Uint64(),
 			},
 		},
 	}

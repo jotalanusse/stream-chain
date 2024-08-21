@@ -24,14 +24,14 @@ func TestGetOrderFilledAmount(t *testing.T) {
 		expectedOrderFilledAmount satypes.BaseQuantums
 	}{
 		"Returns 0 if the order ID isn't found": {
-			orderFilledAmount: 0,
+			orderFilledAmount: constants.BaseQuantums_0,
 
-			expectedOrderFilledAmount: 0,
+			expectedOrderFilledAmount: constants.BaseQuantums_0,
 		},
 		"Returns the order filled amount if the order ID is marked as filled in state": {
-			orderFilledAmount: 10,
+			orderFilledAmount: constants.BaseQuantums_10,
 
-			expectedOrderFilledAmount: 10,
+			expectedOrderFilledAmount: constants.BaseQuantums_10,
 		},
 	}
 

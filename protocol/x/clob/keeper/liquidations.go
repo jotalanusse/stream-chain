@@ -10,9 +10,11 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -134,7 +136,7 @@ func (k Keeper) LiquidateSubaccountsAgainstOrderbook(
 			return nil, err
 		}
 
-		if optimisticallyFilledQuantums == 0 {
+		if optimisticallyFilledQuantums.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 			subaccountsToDeleverage = append(subaccountsToDeleverage, subaccountToDeleverage{
 				SubaccountId: liquidationOrder.GetSubaccountId(),
 				PerpetualId:  liquidationOrder.MustGetLiquidatedPerpetualId(),
@@ -233,7 +235,7 @@ func (k Keeper) GetLiquidationOrderForPerpetual(
 		subaccountId,
 		clobPair,
 		!isLiquidatingLong,
-		satypes.BaseQuantums(absBaseQuantums.Uint64()),
+		satypes.BaseQuantums(dtypes.NewIntFromBigInt(absBaseQuantums)),
 		fillablePriceSubticks,
 	)
 	return liquidationOrder, nil
@@ -258,7 +260,7 @@ func (k Keeper) PlacePerpetualLiquidation(
 	)
 
 	if err := k.validateLiquidationAgainstClobPairStatus(ctx, liquidationOrder); err != nil {
-		return 0, 0, err
+		return constants.BaseQuantums_0, 0, err
 	}
 
 	orderSizeOptimisticallyFilledFromMatchingQuantums,
@@ -270,7 +272,7 @@ func (k Keeper) PlacePerpetualLiquidation(
 			liquidationOrder,
 		)
 	if err != nil {
-		return 0, 0, err
+		return constants.BaseQuantums_0, 0, err
 	}
 
 	// TODO(DEC-1323): Potentially allow liquidating the same perpetual + subaccount
@@ -293,8 +295,8 @@ func (k Keeper) PlacePerpetualLiquidation(
 
 	// Record the percent filled of the liquidation as a distribution.
 	percentFilled, _ := new(big.Float).Quo(
-		new(big.Float).SetUint64(orderSizeOptimisticallyFilledFromMatchingQuantums.ToUint64()),
-		new(big.Float).SetUint64(liquidationOrder.GetBaseQuantums().ToUint64()),
+		new(big.Float).SetInt(orderSizeOptimisticallyFilledFromMatchingQuantums.BigInt()),
+		new(big.Float).SetInt(liquidationOrder.GetBaseQuantums().BigInt()),
 	).Float32()
 
 	metrics.AddSampleWithLabels(
@@ -303,7 +305,7 @@ func (k Keeper) PlacePerpetualLiquidation(
 		labels...,
 	)
 
-	if orderSizeOptimisticallyFilledFromMatchingQuantums == 0 {
+	if orderSizeOptimisticallyFilledFromMatchingQuantums.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 		labels = append(labels, metrics.GetLabelForStringValue(metrics.Status, metrics.Unfilled))
 	} else if orderSizeOptimisticallyFilledFromMatchingQuantums == liquidationOrder.GetBaseQuantums() {
 		labels = append(labels, metrics.GetLabelForStringValue(metrics.Status, metrics.FullyFilled))
@@ -321,7 +323,7 @@ func (k Keeper) PlacePerpetualLiquidation(
 	if totalQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
 		ctx,
 		perpetualId,
-		liquidationOrder.GetBaseQuantums().ToBigInt(),
+		liquidationOrder.GetBaseQuantums().BigInt(),
 	); err == nil {
 		metrics.IncrCounterWithLabels(
 			metrics.LiquidationsPlacePerpetualLiquidationQuoteQuantums,
@@ -669,17 +671,17 @@ func (k Keeper) GetLiquidationInsuranceFundDelta(
 	subaccountId satypes.SubaccountId,
 	perpetualId uint32,
 	isBuy bool,
-	fillAmount uint64,
+	fillAmount satypes.BaseQuantums,
 	subticks types.Subticks,
 ) (
 	insuranceFundDeltaQuoteQuantums *big.Int,
 	err error,
 ) {
 	// Verify that fill amount is not zero.
-	if fillAmount == 0 {
+	if fillAmount.Cmp(satypes.ZeroBaseQuantums()) <= 0 {
 		return nil, errorsmod.Wrapf(
 			types.ErrInvalidQuantumsForInsuranceFundDeltaCalculation,
-			"FillAmount is zero for subaccount %v and perpetual %v.",
+			"FillAmount is zero or less than zero for subaccount %v and perpetual %v.",
 			subaccountId,
 			perpetualId,
 		)
@@ -687,7 +689,7 @@ func (k Keeper) GetLiquidationInsuranceFundDelta(
 
 	// Get the delta quantums and delta quote quantums.
 	clobPair := k.mustGetClobPairForPerpetualId(ctx, perpetualId)
-	deltaQuantums := new(big.Int).SetUint64(fillAmount)
+	deltaQuantums := fillAmount.BigInt()
 	deltaQuoteQuantums, err := getFillQuoteQuantums(
 		clobPair,
 		subticks,
@@ -1111,6 +1113,7 @@ func (k Keeper) ConvertFillablePriceToSubticks(
 
 	// Bound the result between `clobPair.SubticksPerTick` and
 	// `math.MaxUint64 - math.MaxUint64 % clobPair.SubticksPerTick`.
+	// TODO: YBCP-52
 	minSubticks := uint64(clobPair.SubticksPerTick)
 	maxSubticks := uint64(math.MaxUint64 - (math.MaxUint64 % uint64(clobPair.SubticksPerTick)))
 	boundedSubticks := lib.BigUint64Clamp(
@@ -1151,7 +1154,7 @@ func (k Keeper) validateMatchedLiquidation(
 		liquidatedSubaccountId,
 		perpetualId,
 		order.IsBuy(),
-		fillAmount.ToUint64(),
+		fillAmount,
 		makerSubticks,
 	)
 	if err != nil {
@@ -1213,7 +1216,7 @@ func (k Keeper) validateLiquidationAgainstSubaccountBlockLimits(
 		return err
 	}
 
-	bigNotionalLiquidated, err := k.perpetualsKeeper.GetNetNotional(ctx, perpetualId, fillAmount.ToBigInt())
+	bigNotionalLiquidated, err := k.perpetualsKeeper.GetNetNotional(ctx, perpetualId, fillAmount.BigInt())
 	if err != nil {
 		return err
 	}
@@ -1311,7 +1314,7 @@ func (k Keeper) getQuoteQuantumsForLiquidationOrder(
 	quoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
 		ctx,
 		liquidationOrder.MustGetLiquidatedPerpetualId(),
-		liquidationOrder.GetBaseQuantums().ToBigInt(),
+		liquidationOrder.GetBaseQuantums().BigInt(),
 	)
 	if err != nil {
 		panic(err)

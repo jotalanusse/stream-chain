@@ -10,7 +10,6 @@ import (
 	txtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sdk/tx"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/ante"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -87,7 +86,7 @@ func TestClobDecorator_MsgPlaceOrder(t *testing.T) {
 					ctx,
 					constants.Msg_PlaceOrder,
 				).Return(
-					satypes.BaseQuantums(0),
+					constants.BaseQuantums_0,
 					clobtypes.Success,
 					nil,
 				)
@@ -170,7 +169,7 @@ func TestClobDecorator_MsgPlaceOrder(t *testing.T) {
 					ctx,
 					constants.Msg_PlaceOrder,
 				).Return(
-					satypes.BaseQuantums(0),
+					constants.BaseQuantums_0,
 					clobtypes.OrderStatus(0),
 					clobtypes.ErrHeightExceedsGoodTilBlock,
 				)

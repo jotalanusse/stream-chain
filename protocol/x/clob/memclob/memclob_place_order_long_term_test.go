@@ -53,12 +53,12 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15,
 
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.Success,
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -79,7 +79,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 10,
+								RemainingQuantums: constants.BaseQuantums_10,
 								IsBuy:             false,
 								Subticks:          15,
 								ClobPairId:        0,
@@ -87,7 +87,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 10,
+								RemainingQuantums: constants.BaseQuantums_10,
 								IsBuy:             true,
 								Subticks:          15,
 								ClobPairId:        0,
@@ -103,7 +103,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 15,
+								RemainingQuantums: constants.BaseQuantums_15,
 								IsBuy:             true,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -118,7 +118,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10,
 
-			expectedFilledSize:  10,
+			expectedFilledSize:  constants.BaseQuantums_10,
 			expectedOrderStatus: types.Success,
 			expectedOperations: []types.Operation{
 				clobtest.NewOrderPlacementOperation(
@@ -157,7 +157,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10,
-					RemainingSize: 15,
+					RemainingSize: constants.BaseQuantums_15,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -173,7 +173,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             false,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -181,7 +181,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             true,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -197,7 +197,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 40,
+								RemainingQuantums: constants.BaseQuantums_40,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -205,7 +205,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 40,
+								RemainingQuantums: constants.BaseQuantums_40,
 								IsBuy:             true,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -221,7 +221,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Alice_Num0_Id2_Clob0_Sell65_Price10_GTBT25,
 
-			expectedFilledSize:  65,
+			expectedFilledSize:  constants.BaseQuantums_65,
 			expectedOrderStatus: types.Success,
 			expectedOperations: []types.Operation{
 				clobtest.NewOrderPlacementOperation(
@@ -274,7 +274,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10,
-					RemainingSize: 5,
+					RemainingSize: constants.BaseQuantums_5,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -289,7 +289,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             false,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -297,7 +297,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 5,
+								RemainingQuantums: constants.BaseQuantums_5,
 								IsBuy:             true,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -313,7 +313,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.Order_Alice_Num0_Id0_Clob0_Sell5_Price10_GTB20,
 
-			expectedFilledSize:  5,
+			expectedFilledSize:  constants.BaseQuantums_5,
 			expectedOrderStatus: types.Success,
 			expectedOperations: []types.Operation{
 				clobtest.NewOrderPlacementOperation(
@@ -355,11 +355,11 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10,
-					RemainingSize: 20,
+					RemainingSize: constants.BaseQuantums_20,
 				},
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10,
-					RemainingSize: 45,
+					RemainingSize: constants.BaseQuantums_45,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -375,7 +375,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             false,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -383,7 +383,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             true,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -399,7 +399,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 40,
+								RemainingQuantums: constants.BaseQuantums_40,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -407,7 +407,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 40,
+								RemainingQuantums: constants.BaseQuantums_40,
 								IsBuy:             true,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -423,7 +423,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Alice_Num0_Id2_Clob0_Sell65_Price10_GTBT25,
 
-			expectedFilledSize:  25,
+			expectedFilledSize:  constants.BaseQuantums_25,
 			expectedOrderStatus: types.Undercollateralized,
 			expectedOperations: []types.Operation{
 				clobtest.NewOrderPlacementOperation(
@@ -483,7 +483,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             false,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -491,7 +491,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             true,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -507,7 +507,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 40,
+								RemainingQuantums: constants.BaseQuantums_40,
 								IsBuy:             false,
 								Subticks:          10,
 								ClobPairId:        0,
@@ -522,7 +522,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Alice_Num0_Id2_Clob0_Sell65_Price10_GTBT25,
 
-			expectedFilledSize:  25,
+			expectedFilledSize:  constants.BaseQuantums_25,
 			expectedOrderStatus: types.Undercollateralized,
 			expectedOperations: []types.Operation{
 				clobtest.NewOrderPlacementOperation(
@@ -575,7 +575,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 					CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 						constants.Alice_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             false,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -583,7 +583,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 						},
 						constants.Bob_Num0: {
 							{
-								RemainingQuantums: 25,
+								RemainingQuantums: constants.BaseQuantums_25,
 								IsBuy:             true,
 								Subticks:          30,
 								ClobPairId:        0,
@@ -599,7 +599,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Alice_Num0_Id2_Clob0_Sell65_Price10_GTBT25_PO,
 
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.Success,
 			expectedOperations: []types.Operation{
 				clobtest.NewOrderPlacementOperation(
@@ -615,7 +615,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingAsks: []OrderWithRemainingSize{},
@@ -646,7 +646,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 
 			order: constants.LongTermOrder_Alice_Num0_Id2_Clob0_Sell65_Price10_GTBT25,
 
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOrderStatus: types.Success,
 			expectedOperations:  []types.Operation{},
 			expectedInternalOperations: []types.InternalOperation{
@@ -659,7 +659,7 @@ func TestPlaceOrder_LongTerm(t *testing.T) {
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Alice_Num0_Id2_Clob0_Sell65_Price10_GTBT25,
-					RemainingSize: 65,
+					RemainingSize: constants.BaseQuantums_65,
 				},
 			},
 		},
@@ -711,7 +711,7 @@ func TestPlaceOrder_PreexistingStatefulOrder(t *testing.T) {
 			CollatCheck: map[satypes.SubaccountId][]types.PendingOpenOrder{
 				constants.Alice_Num0: {
 					{
-						RemainingQuantums: 5,
+						RemainingQuantums: constants.BaseQuantums_5,
 						IsBuy:             true,
 						Subticks:          10,
 						ClobPairId:        0,
@@ -741,15 +741,15 @@ func TestPlaceOrder_PreexistingStatefulOrder(t *testing.T) {
 		memclob,
 		longTermOrder,
 		numCollateralChecks,
-		0,
-		0,
+		constants.BaseQuantums_0,
+		constants.BaseQuantums_0,
 		types.Success,
 		nil,
 		expectedNumCollateralizationChecks,
 		[]OrderWithRemainingSize{
 			{
 				Order:         longTermOrder,
-				RemainingSize: 5,
+				RemainingSize: constants.BaseQuantums_5,
 			},
 		},
 		[]OrderWithRemainingSize{},

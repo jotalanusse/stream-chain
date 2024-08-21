@@ -8,6 +8,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
@@ -95,7 +96,7 @@ func (k Keeper) ProcessSingleMatch(
 
 	// Verify that the `fillAmount` is divisible by the `StepBaseQuantums` of the `clobPair`.
 	fillAmountModByStepBaseQuantums := big.NewInt(0).Mod(
-		fillAmount.ToBigInt(),
+		fillAmount.BigInt(),
 		clobPair.StepBaseQuantums.BigInt(),
 	)
 
@@ -130,7 +131,7 @@ func (k Keeper) ProcessSingleMatch(
 			"TakerOrder",
 			fmt.Sprintf("%+v", matchWithOrders.TakerOrder),
 			"FillAmount",
-			matchWithOrders.FillAmount.ToUint64(),
+			matchWithOrders.FillAmount,
 		)
 	}
 
@@ -241,7 +242,7 @@ func (k Keeper) ProcessSingleMatch(
 		notionalLiquidatedQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
 			ctx,
 			perpetualId,
-			fillAmount.ToBigInt(),
+			fillAmount.BigInt(),
 		)
 		if err != nil {
 			return false, takerUpdateResult, makerUpdateResult, nil, err
@@ -348,8 +349,8 @@ func (k Keeper) persistMatchedOrders(
 	bigTakerQuoteBalanceDelta := new(big.Int).Set(bigFillQuoteQuantums)
 	bigMakerQuoteBalanceDelta := new(big.Int).Set(bigFillQuoteQuantums)
 
-	bigTakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.ToBigInt()
-	bigMakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.ToBigInt()
+	bigTakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.BigInt()
+	bigMakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.BigInt()
 
 	if matchWithOrders.TakerOrder.IsBuy() {
 		bigTakerQuoteBalanceDelta.Neg(bigTakerQuoteBalanceDelta)
@@ -562,10 +563,10 @@ func getUpdatedOrderFillAmount(
 	currentFillAmount satypes.BaseQuantums,
 	fillQuantums satypes.BaseQuantums,
 ) (satypes.BaseQuantums, error) {
-	bigCurrentFillAmount := currentFillAmount.ToBigInt()
-	bigNewFillAmount := bigCurrentFillAmount.Add(bigCurrentFillAmount, fillQuantums.ToBigInt())
-	if bigNewFillAmount.Cmp(orderBaseQuantums.ToBigInt()) == 1 {
-		return 0, errorsmod.Wrapf(
+	bigCurrentFillAmount := currentFillAmount.BigInt()
+	bigNewFillAmount := bigCurrentFillAmount.Add(bigCurrentFillAmount, fillQuantums.BigInt())
+	if bigNewFillAmount.Cmp(orderBaseQuantums.BigInt()) == 1 {
+		return satypes.ZeroBaseQuantums(), errorsmod.Wrapf(
 			types.ErrInvalidMsgProposedOperations,
 			"Match with Quantums %v would exceed total Quantums %v of OrderId %v. New total filled quantums would be %v.",
 			fillQuantums,
@@ -575,5 +576,5 @@ func getUpdatedOrderFillAmount(
 		)
 	}
 
-	return satypes.BaseQuantums(bigNewFillAmount.Uint64()), nil
+	return dtypes.NewIntFromBigInt(bigNewFillAmount), nil
 }

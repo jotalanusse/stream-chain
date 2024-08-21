@@ -32,7 +32,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 		expectedInTriggeredStateAfterBlock map[uint32]map[clobtypes.OrderId]bool
 
 		expectedOrderOnMemClob  map[clobtypes.OrderId]bool
-		expectedOrderFillAmount map[clobtypes.OrderId]uint64
+		expectedOrderFillAmount map[clobtypes.OrderId]satypes.BaseQuantums
 		expectedSubaccounts     []satypes.Subaccount
 	}{
 		"IOC Reduce only order partially matches short term order same block, maker order fully filled": {
@@ -56,9 +56,9 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy10_Price500000_GTB20.OrderId:          false,
 				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy10_Price500000_GTB20.OrderId:          100,
-				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: 100,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy10_Price500000_GTB20.OrderId:          constants.BaseQuantums_100,
+				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: constants.BaseQuantums_100,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -123,9 +123,9 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy10_Price500000_GTB20.OrderId:          false,
 				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy10_Price500000_GTB20.OrderId:          100,
-				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: 100,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy10_Price500000_GTB20.OrderId:          constants.BaseQuantums_100,
+				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: constants.BaseQuantums_100,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -190,9 +190,9 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId:          true,
 				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId:          150,
-				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: 150,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId:          constants.BaseQuantums_150,
+				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_IOC_RO.OrderId: constants.BaseQuantums_150,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -261,8 +261,8 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId:          true,
 				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_FOK_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId: 150,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId: constants.BaseQuantums_150,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -329,8 +329,8 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId:          true,
 				constants.Order_Alice_Num1_Id1_Clob0_Sell15_Price500000_GTB20_FOK_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId: 150,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy80_Price500000_GTB20.OrderId: constants.BaseQuantums_150,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -404,9 +404,9 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price500000_GTB10.OrderId:                                true,
 				constants.ConditionalOrder_Alice_Num1_Id1_Clob0_Sell05BTC_Price500000_GTBT20_TP_50001_FOK_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price500000_GTB10.OrderId:                                50_000_000,
-				constants.ConditionalOrder_Alice_Num1_Id1_Clob0_Sell05BTC_Price500000_GTBT20_TP_50001_FOK_RO.OrderId: 50_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price500000_GTB10.OrderId:                                constants.BaseQuantums_50_000_000,
+				constants.ConditionalOrder_Alice_Num1_Id1_Clob0_Sell05BTC_Price500000_GTBT20_TP_50001_FOK_RO.OrderId: constants.BaseQuantums_50_000_000,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -480,9 +480,9 @@ func TestReduceOnlyOrders(t *testing.T) {
 				constants.Order_Carl_Num0_Id0_Clob0_Buy025BTC_Price500000_GTB10.OrderId:                              false,
 				constants.ConditionalOrder_Alice_Num1_Id1_Clob0_Sell05BTC_Price500000_GTBT20_TP_50001_IOC_RO.OrderId: false,
 			},
-			expectedOrderFillAmount: map[clobtypes.OrderId]uint64{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy025BTC_Price500000_GTB10.OrderId:                              25_000_000,
-				constants.ConditionalOrder_Alice_Num1_Id1_Clob0_Sell05BTC_Price500000_GTBT20_TP_50001_IOC_RO.OrderId: 25_000_000,
+			expectedOrderFillAmount: map[clobtypes.OrderId]satypes.BaseQuantums{
+				constants.Order_Carl_Num0_Id0_Clob0_Buy025BTC_Price500000_GTB10.OrderId:                              constants.BaseQuantums_25_000_000,
+				constants.ConditionalOrder_Alice_Num1_Id1_Clob0_Sell05BTC_Price500000_GTBT20_TP_50001_IOC_RO.OrderId: constants.BaseQuantums_25_000_000,
 			},
 			expectedSubaccounts: []satypes.Subaccount{
 				{
@@ -675,7 +675,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 			for orderId, expectedFillAmount := range tc.expectedOrderFillAmount {
 				exists, fillAmount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, orderId)
 				require.True(t, exists)
-				require.Equal(t, expectedFillAmount, fillAmount.ToUint64())
+				require.Equal(t, expectedFillAmount, fillAmount)
 			}
 
 			for _, subaccount := range tc.expectedSubaccounts {
@@ -814,7 +814,7 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 		secondOrders       []clobtypes.Order
 		secondOrdersErrors []string
 
-		expectedOrderFillAmounts map[uint32]map[clobtypes.OrderId]uint64
+		expectedOrderFillAmounts map[uint32]map[clobtypes.OrderId]satypes.BaseQuantums
 	}{
 		`A regular order is partially filled. Replacement FOK RO order fails because it is immediate execution.`: {
 			subaccounts: []satypes.Subaccount{
@@ -852,14 +852,14 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 				clobtypes.ErrInvalidReplacement.Error(),
 			},
 
-			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]uint64{
+			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]satypes.BaseQuantums{
 				2: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: 70,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    70,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: constants.BaseQuantums_70,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    constants.BaseQuantums_70,
 				},
 				3: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: 70,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    70,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: constants.BaseQuantums_70,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    constants.BaseQuantums_70,
 				},
 			},
 		},
@@ -899,14 +899,14 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 				clobtypes.ErrInvalidReplacement.Error(),
 			},
 
-			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]uint64{
+			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]satypes.BaseQuantums{
 				2: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: 70,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    70,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: constants.BaseQuantums_70,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    constants.BaseQuantums_70,
 				},
 				3: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: 70,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    70,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price500000_GTB20.OrderId: constants.BaseQuantums_70,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy70_Price500000_GTB10.OrderId:    constants.BaseQuantums_70,
 				},
 			},
 		},
@@ -948,13 +948,13 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 				clobtypes.ErrFokOrderCouldNotBeFullyFilled.Error(),
 			},
 
-			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]uint64{
+			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]satypes.BaseQuantums{
 				2: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price51000_GTB20.OrderId: 0,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price51000_GTB20.OrderId: constants.BaseQuantums_0,
 				},
 				3: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell110_Price50000_GTB21_FOK_RO.OrderId: 0,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy110_Price50000_GTB10.OrderId:          0,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell110_Price50000_GTB21_FOK_RO.OrderId: constants.BaseQuantums_0,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy110_Price50000_GTB10.OrderId:          constants.BaseQuantums_0,
 				},
 			},
 		},
@@ -995,13 +995,13 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 				"",
 			},
 
-			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]uint64{
+			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]satypes.BaseQuantums{
 				2: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price51000_GTB20.OrderId: 0,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price51000_GTB20.OrderId: constants.BaseQuantums_0,
 				},
 				3: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell110_Price50000_GTB21_FOK_RO.OrderId: 110,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy110_Price50000_GTB10.OrderId:          110,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell110_Price50000_GTB21_FOK_RO.OrderId: constants.BaseQuantums_110,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy110_Price50000_GTB10.OrderId:          constants.BaseQuantums_110,
 				},
 			},
 		},
@@ -1043,13 +1043,13 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 				"",
 			},
 
-			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]uint64{
+			expectedOrderFillAmounts: map[uint32]map[clobtypes.OrderId]satypes.BaseQuantums{
 				2: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price51000_GTB20.OrderId: 0,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell100_Price51000_GTB20.OrderId: constants.BaseQuantums_0,
 				},
 				3: {
-					constants.Order_Alice_Num1_Id0_Clob0_Sell110_Price50000_GTB21_IOC_RO.OrderId: 60,
-					constants.Order_Carl_Num0_Id0_Clob0_Buy110_Price50000_GTB10.OrderId:          60,
+					constants.Order_Alice_Num1_Id0_Clob0_Sell110_Price50000_GTB21_IOC_RO.OrderId: constants.BaseQuantums_60,
+					constants.Order_Carl_Num0_Id0_Clob0_Buy110_Price50000_GTB10.OrderId:          constants.BaseQuantums_60,
 				},
 			},
 		},
@@ -1115,11 +1115,11 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 			if orderMap, exists := tc.expectedOrderFillAmounts[2]; exists {
 				for orderId, expectedFillAmount := range orderMap {
 					exists, actualFillAmount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, orderId)
-					if expectedFillAmount == 0 {
+					if expectedFillAmount.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 						require.False(t, exists)
 					} else {
 						require.True(t, exists)
-						require.Equal(t, expectedFillAmount, actualFillAmount.ToUint64())
+						require.Equal(t, expectedFillAmount, actualFillAmount)
 					}
 				}
 			}
@@ -1153,11 +1153,11 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 			if orderMap, exists := tc.expectedOrderFillAmounts[3]; exists {
 				for orderId, expectedFillAmount := range orderMap {
 					exists, actualFillAmount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, orderId)
-					if expectedFillAmount == 0 {
+					if expectedFillAmount.Cmp(satypes.ZeroBaseQuantums()) == 0 {
 						require.False(t, exists)
 					} else {
 						require.True(t, exists)
-						require.Equal(t, expectedFillAmount, actualFillAmount.ToUint64())
+						require.Equal(t, expectedFillAmount, actualFillAmount)
 					}
 				}
 			}

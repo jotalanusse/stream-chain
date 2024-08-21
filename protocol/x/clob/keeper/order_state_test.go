@@ -34,7 +34,7 @@ func TestGetAllOrderFillStates(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-					100,
+					constants.BaseQuantums_100,
 					10,
 				)
 			},
@@ -53,14 +53,14 @@ func TestGetAllOrderFillStates(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-					100,
+					constants.BaseQuantums_100,
 					10,
 				)
 
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-					101,
+					constants.BaseQuantums_101,
 					11,
 				)
 			},
@@ -86,14 +86,14 @@ func TestGetAllOrderFillStates(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-					100,
+					constants.BaseQuantums_100,
 					10,
 				)
 
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-					102,
+					constants.BaseQuantums_102,
 					12,
 				)
 			},
@@ -147,13 +147,13 @@ func TestSetGetOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					10,
 				)
 			},
 
 			expectedExists:              true,
-			expectedFillAmount:          100,
+			expectedFillAmount:          constants.BaseQuantums_100,
 			expectedPrunableBlockHeight: 10,
 		},
 		"SetOrderFillAmount twice, GetOrderFillAmount returns the most up-to-date values": {
@@ -162,19 +162,19 @@ func TestSetGetOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					10,
 				)
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					200,
+					constants.BaseQuantums_200,
 					20,
 				)
 			},
 
 			expectedExists:              true,
-			expectedFillAmount:          200,
+			expectedFillAmount:          constants.BaseQuantums_200,
 			expectedPrunableBlockHeight: 20,
 		},
 		"GetOrderFillAmount with non-existent OrderFillState": {
@@ -222,14 +222,14 @@ func TestOrderFillAmountInitMemStore_Success(t *testing.T) {
 	ks.ClobKeeper.SetOrderFillAmount(
 		ks.Ctx,
 		constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId,
-		satypes.BaseQuantums(100),
+		constants.BaseQuantums_100,
 		uint32(0),
 	)
 
 	ks.ClobKeeper.SetOrderFillAmount(
 		ks.Ctx,
 		constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-		satypes.BaseQuantums(100),
+		constants.BaseQuantums_100,
 		uint32(0),
 	)
 
@@ -237,7 +237,7 @@ func TestOrderFillAmountInitMemStore_Success(t *testing.T) {
 	ks.ClobKeeper.SetOrderFillAmount(
 		ks.Ctx,
 		constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-		satypes.BaseQuantums(200),
+		constants.BaseQuantums_200,
 		uint32(0),
 	)
 
@@ -248,12 +248,12 @@ func TestOrderFillAmountInitMemStore_Success(t *testing.T) {
 	exists, amount, _ := ks.ClobKeeper.GetOrderFillAmount(
 		ks.Ctx, constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId)
 	require.True(t, exists)
-	require.Equal(t, satypes.BaseQuantums(100), amount)
+	require.Equal(t, constants.BaseQuantums_100, amount)
 
 	exists, amount, _ = ks.ClobKeeper.GetOrderFillAmount(
 		ks.Ctx, constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId)
 	require.True(t, exists)
-	require.Equal(t, satypes.BaseQuantums(200), amount)
+	require.Equal(t, constants.BaseQuantums_200, amount)
 
 	exists, _, _ = ks.ClobKeeper.GetOrderFillAmount(
 		ks.Ctx, constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId)
@@ -282,7 +282,7 @@ func TestPruning(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
@@ -313,7 +313,7 @@ func TestPruning(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
@@ -326,7 +326,7 @@ func TestPruning(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					nextBlockHeight,
 				)
 
@@ -339,7 +339,7 @@ func TestPruning(t *testing.T) {
 			},
 
 			expectedExists:              true,
-			expectedFillAmount:          100,
+			expectedFillAmount:          constants.BaseQuantums_100,
 			expectedPrunableBlockHeight: 11,
 			expectedEmptyPotentiallyPrunableOrderBlockHeights: []uint32{10},
 		},
@@ -362,7 +362,7 @@ func TestPruning(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
@@ -392,21 +392,21 @@ func TestPruning(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id1_Clob0_Sell10_Price15_GTB15.OrderId,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
 				k.SetOrderFillAmount(
 					ctx,
 					constants.Order_Alice_Num0_Id2_Clob1_Sell5_Price10_GTB15.OrderId,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
@@ -568,7 +568,7 @@ func TestRemoveOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					0,
 				)
 				k.RemoveOrderFillAmount(
@@ -595,13 +595,13 @@ func TestRemoveOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					10,
 				)
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					200,
+					constants.BaseQuantums_200,
 					20,
 				)
 				k.RemoveOrderFillAmount(
@@ -645,7 +645,7 @@ func TestRemoveOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					0,
 				)
 				k.RemoveOrderFillAmount(
@@ -655,13 +655,13 @@ func TestRemoveOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					50,
+					constants.BaseQuantums_50,
 					0,
 				)
 			},
 
 			expectedExists:     true,
-			expectedFillAmount: 50,
+			expectedFillAmount: constants.BaseQuantums_50,
 			expectedMultiStoreWrites: []string{
 				types.OrderAmountFilledKeyPrefix +
 					string(constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId.ToStateKey()),
@@ -685,13 +685,13 @@ func TestRemoveOrderFillAmount(t *testing.T) {
 				k.SetOrderFillAmount(
 					ctx,
 					orderId,
-					100,
+					constants.BaseQuantums_100,
 					0,
 				)
 				k.SetOrderFillAmount(
 					ctx,
 					removedOrderId,
-					10,
+					constants.BaseQuantums_10,
 					0,
 				)
 				k.RemoveOrderFillAmount(
@@ -701,7 +701,7 @@ func TestRemoveOrderFillAmount(t *testing.T) {
 			},
 
 			expectedExists:     true,
-			expectedFillAmount: 100,
+			expectedFillAmount: constants.BaseQuantums_100,
 			expectedMultiStoreWrites: []string{
 				types.OrderAmountFilledKeyPrefix +
 					string(constants.Order_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB15.OrderId.ToStateKey()),

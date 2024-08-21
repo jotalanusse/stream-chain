@@ -77,7 +77,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			order: constants.Order_Carl_Num0_Id1_Clob0_Buy1BTC_Price49999,
 
 			expectedOrderStatus: types.Success,
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOpenInterests: map[uint32]*big.Int{
 				// unchanged, no match happened
 				constants.BtcUsd_SmallMarginRequirement.Params.Id: big.NewInt(100_000_000),
@@ -100,7 +100,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			order: constants.Order_Carl_Num0_Id2_Clob1_Buy10ETH_Price3000,
 
 			expectedOrderStatus: types.Success,
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOpenInterests: map[uint32]*big.Int{
 				// unchanged, no match happened
 				constants.BtcUsd_SmallMarginRequirement.Params.Id: big.NewInt(100_000_000),
@@ -174,7 +174,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			order: constants.Order_Carl_Num0_Id3_Clob1_Buy1ETH_Price3000,
 
 			expectedOrderStatus: types.Undercollateralized,
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOpenInterests: map[uint32]*big.Int{
 				// unchanged, no match happened
 				constants.BtcUsd_SmallMarginRequirement.Params.Id: big.NewInt(100_000_000),
@@ -195,7 +195,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			order: constants.Order_Carl_Num0_Id0_Clob0_Buy10QtBTC_Price100000QuoteQt,
 
 			expectedOrderStatus: types.Success,
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOpenInterests: map[uint32]*big.Int{
 				// unchanged, no match happened
 				constants.BtcUsd_SmallMarginRequirement.Params.Id: big.NewInt(100_000_000),
@@ -217,7 +217,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			order: constants.Order_Carl_Num0_Id0_Clob0_Buy10QtBTC_Price100000QuoteQt,
 
 			expectedOrderStatus: types.Undercollateralized,
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOpenInterests: map[uint32]*big.Int{
 				// unchanged, no match happened
 				constants.BtcUsd_SmallMarginRequirement.Params.Id: big.NewInt(100_000_000),
@@ -240,7 +240,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			order: constants.Order_Carl_Num0_Id0_Clob0_Buy10QtBTC_Price100001QuoteQt,
 
 			expectedOrderStatus: types.Success,
-			expectedFilledSize:  0,
+			expectedFilledSize:  constants.BaseQuantums_0,
 			expectedOpenInterests: map[uint32]*big.Int{
 				// unchanged, no match happened
 				constants.BtcUsd_SmallMarginRequirement.Params.Id: big.NewInt(100_000_000),
@@ -491,7 +491,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			// checking collateralization, the match would fail.
 			order:               constants.Order_Carl_Num1_Id1_Clob0_Buy1kQtBTC_Price50000,
 			expectedOrderStatus: types.Success,
-			expectedFilledSize:  1_000_000,
+			expectedFilledSize:  constants.BaseQuantums_1_000_000,
 			expectedMultiStoreWrites: []string{
 				// Update taker subaccount
 				satypes.SubaccountKeyPrefix +
@@ -621,7 +621,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			feeParams:                constants.PerpetualFeeParamsNoFee,
 			order:                    constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price5subticks_GTB10,
 			expectedOrderStatus:      types.Success,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedMultiStoreWrites: []string{},
 		},
 		`Subaccount cannot place buy order due to a failed collateralization check with its maker price but would
@@ -637,7 +637,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			feeParams:                constants.PerpetualFeeParamsNoFee,
 			order:                    constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price500000_GTB10,
 			expectedOrderStatus:      types.Undercollateralized,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedMultiStoreWrites: []string{},
 		},
 		`Subaccount placed buy order passes collateralization check when using the maker price`: {
@@ -652,7 +652,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			feeParams:                constants.PerpetualFeeParamsNoFee,
 			order:                    constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price5subticks_GTB10,
 			expectedOrderStatus:      types.Success,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedMultiStoreWrites: []string{},
 		},
 		// <end of grouped tests: pessimistic value collateralization check -- BUY>
@@ -674,7 +674,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			feeParams:                constants.PerpetualFeeParamsNoFee,
 			order:                    constants.Order_Carl_Num0_Id0_Clob0_Sell1BTC_Price500000_GTB10,
 			expectedOrderStatus:      types.Success,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedMultiStoreWrites: []string{},
 		},
 		`Subaccount cannot place sell order due to a failed collateralization check with its maker price but would
@@ -690,7 +690,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			feeParams:                constants.PerpetualFeeParamsNoFee,
 			order:                    constants.Order_Carl_Num0_Id0_Clob0_Sell1BTC_Price5000_GTB10,
 			expectedOrderStatus:      types.Undercollateralized,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedMultiStoreWrites: []string{},
 		},
 		`Subaccount placed sell order passes collateralization check when using the maker price`: {
@@ -705,7 +705,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 			feeParams:                constants.PerpetualFeeParamsNoFee,
 			order:                    constants.Order_Carl_Num0_Id0_Clob0_Sell1BTC_Price500000_GTB10,
 			expectedOrderStatus:      types.Success,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedMultiStoreWrites: []string{},
 		},
 		// <end of grouped tests: pessimistic value collateralization check -- SELL>
@@ -773,7 +773,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -890,7 +890,7 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 			order: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10,
 
 			expectedOrderStatus:      types.Success,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedTransactionIndex: 0,
 		},
 		`Can place multiple stateful orders on the orderbook, and the newly-placed stateful order
@@ -912,7 +912,7 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 			order: constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10,
 
 			expectedOrderStatus:      types.Success,
-			expectedFilledSize:       100_000_000,
+			expectedFilledSize:       constants.BaseQuantums_100_000_000,
 			expectedTransactionIndex: 2,
 			expectedMultiStoreWrites: []string{
 				// Update taker subaccount.
@@ -954,7 +954,7 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 
 			expectedOrderStatus:      types.Success,
 			expectedErr:              types.ErrPostOnlyWouldCrossMakerOrder,
-			expectedFilledSize:       0,
+			expectedFilledSize:       constants.BaseQuantums_0,
 			expectedTransactionIndex: 0,
 			// No multi store writes due to ErrPostOnlyWouldCrossMakerOrder error.
 			expectedMultiStoreWrites: []string{},
@@ -1023,7 +1023,7 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobPair.GetPerpetualClobMetadata().PerpetualId,
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,
@@ -1152,7 +1152,7 @@ func TestPlaceOrder_SendOffchainMessages(t *testing.T) {
 		ctx,
 		constants.ClobPair_Btc.Id,
 		clobtest.MustPerpetualId(constants.ClobPair_Btc),
-		satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+		satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 		constants.ClobPair_Btc.QuantumConversionExponent,
 		constants.ClobPair_Btc.SubticksPerTick,
 		constants.ClobPair_Btc.Status,
@@ -1207,7 +1207,7 @@ func TestPerformStatefulOrderValidation_PreExistingStatefulOrder(t *testing.T) {
 		ks.Ctx,
 		constants.ClobPair_Btc.Id,
 		clobtest.MustPerpetualId(constants.ClobPair_Btc),
-		satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+		satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 		constants.ClobPair_Btc.QuantumConversionExponent,
 		constants.ClobPair_Btc.SubticksPerTick,
 		constants.ClobPair_Btc.Status,
@@ -1968,7 +1968,7 @@ func TestGetStatePosition_Success(t *testing.T) {
 					ks.Ctx,
 					cp.Id,
 					perpetualId,
-					satypes.BaseQuantums(cp.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(cp.StepBaseQuantums),
 					cp.QuantumConversionExponent,
 					cp.SubticksPerTick,
 					cp.Status,
@@ -2182,7 +2182,7 @@ func TestInitStatefulOrders(t *testing.T) {
 				ks.Ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -2213,7 +2213,7 @@ func TestInitStatefulOrders(t *testing.T) {
 
 				orderPlacementErr := tc.orderPlacementErrors[order.OrderId]
 				memClob.On("PlaceOrder", mock.Anything, order).Return(
-					satypes.BaseQuantums(0),
+					satypes.BaseQuantums(constants.BaseQuantums_0),
 					types.Success,
 					constants.TestOffchainUpdates,
 					orderPlacementErr,
@@ -2314,7 +2314,7 @@ func TestHydrateUntriggeredConditionalOrdersInMemClob(t *testing.T) {
 				ks.Ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -2469,7 +2469,7 @@ func TestPlaceStatefulOrdersFromLastBlock(t *testing.T) {
 				ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -2486,7 +2486,7 @@ func TestPlaceStatefulOrdersFromLastBlock(t *testing.T) {
 			// Assert expected order placement memclob calls.
 			for _, order := range tc.expectedOrderPlacementCalls {
 				memClob.On("PlaceOrder", mock.Anything, order).Return(
-					satypes.BaseQuantums(0),
+					satypes.BaseQuantums(constants.BaseQuantums_0),
 					types.Success,
 					constants.TestOffchainUpdates,
 					nil,
@@ -2598,7 +2598,7 @@ func TestPlaceConditionalOrdersTriggeredInLastBlock(t *testing.T) {
 				ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -2638,7 +2638,7 @@ func TestPlaceConditionalOrdersTriggeredInLastBlock(t *testing.T) {
 			// Assert expected order placement memclob calls.
 			for _, order := range tc.expectedOrderPlacementCalls {
 				memClob.On("PlaceOrder", mock.Anything, order).Return(
-					satypes.BaseQuantums(0),
+					satypes.BaseQuantums(constants.BaseQuantums_0),
 					types.Success,
 					constants.TestOffchainUpdates,
 					nil,

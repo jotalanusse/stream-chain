@@ -51,7 +51,7 @@ func (c *ClobPair) GetClobPairSubticksPerTick() SubticksPerTick {
 }
 
 func (c *ClobPair) GetClobPairMinOrderBaseQuantums() satypes.BaseQuantums {
-	return satypes.BaseQuantums(c.StepBaseQuantums.BigInt().Uint64())
+	return satypes.BaseQuantums(c.StepBaseQuantums)
 }
 
 func (c *ClobPair) GetStepBaseQuantums() dtypes.SerializableInt {

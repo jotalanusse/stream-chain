@@ -33,7 +33,7 @@ func TestRemoveAndClearOperationsQueue(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num1_Id13_Clob0_Buy30_Price50_GTB25,
-					RemainingSize: 30,
+					RemainingSize: constants.BaseQuantums_30,
 				},
 			},
 		},
@@ -52,7 +52,7 @@ func TestRemoveAndClearOperationsQueue(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 		},
@@ -87,7 +87,7 @@ func TestRemoveAndClearOperationsQueue(t *testing.T) {
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id10_Clob0_Sell25_Price15_GTB20,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},
@@ -102,7 +102,7 @@ func TestRemoveAndClearOperationsQueue(t *testing.T) {
 			expectedRemainingBids: []OrderWithRemainingSize{
 				{
 					Order:         constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 		},
@@ -124,7 +124,7 @@ func TestRemoveAndClearOperationsQueue(t *testing.T) {
 			expectedRemainingAsks: []OrderWithRemainingSize{
 				{
 					Order:         constants.Order_Alice_Num0_Id10_Clob0_Sell35_Price15_GTB25,
-					RemainingSize: 25,
+					RemainingSize: constants.BaseQuantums_25,
 				},
 			},
 			expectedRemainingBids: []OrderWithRemainingSize{},

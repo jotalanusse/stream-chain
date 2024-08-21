@@ -3,7 +3,6 @@ package types
 import (
 	"fmt"
 
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
 
@@ -96,7 +95,7 @@ func NewMatchPerpetualLiquidationInternalOperation(
 						Liquidated:  takerLiquidationOrder.GetSubaccountId(),
 						ClobPairId:  takerLiquidationOrder.GetClobPairId().ToUint32(),
 						PerpetualId: takerLiquidationOrder.MustGetLiquidatedPerpetualId(),
-						TotalSize:   dtypes.NewIntFromBigInt(takerLiquidationOrder.GetBaseQuantums().ToBigInt()),
+						TotalSize:   takerLiquidationOrder.GetBaseQuantums(),
 						IsBuy:       takerLiquidationOrder.IsBuy(),
 						Fills:       makerFills,
 					},

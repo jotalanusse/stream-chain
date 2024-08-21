@@ -5,8 +5,10 @@ package mocks
 import (
 	big "math/big"
 
-	indexer_manager "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
+	dtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+
+	indexer_manager "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 
 	log "cosmossdk.io/log"
 
@@ -148,7 +150,7 @@ func (_m *ClobKeeper) ConvertFillablePriceToSubticks(ctx types.Context, fillable
 }
 
 // CreatePerpetualClobPair provides a mock function with given fields: ctx, clobPairId, perpetualId, stepSizeInBaseQuantums, quantumConversionExponent, subticksPerTick, status
-func (_m *ClobKeeper) CreatePerpetualClobPair(ctx types.Context, clobPairId uint32, perpetualId uint32, stepSizeInBaseQuantums subaccountstypes.BaseQuantums, quantumConversionExponent int32, subticksPerTick uint32, status clobtypes.ClobPair_Status) (clobtypes.ClobPair, error) {
+func (_m *ClobKeeper) CreatePerpetualClobPair(ctx types.Context, clobPairId uint32, perpetualId uint32, stepSizeInBaseQuantums dtypes.SerializableInt, quantumConversionExponent int32, subticksPerTick uint32, status clobtypes.ClobPair_Status) (clobtypes.ClobPair, error) {
 	ret := _m.Called(ctx, clobPairId, perpetualId, stepSizeInBaseQuantums, quantumConversionExponent, subticksPerTick, status)
 
 	if len(ret) == 0 {
@@ -157,16 +159,16 @@ func (_m *ClobKeeper) CreatePerpetualClobPair(ctx types.Context, clobPairId uint
 
 	var r0 clobtypes.ClobPair
 	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint32, subaccountstypes.BaseQuantums, int32, uint32, clobtypes.ClobPair_Status) (clobtypes.ClobPair, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint32, dtypes.SerializableInt, int32, uint32, clobtypes.ClobPair_Status) (clobtypes.ClobPair, error)); ok {
 		return rf(ctx, clobPairId, perpetualId, stepSizeInBaseQuantums, quantumConversionExponent, subticksPerTick, status)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint32, subaccountstypes.BaseQuantums, int32, uint32, clobtypes.ClobPair_Status) clobtypes.ClobPair); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint32, dtypes.SerializableInt, int32, uint32, clobtypes.ClobPair_Status) clobtypes.ClobPair); ok {
 		r0 = rf(ctx, clobPairId, perpetualId, stepSizeInBaseQuantums, quantumConversionExponent, subticksPerTick, status)
 	} else {
 		r0 = ret.Get(0).(clobtypes.ClobPair)
 	}
 
-	if rf, ok := ret.Get(1).(func(types.Context, uint32, uint32, subaccountstypes.BaseQuantums, int32, uint32, clobtypes.ClobPair_Status) error); ok {
+	if rf, ok := ret.Get(1).(func(types.Context, uint32, uint32, dtypes.SerializableInt, int32, uint32, clobtypes.ClobPair_Status) error); ok {
 		r1 = rf(ctx, clobPairId, perpetualId, stepSizeInBaseQuantums, quantumConversionExponent, subticksPerTick, status)
 	} else {
 		r1 = ret.Error(1)
@@ -347,7 +349,7 @@ func (_m *ClobKeeper) GetInsuranceFundBalance(ctx types.Context, perpetualId uin
 }
 
 // GetLiquidationInsuranceFundDelta provides a mock function with given fields: ctx, subaccountId, perpetualId, isBuy, fillAmount, subticks
-func (_m *ClobKeeper) GetLiquidationInsuranceFundDelta(ctx types.Context, subaccountId subaccountstypes.SubaccountId, perpetualId uint32, isBuy bool, fillAmount uint64, subticks clobtypes.Subticks) (*big.Int, error) {
+func (_m *ClobKeeper) GetLiquidationInsuranceFundDelta(ctx types.Context, subaccountId subaccountstypes.SubaccountId, perpetualId uint32, isBuy bool, fillAmount dtypes.SerializableInt, subticks clobtypes.Subticks) (*big.Int, error) {
 	ret := _m.Called(ctx, subaccountId, perpetualId, isBuy, fillAmount, subticks)
 
 	if len(ret) == 0 {
@@ -356,10 +358,10 @@ func (_m *ClobKeeper) GetLiquidationInsuranceFundDelta(ctx types.Context, subacc
 
 	var r0 *big.Int
 	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, subaccountstypes.SubaccountId, uint32, bool, uint64, clobtypes.Subticks) (*big.Int, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, subaccountstypes.SubaccountId, uint32, bool, dtypes.SerializableInt, clobtypes.Subticks) (*big.Int, error)); ok {
 		return rf(ctx, subaccountId, perpetualId, isBuy, fillAmount, subticks)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, subaccountstypes.SubaccountId, uint32, bool, uint64, clobtypes.Subticks) *big.Int); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, subaccountstypes.SubaccountId, uint32, bool, dtypes.SerializableInt, clobtypes.Subticks) *big.Int); ok {
 		r0 = rf(ctx, subaccountId, perpetualId, isBuy, fillAmount, subticks)
 	} else {
 		if ret.Get(0) != nil {
@@ -367,7 +369,7 @@ func (_m *ClobKeeper) GetLiquidationInsuranceFundDelta(ctx types.Context, subacc
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(types.Context, subaccountstypes.SubaccountId, uint32, bool, uint64, clobtypes.Subticks) error); ok {
+	if rf, ok := ret.Get(1).(func(types.Context, subaccountstypes.SubaccountId, uint32, bool, dtypes.SerializableInt, clobtypes.Subticks) error); ok {
 		r1 = rf(ctx, subaccountId, perpetualId, isBuy, fillAmount, subticks)
 	} else {
 		r1 = ret.Error(1)
@@ -877,23 +879,23 @@ func (_m *ClobKeeper) PerformStatefulOrderValidation(ctx types.Context, order *c
 }
 
 // PlacePerpetualLiquidation provides a mock function with given fields: ctx, liquidationOrder
-func (_m *ClobKeeper) PlacePerpetualLiquidation(ctx types.Context, liquidationOrder clobtypes.LiquidationOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, error) {
+func (_m *ClobKeeper) PlacePerpetualLiquidation(ctx types.Context, liquidationOrder clobtypes.LiquidationOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, error) {
 	ret := _m.Called(ctx, liquidationOrder)
 
 	if len(ret) == 0 {
 		panic("no return value specified for PlacePerpetualLiquidation")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 clobtypes.OrderStatus
 	var r2 error
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, error)); ok {
 		return rf(ctx, liquidationOrder)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, liquidationOrder)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.LiquidationOrder) clobtypes.OrderStatus); ok {
@@ -912,23 +914,23 @@ func (_m *ClobKeeper) PlacePerpetualLiquidation(ctx types.Context, liquidationOr
 }
 
 // PlaceShortTermOrder provides a mock function with given fields: ctx, msg
-func (_m *ClobKeeper) PlaceShortTermOrder(ctx types.Context, msg *clobtypes.MsgPlaceOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, error) {
+func (_m *ClobKeeper) PlaceShortTermOrder(ctx types.Context, msg *clobtypes.MsgPlaceOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, error) {
 	ret := _m.Called(ctx, msg)
 
 	if len(ret) == 0 {
 		panic("no return value specified for PlaceShortTermOrder")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 clobtypes.OrderStatus
 	var r2 error
-	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, error)); ok {
 		return rf(ctx, msg)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, *clobtypes.MsgPlaceOrder) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, msg)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, *clobtypes.MsgPlaceOrder) clobtypes.OrderStatus); ok {

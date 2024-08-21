@@ -553,7 +553,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						matchLiquidation.Liquidated,
 						matchLiquidation.PerpetualId,
 						liquidationIsBuy,
-						fill.FillAmount.BigInt().Uint64(),
+						fill.FillAmount,
 						makerOrder.GetOrderSubticks(),
 					)
 					if err != nil {
@@ -636,7 +636,7 @@ func (k Keeper) CalculateSubaccountPnLForMevMatches(
 				p.subaccountId,
 				p.isBuy,
 				types.Subticks(matchWithOrders.MakerOrderSubticks.BigInt().Uint64()),
-				satypes.BaseQuantums(matchWithOrders.FillAmount.BigInt().Uint64()),
+				matchWithOrders.FillAmount,
 				p.feePpm,
 			); err != nil {
 				return err
@@ -669,7 +669,7 @@ func (k Keeper) CalculateSubaccountPnLForMevMatches(
 				p.subaccountId,
 				p.isBuy,
 				types.Subticks(mevLiquidation.MakerOrderSubticks.BigInt().Uint64()),
-				satypes.BaseQuantums(mevLiquidation.FillAmount.BigInt().Uint64()),
+				mevLiquidation.FillAmount,
 				p.feePpm,
 			); err != nil {
 				return err
@@ -770,7 +770,7 @@ func (k Keeper) CalculateSubaccountPnLForMatches(
 							p.subaccountId,
 							p.isBuy,
 							absQuoteQuantums,
-							satypes.BaseQuantums(fill.FillAmount.BigInt().Uint64()),
+							fill.FillAmount,
 							p.feePpm,
 						); err != nil {
 							return err
@@ -899,7 +899,7 @@ func (c *CumulativePnL) AddPnLForTradeWithFilledQuoteQuantums(
 	c.AddDeltaToSubaccount(subaccountId, pnl)
 
 	// Update the position size delta.
-	deltaQuantums := new(big.Int).SetUint64(filledQuantums.ToUint64())
+	deltaQuantums := filledQuantums.BigInt()
 	if !isBuy {
 		deltaQuantums.Neg(deltaQuantums)
 	}

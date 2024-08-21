@@ -117,7 +117,7 @@ func (o *LiquidationOrder) IsReduceOnly() bool {
 
 // GetDeltaQuantums returns the delta quantums of this liquidation order.
 func (o *LiquidationOrder) GetDeltaQuantums() *big.Int {
-	deltaQuantums := o.GetBaseQuantums().ToBigInt()
+	deltaQuantums := o.GetBaseQuantums().BigInt()
 	if !o.IsBuy() {
 		deltaQuantums.Neg(deltaQuantums)
 	}

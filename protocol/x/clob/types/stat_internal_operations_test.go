@@ -3,7 +3,6 @@ package types_test
 import (
 	"testing"
 
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/stretchr/testify/require"
@@ -58,7 +57,7 @@ func TestStatMsgProposedOperations(t *testing.T) {
 									Liquidated:  constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetSubaccountId(),
 									ClobPairId:  constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetClobPairId().ToUint32(),
 									PerpetualId: constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.MustGetLiquidatedPerpetualId(),
-									TotalSize:   dtypes.NewIntFromBigInt(constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetBaseQuantums().ToBigInt()),
+									TotalSize:   constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.GetBaseQuantums(),
 									IsBuy:       constants.LiquidationOrder_Bob_Num0_Clob0_Buy25_Price30_BTC.IsBuy(),
 									Fills: []types.MakerFill{
 										{

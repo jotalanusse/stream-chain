@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	sdaiservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/sDAIOracle"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/msgsender"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
@@ -34,7 +35,7 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 
 		expectedOrderIdsInMemclob          map[clobtypes.OrderId]bool
 		expectedCancelExpirationsInMemclob map[clobtypes.OrderId]uint32
-		expectedOrderFillAmounts           map[clobtypes.OrderId]uint64
+		expectedOrderFillAmounts           map[clobtypes.OrderId]dtypes.SerializableInt
 	}{
 		"Cancel unfilled short term order": {
 			firstBlockOrders: []clobtypes.MsgPlaceOrder{
@@ -58,8 +59,8 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 			expectedCancelExpirationsInMemclob: map[clobtypes.OrderId]uint32{
 				CancelOrder_Alice_Num0_Id0_Clob0_GTB5.OrderId: 5,
 			},
-			expectedOrderFillAmounts: map[clobtypes.OrderId]uint64{
-				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: 0,
+			expectedOrderFillAmounts: map[clobtypes.OrderId]dtypes.SerializableInt{
+				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: dtypes.NewInt(0),
 			},
 		},
 		"Batch cancel partially filled short term order in same block": {
@@ -95,8 +96,8 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 			expectedCancelExpirationsInMemclob: map[clobtypes.OrderId]uint32{
 				CancelOrder_Alice_Num0_Id0_Clob0_GTB5.OrderId: 5,
 			},
-			expectedOrderFillAmounts: map[clobtypes.OrderId]uint64{
-				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: 40,
+			expectedOrderFillAmounts: map[clobtypes.OrderId]dtypes.SerializableInt{
+				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: dtypes.NewInt(40),
 			},
 		},
 		"Cancel partially filled short term order in next block": {
@@ -132,8 +133,8 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 			expectedCancelExpirationsInMemclob: map[clobtypes.OrderId]uint32{
 				CancelOrder_Alice_Num0_Id0_Clob0_GTB5.OrderId: 5,
 			},
-			expectedOrderFillAmounts: map[clobtypes.OrderId]uint64{
-				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: 40,
+			expectedOrderFillAmounts: map[clobtypes.OrderId]dtypes.SerializableInt{
+				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: dtypes.NewInt(40),
 			},
 		},
 		"Cancel succeeds for fully-filled order": {
@@ -160,8 +161,8 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 			expectedCancelExpirationsInMemclob: map[clobtypes.OrderId]uint32{
 				CancelOrder_Alice_Num0_Id0_Clob0_GTB5.OrderId: 5,
 			},
-			expectedOrderFillAmounts: map[clobtypes.OrderId]uint64{
-				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: 50,
+			expectedOrderFillAmounts: map[clobtypes.OrderId]dtypes.SerializableInt{
+				PlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTB5.Order.OrderId: dtypes.NewInt(50),
 			},
 		},
 		"Cancel with GTB < existing order GTB does not remove order from memclob": {
@@ -314,7 +315,7 @@ func TestBatchCancelSingleCancelFunctionality(t *testing.T) {
 			}
 			for orderId, expectedFillAmount := range tc.expectedOrderFillAmounts {
 				_, fillAmount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, orderId)
-				require.Equal(t, expectedFillAmount, fillAmount.ToUint64())
+				require.Equal(t, expectedFillAmount, fillAmount)
 			}
 		})
 	}
@@ -802,7 +803,7 @@ func TestBatchCancelOffchainUpdates(t *testing.T) {
 				off_chain_updates.MustCreateOrderUpdateMessage(
 					ctx,
 					PlaceOrder_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20.Order.OrderId,
-					0,
+					constants.BaseQuantums_0,
 				).AddHeader(msgsender.MessageHeader{
 					Key:   msgsender.TransactionHashHeaderKey,
 					Value: tmhash.Sum(CheckTx_PlaceOrder_Alice_Num1_Id0_Clob0_Sell10_Price10_GTB20.Tx),
@@ -817,7 +818,7 @@ func TestBatchCancelOffchainUpdates(t *testing.T) {
 				off_chain_updates.MustCreateOrderUpdateMessage(
 					ctx,
 					PlaceOrder_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20.Order.OrderId,
-					0,
+					constants.BaseQuantums_0,
 				).AddHeader(msgsender.MessageHeader{
 					Key:   msgsender.TransactionHashHeaderKey,
 					Value: tmhash.Sum(CheckTx_PlaceOrder_Alice_Num1_Id1_Clob1_Sell10_Price15_GTB20.Tx),

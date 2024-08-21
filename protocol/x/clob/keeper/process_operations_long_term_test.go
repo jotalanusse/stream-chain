@@ -72,9 +72,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: 100_000_000,
+				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: constants.BaseQuantums_100_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $99,975
@@ -145,9 +145,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: 100_000_000,
+				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: constants.BaseQuantums_100_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $99,990
@@ -218,9 +218,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: 100_000_000,
+				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: constants.BaseQuantums_100_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $99,975
@@ -291,9 +291,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: 100_000_000,
+				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: constants.BaseQuantums_100_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $99,990
@@ -363,9 +363,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $99,975
@@ -435,8 +435,8 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: 50_000_000,
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId:  50_000_000,
+				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_50_000_000,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId:  constants.BaseQuantums_50_000_000,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $74,987.5
@@ -530,10 +530,10 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTB10_FOK.OrderId: 50_000_000,
-				constants.Order_Carl_Num0_Id2_Clob0_Buy05BTC_Price50000.OrderId:           50_000_000,
+				constants.Order_Carl_Num0_Id0_Clob0_Buy05BTC_Price50000_GTB10_FOK.OrderId: constants.BaseQuantums_50_000_000,
+				constants.Order_Carl_Num0_Id2_Clob0_Buy05BTC_Price50000.OrderId:           constants.BaseQuantums_50_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $99,990
@@ -613,7 +613,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $4,749, no taker fees, pays $250 insurance fee
@@ -699,7 +699,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $4,749, no taker fees, pays $250 insurance fee
@@ -764,7 +764,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-					50_000_000,
+					constants.BaseQuantums_50_000_000,
 					math.MaxUint32,
 				)
 			},
@@ -783,9 +783,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				),
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: 50_000_000,
+				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: constants.BaseQuantums_50_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $74,975
@@ -857,7 +857,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
-					50_000_000,
+					constants.BaseQuantums_50_000_000,
 					math.MaxUint32,
 				)
 			},
@@ -877,9 +877,9 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 			},
 
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: 50_000_000,
+				constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10.OrderId: constants.BaseQuantums_50_000_000,
 				// Fully filled orders are removed.
-				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: 0,
+				constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId: constants.BaseQuantums_0,
 			},
 			expectedQuoteBalances: map[satypes.SubaccountId]int64{
 				// $74,990

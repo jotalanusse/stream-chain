@@ -183,7 +183,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					prunedOrderIdOne,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight,
 				)
 
@@ -192,7 +192,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					prunedOrderIdTwo,
-					100,
+					constants.BaseQuantums_100,
 					blockHeight+1,
 				)
 
@@ -200,7 +200,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					orderIdThree,
-					150,
+					constants.BaseQuantums_150,
 					blockHeight+10,
 				)
 
@@ -221,8 +221,8 @@ func TestEndBlocker_Success(t *testing.T) {
 				)
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				prunedOrderIdTwo: 100,
-				orderIdThree:     150,
+				prunedOrderIdTwo: constants.BaseQuantums_100,
+				orderIdThree:     constants.BaseQuantums_150,
 			},
 			expectedPrunedOrders: map[types.OrderId]bool{
 				prunedOrderIdOne: true,
@@ -464,7 +464,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId,
-					5,
+					constants.BaseQuantums_5,
 					blockHeight,
 				)
 				ks.ClobKeeper.SetLongTermOrderPlacement(
@@ -480,7 +480,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10.OrderId,
-					5,
+					constants.BaseQuantums_5,
 					blockHeight,
 				)
 				ks.ClobKeeper.SetLongTermOrderPlacement(
@@ -498,7 +498,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					orderIdThree,
-					150,
+					constants.BaseQuantums_150,
 					blockHeight+10,
 				)
 
@@ -506,7 +506,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT15.OrderId,
-					5,
+					constants.BaseQuantums_5,
 					blockHeight,
 				)
 				ks.ClobKeeper.SetLongTermOrderPlacement(
@@ -529,7 +529,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				)
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				orderIdThree: 150,
+				orderIdThree: constants.BaseQuantums_150,
 			},
 			expectedStatefulPlacementInState: map[types.OrderId]bool{
 				constants.LongTermOrder_Bob_Num0_Id0_Clob0_Buy25_Price30_GTBT10.OrderId:  false,
@@ -558,7 +558,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					orderIdThree,
-					150,
+					constants.BaseQuantums_150,
 					blockHeight+10,
 				)
 
@@ -576,7 +576,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				)
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				orderIdThree: 150,
+				orderIdThree: constants.BaseQuantums_150,
 			},
 			expectedProcessProposerMatchesEvents: types.ProcessProposerMatchesEvents{
 				PlacedLongTermOrderIds: []types.OrderId{
@@ -593,13 +593,13 @@ func TestEndBlocker_Success(t *testing.T) {
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Alice_Num0_Id1_Clob0_Sell20_Price10_GTBT10.GetOrderId(),
-					20,
+					constants.BaseQuantums_20,
 					blockHeight+10,
 				)
 				ks.ClobKeeper.SetOrderFillAmount(
 					ctx,
 					constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10.GetOrderId(),
-					20,
+					constants.BaseQuantums_20,
 					blockHeight+10,
 				)
 				ks.ClobKeeper.MustSetProcessProposerMatchesEvents(ctx, types.ProcessProposerMatchesEvents{
@@ -624,8 +624,8 @@ func TestEndBlocker_Success(t *testing.T) {
 				BlockHeight: blockHeight,
 			},
 			expectedFillAmounts: map[types.OrderId]satypes.BaseQuantums{
-				constants.LongTermOrder_Alice_Num0_Id1_Clob0_Sell20_Price10_GTBT10.GetOrderId(): 20,
-				constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10.GetOrderId():    20,
+				constants.LongTermOrder_Alice_Num0_Id1_Clob0_Sell20_Price10_GTBT10.GetOrderId(): constants.BaseQuantums_20,
+				constants.LongTermOrder_Bob_Num0_Id1_Clob0_Buy45_Price10_GTBT10.GetOrderId():    constants.BaseQuantums_20,
 			},
 		},
 	}
@@ -705,7 +705,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ctx,
 				constants.ClobPair_Btc.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Btc),
-				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Btc.StepBaseQuantums),
 				constants.ClobPair_Btc.QuantumConversionExponent,
 				constants.ClobPair_Btc.SubticksPerTick,
 				constants.ClobPair_Btc.Status,
@@ -738,7 +738,7 @@ func TestEndBlocker_Success(t *testing.T) {
 				ctx,
 				constants.ClobPair_Eth.Id,
 				clobtest.MustPerpetualId(constants.ClobPair_Eth),
-				satypes.BaseQuantums(constants.ClobPair_Eth.StepBaseQuantums.BigInt().Uint64()),
+				satypes.BaseQuantums(constants.ClobPair_Eth.StepBaseQuantums),
 				constants.ClobPair_Eth.QuantumConversionExponent,
 				constants.ClobPair_Eth.SubticksPerTick,
 				constants.ClobPair_Eth.Status,
@@ -1402,7 +1402,7 @@ func TestPrepareCheckState(t *testing.T) {
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
-					satypes.BaseQuantums(clobPair.StepBaseQuantums.BigInt().Uint64()),
+					satypes.BaseQuantums(clobPair.StepBaseQuantums),
 					clobPair.QuantumConversionExponent,
 					clobPair.SubticksPerTick,
 					clobPair.Status,

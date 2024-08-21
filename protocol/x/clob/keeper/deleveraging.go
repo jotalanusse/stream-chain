@@ -422,8 +422,8 @@ func (k Keeper) OffsetSubaccountPerpetualPosition(
 						liquidatedSubaccountId,
 						*offsettingSubaccount.Id,
 						perpetualId,
-						satypes.BaseQuantums(new(big.Int).Abs(deltaBaseQuantums).Uint64()), // TODO(CT-641): Use the actual unit price rather than the total quote quantums.
-						satypes.BaseQuantums(deltaQuoteQuantums.Uint64()),
+						satypes.BaseQuantums(dtypes.NewIntFromBigInt(new(big.Int).Abs(deltaBaseQuantums))), // TODO(CT-641): Use the actual unit price rather than the total quote quantums.
+						satypes.BaseQuantums(dtypes.NewIntFromBigInt(deltaQuoteQuantums)),
 						deltaBaseQuantums.Sign() > 0,
 						isFinalSettlement,
 					),

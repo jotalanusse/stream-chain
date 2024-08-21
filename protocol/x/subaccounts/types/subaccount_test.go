@@ -13,20 +13,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBaseQuantumsToBigInt(t *testing.T) {
-	num := uint64(5)
-	bq := types.BaseQuantums(5)
-
-	require.Zero(t, new(big.Int).SetUint64(num).Cmp(bq.ToBigInt()))
-}
-
-func TestBaseQuantumsToUInt64(t *testing.T) {
-	num := uint64(5)
-	bq := types.BaseQuantums(5)
-
-	require.Equal(t, num, bq.ToUint64())
-}
-
 func TestSubaccountIdValidate(t *testing.T) {
 	tests := map[string]struct {
 		owner         string

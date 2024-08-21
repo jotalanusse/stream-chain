@@ -37,7 +37,7 @@ func (match MatchWithOrders) Validate() error {
 	}
 
 	// Make sure the fill amount is greater than zero.
-	if fillAmount == 0 {
+	if fillAmount.Cmp(satypes.ZeroBaseQuantums()) <= 0 {
 		return errors.New("fillAmount must be greater than 0")
 	}
 
@@ -63,7 +63,7 @@ func (match MatchWithOrders) Validate() error {
 	}
 
 	// Verify that the minimum of the `makerOrder` and `takerOrder` initial quantums does not exceed the `fillAmount`.
-	if fillAmount > makerOrder.GetBaseQuantums() || fillAmount > takerOrder.GetBaseQuantums() {
+	if fillAmount.Cmp(makerOrder.GetBaseQuantums()) == 1 || fillAmount.Cmp(takerOrder.GetBaseQuantums()) == 1 {
 		return errors.New("Minimum initial order quantums exceeds fill amount")
 	}
 

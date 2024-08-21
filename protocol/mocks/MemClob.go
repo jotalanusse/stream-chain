@@ -5,7 +5,9 @@ package mocks
 import (
 	big "math/big"
 
+	dtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+
 	mock "github.com/stretchr/testify/mock"
 
 	perpetualstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -274,40 +276,40 @@ func (_m *MemClob) GetOrder(ctx types.Context, orderId clobtypes.OrderId) (clobt
 }
 
 // GetOrderFilledAmount provides a mock function with given fields: ctx, orderId
-func (_m *MemClob) GetOrderFilledAmount(ctx types.Context, orderId clobtypes.OrderId) subaccountstypes.BaseQuantums {
+func (_m *MemClob) GetOrderFilledAmount(ctx types.Context, orderId clobtypes.OrderId) dtypes.SerializableInt {
 	ret := _m.Called(ctx, orderId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetOrderFilledAmount")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.OrderId) subaccountstypes.BaseQuantums); ok {
+	var r0 dtypes.SerializableInt
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.OrderId) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, orderId)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	return r0
 }
 
 // GetOrderRemainingAmount provides a mock function with given fields: ctx, order
-func (_m *MemClob) GetOrderRemainingAmount(ctx types.Context, order clobtypes.Order) (subaccountstypes.BaseQuantums, bool) {
+func (_m *MemClob) GetOrderRemainingAmount(ctx types.Context, order clobtypes.Order) (dtypes.SerializableInt, bool) {
 	ret := _m.Called(ctx, order)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetOrderRemainingAmount")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 bool
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) (subaccountstypes.BaseQuantums, bool)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) (dtypes.SerializableInt, bool)); ok {
 		return rf(ctx, order)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, order)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.Order) bool); ok {
@@ -448,24 +450,24 @@ func (_m *MemClob) MaybeCreateOrderbook(ctx types.Context, clobPair clobtypes.Cl
 }
 
 // PlaceOrder provides a mock function with given fields: ctx, order
-func (_m *MemClob) PlaceOrder(ctx types.Context, order clobtypes.Order) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
+func (_m *MemClob) PlaceOrder(ctx types.Context, order clobtypes.Order) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
 	ret := _m.Called(ctx, order)
 
 	if len(ret) == 0 {
 		panic("no return value specified for PlaceOrder")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 clobtypes.OrderStatus
 	var r2 *clobtypes.OffchainUpdates
 	var r3 error
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
 		return rf(ctx, order)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.Order) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, order)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.Order) clobtypes.OrderStatus); ok {
@@ -492,24 +494,24 @@ func (_m *MemClob) PlaceOrder(ctx types.Context, order clobtypes.Order) (subacco
 }
 
 // PlacePerpetualLiquidation provides a mock function with given fields: ctx, liquidationOrder
-func (_m *MemClob) PlacePerpetualLiquidation(ctx types.Context, liquidationOrder clobtypes.LiquidationOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
+func (_m *MemClob) PlacePerpetualLiquidation(ctx types.Context, liquidationOrder clobtypes.LiquidationOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error) {
 	ret := _m.Called(ctx, liquidationOrder)
 
 	if len(ret) == 0 {
 		panic("no return value specified for PlacePerpetualLiquidation")
 	}
 
-	var r0 subaccountstypes.BaseQuantums
+	var r0 dtypes.SerializableInt
 	var r1 clobtypes.OrderStatus
 	var r2 *clobtypes.OffchainUpdates
 	var r3 error
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) (subaccountstypes.BaseQuantums, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) (dtypes.SerializableInt, clobtypes.OrderStatus, *clobtypes.OffchainUpdates, error)); ok {
 		return rf(ctx, liquidationOrder)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) subaccountstypes.BaseQuantums); ok {
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.LiquidationOrder) dtypes.SerializableInt); ok {
 		r0 = rf(ctx, liquidationOrder)
 	} else {
-		r0 = ret.Get(0).(subaccountstypes.BaseQuantums)
+		r0 = ret.Get(0).(dtypes.SerializableInt)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.LiquidationOrder) clobtypes.OrderStatus); ok {

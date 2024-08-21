@@ -14,7 +14,7 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 	tests := map[string]struct {
 		makerOrder types.MatchableOrder
 		takerOrder types.MatchableOrder
-		fillAmount uint64
+		fillAmount satypes.BaseQuantums
 
 		expectedError error
 	}{
@@ -33,13 +33,13 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 				Subticks:     constants.Dollars_Uusdc_50_000,
 				GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 20},
 			},
-			fillAmount:    50_000_000, // .5 BTC
+			fillAmount:    constants.BaseQuantums_50_000_000, // .5 BTC
 			expectedError: errors.New("Match constitutes a self-trade"),
 		},
 		"Stateless match validation: fillAmount must be greater than 0": {
 			makerOrder:    &constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10,
 			takerOrder:    &constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10,
-			fillAmount:    0,
+			fillAmount:    constants.BaseQuantums_0,
 			expectedError: errors.New("fillAmount must be greater than 0"),
 		},
 		"Stateless match validation: clobPairIds do not match": {
@@ -51,7 +51,7 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 				GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 			},
 			takerOrder:    &constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10,
-			fillAmount:    100_000_000, // 1 BTC
+			fillAmount:    constants.BaseQuantums_100_000_000, // 1 BTC
 			expectedError: errors.New("ClobPairIds do not match"),
 		},
 		"Stateless match validation: matches are on the same side of the book": {
@@ -69,31 +69,31 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 				Subticks:     constants.Dollars_Uusdc_50_000,
 				GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 6},
 			},
-			fillAmount:    100_000_000,
+			fillAmount:    constants.BaseQuantums_100_000_000,
 			expectedError: errors.New("Orders are not on opposing sides of the book in match"),
 		},
 		"Stateless match validation: orders dont cross with maker buy order": {
 			makerOrder:    &constants.Order_Carl_Num0_Id1_Clob0_Buy1BTC_Price49999,
 			takerOrder:    &constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10,
-			fillAmount:    100_000_000, // 1 BTC
+			fillAmount:    constants.BaseQuantums_100_000_000, // 1 BTC
 			expectedError: errors.New("Orders do not cross in match"),
 		},
 		"Stateless match validation: orders dont cross with taker buy order": {
 			makerOrder:    &constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10,
 			takerOrder:    &constants.Order_Carl_Num0_Id1_Clob0_Buy1BTC_Price49999,
-			fillAmount:    100_000_000, // 1 BTC
+			fillAmount:    constants.BaseQuantums_100_000_000, // 1 BTC
 			expectedError: errors.New("Orders do not cross in match"),
 		},
 		"Stateless match validation: minimum initial order quantums exceeds fill amount": {
 			makerOrder:    &constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTB10,
 			takerOrder:    &constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10,
-			fillAmount:    200_000_000, // 2 BTC. Too big!
+			fillAmount:    constants.BaseQuantums_200_000_000, // 2 BTC. Too big!
 			expectedError: errors.New("Minimum initial order quantums exceeds fill amount"),
 		},
 		"Stateless match validation: maker order is a liquidation order": {
 			makerOrder:    &constants.LiquidationOrder_Dave_Num0_Clob0_Sell1BTC_Price50000,
 			takerOrder:    &constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10,
-			fillAmount:    100_000_000, // 1 BTC.
+			fillAmount:    constants.BaseQuantums_100_000_000, // 1 BTC.
 			expectedError: errors.New("Liquidation order cannot be matched as a maker order"),
 		},
 		"Stateless match validation: maker order is an IOC order": {
@@ -106,7 +106,7 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 				TimeInForce:  types.Order_TIME_IN_FORCE_IOC,
 			},
 			takerOrder:    &constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10,
-			fillAmount:    100_000_000, // 1 BTC.
+			fillAmount:    constants.BaseQuantums_100_000_000, // 1 BTC.
 			expectedError: errors.New("IOC / FOK order cannot be matched as a maker order"),
 		},
 		"Stateless match validation: maker order is a FOK order": {
@@ -119,7 +119,7 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 				TimeInForce:  types.Order_TIME_IN_FORCE_FILL_OR_KILL,
 			},
 			takerOrder:    &constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTB10,
-			fillAmount:    100_000_000, // 1 BTC.
+			fillAmount:    constants.BaseQuantums_100_000_000, // 1 BTC.
 			expectedError: errors.New("IOC / FOK order cannot be matched as a maker order"),
 		},
 		"Stateless match validation: taker order is an IOC order": {
@@ -132,7 +132,7 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 				GoodTilOneof: &types.Order_GoodTilBlock{GoodTilBlock: 10},
 				TimeInForce:  types.Order_TIME_IN_FORCE_IOC,
 			},
-			fillAmount: 100_000_000, // 1 BTC.
+			fillAmount: constants.BaseQuantums_100_000_000, // 1 BTC.
 		},
 	}
 
@@ -141,7 +141,7 @@ func TestPerformStatelessMatchOrdersValidation(t *testing.T) {
 			matchedOrder := types.MatchWithOrders{
 				MakerOrder: tc.makerOrder,
 				TakerOrder: tc.takerOrder,
-				FillAmount: satypes.BaseQuantums(tc.fillAmount),
+				FillAmount: tc.fillAmount,
 			}
 			err := matchedOrder.Validate()
 			if tc.expectedError != nil {

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
@@ -125,7 +126,12 @@ func (f *FakeMemClobKeeper) CommitState() {
 		if !exists {
 			f.fillAmounts[orderId] = quantums
 		} else {
-			f.fillAmounts[orderId] = f.fillAmounts[orderId] + quantums
+			newFillAmount := satypes.ZeroBaseQuantums()
+			newFillAmount.Add(
+				f.fillAmounts[orderId],
+				quantums,
+			)
+			f.fillAmounts[orderId] = newFillAmount
 		}
 	}
 
@@ -199,7 +205,11 @@ func (f *FakeMemClobKeeper) GetOrderFillAmount(
 	fillAmount satypes.BaseQuantums,
 	prunableBlockHeight uint32,
 ) {
-	fillAmount = f.fillAmounts[orderId] + f.dirtyFillAmounts[orderId]
+	fillAmount = satypes.ZeroBaseQuantums()
+	fillAmount.Add(
+		f.fillAmounts[orderId],
+		f.dirtyFillAmounts[orderId],
+	)
 	return true, fillAmount, uint32(0)
 }
 
@@ -313,9 +323,9 @@ func (f *FakeMemClobKeeper) addFakePositionSize(
 	}
 
 	if isBuy {
-		curPositionSize = curPositionSize.Add(curPositionSize, fillAmount.ToBigInt())
+		curPositionSize = curPositionSize.Add(curPositionSize, fillAmount.BigInt())
 	} else {
-		curPositionSize = curPositionSize.Sub(curPositionSize, fillAmount.ToBigInt())
+		curPositionSize = curPositionSize.Sub(curPositionSize, fillAmount.BigInt())
 	}
 
 	clobPairPositionSizes[clobPairId] = curPositionSize
@@ -329,10 +339,16 @@ func (f *FakeMemClobKeeper) addFakeFillAmount(
 ) {
 	curFillAmount, exists := f.dirtyFillAmounts[orderId]
 	if !exists {
-		curFillAmount = 0
+		curFillAmount = dtypes.ZeroInt()
 	}
 
-	f.dirtyFillAmounts[orderId] = curFillAmount + fillAmount
+	newDirtyFillAmount := dtypes.ZeroInt()
+	newDirtyFillAmount.Add(
+		curFillAmount,
+		fillAmount,
+	)
+
+	f.dirtyFillAmounts[orderId] = newDirtyFillAmount
 }
 
 func (f *FakeMemClobKeeper) ProcessSingleMatch(

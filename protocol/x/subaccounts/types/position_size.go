@@ -4,7 +4,6 @@ import (
 	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
-
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 )
 
@@ -82,8 +81,8 @@ func (m *PerpetualPosition) GetId() uint32 {
 	return m.GetPerpetualId()
 }
 
-func (m *PerpetualPosition) SetQuantums(sizeQuantums int64) {
-	m.Quantums = dtypes.NewInt(sizeQuantums)
+func (m *PerpetualPosition) SetQuantums(sizeQuantums *big.Int) {
+	m.Quantums = dtypes.NewIntFromBigInt(sizeQuantums)
 }
 
 // Get the perpetual position quantum size in big.Int. Panics if the size is zero.

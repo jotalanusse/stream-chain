@@ -528,7 +528,7 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 		uncachedCtx,
 		constants.LongTermOrder_Carl_Num0_Id0_Clob0_Buy1BTC_Price50000_GTBT10.OrderId,
 	)
-	require.Equal(t, satypes.BaseQuantums(0), fillAmount)
+	require.Equal(t, constants.BaseQuantums_0, fillAmount)
 
 	_, found = tApp.App.ClobKeeper.GetLongTermOrderPlacement(
 		uncachedCtx,
@@ -539,7 +539,7 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 		uncachedCtx,
 		constants.LongTermOrder_Dave_Num0_Id0_Clob0_Sell1BTC_Price50000_GTBT10.OrderId,
 	)
-	require.Equal(t, satypes.BaseQuantums(0), fillAmount)
+	require.Equal(t, constants.BaseQuantums_0, fillAmount)
 
 	// Make sure orders are not on the orderbook.
 	_, found = tApp.App.ClobKeeper.MemClob.GetOrder(
@@ -836,12 +836,12 @@ func TestConcurrentMatchesAndCancels(t *testing.T) {
 	for _, expectedFill := range expectedFills {
 		exists, amount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, expectedFill.OrderId)
 		require.True(t, exists)
-		require.Equal(t, expectedFill.Quantums, dtypes.NewIntFromBigInt(amount.ToBigInt()))
+		require.Equal(t, expectedFill.Quantums, amount)
 	}
 	for _, expectedCancel := range expectedCancels {
 		exists, amount, _ := tApp.App.ClobKeeper.GetOrderFillAmount(ctx, expectedCancel.OrderId)
 		require.False(t, exists)
-		require.Equal(t, uint64(0), amount.ToUint64())
+		require.Equal(t, constants.BaseQuantums_0, amount)
 	}
 }
 

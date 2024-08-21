@@ -15,7 +15,7 @@ var (
 	recipientSubaccountId = constants.Alice_Num1
 	senderAddress         = constants.AliceAccAddress
 	recipientAddress      = constants.BobAccAddress
-	amount                = satypes.BaseQuantums(5)
+	amount                = satypes.NewBaseQuantumsFromUint64(5)
 	assetId               = uint32(0)
 )
 
@@ -42,7 +42,7 @@ func TestNewTransferEvent_Success(t *testing.T) {
 			},
 		},
 		AssetId: assetId,
-		Amount:  amount.ToUint64(),
+		Amount:  amount.BigInt().Uint64(),
 	}
 	require.Equal(t, expectedTransferEventProto, transferEvent)
 }
@@ -67,7 +67,7 @@ func TestNewDepositEvent_Success(t *testing.T) {
 			},
 		},
 		AssetId: assetId,
-		Amount:  amount.ToUint64(),
+		Amount:  amount.BigInt().Uint64(),
 	}
 	require.Equal(t, expectedDepositEventProto, depositEvent)
 }
@@ -92,7 +92,7 @@ func TestNewWithdrawEvent_Success(t *testing.T) {
 			},
 		},
 		AssetId: assetId,
-		Amount:  amount.ToUint64(),
+		Amount:  amount.BigInt().Uint64(),
 	}
 	require.Equal(t, expectedWithdrawEventProto, withdrawEvent)
 }

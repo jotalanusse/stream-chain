@@ -26,11 +26,11 @@ func NewOrderFillEvent(
 		TakerOrder: &OrderFillEventV1_Order{
 			Order: &indexerTakerOrder,
 		},
-		FillAmount:       fillAmount.ToUint64(),
+		FillAmount:       fillAmount.BigInt().Uint64(),
 		MakerFee:         makerFee,
 		TakerFee:         takerFee,
-		TotalFilledMaker: totalFilledMaker.ToUint64(),
-		TotalFilledTaker: totalFilledTaker.ToUint64(),
+		TotalFilledMaker: totalFilledMaker.BigInt().Uint64(),
+		TotalFilledTaker: totalFilledTaker.BigInt().Uint64(),
 	}
 }
 
@@ -52,17 +52,17 @@ func NewLiquidationOrderFillEvent(
 		Liquidated:  v1.SubaccountIdToIndexerSubaccountId(liquidationTakerOrder.GetSubaccountId()),
 		ClobPairId:  liquidationTakerOrder.GetClobPairId().ToUint32(),
 		PerpetualId: liquidationTakerOrder.MustGetLiquidatedPerpetualId(),
-		TotalSize:   uint64(liquidationTakerOrder.GetBaseQuantums()),
+		TotalSize:   liquidationTakerOrder.GetBaseQuantums().BigInt().Uint64(),
 		IsBuy:       liquidationTakerOrder.IsBuy(),
 		Subticks:    uint64(liquidationTakerOrder.GetOrderSubticks()),
 	}
 	return &OrderFillEventV1{
 		MakerOrder:       v1.OrderToIndexerOrder(makerOrder),
 		TakerOrder:       &OrderFillEventV1_LiquidationOrder{LiquidationOrder: &liquidationOrder},
-		FillAmount:       fillAmount.ToUint64(),
+		FillAmount:       fillAmount.BigInt().Uint64(),
 		MakerFee:         makerFee,
 		TakerFee:         takerFee,
-		TotalFilledMaker: totalFilledMaker.ToUint64(),
-		TotalFilledTaker: fillAmount.ToUint64(),
+		TotalFilledMaker: totalFilledMaker.BigInt().Uint64(),
+		TotalFilledTaker: fillAmount.BigInt().Uint64(),
 	}
 }

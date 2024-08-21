@@ -5,10 +5,10 @@ import (
 	"encoding/binary"
 
 	"cosmossdk.io/store/prefix"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/off_chain_updates"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -64,7 +64,7 @@ func (k Keeper) SetOrderFillAmount(
 ) {
 	// Define `OrderFillState` based on the provided arguments.
 	var orderFillState = types.OrderFillState{
-		FillAmount:          dtypes.NewIntFromBigInt(fillAmount.ToBigInt()),
+		FillAmount:          fillAmount,
 		PrunableBlockHeight: prunableBlockHeight,
 	}
 
@@ -120,14 +120,14 @@ func (k Keeper) GetOrderFillAmount(
 
 	// If the `OrderFillState` does not exist, early return.
 	if orderFillStateBytes == nil {
-		return false, 0, 0
+		return false, constants.BaseQuantums_0, 0
 	}
 
 	// Unmarshal the `orderFillStateBytes` into a struct, and return relevant values.
 	var orderFillState types.OrderFillState
 	k.cdc.MustUnmarshal(orderFillStateBytes, &orderFillState)
 
-	return true, satypes.BaseQuantums(orderFillState.FillAmount.BigInt().Uint64()), orderFillState.PrunableBlockHeight
+	return true, satypes.BaseQuantums(orderFillState.FillAmount), orderFillState.PrunableBlockHeight
 }
 
 // GetPruneableOrdersStore gets a prefix store for pruneable orders at a given height.
@@ -303,7 +303,7 @@ func (k Keeper) PruneStateFillAmountsForShortTermOrders(
 				if message, success := off_chain_updates.CreateOrderUpdateMessage(
 					ctx,
 					orderId,
-					0, // Total filled quantums is zero because it's been pruned from state.
+					constants.BaseQuantums_0, // Total filled quantums is zero because it's been pruned from state.
 				); success {
 					allUpdates.AddUpdateMessage(orderId, message)
 				}

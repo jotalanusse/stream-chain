@@ -26,7 +26,7 @@ func TestGetClobPairMinOrderBaseQuantums(t *testing.T) {
 	}
 
 	minOrderBaseQuantums := clobPair.GetClobPairMinOrderBaseQuantums()
-	require.Equal(t, satypes.BaseQuantums(100), minOrderBaseQuantums)
+	require.Equal(t, satypes.BaseQuantums(dtypes.NewInt(100)), minOrderBaseQuantums)
 }
 
 func TestGetPerpetualId(t *testing.T) {
