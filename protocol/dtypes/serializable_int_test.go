@@ -211,24 +211,47 @@ func TestSerializableInt_Add_Fail(t *testing.T) {
 	testCases := map[string]struct {
 		x dtypes.SerializableInt
 		y dtypes.SerializableInt
+		z dtypes.SerializableInt
 	}{
 		"x is nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.NewInt(1),
+			z: dtypes.NewInt(1),
 		},
 		"y is nil": {
 			x: dtypes.NewInt(1),
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"z is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.NewInt(1),
+			z: dtypes.SerializableInt{},
 		},
 		"x and y are nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"x and z are nil": {
+			x: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y and z are nil": {
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			x: dtypes.NewInt(1),
+		},
+		"x, y and z are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
 		},
 	}
 
 	for _, tc := range testCases {
-		z := dtypes.NewInt(0)
-		require.Panics(t, func() { z.Add(tc.x, tc.y) })
+		require.Panics(t, func() { tc.z.Add(tc.x, tc.y) })
 	}
 }
 
@@ -309,24 +332,46 @@ func TestSerializableInt_Sub_Fail(t *testing.T) {
 	testCases := map[string]struct {
 		x dtypes.SerializableInt
 		y dtypes.SerializableInt
+		z dtypes.SerializableInt
 	}{
 		"x is nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.NewInt(1),
+			z: dtypes.NewInt(1),
 		},
 		"y is nil": {
 			x: dtypes.NewInt(1),
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"z is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.NewInt(1),
+			z: dtypes.SerializableInt{},
 		},
 		"x and y are nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"x and z are nil": {
+			x: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y and z are nil": {
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			x: dtypes.NewInt(1),
+		},
+		"x, y and z are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
 		},
 	}
-
 	for _, tc := range testCases {
-		z := dtypes.NewInt(0)
-		require.Panics(t, func() { z.Sub(tc.x, tc.y) })
+		require.Panics(t, func() { tc.z.Sub(tc.x, tc.y) })
 	}
 }
 
@@ -407,24 +452,46 @@ func TestSerializableInt_Mul_Fail(t *testing.T) {
 	testCases := map[string]struct {
 		x dtypes.SerializableInt
 		y dtypes.SerializableInt
+		z dtypes.SerializableInt
 	}{
 		"x is nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.NewInt(1),
+			z: dtypes.NewInt(1),
 		},
 		"y is nil": {
 			x: dtypes.NewInt(1),
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"z is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.NewInt(1),
+			z: dtypes.SerializableInt{},
 		},
 		"x and y are nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"x and z are nil": {
+			x: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y and z are nil": {
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			x: dtypes.NewInt(1),
+		},
+		"x, y and z are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
 		},
 	}
-
 	for _, tc := range testCases {
-		z := dtypes.NewInt(0)
-		require.Panics(t, func() { z.Mul(tc.x, tc.y) })
+		require.Panics(t, func() { tc.z.Mul(tc.x, tc.y) })
 	}
 }
 
@@ -560,28 +627,47 @@ func TestSerializableInt_Div_Fail(t *testing.T) {
 	testCases := map[string]struct {
 		x dtypes.SerializableInt
 		y dtypes.SerializableInt
+		z dtypes.SerializableInt
 	}{
-		"y is zero": {
-			x: dtypes.NewInt(1),
-			y: dtypes.NewInt(0),
-		},
 		"x is nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.NewInt(1),
+			z: dtypes.NewInt(1),
 		},
 		"y is nil": {
 			x: dtypes.NewInt(1),
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"z is nil": {
+			x: dtypes.NewInt(1),
+			y: dtypes.NewInt(1),
+			z: dtypes.SerializableInt{},
 		},
 		"x and y are nil": {
 			x: dtypes.SerializableInt{},
 			y: dtypes.SerializableInt{},
+			z: dtypes.NewInt(1),
+		},
+		"x and z are nil": {
+			x: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			y: dtypes.NewInt(1),
+		},
+		"y and z are nil": {
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
+			x: dtypes.NewInt(1),
+		},
+		"x, y and z are nil": {
+			x: dtypes.SerializableInt{},
+			y: dtypes.SerializableInt{},
+			z: dtypes.SerializableInt{},
 		},
 	}
 
 	for _, tc := range testCases {
-		z := dtypes.NewInt(0)
-		require.Panics(t, func() { z.Div(tc.x, tc.y) })
+		require.Panics(t, func() { tc.z.Div(tc.x, tc.y) })
 	}
 }
 
