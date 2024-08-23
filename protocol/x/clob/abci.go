@@ -257,7 +257,7 @@ func PrepareCheckState(
 	}
 
 	// 6. Get all potentially liquidatable subaccount IDs and attempt to liquidate them.
-	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp", "timestamp", time.Now().Unix())
+	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp", "timestamp", time.Now().UnixMilli())
 
 	liquidatableSubaccountIds := keeper.DaemonLiquidationInfo.GetLiquidatableSubaccountIds()
 	subaccountsToDeleverage, err := keeper.LiquidateSubaccountsAgainstOrderbook(ctx, liquidatableSubaccountIds)

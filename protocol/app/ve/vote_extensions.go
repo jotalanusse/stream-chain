@@ -149,7 +149,7 @@ func (h *VoteExtensionHandler) VerifyVoteExtensionHandler() sdk.VerifyVoteExtens
 			return rejectResponse, err
 		}
 
-		h.logger.Info("Verify vote extension timestamp", "timestamp", time.Now().Unix())
+		h.logger.Info("Verify vote extension timestamp", "timestamp", time.Now().UnixMilli())
 
 		return acceptResponse, nil
 	}
