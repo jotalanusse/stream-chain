@@ -58,6 +58,9 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 		return err
 	}
 
+	duration := time.Since(startTime)
+	daemonClient.logger.Info("Starting liquidation get previous block", "duration", duration)
+
 	// 1. Fetch all information needed to calculate total net collateral and margin requirements.
 	subaccounts,
 		marketPrices,
@@ -72,6 +75,9 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 		return err
 	}
 
+	duration = time.Since(startTime)
+	daemonClient.logger.Info("Starting liquidation fetched info", "duration", duration)
+
 	// 2. Check collateralization statuses of subaccounts with at least one open position.
 	liquidatableSubaccountIds,
 		negativeTncSubaccountIds,
@@ -85,8 +91,14 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 		return err
 	}
 
+	duration = time.Since(startTime)
+	daemonClient.logger.Info("Starting liquidation got liquidatable subaccounts", "duration", duration)
+
 	// Build a map of perpetual id to subaccounts with open positions in that perpetual.
 	subaccountOpenPositionInfo := daemonClient.GetSubaccountOpenPositionInfo(subaccounts)
+
+	duration = time.Since(startTime)
+	daemonClient.logger.Info("Starting liquidation build a map", "duration", duration)
 
 	// 3. Send the list of liquidatable subaccount ids to the daemon server.
 	err = daemonClient.SendLiquidatableSubaccountIds(
@@ -100,7 +112,7 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 		return err
 	}
 
-	duration := time.Since(startTime)
+	duration = time.Since(startTime)
 	daemonClient.logger.Info("Ending liquidation daemon task loop", "duration", duration)
 
 	return nil
@@ -130,6 +142,9 @@ func (c *Client) FetchApplicationStateAtBlockHeight(
 		metrics.Latency,
 	)
 
+	startTime := time.Now()
+	c.logger.Info("Starting liquidation fetching state start")
+
 	// Execute all queries at the given block height.
 	queryCtx := newContextWithQueryBlockHeight(ctx, blockHeight)
 
@@ -138,6 +153,9 @@ func (c *Client) FetchApplicationStateAtBlockHeight(
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
+
+	duration := time.Since(startTime)
+	c.logger.Info("Starting liquidation fetched subaccounts", "duration", duration)
 
 	// Market prices
 	marketPrices, err := c.GetAllMarketPrices(queryCtx, liqFlags.QueryPageLimit)
@@ -148,6 +166,9 @@ func (c *Client) FetchApplicationStateAtBlockHeight(
 		return m.Id
 	})
 
+	duration = time.Since(startTime)
+	c.logger.Info("Starting liquidation fetched prices", "duration", duration)
+
 	// Perpetuals
 	perpetuals, err := c.GetAllPerpetuals(queryCtx, liqFlags.QueryPageLimit)
 	if err != nil {
@@ -157,6 +178,9 @@ func (c *Client) FetchApplicationStateAtBlockHeight(
 		return p.Params.Id
 	})
 
+	duration = time.Since(startTime)
+	c.logger.Info("Starting liquidation fetched perps", "duration", duration)
+
 	// Liquidity tiers
 	liquidityTiers, err := c.GetAllLiquidityTiers(queryCtx, liqFlags.QueryPageLimit)
 	if err != nil {
@@ -165,6 +189,9 @@ func (c *Client) FetchApplicationStateAtBlockHeight(
 	liquidityTiersMap = lib.UniqueSliceToMap(liquidityTiers, func(l perptypes.LiquidityTier) uint32 {
 		return l.Id
 	})
+
+	duration = time.Since(startTime)
+	c.logger.Info("Starting liquidation fetched liquidity tiers", "duration", duration)
 
 	return subaccounts, marketPricesMap, perpetualsMap, liquidityTiersMap, nil
 }
