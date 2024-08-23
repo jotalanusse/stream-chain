@@ -42,12 +42,16 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 	daemonClient *Client,
 	liqFlags flags.LiquidationFlags,
 ) error {
+
 	defer telemetry.ModuleMeasureSince(
 		metrics.LiquidationDaemon,
 		time.Now(),
 		metrics.MainTaskLoop,
 		metrics.Latency,
 	)
+
+	startTime := time.Now()
+	daemonClient.logger.Info("Starting liquidation daemon task loop")
 
 	lastCommittedBlockHeight, err := daemonClient.GetPreviousBlockInfo(ctx)
 	if err != nil {
@@ -95,6 +99,9 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 	if err != nil {
 		return err
 	}
+
+	duration := time.Since(startTime)
+	daemonClient.logger.Info("Ending liquidation daemon task loop", "duration", duration)
 
 	return nil
 }

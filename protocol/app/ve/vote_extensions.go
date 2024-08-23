@@ -3,6 +3,7 @@ package ve
 import (
 	"fmt"
 	"math/big"
+	"time"
 
 	"cosmossdk.io/log"
 	codec "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
@@ -147,6 +148,8 @@ func (h *VoteExtensionHandler) VerifyVoteExtensionHandler() sdk.VerifyVoteExtens
 			)
 			return rejectResponse, err
 		}
+
+		h.logger.Info("Verify vote extension timestamp", "timestamp", time.Now().Unix())
 
 		return acceptResponse, nil
 	}
