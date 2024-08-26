@@ -256,6 +256,10 @@ func PrepareCheckState(
 		offchainUpdates = replayUpdates
 	}
 
+	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp get through store", "timestamp", time.Now().UnixMilli())
+	height := keeper.BlockTimeKeeper.GetPreviousBlockInfo(ctx).Height
+	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp height queried", "height", height)
+
 	// 6. Get all potentially liquidatable subaccount IDs and attempt to liquidate them.
 	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp", "timestamp", time.Now().UnixMilli())
 

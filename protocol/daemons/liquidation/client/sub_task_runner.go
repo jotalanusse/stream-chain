@@ -60,6 +60,7 @@ func (s *SubTaskRunnerImpl) RunLiquidationDaemonTaskLoop(
 
 	duration := time.Since(startTime)
 	daemonClient.logger.Info("Starting liquidation get previous block", "duration", duration)
+	daemonClient.logger.Info("Starting liquidation block height", "height", lastCommittedBlockHeight)
 
 	// 1. Fetch all information needed to calculate total net collateral and margin requirements.
 	subaccounts,

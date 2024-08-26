@@ -636,7 +636,7 @@ func (k Keeper) PerformOrderCancellationStatefulValidation(
 ) error {
 	orderIdToCancel := msgCancelOrder.GetOrderId()
 	if orderIdToCancel.IsStatefulOrder() {
-		previousBlockInfo := k.blockTimeKeeper.GetPreviousBlockInfo(ctx)
+		previousBlockInfo := k.BlockTimeKeeper.GetPreviousBlockInfo(ctx)
 
 		prevBlockHeight := previousBlockInfo.Height
 		currBlockHeight := uint32(ctx.BlockHeight())
@@ -843,7 +843,7 @@ func (k Keeper) PerformStatefulOrderValidation(
 		}
 	} else {
 		goodTilBlockTimeUnix := order.GetGoodTilBlockTime()
-		previousBlockTime := k.blockTimeKeeper.GetPreviousBlockInfo(ctx).Timestamp
+		previousBlockTime := k.BlockTimeKeeper.GetPreviousBlockInfo(ctx).Timestamp
 		previousBlockTimeUnix := lib.MustConvertIntegerToUint32(previousBlockTime.Unix())
 
 		// Return an error if `goodTilBlockTime` is less than or equal to the
