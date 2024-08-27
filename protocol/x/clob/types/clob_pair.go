@@ -80,16 +80,7 @@ func (c *ClobPair) GetClobPairId() ClobPairId {
 
 // Stateless validation on ClobPair.
 func (c *ClobPair) Validate() error {
-	switch c.Metadata.(type) {
-	// TODO(DEC-1535): update this when additional clob pair types are supported.
-	case *ClobPair_SpotClobMetadata:
-		return errorsmod.Wrapf(
-			ErrInvalidClobPairParameter,
-			"CLOB pair (%+v) is not a perpetual CLOB.",
-			c,
-		)
-	}
-
+	// TODO(SCL) - is there any extra validation we need for spot pairs
 	if !IsSupportedClobPairStatus(c.Status) {
 		return errorsmod.Wrapf(
 			ErrInvalidClobPairParameter,

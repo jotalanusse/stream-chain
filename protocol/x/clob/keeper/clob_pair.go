@@ -113,6 +113,49 @@ func (k Keeper) CreatePerpetualClobPair(
 	return clobPair, nil
 }
 
+func (k Keeper) CreateSpotClobPair(
+	ctx sdk.Context,
+	clobPairId uint32,
+	baseAssetId uint32,
+	quoteAssetId uint32,
+	stepSizeBaseQuantums satypes.BaseQuantums,
+	quantumConversionExponent int32,
+	subticksPerTick uint32,
+	status types.ClobPair_Status,
+) (types.ClobPair, error) {
+	// If the desired CLOB pair ID is already in use, return an error.
+	if clobPair, exists := k.GetClobPair(ctx, types.ClobPairId(clobPairId)); exists {
+		return types.ClobPair{}, errorsmod.Wrapf(
+			types.ErrClobPairAlreadyExists,
+			"id=%v, existing clob pair=%v",
+			clobPairId,
+			clobPair,
+		)
+	}
+
+	clobPair := types.ClobPair{
+		Metadata: &types.ClobPair_SpotClobMetadata{
+			SpotClobMetadata: &types.SpotClobMetadata{
+				BaseAssetId:  baseAssetId,
+				QuoteAssetId: quoteAssetId,
+			},
+		},
+		Id:                        clobPairId,
+		StepBaseQuantums:          stepSizeBaseQuantums.ToUint64(),
+		QuantumConversionExponent: quantumConversionExponent,
+		SubticksPerTick:           subticksPerTick,
+		Status:                    status,
+	}
+
+	if err := k.validateClobPair(ctx, &clobPair); err != nil {
+		return clobPair, err
+	}
+
+	k.createClobPair(ctx, clobPair)
+	// TODO(SCL) - emit indexer even for new spot market same way it's done for perp
+	return clobPair, nil
+}
+
 // validateClobPair validates a CLOB pair's fields are suitable for CLOB pair creation.
 //
 // Stateful Validation:
@@ -125,7 +168,6 @@ func (k Keeper) validateClobPair(ctx sdk.Context, clobPair *types.ClobPair) erro
 		return err
 	}
 
-	// TODO(DEC-1535): update this validation when we implement "spot"/"asset" clob pairs.
 	switch clobPair.Metadata.(type) {
 	case *types.ClobPair_PerpetualClobMetadata:
 		perpetualId, err := clobPair.GetPerpetualId()
@@ -144,6 +186,9 @@ func (k Keeper) validateClobPair(ctx sdk.Context, clobPair *types.ClobPair) erro
 				clobPair,
 			)
 		}
+	case *types.ClobPair_SpotClobMetadata:
+		// TODO(SCL) - add validation for spot pairs
+		return nil
 	default:
 		return errorsmod.Wrapf(
 			types.ErrInvalidClobPairParameter,
