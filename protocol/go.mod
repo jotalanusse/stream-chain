@@ -431,7 +431,11 @@ replace (
 
 	// Use Stream fork of Cosmos SDK
 	github.com/cosmos/cosmos-sdk => github.com/StreamFinance-Protocol/cosmos-sdk v0.50.6-0.20240827001325-7d303b72ca87
+
 	github.com/cosmos/iavl => github.com/dydxprotocol/iavl v1.1.1-0.20240408175732-0fca9d69cbc4
+
+	// Use Stream fork of IBC-go
+	github.com/cosmos/ibc-go/v8 => github.com/StreamFinance-Protocol/ibc-go/v8 v8.0.0-20240827003118-793a5001db90
 
 	github.com/ethos-works/ethos-avs => ./ethos/ethos-avs
 	github.com/ethos-works/ethos/ethos-chain => ./ethos/ethos-chain
