@@ -34,7 +34,14 @@ func (k Keeper) GetLiquidatableSubaccountIds(ctx sdk.Context, extendedCommitInfo
 		}
 	}
 
-	prices := k.pricesKeeper.GetAllMarketPrices(branchedCtx)
+	prices := []pricestypes.MarketPrice{}
+
+	if ctxErr == nil {
+		prices = k.pricesKeeper.GetAllMarketPrices(branchedCtx)
+
+	} else {
+		prices = k.pricesKeeper.GetAllMarketPrices(ctx)
+	}
 
 	marketPricesMap := lib.UniqueSliceToMap(prices, func(m pricestypes.MarketPrice) uint32 {
 		return m.Id
