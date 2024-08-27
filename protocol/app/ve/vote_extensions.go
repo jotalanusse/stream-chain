@@ -237,12 +237,18 @@ func (h *VoteExtensionHandler) getCurrentPricesForEachMarket(
 	vePrices := make(map[uint32]VEPricePair)
 	indexPrices := h.pricesKeeper.GetValidMarketSpotPriceUpdates(ctx)
 
+	h.logger.Info("INDEX PRICES", indexPrices)
+
 	for _, market := range indexPrices {
 		clobMidPrice, smoothedPrice, lastFundingRate, allExist := h.getPeripheryPnlPriceData(
 			ctx,
 			market,
 			vePrices,
 		)
+
+		h.logger.Info("CLobMidPrice", clobMidPrice)
+		h.logger.Info("SmoothedPrice", smoothedPrice)
+		h.logger.Info("LastFundingRate", lastFundingRate)
 
 		if !allExist {
 			continue
@@ -254,6 +260,8 @@ func (h *VoteExtensionHandler) getCurrentPricesForEachMarket(
 			smoothedPrice,
 			lastFundingRate,
 		)
+
+		h.logger.Info("MedianPnlPrice", medianPnlPrice)
 
 		vePrices[market.MarketId] = VEPricePair{
 			SpotPrice: market.SpotPrice,
