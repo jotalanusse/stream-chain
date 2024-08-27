@@ -10,6 +10,7 @@ import (
 	perpetualsmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
+	abci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -153,6 +154,10 @@ type PerpetualsKeeper interface {
 
 type PricesKeeper interface {
 	GetMarketParam(ctx sdk.Context, id uint32) (param pricestypes.MarketParam, exists bool)
+	GetAllMarketParams(ctx sdk.Context) []pricestypes.MarketParam
+	UpdateMarketPrice(ctx sdk.Context, update *pricestypes.MarketPriceUpdates_MarketPriceUpdate) error
+	PerformStatefulPriceUpdateValidation(ctx sdk.Context, marketPriceUpdates *pricestypes.MarketPriceUpdates) error
+	GetAllMarketPrices(ctx sdk.Context) []pricestypes.MarketPrice
 }
 
 type StatsKeeper interface {
@@ -168,4 +173,8 @@ type AccountKeeper interface {
 type BankKeeper interface {
 	SpendableCoins(ctx context.Context, addr sdk.AccAddress) sdk.Coins
 	GetBalance(ctx context.Context, addr sdk.AccAddress, denom string) sdk.Coin
+}
+
+type ProcessProposalPriceApplier interface {
+	ApplyPricesFromVE(ctx sdk.Context, req *abci.RequestFinalizeBlock) error
 }

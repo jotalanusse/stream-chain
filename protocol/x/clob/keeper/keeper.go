@@ -8,6 +8,7 @@ import (
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
+	veaggregator "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/aggregator"
 	liquidationtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/liquidations"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
@@ -59,6 +60,8 @@ type (
 		placeCancelOrderRateLimiter rate_limit.RateLimiter[sdk.Msg]
 
 		DaemonLiquidationInfo *liquidationtypes.DaemonLiquidationInfo
+
+		Aggregator veaggregator.VoteAggregator
 	}
 )
 
@@ -88,6 +91,7 @@ func NewKeeper(
 	clobFlags flags.ClobFlags,
 	placeCancelOrderRateLimiter rate_limit.RateLimiter[sdk.Msg],
 	daemonLiquidationInfo *liquidationtypes.DaemonLiquidationInfo,
+	aggregator veaggregator.VoteAggregator,
 ) *Keeper {
 	keeper := &Keeper{
 		cdc:                          cdc,
@@ -119,6 +123,7 @@ func NewKeeper(
 		Flags:                       clobFlags,
 		placeCancelOrderRateLimiter: placeCancelOrderRateLimiter,
 		DaemonLiquidationInfo:       daemonLiquidationInfo,
+		Aggregator:                  aggregator,
 	}
 
 	// Provide the keeper to the MemClob.

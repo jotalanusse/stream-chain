@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"math/big"
 	"net/http"
@@ -11,7 +12,6 @@ import (
 	"runtime/debug"
 	"sync"
 	"time"
-	"fmt"
 
 	custommodule "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve"
@@ -882,6 +882,19 @@ func New(
 		app.SubaccountsKeeper,
 	)
 
+	aggregatorFn := voteweighted.Median(
+		logger,
+		app.ConsumerKeeper,
+		voteweighted.DefaultPowerThreshold,
+	)
+
+	aggregator := veaggregator.NewVeAggregator(
+		logger,
+		indexPriceCache,
+		app.PricesKeeper,
+		aggregatorFn,
+	)
+
 	clobFlags := clobflags.GetClobFlagValuesFromOptions(appOpts)
 	logger.Info("Parsed CLOB flags", "Flags", clobFlags)
 
@@ -913,6 +926,7 @@ func New(
 		clobFlags,
 		rate_limit.NewPanicRateLimiter[sdk.Msg](),
 		daemonLiquidationInfo,
+		aggregator,
 	)
 	clobModule := clobmodule.NewAppModule(
 		appCodec,
@@ -947,19 +961,6 @@ func New(
 	/****  ve daemon initializer ****/
 	app.voteCodec = vecodec.NewDefaultVoteExtensionCodec()
 	app.extCodec = vecodec.NewDefaultExtendedCommitCodec()
-
-	aggregatorFn := voteweighted.Median(
-		logger,
-		app.ConsumerKeeper,
-		voteweighted.DefaultPowerThreshold,
-	)
-
-	aggregator := veaggregator.NewVeAggregator(
-		logger,
-		indexPriceCache,
-		app.PricesKeeper,
-		aggregatorFn,
-	)
 
 	priceApplier := priceapplier.NewPriceApplier(
 		logger,
