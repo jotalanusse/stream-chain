@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"fmt"
 	"math/big"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
@@ -23,6 +24,9 @@ func getProposalPrice(smoothedPrice uint64, indexPrice uint64, marketPrice uint6
 // for the market. Otherwise, returns false.
 func isAboveRequiredMinSpotPriceChange(marketParamPrice types.MarketParamPrice, newPrice uint64) bool {
 	minSpotChangeAmt := getMinPriceChangeAmountForSpotMarket(marketParamPrice)
+	fmt.Println("MIN SPOT CHANGE AMT", minSpotChangeAmt)
+	fmt.Println("NEW PRICE", newPrice)
+	fmt.Println("MARKET PARAM PRICE", marketParamPrice.Price.SpotPrice)
 	return lib.AbsDiffUint64(marketParamPrice.Price.SpotPrice, newPrice) >= minSpotChangeAmt
 }
 
