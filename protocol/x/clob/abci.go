@@ -140,8 +140,6 @@ func PrepareCheckState(
 	req *abcicomet.RequestCommit,
 ) {
 
-	keeper.Logger(ctx).Info("XXX STARTING PREPARE CHECK STATE")
-
 	ctx = log.AddPersistentTagsToLogger(ctx,
 		log.Handler, log.PrepareCheckState,
 		// Prepare check state is for the next block.
@@ -262,9 +260,8 @@ func PrepareCheckState(
 	}
 
 	// 6. Get all potentially liquidatable subaccount IDs and attempt to liquidate them.
-	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp", "timestamp", time.Now().UnixMilli())
-	keeper.Logger(ctx).Info("EXTENDED COMMIT INFO", "info", req.ExtendedCommit)
-
+	fmt.Println("XXX")
+	fmt.Println(req.ExtendedCommitInfo)
 	liquidatableSubaccountIds := keeper.DaemonLiquidationInfo.GetLiquidatableSubaccountIds()
 	subaccountsToDeleverage, err := keeper.LiquidateSubaccountsAgainstOrderbook(ctx, liquidatableSubaccountIds)
 	if err != nil {
