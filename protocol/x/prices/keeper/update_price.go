@@ -57,7 +57,7 @@ func (k Keeper) GetValidMarketSpotPriceUpdates(
 
 	// 2. Get all index prices from in-memory cache.
 	allIndexPrices := k.indexPriceCache.GetValidMedianPrices(allMarketParams, k.timeProvider.Now())
-	ctx.Logger().Info("ALL INDEX CACHE PRICES", allIndexPrices)
+	ctx.Logger().Info("ALL INDEX CACHE PRICES", "prices", allIndexPrices)
 
 	// 3. Collect all "valid" price updates.
 	updates := make([]*types.MarketSpotPriceUpdate, 0, len(allMarketParamPrices))
@@ -98,6 +98,7 @@ func (k Keeper) GetValidMarketSpotPriceUpdates(
 		}
 
 		historicalSmoothedPrices := k.marketToSmoothedPrices.GetHistoricalSmoothedSpotPrices(marketId)
+		ctx.Logger().Info("HISTORICAL SMOOTHED PRICES", "market", marketId, "smoothed_prices", historicalSmoothedPrices)
 		// We generally expect to have a smoothed price history for each market, except during the first few blocks
 		// after network genesis or a network restart. In this scenario, we use the index price as the smoothed price.
 		if len(historicalSmoothedPrices) == 0 {
@@ -118,14 +119,14 @@ func (k Keeper) GetValidMarketSpotPriceUpdates(
 		smoothedPrice := historicalSmoothedPrices[0]
 
 		proposalPrice := getProposalPrice(smoothedPrice, indexPrice, marketParamPrice.Price.SpotPrice)
-
+		ctx.Logger().Info("PROPOSAL PRICE", "market", marketId, "proposal_price", proposalPrice)
 		shouldPropose, reasons := shouldProposePrice(
 			proposalPrice,
 			marketParamPrice,
 			indexPrice,
 			historicalSmoothedPrices,
 		)
-
+		ctx.Logger().Info("SHOULD PROPOSE", "market", marketId, "should_propose", shouldPropose)
 		// If the index price would have updated, track how the proposal price changes the update
 		// decision / amount.
 		if isAboveRequiredMinSpotPriceChange(marketParamPrice, indexPrice) {
@@ -154,6 +155,7 @@ func (k Keeper) GetValidMarketSpotPriceUpdates(
 
 	// 4. Sort price updates by market id in ascending order.
 	sort.Slice(updates, func(i, j int) bool { return updates[i].MarketId < updates[j].MarketId })
+	ctx.Logger().Info("UPDATES", "updates", updates)
 
 	return updates
 }
