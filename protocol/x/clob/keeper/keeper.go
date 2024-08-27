@@ -35,7 +35,7 @@ type (
 		subaccountsKeeper types.SubaccountsKeeper
 		assetsKeeper      types.AssetsKeeper
 		bankKeeper        types.BankKeeper
-		BlockTimeKeeper   types.BlockTimeKeeper
+		blockTimeKeeper   types.BlockTimeKeeper
 		feeTiersKeeper    types.FeeTiersKeeper
 		perpetualsKeeper  types.PerpetualsKeeper
 		pricesKeeper      types.PricesKeeper
@@ -100,7 +100,7 @@ func NewKeeper(
 		PerpetualIdToClobPairId:      make(map[uint32][]types.ClobPairId),
 		subaccountsKeeper:            subaccountsKeeper,
 		assetsKeeper:                 assetsKeeper,
-		BlockTimeKeeper:              blockTimeKeeper,
+		blockTimeKeeper:              blockTimeKeeper,
 		bankKeeper:                   bankKeeper,
 		feeTiersKeeper:               feeTiersKeeper,
 		perpetualsKeeper:             perpetualsKeeper,

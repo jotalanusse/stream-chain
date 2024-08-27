@@ -131,6 +131,8 @@ type PerpetualsKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 	) (val perpetualsmoduletypes.Perpetual, err error)
+	GetAllPerpetuals(ctx sdk.Context) (list []perpetualsmoduletypes.Perpetual)
+	GetAllLiquidityTiers(ctx sdk.Context) (list []perpetualsmoduletypes.LiquidityTier)
 	GetPerpetualAndMarketPrice(
 		ctx sdk.Context,
 		perpetualId uint32,

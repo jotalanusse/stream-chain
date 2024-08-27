@@ -1401,10 +1401,10 @@ func (app *App) Precommitter(ctx sdk.Context) {
 }
 
 // PrepareCheckStater application updates after commit and before any check state is invoked.
-func (app *App) PrepareCheckStater(ctx sdk.Context) {
+func (app *App) PrepareCheckStater(ctx sdk.Context, req *abci.RequestCommit) {
 	ctx = ctx.WithExecMode(lib.ExecModePrepareCheckState)
 
-	if err := app.ModuleManager.PrepareCheckState(ctx); err != nil {
+	if err := app.ModuleManager.PrepareCheckState(ctx, req); err != nil {
 		panic(err)
 	}
 }

@@ -12,6 +12,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+	abcicomet "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -136,6 +137,7 @@ func EndBlocker(
 func PrepareCheckState(
 	ctx sdk.Context,
 	keeper *keeper.Keeper,
+	req *abcicomet.RequestCommit,
 ) {
 	ctx = log.AddPersistentTagsToLogger(ctx,
 		log.Handler, log.PrepareCheckState,
@@ -256,12 +258,9 @@ func PrepareCheckState(
 		offchainUpdates = replayUpdates
 	}
 
-	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp get through store", "timestamp", time.Now().UnixMilli())
-	height := keeper.BlockTimeKeeper.GetPreviousBlockInfo(ctx).Height
-	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp height queried", "height", height)
-
 	// 6. Get all potentially liquidatable subaccount IDs and attempt to liquidate them.
 	keeper.Logger(ctx).Info("Get liquidatable subaccounts timestamp", "timestamp", time.Now().UnixMilli())
+	keeper.Logger(ctx).Info("EXTENDED COMMIT INFO", "info", req.ExtendedCommit)
 
 	liquidatableSubaccountIds := keeper.DaemonLiquidationInfo.GetLiquidatableSubaccountIds()
 	subaccountsToDeleverage, err := keeper.LiquidateSubaccountsAgainstOrderbook(ctx, liquidatableSubaccountIds)

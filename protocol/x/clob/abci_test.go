@@ -9,6 +9,7 @@ import (
 	"time"
 
 	sdkmath "cosmossdk.io/math"
+	cometabci "github.com/cometbft/cometbft/abci/types"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/liquidation/api"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
@@ -1072,6 +1073,7 @@ func TestPrepareCheckState_WithProcessProposerMatchesEventsWithBadBlockHeight(t 
 		clob.PrepareCheckState(
 			ks.Ctx.WithBlockHeight(int64(blockHeight+1)),
 			ks.ClobKeeper,
+			&cometabci.RequestCommit{},
 		)
 	})
 }
@@ -1098,6 +1100,7 @@ func TestCommitBlocker_WithProcessProposerMatchesEventsWithBadBlockHeight(t *tes
 		clob.PrepareCheckState(
 			ks.Ctx.WithBlockHeight(int64(blockHeight+1)),
 			ks.ClobKeeper,
+			&cometabci.RequestCommit{},
 		)
 	})
 }
@@ -1453,6 +1456,7 @@ func TestPrepareCheckState(t *testing.T) {
 			clob.PrepareCheckState(
 				ctx,
 				ks.ClobKeeper,
+				&cometabci.RequestCommit{},
 			)
 
 			// Verify test expectations.
