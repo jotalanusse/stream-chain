@@ -119,11 +119,12 @@ func (mte *MarketToExchangePrices) GetValidMedianPrices(
 						pricefeedmetrics.GetLabelForMarketId(marketId),
 					},
 				)
+				fmt.Println("NO MEDIAN CONTINUEING ERROR:", err)
 				continue
 			}
 			marketIdToMedianPrice[marketId] = median
 		}
 	}
-
+	fmt.Println("MARKET ID TO MEDIAN PRICE", marketIdToMedianPrice)
 	return marketIdToMedianPrice
 }
