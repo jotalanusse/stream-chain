@@ -186,8 +186,10 @@ func (k Keeper) createClobPair(ctx sdk.Context, clobPair types.ClobPair) {
 	// Create the corresponding orderbook in the memclob.
 	k.createOrderbook(ctx, clobPair)
 
-	// Create the mapping between clob pair and perpetual.
-	k.SetClobPairIdForPerpetual(ctx, clobPair)
+	// Create the mapping between clob pair and perpetual iff it's a perp pair.
+	if perpetualClobMetadata := clobPair.GetPerpetualClobMetadata(); perpetualClobMetadata != nil {
+		k.SetClobPairIdForPerpetual(ctx, clobPair)
+	}
 }
 
 // setClobPair sets a specific `ClobPair` in the store from its index.
@@ -214,36 +216,39 @@ func (k Keeper) HydrateClobPairAndPerpetualMapping(ctx sdk.Context) {
 	clobPairs := k.GetAllClobPairs(ctx)
 	for _, clobPair := range clobPairs {
 		// Create the corresponding mapping between clob pair and perpetual.
-		k.SetClobPairIdForPerpetual(
-			ctx,
-			clobPair,
-		)
+		if perpetualClobMetadata := clobPair.GetPerpetualClobMetadata(); perpetualClobMetadata != nil {
+			k.SetClobPairIdForPerpetual(
+				ctx,
+				clobPair,
+			)
+		}
 	}
 }
 
 // SetClobPairIdForPerpetual sets the mapping between clob pair and perpetual.
+// This function assumes that the clob pair is indeed a perp pair.
 func (k Keeper) SetClobPairIdForPerpetual(ctx sdk.Context, clobPair types.ClobPair) {
 	// If this `ClobPair` is for a perpetual, add the `clobPairId` to the list of CLOB pair IDs
 	// that facilitate trading of this perpetual.
-	if perpetualClobMetadata := clobPair.GetPerpetualClobMetadata(); perpetualClobMetadata != nil {
-		perpetualId := perpetualClobMetadata.PerpetualId
-		clobPairIds, exists := k.PerpetualIdToClobPairId[perpetualId]
-		if !exists {
-			clobPairIds = make([]types.ClobPairId, 0)
-		}
-
-		for _, clobPairId := range clobPairIds {
-			if clobPairId == clobPair.GetClobPairId() {
-				// The mapping already exists, so return.
-				return
-			}
-		}
-
-		k.PerpetualIdToClobPairId[perpetualId] = append(
-			clobPairIds,
-			clobPair.GetClobPairId(),
-		)
+	perpetualClobMetadata := clobPair.GetPerpetualClobMetadata()
+	perpetualId := perpetualClobMetadata.PerpetualId
+	clobPairIds, exists := k.PerpetualIdToClobPairId[perpetualId]
+	if !exists {
+		clobPairIds = make([]types.ClobPairId, 0)
 	}
+
+	for _, clobPairId := range clobPairIds {
+		if clobPairId == clobPair.GetClobPairId() {
+			// The mapping already exists, so return.
+			return
+		}
+	}
+
+	k.PerpetualIdToClobPairId[perpetualId] = append(
+		clobPairIds,
+		clobPair.GetClobPairId(),
+	)
+
 }
 
 // GetClobPairIdForPerpetual gets the first CLOB pair ID associated with the provided perpetual ID.
