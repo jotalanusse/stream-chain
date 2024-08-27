@@ -57,6 +57,7 @@ func (k Keeper) GetValidMarketSpotPriceUpdates(
 
 	// 2. Get all index prices from in-memory cache.
 	allIndexPrices := k.indexPriceCache.GetValidMedianPrices(allMarketParams, k.timeProvider.Now())
+	ctx.Logger().Info("ALL INDEX CACHE PRICES", allIndexPrices)
 
 	// 3. Collect all "valid" price updates.
 	updates := make([]*types.MarketSpotPriceUpdate, 0, len(allMarketParamPrices))
