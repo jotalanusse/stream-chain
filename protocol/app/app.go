@@ -11,6 +11,7 @@ import (
 	"runtime/debug"
 	"sync"
 	"time"
+	"fmt"
 
 	custommodule "github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve"
@@ -1402,6 +1403,9 @@ func (app *App) Precommitter(ctx sdk.Context) {
 
 // PrepareCheckStater application updates after commit and before any check state is invoked.
 func (app *App) PrepareCheckStater(ctx sdk.Context, req *abci.RequestCommit) {
+
+	fmt.Println("XXX prepare check stater in app.go")
+
 	ctx = ctx.WithExecMode(lib.ExecModePrepareCheckState)
 
 	if err := app.ModuleManager.PrepareCheckState(ctx, req); err != nil {

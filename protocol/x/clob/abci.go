@@ -139,6 +139,9 @@ func PrepareCheckState(
 	keeper *keeper.Keeper,
 	req *abcicomet.RequestCommit,
 ) {
+
+	keeper.Logger(ctx).Info("XXX STARTING PREPARE CHECK STATE")
+
 	ctx = log.AddPersistentTagsToLogger(ctx,
 		log.Handler, log.PrepareCheckState,
 		// Prepare check state is for the next block.
