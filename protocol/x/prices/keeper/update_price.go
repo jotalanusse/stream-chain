@@ -126,7 +126,7 @@ func (k Keeper) GetValidMarketSpotPriceUpdates(
 			indexPrice,
 			historicalSmoothedPrices,
 		)
-		ctx.Logger().Info("SHOULD PROPOSE", "market", marketId, "should_propose", shouldPropose)
+		ctx.Logger().Info("SHOULD PROPOSE", "market", marketId, "should_propose", shouldPropose, "reasons", reasons)
 		// If the index price would have updated, track how the proposal price changes the update
 		// decision / amount.
 		if isAboveRequiredMinSpotPriceChange(marketParamPrice, indexPrice) {
