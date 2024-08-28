@@ -17,7 +17,7 @@ func TestLogger(t *testing.T) {
 	require.NotNil(t, logger)
 }
 
-func TestGetPerpetualFeePpm(t *testing.T) {
+func TestGetFeePpm(t *testing.T) {
 	tests := map[string]struct {
 		UserStats           *stattypes.UserStats
 		GlobalStats         *stattypes.GlobalStats
@@ -107,8 +107,8 @@ func TestGetPerpetualFeePpm(t *testing.T) {
 			statsKeeper.SetUserStats(ctx, user, tc.UserStats)
 			statsKeeper.SetGlobalStats(ctx, tc.GlobalStats)
 
-			require.Equal(t, tc.expectedTakerFeePpm, k.GetPerpetualFeePpm(ctx, user, true))
-			require.Equal(t, tc.expectedMakerFeePpm, k.GetPerpetualFeePpm(ctx, user, false))
+			require.Equal(t, tc.expectedTakerFeePpm, k.GetFeePpm(ctx, user, true))
+			require.Equal(t, tc.expectedMakerFeePpm, k.GetFeePpm(ctx, user, false))
 		})
 	}
 }

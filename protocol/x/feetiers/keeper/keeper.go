@@ -84,7 +84,7 @@ func (k Keeper) getUserFeeTier(ctx sdk.Context, address string) (uint32, *types.
 	return idx, tiers[idx]
 }
 
-func (k Keeper) GetPerpetualFeePpm(ctx sdk.Context, address string, isTaker bool) int32 {
+func (k Keeper) GetFeePpm(ctx sdk.Context, address string, isTaker bool) int32 {
 	_, userTier := k.getUserFeeTier(ctx, address)
 	if isTaker {
 		return userTier.TakerFeePpm
