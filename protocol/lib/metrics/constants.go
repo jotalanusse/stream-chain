@@ -65,6 +65,9 @@ const (
 
 	// CLOB.
 	AddPerpetualFillAmount                                  = "add_perpetual_fill_amount"
+	BalanceChecks                                           = "balance_checks"
+	BalanceChecksFailed                                     = "balance_checks_failed"
+	BalanceChecksSubaccounts                                = "balance_checks_subaccounts"
 	BaseQuantums                                            = "base_quantums"
 	BatchCancel                                             = "batch_cancel"
 	BestAsk                                                 = "best_ask"
