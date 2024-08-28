@@ -90,7 +90,7 @@ type BlockTimeKeeper interface {
 }
 
 type FeeTiersKeeper interface {
-	GetPerpetualFeePpm(ctx sdk.Context, address string, isTaker bool) int32
+	GetFeePpm(ctx sdk.Context, address string, isTaker bool) int32
 }
 
 type PerpetualsKeeper interface {

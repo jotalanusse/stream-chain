@@ -162,6 +162,9 @@ const (
 	// Undercollateralized indicates the order failed collateralization checks while matching or
 	// when placed on the orderbook, and was therefore canceled.
 	Undercollateralized
+	// InsufficientBalance indicates the order failed checks on balance while matching or
+	// when placed on the orderbook, and was therefore canceled.
+	InsufficientBalance
 	// InternalError indicates the order caused an internal error during collateralization checks
 	// while matching or when placed on the orderbook, and was therefore canceled.
 	InternalError

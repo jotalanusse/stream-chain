@@ -223,6 +223,12 @@ var (
 		"CLOB has not been initialized",
 	)
 
+	ErrClobPairIsNotSpot = errorsmod.Register(
+		ModuleName,
+		48,
+		"CLOB pair is not a spot CLOB pair",
+	)
+
 	// Liquidations errors.
 	ErrInvalidLiquidationsConfig = errorsmod.Register(
 		ModuleName,
