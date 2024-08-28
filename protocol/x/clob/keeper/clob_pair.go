@@ -743,3 +743,33 @@ func (k Keeper) IsPerpetualClobPairActive(
 
 	return clobPair.Status == types.ClobPair_STATUS_ACTIVE, nil
 }
+
+// IsPerpetualClobPair returns true if the ClobPair associated with the provided clob pair id is a perpetual clob pair.
+func (k Keeper) IsPerpetualClobPair(ctx sdk.Context, clobPairId types.ClobPairId) (bool, error) {
+	clobPair, found := k.GetClobPair(ctx, clobPairId)
+	if !found {
+		return false, errorsmod.Wrapf(
+			types.ErrInvalidClob,
+			"CLOB pair ID %d not found in state",
+			clobPairId,
+		)
+	}
+
+	_, isPerpetual := clobPair.Metadata.(*types.ClobPair_PerpetualClobMetadata)
+	return isPerpetual, nil
+}
+
+// IsSpotClobPair returns true if the ClobPair associated with the provided clob pair id is a spot clob pair.
+func (k Keeper) IsSpotClobPair(ctx sdk.Context, clobPairId types.ClobPairId) (bool, error) {
+	clobPair, found := k.GetClobPair(ctx, clobPairId)
+	if !found {
+		return false, errorsmod.Wrapf(
+			types.ErrInvalidClob,
+			"CLOB pair ID %d not found in state",
+			clobPairId,
+		)
+	}
+
+	_, isSpot := clobPair.Metadata.(*types.ClobPair_SpotClobMetadata)
+	return isSpot, nil
+}
