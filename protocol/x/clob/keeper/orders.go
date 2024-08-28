@@ -1048,7 +1048,7 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 			metrics.Count,
 		)
 
-		makerFeePpm := k.feeTiersKeeper.GetPerpetualFeePpm(ctx, subaccountId.Owner, false)
+		makerFeePpm := k.feeTiersKeeper.GetFeePpm(ctx, subaccountId.Owner, false)
 		// For each subaccount ID, create the update from all of its existing open orders for the clob and side.
 		for _, openOrder := range openOrders {
 			if openOrder.ClobPairId != clobPairId {

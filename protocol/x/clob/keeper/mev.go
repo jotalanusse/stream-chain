@@ -527,7 +527,7 @@ func (k Keeper) GetMEVDataFromOperations(
 					makerOrder := k.MustFetchOrderFromOrderId(ctx, fill.MakerOrderId, placedShortTermOrders)
 					mevMatch := types.MEVMatch{
 						TakerOrderSubaccountId: &takerOrder.OrderId.SubaccountId,
-						TakerFeePpm: k.feeTiersKeeper.GetPerpetualFeePpm(
+						TakerFeePpm: k.feeTiersKeeper.GetFeePpm(
 							ctx,
 							takerOrder.GetSubaccountId().Owner,
 							true,
@@ -536,7 +536,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						MakerOrderSubaccountId: &makerOrder.OrderId.SubaccountId,
 						MakerOrderSubticks:     makerOrder.Subticks,
 						MakerOrderIsBuy:        makerOrder.IsBuy(),
-						MakerFeePpm: k.feeTiersKeeper.GetPerpetualFeePpm(
+						MakerFeePpm: k.feeTiersKeeper.GetFeePpm(
 							ctx,
 							makerOrder.GetSubaccountId().Owner,
 							false,
@@ -583,7 +583,7 @@ func (k Keeper) GetMEVDataFromOperations(
 						MakerOrderSubaccountId: makerOrder.OrderId.SubaccountId,
 						MakerOrderSubticks:     makerOrder.Subticks,
 						MakerOrderIsBuy:        makerOrder.IsBuy(),
-						MakerFeePpm: k.feeTiersKeeper.GetPerpetualFeePpm(
+						MakerFeePpm: k.feeTiersKeeper.GetFeePpm(
 							ctx,
 							makerOrder.GetSubaccountId().Owner,
 							false,
