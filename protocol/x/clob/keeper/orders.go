@@ -1316,10 +1316,6 @@ func (k Keeper) SendOffchainMessages(
 
 // getFillQuoteQuantums returns the total fillAmount price in quote quantums based on the maker subticks.
 // This value is always positive.
-//
-// Returns an error if:
-// - The Order is not for a `PerpetualClob`.
-// - The underlying `Price` does not exist.
 func getFillQuoteQuantums(
 	clobPair types.ClobPair,
 	makerSubticks types.Subticks,

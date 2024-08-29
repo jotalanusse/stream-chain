@@ -229,6 +229,18 @@ var (
 		"CLOB pair is not a spot CLOB pair",
 	)
 
+	ErrNoPerpOrSpotClobPair = errorsmod.Register(
+		ModuleName,
+		49,
+		"No perpetual or spot CLOB pair exists for the given perpetual ID",
+	)
+
+	ErrReduceOnlyUnsupportedForSpot = errorsmod.Register(
+		ModuleName,
+		50,
+		"Reduce-only orders are not supported for spot CLOB pairs",
+	)
+
 	// Liquidations errors.
 	ErrInvalidLiquidationsConfig = errorsmod.Register(
 		ModuleName,

@@ -1380,6 +1380,15 @@ func (m *MemClobPriceTimePriority) validateNewOrder(
 	)
 	orderId := order.OrderId
 
+	isPerp, err := m.clobKeeper.IsPerpetualClobPair(ctx, order.GetClobPairId())
+	if err != nil {
+		return types.ErrNoPerpOrSpotClobPair
+	}
+
+	if !isPerp && order.IsReduceOnly() {
+		return types.ErrReduceOnlyUnsupportedForSpot
+	}
+
 	if orderId.IsShortTermOrder() {
 		// If the cancelation has an equal-to-or-greater `GoodTilBlock` than the new order, return an error.
 		// If the cancelation has a lesser `GoodTilBlock` than the new order, we do not remove the cancelation.
@@ -1702,6 +1711,8 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		}
 
 		if !success {
+			// TODO(SCL) - will need to handle failed collateralization checks for perps
+			// or failed balance checks for spot
 			continueMatching := m.handleFailedCollateralizationCheck(
 				makerOrder,
 				&takerOrderStatus,
@@ -2429,6 +2440,7 @@ func (m *MemClobPriceTimePriority) getOrderMatchVariables(
 	if isSpotClobPair && isLiquidation {
 		panic("there cannot be a liquidation on a spot clob pair")
 	}
+
 	return
 }
 
