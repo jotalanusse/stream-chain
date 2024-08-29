@@ -1009,6 +1009,26 @@ func (k Keeper) MustValidateReduceOnlyOrder(
 func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 	ctx sdk.Context,
 	clobPairId types.ClobPairId,
+	subaccountOpenOrders map[satypes.SubaccountId][]types.PendingOpenOrder,
+) (
+	success bool,
+	successPerUpdate map[satypes.SubaccountId]satypes.UpdateResult,
+) {
+	isPerp, err := k.IsPerpetualClobPair(ctx, clobPairId)
+	if err != nil {
+		panic(err)
+	}
+
+	if isPerp {
+		return k.AddPerpetualOrderToOrderbookSubaccountUpdatesCheck(ctx, clobPairId, subaccountOpenOrders)
+	} else {
+		return k.AddSpotOrderToOrderbookSubaccountUpdatesCheck(ctx, clobPairId, subaccountOpenOrders)
+	}
+}
+
+func (k Keeper) AddPerpetualOrderToOrderbookSubaccountUpdatesCheck(
+	ctx sdk.Context,
+	clobPairId types.ClobPairId,
 	// TODO(DEC-1713): Convert this to 2 parameters: SubaccountId and a slice of PendingOpenOrders.
 	subaccountOpenOrders map[satypes.SubaccountId][]types.PendingOpenOrder,
 ) (
@@ -1114,6 +1134,18 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 	}
 
 	return success, result
+}
+
+// TODO(SCL) - Implement this function when multi-collateral is built and health checks enabled
+func (k Keeper) AddSpotOrderToOrderbookSubaccountUpdatesCheck(
+	ctx sdk.Context,
+	clobPairId types.ClobPairId,
+	subaccountOpenOrders map[satypes.SubaccountId][]types.PendingOpenOrder,
+) (
+	success bool,
+	successPerUpdate map[satypes.SubaccountId]satypes.UpdateResult,
+) {
+	return true, make(map[satypes.SubaccountId]satypes.UpdateResult)
 }
 
 // GetOraclePriceSubticksRat returns the oracle price in subticks for the given `ClobPair`.
