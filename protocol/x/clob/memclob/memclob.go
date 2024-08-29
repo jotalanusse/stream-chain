@@ -1579,31 +1579,17 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 	takerOrderStatus.OrderStatus = types.Success
 	makerOrdersToRemove = make([]OrderWithRemovalReason, 0)
 
-	// Initialize variables used for traversing the orderbook.
-	clobPairId := newTakerOrder.GetClobPairId()
-	orderbook := m.openOrders.mustGetOrderbook(ctx, clobPairId)
-	takerIsBuy := newTakerOrder.IsBuy()
-	takerSubaccountId := newTakerOrder.GetSubaccountId()
-	takerIsLiquidation := newTakerOrder.IsLiquidation()
+	clobPairId,
+		orderbook,
+		takerIsBuy,
+		takerSubaccountId,
+		takerIsLiquidation := m.getPerpetualOrderMatchVariables(
+		ctx,
+		newTakerOrder,
+	)
 
-	// Store the remaining size of the taker order to determine the filled amount of an order after
-	// matching has ended.
-	// If the order is a liquidation, then the remaining size is the full size of the order.
-	// Else, this is a regular order and might already be partially matched, so we fetch the
-	// remaining size of this order.
-	var takerRemainingSize satypes.BaseQuantums
-	if takerIsLiquidation {
-		takerRemainingSize = newTakerOrder.GetBaseQuantums()
-	} else {
-		var takerHasRemainingSize bool
-		takerRemainingSize, takerHasRemainingSize = m.GetOrderRemainingAmount(
-			ctx,
-			newTakerOrder.MustGetOrder(),
-		)
-		if !takerHasRemainingSize {
-			panic(fmt.Sprintf("mustPerformTakerOrderMatching: order has no remaining amount %v", newTakerOrder))
-		}
-	}
+	// keep track of remaining size to determine if order needs to be placed on book after
+	takerRemainingSize := m.getPerpetualTakerRemainingSize(ctx, newTakerOrder)
 	takerRemainingSizeBeforeMatching := takerRemainingSize
 
 	// Initialize variables used for tracking matches made during this matching cycle.
@@ -1620,34 +1606,14 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 	//   collateralization, stop matching.
 	// - Update local bookkeeping variables with the new match. If the taker order is fully matched, stop matching.
 	for {
-		var foundMakerOrder bool
-		// If the maker level order has not been initialized, then we are just starting matching and need to find the
-		// best order on the opposite side.
-		// Else, the maker order must have been fully matched (since the taker order has nonzero remaining size), and we
-		// need to find the next best maker order.
-		if makerLevelOrder == nil {
-			makerLevelOrder, foundMakerOrder = m.openOrders.getBestOrderOnSide(orderbook, !takerIsBuy)
-		} else {
-			makerLevelOrder, foundMakerOrder = m.openOrders.findNextBestLevelOrder(ctx, makerLevelOrder)
-		}
+		makerOrder, foundMakerOrder := m.maybeGetMakerOrderForMatching(ctx, makerLevelOrder, orderbook, takerIsBuy)
 
-		// If no next best maker order was found, stop matching.
 		if !foundMakerOrder {
 			break
 		}
 
-		makerOrder := makerLevelOrder.Value
-
-		// Check if the orderbook is crossed.
-		var takerOrderCrossesMakerOrder bool
-		if takerIsBuy {
-			takerOrderCrossesMakerOrder = newTakerOrder.GetOrderSubticks() >= makerOrder.Order.GetOrderSubticks()
-		} else {
-			takerOrderCrossesMakerOrder = newTakerOrder.GetOrderSubticks() <= makerOrder.Order.GetOrderSubticks()
-		}
-
 		// If the taker order no longer crosses the maker order, stop matching.
-		if !takerOrderCrossesMakerOrder {
+		if takerOrderCrossesMakerOrder := m.isOrderBookCrossed(newTakerOrder, makerOrder); !takerOrderCrossesMakerOrder {
 			break
 		}
 
@@ -1662,40 +1628,29 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 
 		// If the matched maker order does not have same order ID and is from the same subaccount
 		// as the taker order, then we cannot match the orders. Cancel the maker order and continue matching.
-		// TODO(DEC-1562): determine if we should handle self-trades differently.
-		if makerSubaccountId == takerSubaccountId {
-			makerOrdersToRemove = append(
-				makerOrdersToRemove,
-				OrderWithRemovalReason{
-					Order:         makerOrder.Order,
-					RemovalReason: types.OrderRemoval_REMOVAL_REASON_INVALID_SELF_TRADE,
-				},
+		if m.isSelfTrade(takerSubaccountId, makerOrder) {
+			m.addOrderToBeRemoved(
+				&makerOrdersToRemove,
+				makerOrder,
+				types.OrderRemoval_REMOVAL_REASON_INVALID_SELF_TRADE,
 			)
 			continue
 		}
 
-		makerRemainingSize, makerHasRemainingSize := m.GetOrderRemainingAmount(ctx, makerOrder.Order)
-		if !makerHasRemainingSize {
+		makerRemainingSize, makerHasNegativeRemainingSize := m.GetOrderRemainingAmount(ctx, makerOrder.Order)
+		if !makerHasNegativeRemainingSize {
 			panic(fmt.Sprintf("mustPerformTakerOrderMatching: maker order has no remaining amount %v", makerOrder.Order))
 		}
 
-		// The matched amount is the minimum of the remaining amount of both orders.
-		var matchedAmount satypes.BaseQuantums
-		if takerRemainingSize >= makerRemainingSize {
-			matchedAmount = makerRemainingSize
-		} else {
-			matchedAmount = takerRemainingSize
-		}
+		matchedAmount := m.getOrderMatchedAmount(takerRemainingSize, makerRemainingSize)
 
 		// For each subaccount involved in the match, if the order is reduce-only we should verify
 		// that the position side does not change or increase as a result of matching the order.
 		if makerOrder.Order.IsReduceOnly() {
-			currentPositionSize := m.clobKeeper.GetStatePosition(ctx, makerSubaccountId, clobPairId)
-			resizedMatchAmount := m.resizeReduceOnlyMatchIfNecessary(
+			resizedMatchAmount := m.getReduceOnlyResizeMatchAmount(
 				ctx,
 				makerSubaccountId,
 				clobPairId,
-				currentPositionSize,
 				matchedAmount,
 				!takerIsBuy,
 			)
@@ -1705,13 +1660,10 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 			// order. This can happen if the maker has previous matches within this matching loop
 			// that changed their position side, meaning all their resting reduce-only orders are invalid.
 			if resizedMatchAmount == 0 {
-				// TODO(DEC-1415): Revert this reduce-only bug patch.
-				makerOrdersToRemove = append(
-					makerOrdersToRemove,
-					OrderWithRemovalReason{
-						Order:         makerOrder.Order,
-						RemovalReason: types.OrderRemoval_REMOVAL_REASON_INVALID_REDUCE_ONLY,
-					},
+				m.addOrderToBeRemoved(
+					&makerOrdersToRemove,
+					makerOrder,
+					types.OrderRemoval_REMOVAL_REASON_INVALID_REDUCE_ONLY,
 				)
 				continue
 			}
@@ -1720,12 +1672,10 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		}
 
 		if newTakerOrder.IsReduceOnly() {
-			currentPositionSize := m.clobKeeper.GetStatePosition(ctx, takerSubaccountId, clobPairId)
-			resizedMatchAmount := m.resizeReduceOnlyMatchIfNecessary(
+			resizedMatchAmount := m.getReduceOnlyResizeMatchAmount(
 				ctx,
 				takerSubaccountId,
 				clobPairId,
-				currentPositionSize,
 				matchedAmount,
 				takerIsBuy,
 			)
@@ -1748,71 +1698,24 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 
 		success, takerUpdateResult, makerUpdateResult, _, err := m.clobKeeper.ProcessSingleMatch(ctx, &matchWithOrders)
 		if err != nil && !errors.Is(err, satypes.ErrFailedToUpdateSubaccounts) {
-			if errors.Is(err, types.ErrLiquidationExceedsSubaccountMaxInsuranceLost) {
-				// Subaccount has reached max insurance lost block limit. Stop matching.
-				telemetry.IncrCounter(1, types.ModuleName, metrics.SubaccountMaxInsuranceLost, metrics.Count)
-				takerOrderStatus.OrderStatus = types.LiquidationExceededSubaccountMaxInsuranceLost
-				break
-			}
-			if errors.Is(err, types.ErrLiquidationExceedsSubaccountMaxNotionalLiquidated) {
-				// Subaccount has reached max notional liquidated block limit. Stop matching.
-				telemetry.IncrCounter(1, types.ModuleName, metrics.SubaccountMaxNotionalLiquidated, metrics.Count)
-				takerOrderStatus.OrderStatus = types.LiquidationExceededSubaccountMaxNotionalLiquidated
-				break
-			}
-			if errors.Is(err, types.ErrInsuranceFundHasInsufficientFunds) {
-				// Deleveraging is required. Stop matching.
-				telemetry.IncrCounter(1, types.ModuleName, metrics.LiquidationRequiresDeleveraging, metrics.Count)
-				takerOrderStatus.OrderStatus = types.LiquidationRequiresDeleveraging
-				break
-			}
-
-			// Panic since this is an unknown error.
-			log.ErrorLogWithError(
-				ctx,
-				"Unexpected error from `ProcessSingleMatch`",
-				err,
-				"matchWithOrders", matchWithOrders,
-			)
-			panic(err)
+			m.handleSingleMatchError(ctx, &matchWithOrders, &takerOrderStatus, err)
+			break
 		}
 
-		// If the collateralization check has failed, one or both of the taker or maker orders have failed the
-		// collateralization check. Note if the taker is order is liquidation order, only the maker could
-		// have failed collateralization checks. Therefore, we must perform the following conditional logic:
-		// - If the maker order failed collateralization checks we need to remove it from the orderbook.
-		// - If the taker order is not a liquidation order and failed collateralization checks, we
-		//   need to stop matching.
-		// - If the taker order is a liquidation order or passed collateralization checks, then we
-		//   need to continue matching by attempting to find a new overlapping maker order.
 		if !success {
-			makerCollatOkay := updateResultToOrderStatus(makerUpdateResult).IsSuccess()
-			takerCollatOkay := takerIsLiquidation ||
-				updateResultToOrderStatus(takerUpdateResult).IsSuccess()
+			continueMatching := m.handleFailedCollateralizationCheck(
+				makerOrder,
+				&takerOrderStatus,
+				makerUpdateResult,
+				takerUpdateResult,
+				takerIsLiquidation,
+				&makerOrdersToRemove,
+			)
 
-			// If the maker order failed collateralization checks, add the maker order ID to the
-			// list of order IDs to be removed after matching has ended.
-			if !makerCollatOkay {
-				makerOrdersToRemove = append(
-					makerOrdersToRemove,
-					OrderWithRemovalReason{
-						Order:         makerOrder.Order,
-						RemovalReason: types.OrderRemoval_REMOVAL_REASON_UNDERCOLLATERALIZED,
-					},
-				)
-			}
-
-			// If this is not a liquidation order and the taker order failed collateralization checks,
-			// stop matching.
-			if !takerCollatOkay {
-				takerOrderStatus.OrderStatus = updateResultToOrderStatus(
-					takerUpdateResult,
-				)
+			if !continueMatching {
 				break
 			}
 
-			// The taker order is a liquidation or it passed collateralization checks, therefore we
-			// can continue matching by attempting to find a new overlapping maker order.
 			continue
 		}
 
@@ -2507,4 +2410,239 @@ func (m *MemClobPriceTimePriority) resizeReduceOnlyMatchIfNecessary(
 	absNewMatchSize := new(big.Int).Abs(newMatchSize)
 	maxMatchSize := lib.BigMin(absPositionSize, absNewMatchSize)
 	return satypes.BaseQuantums(maxMatchSize.Uint64())
+}
+
+func (m *MemClobPriceTimePriority) getPerpetualOrderMatchVariables(
+	ctx sdk.Context,
+	takerOrder types.MatchableOrder,
+) (
+	clobPairId types.ClobPairId,
+	orderbook *types.Orderbook,
+	isBuy bool,
+	subaccountId satypes.SubaccountId,
+	isLiquidation bool,
+) {
+	clobPairId = takerOrder.GetClobPairId()
+	orderbook = m.openOrders.mustGetOrderbook(ctx, clobPairId)
+	isBuy = takerOrder.IsBuy()
+	subaccountId = takerOrder.GetSubaccountId()
+	isLiquidation = takerOrder.IsLiquidation()
+	return
+}
+
+// If the order is a liquidation, then the remaining size is the full size of the order.
+// Else, this is a regular order and might already be partially matched, so we fetch the
+// remaining size of this order.
+func (m *MemClobPriceTimePriority) getPerpetualTakerRemainingSize(
+	ctx sdk.Context,
+	takerOrder types.MatchableOrder,
+) (
+	remainingSize satypes.BaseQuantums,
+) {
+	if takerOrder.IsLiquidation() {
+		remainingSize = takerOrder.GetBaseQuantums()
+	} else {
+		var takerHasRemainingSize bool
+		remainingSize, takerHasRemainingSize = m.GetOrderRemainingAmount(
+			ctx,
+			takerOrder.MustGetOrder(),
+		)
+		if !takerHasRemainingSize {
+			panic(fmt.Sprintf("mustPerformTakerOrderMatching: order has no remaining amount %v", takerOrder))
+		}
+	}
+	return
+}
+
+// If the maker level order has not been initialized, then we are just starting matching and need to find the
+// best order on the opposite side.
+// Else, the maker order must have been fully matched (since the taker order has nonzero remaining size), and we
+// need to find the next best maker order.
+func (m *MemClobPriceTimePriority) maybeGetMakerOrderForMatching(
+	ctx sdk.Context,
+	makerLevelOrder *types.LevelOrder,
+	orderbook *types.Orderbook,
+	isBuy bool,
+) (
+	makerOrder types.ClobOrder,
+	foundMakerOrder bool,
+) {
+
+	if makerLevelOrder == nil {
+		makerLevelOrder, foundMakerOrder = m.openOrders.getBestOrderOnSide(orderbook, !isBuy)
+	} else {
+		makerLevelOrder, foundMakerOrder = m.openOrders.findNextBestLevelOrder(ctx, makerLevelOrder)
+	}
+
+	if !foundMakerOrder {
+		return
+	}
+
+	makerOrder = makerLevelOrder.Value
+
+	return
+}
+
+func (m *MemClobPriceTimePriority) isOrderBookCrossed(
+	takerOrder types.MatchableOrder,
+	makerOrder types.ClobOrder,
+) bool {
+	var takerOrderCrossesMakerOrder bool
+	if takerOrder.IsBuy() {
+		takerOrderCrossesMakerOrder = takerOrder.GetOrderSubticks() >= makerOrder.Order.GetOrderSubticks()
+	} else {
+		takerOrderCrossesMakerOrder = takerOrder.GetOrderSubticks() <= makerOrder.Order.GetOrderSubticks()
+	}
+
+	return takerOrderCrossesMakerOrder
+}
+
+func (m *MemClobPriceTimePriority) isSelfTrade(
+	takerSubaccountId satypes.SubaccountId,
+	makerOrder types.ClobOrder,
+) bool {
+	return takerSubaccountId == makerOrder.Order.OrderId.SubaccountId
+}
+
+func (m *MemClobPriceTimePriority) addOrderToBeRemoved(
+	makerOrdersToRemove *[]OrderWithRemovalReason,
+	makerOrder types.ClobOrder,
+	removalReason types.OrderRemoval_RemovalReason,
+) {
+	*makerOrdersToRemove = append(
+		*makerOrdersToRemove,
+		OrderWithRemovalReason{
+			Order:         makerOrder.Order,
+			RemovalReason: removalReason,
+		},
+	)
+}
+
+// The matched amount is the minimum of the remaining amount of both orders.
+func (m *MemClobPriceTimePriority) getOrderMatchedAmount(
+	takerRemainingSize satypes.BaseQuantums,
+	makerRemainingSize satypes.BaseQuantums,
+) (
+	matchedAmount satypes.BaseQuantums,
+) {
+	if takerRemainingSize >= makerRemainingSize {
+		matchedAmount = makerRemainingSize
+	} else {
+		matchedAmount = takerRemainingSize
+	}
+	return
+}
+
+func (m *MemClobPriceTimePriority) getReduceOnlyResizeMatchAmount(
+	ctx sdk.Context,
+	makerSubaccountId satypes.SubaccountId,
+	clobPairId types.ClobPairId,
+	matchedAmount satypes.BaseQuantums,
+	takerIsBuy bool,
+) satypes.BaseQuantums {
+	currentPositionSize := m.clobKeeper.GetStatePosition(ctx, makerSubaccountId, clobPairId)
+	resizedMatchAmount := m.resizeReduceOnlyMatchIfNecessary(
+		ctx,
+		makerSubaccountId,
+		clobPairId,
+		currentPositionSize,
+		matchedAmount,
+		takerIsBuy,
+	)
+
+	return resizedMatchAmount
+}
+
+func (m *MemClobPriceTimePriority) handleSingleMatchError(
+	ctx sdk.Context,
+	matchWithOrders *types.MatchWithOrders,
+	takerOrderStatus *types.TakerOrderStatus,
+	err error,
+) {
+	if errors.Is(err, types.ErrLiquidationExceedsSubaccountMaxInsuranceLost) {
+		// Subaccount has reached max insurance lost block limit. Stop matching.
+		telemetry.IncrCounter(1, types.ModuleName, metrics.SubaccountMaxInsuranceLost, metrics.Count)
+		takerOrderStatus.OrderStatus = types.LiquidationExceededSubaccountMaxInsuranceLost
+		return
+	}
+	if errors.Is(err, types.ErrLiquidationExceedsSubaccountMaxNotionalLiquidated) {
+		// Subaccount has reached max notional liquidated block limit. Stop matching.
+		telemetry.IncrCounter(1, types.ModuleName, metrics.SubaccountMaxNotionalLiquidated, metrics.Count)
+		takerOrderStatus.OrderStatus = types.LiquidationExceededSubaccountMaxNotionalLiquidated
+		return
+	}
+	if errors.Is(err, types.ErrInsuranceFundHasInsufficientFunds) {
+		// Deleveraging is required. Stop matching.
+		telemetry.IncrCounter(1, types.ModuleName, metrics.LiquidationRequiresDeleveraging, metrics.Count)
+		takerOrderStatus.OrderStatus = types.LiquidationRequiresDeleveraging
+		return
+	}
+
+	// Panic since this is an unknown error.
+	log.ErrorLogWithError(
+		ctx,
+		"Unexpected error from `ProcessSingleMatch`",
+		err,
+		"matchWithOrders", matchWithOrders,
+	)
+	panic(err)
+}
+
+func (m *MemClobPriceTimePriority) getMakerAndTakerCollatCheckResult(
+	makerUpdateResult satypes.UpdateResult,
+	takerUpdateResult satypes.UpdateResult,
+	takerIsLiquidation bool,
+) (
+	makerCollatOkay bool,
+	takerCollatOkay bool,
+) {
+	makerCollatOkay = updateResultToOrderStatus(makerUpdateResult).IsSuccess()
+	takerCollatOkay = takerIsLiquidation ||
+		updateResultToOrderStatus(takerUpdateResult).IsSuccess()
+	return
+}
+
+// If the collateralization check has failed, one or both of the taker or maker orders have failed the
+// collateralization check. Note if the taker is order is liquidation order, only the maker could
+// have failed collateralization checks. Therefore, we must perform the following conditional logic:
+//   - If the maker order failed collateralization checks we need to remove it from the orderbook.
+//   - If the taker order is not a liquidation order and failed collateralization checks, we
+//     need to stop matching.
+//   - If the taker order is a liquidation order or passed collateralization checks, then we
+//     need to continue matching by attempting to find a new overlapping maker order.
+func (m *MemClobPriceTimePriority) handleFailedCollateralizationCheck(
+	makerOrder types.ClobOrder,
+	takerOrderStatus *types.TakerOrderStatus,
+	makerUpdateResult, takerUpdateResult satypes.UpdateResult,
+	takerIsLiquidation bool,
+	makerOrdersToRemove *[]OrderWithRemovalReason,
+) (continueMatching bool) {
+	makerCollatOkay, takerCollatOkay := m.getMakerAndTakerCollatCheckResult(
+		makerUpdateResult,
+		takerUpdateResult,
+		takerIsLiquidation,
+	)
+
+	// If the maker order failed collateralization checks, add the maker order ID to the
+	// list of order IDs to be removed after matching has ended.
+	if !makerCollatOkay {
+		m.addOrderToBeRemoved(
+			makerOrdersToRemove,
+			makerOrder,
+			types.OrderRemoval_REMOVAL_REASON_UNDERCOLLATERALIZED,
+		)
+	}
+
+	// If this is not a liquidation order and the taker order failed collateralization checks,
+	// stop matching.
+	if !takerCollatOkay {
+		takerOrderStatus.OrderStatus = updateResultToOrderStatus(
+			takerUpdateResult,
+		)
+		return false
+	}
+
+	// The taker order is a liquidation or it passed collateralization checks, therefore we
+	// can continue matching by attempting to find a new overlapping maker order.
+	return true
 }
