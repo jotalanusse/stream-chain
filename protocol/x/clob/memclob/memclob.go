@@ -479,24 +479,7 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 	}
 
 	if m.generateOffchainUpdates {
-		// If this is a replacement order, then ensure we send the appropriate removal message.
-		orderId := order.OrderId
-		if _, found := m.openOrders.getOrder(ctx, orderId); found {
-			if message, success := off_chain_updates.CreateOrderRemoveMessageWithReason(
-				ctx,
-				orderId,
-				indexersharedtypes.OrderRemovalReason_ORDER_REMOVAL_REASON_REPLACED,
-				ocutypes.OrderRemoveV1_ORDER_REMOVAL_STATUS_BEST_EFFORT_CANCELED,
-			); success {
-				offchainUpdates.AddRemoveMessage(orderId, message)
-			}
-		}
-		if message, success := off_chain_updates.CreateOrderPlaceMessage(
-			ctx,
-			order,
-		); success {
-			offchainUpdates.AddPlaceMessage(order.OrderId, message)
-		}
+		m.addOffchainOrderPlacementAndReplacementMessages(ctx, order, offchainUpdates)
 	}
 
 	// Attempt to match the order against the orderbook.
@@ -505,44 +488,18 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 
 	if err != nil {
 		if order.IsStatefulOrder() {
-			var removalReason types.OrderRemoval_RemovalReason
-
-			if errors.Is(err, types.ErrFokOrderCouldNotBeFullyFilled) {
-				if !order.IsConditionalOrder() {
-					panic(
-						fmt.Sprintf(
-							"PlaceOrder: stateful FOK order must be conditional. Order %+v",
-							order,
-						),
-					)
-				}
-				removalReason = types.OrderRemoval_REMOVAL_REASON_CONDITIONAL_FOK_COULD_NOT_BE_FULLY_FILLED
-			} else if errors.Is(err, types.ErrPostOnlyWouldCrossMakerOrder) {
-				removalReason = types.OrderRemoval_REMOVAL_REASON_POST_ONLY_WOULD_CROSS_MAKER_ORDER
-			} else if errors.Is(err, types.ErrWouldViolateIsolatedSubaccountConstraints) {
-				removalReason = types.OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS
-			}
-
-			if !m.operationsToPropose.IsOrderRemovalInOperationsQueue(order.OrderId) {
-				m.operationsToPropose.MustAddOrderRemovalToOperationsQueue(
-					order.OrderId,
-					removalReason,
-				)
-			}
+			removalReason := m.getOrderRemovalReasonFromError(order, err)
+			m.handleStatefulOrderRemoval(ctx, order, removalReason)
 		}
 
 		if m.generateOffchainUpdates {
-			// Send an off-chain update message indicating the order should be removed from the orderbook
-			// on the Indexer.
-			if message, success := off_chain_updates.CreateOrderRemoveMessage(
+			m.addOffchainOrderRemovalMessage(
 				ctx,
 				order.OrderId,
 				takerOrderStatus.OrderStatus,
 				err,
-				ocutypes.OrderRemoveV1_ORDER_REMOVAL_STATUS_BEST_EFFORT_CANCELED,
-			); success {
-				offchainUpdates.AddRemoveMessage(order.OrderId, message)
-			}
+				offchainUpdates,
+			)
 		}
 
 		return 0, 0, offchainUpdates, err
@@ -556,25 +513,19 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 		if m.generateOffchainUpdates {
 			// Send an off-chain update message indicating the order should be removed from the orderbook
 			// on the Indexer.
-			if message, success := off_chain_updates.CreateOrderRemoveMessage(
+			m.addOffchainOrderRemovalMessage(
 				ctx,
 				order.OrderId,
 				takerOrderStatus.OrderStatus,
 				nil,
-				ocutypes.OrderRemoveV1_ORDER_REMOVAL_STATUS_BEST_EFFORT_CANCELED,
-			); success {
-				offchainUpdates.AddRemoveMessage(order.OrderId, message)
-			}
+				offchainUpdates,
+			)
 		}
 		// If stateful taker order fails collateralization checks while matching, add Order Removal
 		// to operations queue to forcefully remove the order from state.
 		if takerOrderStatus.OrderStatus == types.Undercollateralized && order.IsStatefulOrder() {
-			if !m.operationsToPropose.IsOrderRemovalInOperationsQueue(order.OrderId) {
-				m.operationsToPropose.MustAddOrderRemovalToOperationsQueue(
-					order.OrderId,
-					types.OrderRemoval_REMOVAL_REASON_UNDERCOLLATERALIZED,
-				)
-			}
+			removalReason := types.OrderRemoval_REMOVAL_REASON_UNDERCOLLATERALIZED
+			m.handleStatefulOrderRemoval(ctx, order, removalReason)
 		}
 		return orderSizeOptimisticallyFilledFromMatchingQuantums, takerOrderStatus.OrderStatus, offchainUpdates, nil
 	}
@@ -616,11 +567,9 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 
 		// long-term orders cannot use IOC, so we know this stateful order
 		// is conditional. Remove the conditional order.
-		if order.IsStatefulOrder() && !m.operationsToPropose.IsOrderRemovalInOperationsQueue(order.OrderId) {
-			m.operationsToPropose.MustAddOrderRemovalToOperationsQueue(
-				order.OrderId,
-				types.OrderRemoval_REMOVAL_REASON_CONDITIONAL_IOC_WOULD_REST_ON_BOOK,
-			)
+		if order.IsStatefulOrder() {
+			removalReason := types.OrderRemoval_REMOVAL_REASON_CONDITIONAL_IOC_WOULD_REST_ON_BOOK
+			m.handleStatefulOrderRemoval(ctx, order, removalReason)
 		}
 		return orderSizeOptimisticallyFilledFromMatchingQuantums, orderStatus, offchainUpdates, nil
 	}
@@ -638,23 +587,20 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 		if m.generateOffchainUpdates {
 			// Send an off-chain update message indicating the order should be removed from the orderbook
 			// on the Indexer.
-			if message, success := off_chain_updates.CreateOrderRemoveMessage(
+			m.addOffchainOrderRemovalMessage(
 				ctx,
 				order.OrderId,
 				addOrderOrderStatus,
 				nil,
-				ocutypes.OrderRemoveV1_ORDER_REMOVAL_STATUS_BEST_EFFORT_CANCELED,
-			); success {
-				offchainUpdates.AddRemoveMessage(order.OrderId, message)
-			}
+				offchainUpdates,
+			)
+
 		}
 
 		// remove stateful orders which fail collateralization check while being added to orderbook
-		if order.IsStatefulOrder() && !m.operationsToPropose.IsOrderRemovalInOperationsQueue(order.OrderId) {
-			m.operationsToPropose.MustAddOrderRemovalToOperationsQueue(
-				order.OrderId,
-				types.OrderRemoval_REMOVAL_REASON_UNDERCOLLATERALIZED,
-			)
+		if order.IsStatefulOrder() {
+			removalReason := types.OrderRemoval_REMOVAL_REASON_UNDERCOLLATERALIZED
+			m.handleStatefulOrderRemoval(ctx, order, removalReason)
 		}
 		return orderSizeOptimisticallyFilledFromMatchingQuantums, addOrderOrderStatus, offchainUpdates, nil
 	}
@@ -2659,4 +2605,85 @@ func (m *MemClobPriceTimePriority) handleFailedCollateralizationCheck(
 	// The taker order is a liquidation or it passed collateralization checks, therefore we
 	// can continue matching by attempting to find a new overlapping maker order.
 	return true
+}
+
+func (m *MemClobPriceTimePriority) addOffchainOrderPlacementAndReplacementMessages(
+	ctx sdk.Context,
+	order types.Order,
+	offchainUpdates *types.OffchainUpdates,
+) {
+	orderId := order.OrderId
+	if _, found := m.openOrders.getOrder(ctx, orderId); found {
+		if message, success := off_chain_updates.CreateOrderRemoveMessageWithReason(
+			ctx,
+			orderId,
+			indexersharedtypes.OrderRemovalReason_ORDER_REMOVAL_REASON_REPLACED,
+			ocutypes.OrderRemoveV1_ORDER_REMOVAL_STATUS_BEST_EFFORT_CANCELED,
+		); success {
+			offchainUpdates.AddRemoveMessage(orderId, message)
+		}
+	}
+	if message, success := off_chain_updates.CreateOrderPlaceMessage(
+		ctx,
+		order,
+	); success {
+		offchainUpdates.AddPlaceMessage(order.OrderId, message)
+	}
+}
+
+func (m *MemClobPriceTimePriority) handleStatefulOrderRemoval(
+	ctx sdk.Context,
+	order types.Order,
+	removalReason types.OrderRemoval_RemovalReason,
+) {
+	if !m.operationsToPropose.IsOrderRemovalInOperationsQueue(order.OrderId) {
+		m.operationsToPropose.MustAddOrderRemovalToOperationsQueue(
+			order.OrderId,
+			removalReason,
+		)
+	}
+}
+
+func (m *MemClobPriceTimePriority) getOrderRemovalReasonFromError(
+	order types.Order,
+	err error,
+) (
+	removalReason types.OrderRemoval_RemovalReason,
+) {
+
+	if errors.Is(err, types.ErrFokOrderCouldNotBeFullyFilled) {
+		if !order.IsConditionalOrder() {
+			panic(
+				fmt.Sprintf(
+					"PlaceOrder: stateful FOK order must be conditional. Order %+v",
+					order,
+				),
+			)
+		}
+		removalReason = types.OrderRemoval_REMOVAL_REASON_CONDITIONAL_FOK_COULD_NOT_BE_FULLY_FILLED
+	} else if errors.Is(err, types.ErrPostOnlyWouldCrossMakerOrder) {
+		removalReason = types.OrderRemoval_REMOVAL_REASON_POST_ONLY_WOULD_CROSS_MAKER_ORDER
+	} else if errors.Is(err, types.ErrWouldViolateIsolatedSubaccountConstraints) {
+		removalReason = types.OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS
+	}
+
+	return
+}
+
+func (m *MemClobPriceTimePriority) addOffchainOrderRemovalMessage(
+	ctx sdk.Context,
+	orderId types.OrderId,
+	orderStatus types.OrderStatus,
+	err error,
+	offchainUpdates *types.OffchainUpdates,
+) {
+	if message, success := off_chain_updates.CreateOrderRemoveMessage(
+		ctx,
+		orderId,
+		orderStatus,
+		err,
+		ocutypes.OrderRemoveV1_ORDER_REMOVAL_STATUS_BEST_EFFORT_CANCELED,
+	); success {
+		offchainUpdates.AddRemoveMessage(orderId, message)
+	}
 }
