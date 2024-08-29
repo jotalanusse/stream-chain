@@ -1583,20 +1583,19 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 		orderbook,
 		takerIsBuy,
 		takerSubaccountId,
-		takerIsLiquidation := m.getPerpetualOrderMatchVariables(
+		takerIsLiquidation := m.getOrderMatchVariables(
 		ctx,
 		newTakerOrder,
 	)
 
 	// keep track of remaining size to determine if order needs to be placed on book after
-	takerRemainingSize := m.getPerpetualTakerRemainingSize(ctx, newTakerOrder)
+	takerRemainingSize := m.getTakerRemainingSize(ctx, newTakerOrder)
 	takerRemainingSizeBeforeMatching := takerRemainingSize
 
 	// Initialize variables used for tracking matches made during this matching cycle.
 	var makerLevelOrder *types.LevelOrder
 	var takerOrderHash types.OrderHash
 	var takerOrderHashWasSet bool
-	var bigTotalMatchedAmount *big.Int = big.NewInt(0)
 
 	// Begin attempting to match orders. The below loop performs the following high-level operations, in order:
 	// - Find the next best maker order if it exists. If not, stop matching.
@@ -1730,12 +1729,6 @@ func (m *MemClobPriceTimePriority) mustPerformTakerOrderMatching(
 
 		// 1.
 		takerRemainingSize -= matchedAmount
-
-		if newTakerOrder.IsBuy() {
-			bigTotalMatchedAmount.Add(bigTotalMatchedAmount, matchedAmount.ToBigInt())
-		} else {
-			bigTotalMatchedAmount.Sub(bigTotalMatchedAmount, matchedAmount.ToBigInt())
-		}
 
 		// 2.
 		makerOrderHash := makerOrder.Order.GetOrderHash()
@@ -2412,7 +2405,7 @@ func (m *MemClobPriceTimePriority) resizeReduceOnlyMatchIfNecessary(
 	return satypes.BaseQuantums(maxMatchSize.Uint64())
 }
 
-func (m *MemClobPriceTimePriority) getPerpetualOrderMatchVariables(
+func (m *MemClobPriceTimePriority) getOrderMatchVariables(
 	ctx sdk.Context,
 	takerOrder types.MatchableOrder,
 ) (
@@ -2427,13 +2420,22 @@ func (m *MemClobPriceTimePriority) getPerpetualOrderMatchVariables(
 	isBuy = takerOrder.IsBuy()
 	subaccountId = takerOrder.GetSubaccountId()
 	isLiquidation = takerOrder.IsLiquidation()
+
+	isSpotClobPair, err := m.clobKeeper.IsSpotClobPair(ctx, clobPairId)
+	if err != nil {
+		panic(err)
+	}
+
+	if isSpotClobPair && isLiquidation {
+		panic("there cannot be a liquidation on a spot clob pair")
+	}
 	return
 }
 
 // If the order is a liquidation, then the remaining size is the full size of the order.
 // Else, this is a regular order and might already be partially matched, so we fetch the
 // remaining size of this order.
-func (m *MemClobPriceTimePriority) getPerpetualTakerRemainingSize(
+func (m *MemClobPriceTimePriority) getTakerRemainingSize(
 	ctx sdk.Context,
 	takerOrder types.MatchableOrder,
 ) (

@@ -49,6 +49,14 @@ type MemClobKeeper interface {
 	) (
 		positionSizeQuantums *big.Int,
 	)
+	IsPerpetualClobPair(
+		ctx sdk.Context,
+		clobPairId ClobPairId,
+	) (bool, error)
+	IsSpotClobPair(
+		ctx sdk.Context,
+		clobPairId ClobPairId,
+	) (bool, error)
 	ReplayPlaceOrder(
 		ctx sdk.Context,
 		msg *MsgPlaceOrder,
