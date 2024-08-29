@@ -282,6 +282,62 @@ func (_m *MemClobKeeper) IsLiquidatable(ctx types.Context, subaccountId subaccou
 	return r0, r1
 }
 
+// IsPerpetualClobPair provides a mock function with given fields: ctx, clobPairId
+func (_m *MemClobKeeper) IsPerpetualClobPair(ctx types.Context, clobPairId clobtypes.ClobPairId) (bool, error) {
+	ret := _m.Called(ctx, clobPairId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for IsPerpetualClobPair")
+	}
+
+	var r0 bool
+	var r1 error
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.ClobPairId) (bool, error)); ok {
+		return rf(ctx, clobPairId)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.ClobPairId) bool); ok {
+		r0 = rf(ctx, clobPairId)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.ClobPairId) error); ok {
+		r1 = rf(ctx, clobPairId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// IsSpotClobPair provides a mock function with given fields: ctx, clobPairId
+func (_m *MemClobKeeper) IsSpotClobPair(ctx types.Context, clobPairId clobtypes.ClobPairId) (bool, error) {
+	ret := _m.Called(ctx, clobPairId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for IsSpotClobPair")
+	}
+
+	var r0 bool
+	var r1 error
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.ClobPairId) (bool, error)); ok {
+		return rf(ctx, clobPairId)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, clobtypes.ClobPairId) bool); ok {
+		r0 = rf(ctx, clobPairId)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, clobtypes.ClobPairId) error); ok {
+		r1 = rf(ctx, clobPairId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Logger provides a mock function with given fields: ctx
 func (_m *MemClobKeeper) Logger(ctx types.Context) log.Logger {
 	ret := _m.Called(ctx)

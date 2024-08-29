@@ -75,6 +75,14 @@ func (f *FakeMemClobKeeper) GetIndexerEventManager() indexer_manager.IndexerEven
 	return f.indexerEventManager
 }
 
+func (f *FakeMemClobKeeper) IsSpotClobPair(ctx sdk.Context, clobPairId types.ClobPairId) (bool, error) {
+	return false, nil
+}
+
+func (f *FakeMemClobKeeper) IsPerpetualClobPair(ctx sdk.Context, clobPairId types.ClobPairId) (bool, error) {
+	return true, nil
+}
+
 func (f *FakeMemClobKeeper) ReplayPlaceOrder(
 	ctx sdk.Context,
 	msg *types.MsgPlaceOrder,
