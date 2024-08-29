@@ -1057,16 +1057,11 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 
 			collatCheckPriceSubticks := openOrder.Subticks
 
-			bigFillQuoteQuantums, err := getFillQuoteQuantums(
+			bigFillQuoteQuantums := getFillQuoteQuantums(
 				clobPair,
 				collatCheckPriceSubticks,
 				openOrder.RemainingQuantums,
 			)
-
-			// If an error is returned, this implies stateful order validation was not performed properly, therefore panic.
-			if err != nil {
-				panic(err)
-			}
 
 			bigFillAmount := openOrder.RemainingQuantums.ToBigInt()
 			addPerpetualFillAmountStart := time.Now()
@@ -1329,17 +1324,13 @@ func getFillQuoteQuantums(
 	clobPair types.ClobPair,
 	makerSubticks types.Subticks,
 	fillAmount satypes.BaseQuantums,
-) (*big.Int, error) {
+) *big.Int {
 	defer telemetry.ModuleMeasureSince(
 		types.ModuleName,
 		time.Now(),
 		metrics.GetFillQuoteQuantums,
 		metrics.Latency,
 	)
-
-	if perpetualClobMetadata := clobPair.GetPerpetualClobMetadata(); perpetualClobMetadata == nil {
-		return nil, types.ErrAssetOrdersNotImplemented
-	}
 
 	quantumConversionExponent := clobPair.QuantumConversionExponent
 
@@ -1349,5 +1340,5 @@ func getFillQuoteQuantums(
 		quantumConversionExponent,
 	)
 
-	return quoteQuantums, nil
+	return quoteQuantums
 }

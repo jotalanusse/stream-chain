@@ -847,14 +847,12 @@ func (c *CumulativePnL) AddPnLForTradeWithFilledSubticks(
 	feePpm int32,
 ) (err error) {
 	// Get the fill quote quantums using the filled subticks and filled quantums.
-	filledQuoteQuantums, err := getFillQuoteQuantums(
+	filledQuoteQuantums := getFillQuoteQuantums(
 		c.Metadata.ClobPair,
 		filledSubticks,
 		filledQuantums,
 	)
-	if err != nil {
-		return err
-	}
+
 	return c.AddPnLForTradeWithFilledQuoteQuantums(
 		subaccountId,
 		isBuy,
@@ -884,14 +882,11 @@ func (c *CumulativePnL) AddPnLForTradeWithFilledQuoteQuantums(
 	feePpm int32,
 ) (err error) {
 	// Get the fill quote quantums using the mid price subticks and filled quantums.
-	filledQuoteQuantumsUsingMidPrice, err := getFillQuoteQuantums(
+	filledQuoteQuantumsUsingMidPrice := getFillQuoteQuantums(
 		c.Metadata.ClobPair,
 		c.Metadata.MidPrice,
 		filledQuantums,
 	)
-	if err != nil {
-		return err
-	}
 
 	// Calculate PnL for the given subaccount.
 	var pnl *big.Int

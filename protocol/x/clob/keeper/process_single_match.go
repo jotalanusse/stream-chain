@@ -103,10 +103,7 @@ func (k Keeper) ProcessSingleMatch(
 	makerSubticks := makerMatchableOrder.GetOrderSubticks()
 
 	// Calculate the number of quote quantums for the match based on the maker order subticks.
-	bigFillQuoteQuantums, err := getFillQuoteQuantums(clobPair, makerSubticks, fillAmount)
-	if err != nil {
-		return false, takerUpdateResult, makerUpdateResult, nil, err
-	}
+	bigFillQuoteQuantums := getFillQuoteQuantums(clobPair, makerSubticks, fillAmount)
 
 	if bigFillQuoteQuantums.Sign() == 0 {
 		// Note: If `subticks`, `baseQuantums`, are small enough, `quantumConversionExponent` is negative,
