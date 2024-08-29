@@ -63,6 +63,21 @@ func (c *ClobPair) GetPerpetualId() (uint32, error) {
 	return perpetualClobMetadata.PerpetualId, nil
 }
 
+func (c *ClobPair) GetBaseAssetOrPerpetualId() (uint32, error) {
+	perpetualClobMetadata := c.GetPerpetualClobMetadata()
+	if perpetualClobMetadata != nil {
+		return perpetualClobMetadata.PerpetualId, nil
+	}
+
+	spotClobMetadata := c.GetSpotClobMetadata()
+	if spotClobMetadata != nil {
+		return spotClobMetadata.BaseAssetId, nil
+	}
+
+	return 0, ErrAssetOrdersNotImplemented
+
+}
+
 // MustGetPerpetualId returns the `PerpetualId` for the provided `clobPair`.
 // Will panic if `GetPerpetualId` returns an error.
 func (c *ClobPair) MustGetPerpetualId() uint32 {

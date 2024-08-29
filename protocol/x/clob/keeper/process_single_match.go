@@ -99,6 +99,14 @@ func (k Keeper) ProcessSingleMatch(
 			types.ErrFillAmountNotDivisibleByStepSize
 	}
 
+	if takerMatchableOrder.IsLiquidation() {
+		if !k.isMatchedOrderPerpetuals(ctx, matchWithOrders) {
+			panic(
+				"taker insurance fund delta validation should only be called for perpetuals",
+			)
+		}
+	}
+
 	// Define local variable relevant to retrieving QuoteQuantums based on the fill amount.
 	makerSubticks := makerMatchableOrder.GetOrderSubticks()
 
@@ -123,7 +131,7 @@ func (k Keeper) ProcessSingleMatch(
 	}
 
 	// Retrieve the associated perpetual id for the `ClobPair`.
-	perpetualId, err := clobPair.GetPerpetualId()
+	perpetualOrBaseId, err := clobPair.GetBaseAssetOrPerpetualId()
 	if err != nil {
 		return false, takerUpdateResult, makerUpdateResult, nil, err
 	}
@@ -141,7 +149,7 @@ func (k Keeper) ProcessSingleMatch(
 		// Temporarily cap maker rebates to 0 for liquidations. This is to prevent an issue where
 		// the fee collector has insufficient funds to pay the maker rebate.
 		// TODO(CLOB-812): find a longer term solution to handle maker rebates for liquidations.
-		makerFeePpm = lib.Max(makerFeePpm, 0)
+		perpetualId := perpetualOrBaseId
 		takerInsuranceFundDelta, err = k.validateMatchedLiquidation(
 			ctx,
 			takerMatchableOrder,
@@ -213,7 +221,7 @@ func (k Keeper) ProcessSingleMatch(
 	takerUpdateResult, makerUpdateResult, err = k.persistMatchedOrders(
 		ctx,
 		matchWithOrders,
-		perpetualId,
+		perpetualOrBaseId,
 		takerFeePpm,
 		makerFeePpm,
 		bigFillQuoteQuantums,
@@ -226,6 +234,7 @@ func (k Keeper) ProcessSingleMatch(
 
 	// Update subaccount total quantums liquidated and total insurance fund lost for liquidation orders.
 	if matchWithOrders.TakerOrder.IsLiquidation() {
+		perpetualId := perpetualOrBaseId
 		notionalLiquidatedQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
 			ctx,
 			perpetualId,
