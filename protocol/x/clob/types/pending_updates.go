@@ -11,17 +11,17 @@ import (
 
 // pendingUpdates is a utility struct used for storing the working updates to all Subaccounts.
 type PendingUpdates struct {
-	subaccountAssetUpdates     map[satypes.SubaccountId]map[uint32]*big.Int
-	subaccountPerpetualUpdates map[satypes.SubaccountId]map[uint32]*big.Int
-	subaccountFee              map[satypes.SubaccountId]*big.Int
+	subaccountAssetUpdates              map[satypes.SubaccountId]map[uint32]*big.Int
+	subaccountPerpetualOrBalanceUpdates map[satypes.SubaccountId]map[uint32]*big.Int
+	subaccountFee                       map[satypes.SubaccountId]*big.Int
 }
 
 // newPendingUpdates returns a new `pendingUpdates`.
 func NewPendingUpdates() *PendingUpdates {
 	return &PendingUpdates{
-		subaccountAssetUpdates:     make(map[satypes.SubaccountId]map[uint32]*big.Int),
-		subaccountPerpetualUpdates: make(map[satypes.SubaccountId]map[uint32]*big.Int),
-		subaccountFee:              make(map[satypes.SubaccountId]*big.Int),
+		subaccountAssetUpdates:              make(map[satypes.SubaccountId]map[uint32]*big.Int),
+		subaccountPerpetualOrBalanceUpdates: make(map[satypes.SubaccountId]map[uint32]*big.Int),
+		subaccountFee:                       make(map[satypes.SubaccountId]*big.Int),
 	}
 }
 
@@ -76,10 +76,10 @@ func (p *PendingUpdates) ConvertToUpdates() []satypes.Update {
 		perpetualUpdates := make(
 			[]satypes.PerpetualUpdate,
 			0,
-			len(p.subaccountPerpetualUpdates[subaccountId]),
+			len(p.subaccountPerpetualOrBalanceUpdates[subaccountId]),
 		)
 
-		for perpetualId, bigQuantumsDelta := range p.subaccountPerpetualUpdates[subaccountId] {
+		for perpetualId, bigQuantumsDelta := range p.subaccountPerpetualOrBalanceUpdates[subaccountId] {
 			perpetualUpdate := satypes.PerpetualUpdate{
 				PerpetualId:      perpetualId,
 				BigQuantumsDelta: bigQuantumsDelta,
@@ -116,8 +116,8 @@ func (p *PendingUpdates) AddPerpetualFill(
 	bigFillQuoteQuantums *big.Int,
 ) {
 	var quoteBalanceUpdate *big.Int
-	var subaccountPerpetualUpdates map[uint32]*big.Int
-	var perpetualUpdate *big.Int
+	var subaccountPerpetualOrBalanceUpdates map[uint32]*big.Int
+	var perpetualOrBalanceUpdate *big.Int
 
 	subaccountAssetUpdates, exists := p.subaccountAssetUpdates[subaccountId]
 	if !exists {
@@ -130,26 +130,55 @@ func (p *PendingUpdates) AddPerpetualFill(
 		subaccountAssetUpdates[assettypes.AssetUsdc.Id] = quoteBalanceUpdate
 	}
 
-	subaccountPerpetualUpdates, exists = p.subaccountPerpetualUpdates[subaccountId]
+	subaccountPerpetualOrBalanceUpdates, exists = p.subaccountPerpetualOrBalanceUpdates[subaccountId]
 	if !exists {
-		subaccountPerpetualUpdates = make(map[uint32]*big.Int)
-		p.subaccountPerpetualUpdates[subaccountId] = subaccountPerpetualUpdates
+		subaccountPerpetualOrBalanceUpdates = make(map[uint32]*big.Int)
+		p.subaccountPerpetualOrBalanceUpdates[subaccountId] = subaccountPerpetualOrBalanceUpdates
 	}
 
-	perpetualUpdate, exists = subaccountPerpetualUpdates[perpetualId]
+	perpetualOrBalanceUpdate, exists = subaccountPerpetualOrBalanceUpdates[perpetualId]
 	if !exists {
-		perpetualUpdate = big.NewInt(0)
-		subaccountPerpetualUpdates[perpetualId] = perpetualUpdate
+		perpetualOrBalanceUpdate = big.NewInt(0)
+		subaccountPerpetualOrBalanceUpdates[perpetualId] = perpetualOrBalanceUpdate
 	}
 
+	p.handlePerpetualOrBalanceChanges(
+		isBuy,
+		quoteBalanceUpdate,
+		perpetualOrBalanceUpdate,
+		bigFillQuoteQuantums,
+		bigFillBaseQuantums,
+	)
+
+	totalFee, exists := p.subaccountFee[subaccountId]
+	if !exists {
+		totalFee = big.NewInt(0)
+	}
+	// TODO(SCL) - figure out how to handle fees on the subaccount side here
+	bigFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, feePpm, true)
+
+	totalFee.Add(
+		totalFee,
+		bigFeeQuoteQuantums,
+	)
+	p.subaccountFee[subaccountId] = totalFee
+}
+
+func (p *PendingUpdates) handlePerpetualOrBalanceChanges(
+	isBuy bool,
+	quoteBalanceUpdate *big.Int,
+	perpetualOrBalanceUpdate *big.Int,
+	bigFillQuoteQuantums *big.Int,
+	bigFillBaseQuantums *big.Int,
+) {
 	if isBuy {
 		quoteBalanceUpdate.Sub(
 			quoteBalanceUpdate,
 			bigFillQuoteQuantums,
 		)
 
-		perpetualUpdate.Add(
-			perpetualUpdate,
+		perpetualOrBalanceUpdate.Add(
+			perpetualOrBalanceUpdate,
 			bigFillBaseQuantums,
 		)
 	} else {
@@ -158,22 +187,9 @@ func (p *PendingUpdates) AddPerpetualFill(
 			bigFillQuoteQuantums,
 		)
 
-		perpetualUpdate.Sub(
-			perpetualUpdate,
+		perpetualOrBalanceUpdate.Sub(
+			perpetualOrBalanceUpdate,
 			bigFillBaseQuantums,
 		)
 	}
-
-	totalFee, exists := p.subaccountFee[subaccountId]
-	if !exists {
-		totalFee = big.NewInt(0)
-	}
-
-	bigFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, feePpm, true)
-
-	totalFee.Add(
-		totalFee,
-		bigFeeQuoteQuantums,
-	)
-	p.subaccountFee[subaccountId] = totalFee
 }
