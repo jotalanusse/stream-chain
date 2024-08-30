@@ -596,6 +596,7 @@ func (k Keeper) internalCanUpdateSubaccounts(
 	// `WITHDRAWAL_AND_TRANSFERS_BLOCKED_AFTER_NEGATIVE_TNC_SUBACCOUNT_SEEN_BLOCKS`:
 	// - There was a negative TNC subaccount seen for any of the collateral pools of subaccounts being updated
 	// - There was a chain outage that lasted at least five minutes.
+	// TODO(SCL) - check if we also need to disallow swaps if a negative tnc subaccount was seensubaccount was seensubaccount was seensubaccount was seen
 	if updateType == types.Withdrawal || updateType == types.Transfer {
 		lastBlockNegativeTncSubaccountSeen, negativeTncSubaccountExists, err := k.getLastBlockNegativeSubaccountSeen(
 			ctx,

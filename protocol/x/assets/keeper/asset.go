@@ -210,12 +210,30 @@ func (k Keeper) GetNetCollateral(
 	// Balance is positive.
 	// TODO(DEC-581): add multi-collateral support.
 	if bigQuantums.Sign() == 1 {
-		return big.NewInt(0), types.ErrNotImplementedMulticollateral
+		return k.GetAssetCollateralValue(ctx, id, bigQuantums)
 	}
 
 	// Balance is negative.
 	// TODO(DEC-582): add margin-trading support.
 	return big.NewInt(0), types.ErrNotImplementedMargin
+}
+
+func (k Keeper) GetAssetCollateralValue(
+	ctx sdk.Context,
+	id uint32,
+	bigQuantums *big.Int,
+) (
+	bigCollateralValueQuoteQuantums *big.Int,
+	err error,
+) {
+	if id == types.AssetUsdc.Id {
+		return new(big.Int).Set(bigQuantums), nil
+	}
+
+	// TODO(SCL) - get the collateral that the asset provided after multi collateral implemented
+	// this is likely going to be at a different ltv for diff assets and would likely need to use
+	// spot clob orderbook price or spot oracle price
+	return big.NewInt(0), types.ErrNotImplementedMulticollateral
 }
 
 // GetMarginRequirements returns the initial and maintenance margin-
