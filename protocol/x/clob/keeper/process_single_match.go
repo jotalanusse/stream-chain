@@ -444,24 +444,25 @@ func (k Keeper) persistMatchedOrders(
 			fromAddr = getAccAddressFromSubaccountIdOwner(matchWithOrders.TakerOrder.GetSubaccountId().Owner)
 		} else {
 			fromAddr = getAccAddressFromSubaccountIdOwner(matchWithOrders.MakerOrder.GetSubaccountId().Owner)
-
-			if err := k.subaccountsKeeper.TransferSpotFeesToFeeCollectorModule(
-				ctx,
-				fromAddr,
-				bigTotalFeeBaseQuantums,
-				perpetualOrAssetId,
-			); err != nil {
-				return takerUpdateResult, makerUpdateResult, errorsmod.Wrapf(
-					types.ErrSubaccountFeeTransferFailed,
-					"persistMatchedOrders: subaccounts (%v, %v) updated, but fee transfer (bigFeeBaseQuantums: %v)"+
-						" to fee-collector failed. Err: %v",
-					matchWithOrders.MakerOrder.GetSubaccountId(),
-					matchWithOrders.TakerOrder.GetSubaccountId(),
-					bigTotalFeeBaseQuantums,
-					err,
-				)
-			}
 		}
+
+		if err := k.subaccountsKeeper.TransferSpotFeesToFeeCollectorModule(
+			ctx,
+			fromAddr,
+			bigTotalFeeBaseQuantums,
+			perpetualOrAssetId,
+		); err != nil {
+			return takerUpdateResult, makerUpdateResult, errorsmod.Wrapf(
+				types.ErrSubaccountFeeTransferFailed,
+				"persistMatchedOrders: subaccounts (%v, %v) updated, but fee transfer (bigFeeBaseQuantums: %v)"+
+					" to fee-collector failed. Err: %v",
+				matchWithOrders.MakerOrder.GetSubaccountId(),
+				matchWithOrders.TakerOrder.GetSubaccountId(),
+				bigTotalFeeBaseQuantums,
+				err,
+			)
+		}
+
 	}
 
 	// Update the last trade price for the perpetual.
