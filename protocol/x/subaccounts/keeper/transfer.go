@@ -209,10 +209,10 @@ func (k Keeper) WithdrawFundsFromSubaccountToAccount(
 	)
 }
 
-// TransferFeesToFeeCollectorModule translates the assetId and quantums into a sdk.Coin,
+// TransferPerpFeesToFeeCollectorModule translates the assetId and quantums into a sdk.Coin,
 // and moves the funds from subaccounts module to the `fee_collector` module account by calling
 // bankKeeper.SendCoins(). Does not change any individual subaccount state.
-func (k Keeper) TransferFeesToFeeCollectorModule(
+func (k Keeper) TransferPerpFeesToFeeCollectorModule(
 	ctx sdk.Context,
 	assetId uint32,
 	quantums *big.Int,
@@ -253,6 +253,39 @@ func (k Keeper) TransferFeesToFeeCollectorModule(
 	if err := k.bankKeeper.SendCoins(
 		ctx,
 		fromModuleAddr,
+		toModuleAddr,
+		[]sdk.Coin{coinToTransfer},
+	); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (k Keeper) TransferSpotFeesToFeeCollectorModule(
+	ctx sdk.Context,
+	from sdk.AccAddress,
+	quantums *big.Int,
+	assetId uint32,
+) error {
+	if quantums.Sign() == 0 {
+		return nil
+	}
+
+	_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
+		ctx,
+		assetId,
+		new(big.Int).Abs(quantums),
+	)
+	if err != nil {
+		return err
+	}
+
+	toModuleAddr := authtypes.NewModuleAddress(authtypes.FeeCollectorName)
+
+	if err := k.bankKeeper.SendCoins(
+		ctx,
+		from,
 		toModuleAddr,
 		[]sdk.Coin{coinToTransfer},
 	); err != nil {
