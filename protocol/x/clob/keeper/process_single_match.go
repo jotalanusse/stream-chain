@@ -307,7 +307,7 @@ func (k Keeper) ProcessSingleMatch(
 func (k Keeper) persistMatchedOrders(
 	ctx sdk.Context,
 	matchWithOrders *types.MatchWithOrders,
-	perpetualOrBaseId uint32,
+	perpetualOrAssetId uint32,
 	takerFeePpm int32,
 	makerFeePpm int32,
 	bigFillQuoteQuantums *big.Int,
@@ -317,13 +317,18 @@ func (k Keeper) persistMatchedOrders(
 	makerUpdateResult satypes.UpdateResult,
 	err error,
 ) {
+	isPerp := k.isMatchedOrderPerpetuals(ctx, matchWithOrders)
 
-	bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums := setMatchedOrderFeeAmounts(
+	bigTakerFeeQuoteQuantums,
+		bigMakerFeeQuoteQuantums,
+		bigTakerFeeBaseQuantums,
+		bigMakerFeeBaseQuantums := setMatchedOrderFeeAmounts(
 		matchWithOrders,
 		bigFillQuoteQuantums,
 		takerFeePpm,
 		makerFeePpm,
 		insuranceFundDelta,
+		isPerp,
 	)
 
 	bigTakerQuoteBalanceDelta,
@@ -334,22 +339,23 @@ func (k Keeper) persistMatchedOrders(
 		bigFillQuoteQuantums,
 	)
 
-	// TODO(SCL) - Need to handle spot fees and perpetual fees differently.
-	// spot fees will require adjustment to the FillQuantums for fees to
-	// be charged on each side of the trade. Perpetual fees will be charged
-	// on the quote balance.
 	subtractFeeAndMaybeInsuranceFundPayments(
 		matchWithOrders,
 		bigTakerFeeQuoteQuantums,
 		bigMakerFeeQuoteQuantums,
+		bigTakerFeeBaseQuantums,
+		bigMakerFeeBaseQuantums,
 		bigTakerQuoteBalanceDelta,
 		bigMakerQuoteBalanceDelta,
+		bigTakerBaseOrPerpQuantumsDelta,
+		bigMakerBaseOrPerpQuantumsDelta,
 		insuranceFundDelta,
+		isPerp,
 	)
 
 	updates, err := k.getMatchedOrderSubaccountUpdates(
 		ctx,
-		perpetualOrBaseId,
+		perpetualOrAssetId,
 		matchWithOrders,
 		bigTakerBaseOrPerpQuantumsDelta,
 		bigMakerBaseOrPerpQuantumsDelta,
@@ -398,8 +404,8 @@ func (k Keeper) persistMatchedOrders(
 		)
 	}
 
-	if k.isMatchedOrderPerpetuals(ctx, matchWithOrders) {
-		perpetualId := perpetualOrBaseId
+	if isPerp {
+		perpetualId := perpetualOrAssetId
 		if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId); err != nil {
 			return takerUpdateResult, makerUpdateResult, err
 		}
@@ -407,14 +413,15 @@ func (k Keeper) persistMatchedOrders(
 
 	// Transfer the fee amount from subacounts module to fee collector module account.
 	bigTotalFeeQuoteQuantums := new(big.Int).Add(bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums)
+	bigTotalFeeBaseQuantums := new(big.Int).Add(bigTakerFeeBaseQuantums, bigMakerFeeBaseQuantums)
 
 	// TODO(SCL) - need to handle fee transfer for spot since it isn't coming from perpetual collateral pool
 	// but rather from the subaccount itself
-	if err := k.subaccountsKeeper.TransferFeesToFeeCollectorModule(
+	if err := k.subaccountsKeeper.TransferPerpFeesToFeeCollectorModule(
 		ctx,
 		assettypes.AssetUsdc.Id,
 		bigTotalFeeQuoteQuantums,
-		perpetualOrBaseId,
+		perpetualOrAssetId,
 	); err != nil {
 		return takerUpdateResult, makerUpdateResult, errorsmod.Wrapf(
 			types.ErrSubaccountFeeTransferFailed,
@@ -427,9 +434,39 @@ func (k Keeper) persistMatchedOrders(
 		)
 	}
 
+	if !isPerp {
+		// TODO(SCL) - this assumes the spot tokens are in the subaccount, this might need to change
+		// depending on multi-collateral implementation. Regardless this might not be best way to approach
+		// as this will change the health of the subaccount. Possibly transfer first, then run subaccount checks
+		// and then update the subaccount
+		var fromAddr sdk.AccAddress
+		if matchWithOrders.TakerOrder.IsBuy() {
+			fromAddr = getAccAddressFromSubaccountIdOwner(matchWithOrders.TakerOrder.GetSubaccountId().Owner)
+		} else {
+			fromAddr = getAccAddressFromSubaccountIdOwner(matchWithOrders.MakerOrder.GetSubaccountId().Owner)
+
+			if err := k.subaccountsKeeper.TransferSpotFeesToFeeCollectorModule(
+				ctx,
+				fromAddr,
+				bigTotalFeeBaseQuantums,
+				perpetualOrAssetId,
+			); err != nil {
+				return takerUpdateResult, makerUpdateResult, errorsmod.Wrapf(
+					types.ErrSubaccountFeeTransferFailed,
+					"persistMatchedOrders: subaccounts (%v, %v) updated, but fee transfer (bigFeeBaseQuantums: %v)"+
+						" to fee-collector failed. Err: %v",
+					matchWithOrders.MakerOrder.GetSubaccountId(),
+					matchWithOrders.TakerOrder.GetSubaccountId(),
+					bigTotalFeeBaseQuantums,
+					err,
+				)
+			}
+		}
+	}
+
 	// Update the last trade price for the perpetual.
-	if k.isMatchedOrderPerpetuals(ctx, matchWithOrders) {
-		perpetualId := perpetualOrBaseId
+	if isPerp {
+		perpetualId := perpetualOrAssetId
 		k.SetTradePricesForPerpetual(ctx, perpetualId, matchWithOrders.MakerOrder.GetOrderSubticks())
 	}
 
@@ -454,11 +491,26 @@ func (k Keeper) persistMatchedOrders(
 			insuranceFundDelta,
 			matchWithOrders.TakerOrder.IsLiquidation(),
 			false,
-			perpetualOrBaseId,
+			perpetualOrAssetId,
 		),
 	)
 
 	return takerUpdateResult, makerUpdateResult, nil
+}
+
+func getAccAddressFromSubaccountIdOwner(
+	subaccountIdOwner string,
+) sdk.AccAddress {
+	fromAddr, err := sdk.AccAddressFromBech32(subaccountIdOwner)
+	if err != nil {
+		panic(
+			fmt.Sprintf(
+				"getAccAddressFromSubaccountIdOwner: failed to convert subaccountIdOwner %s to AccAddress",
+				subaccountIdOwner,
+			),
+		)
+	}
+	return fromAddr
 }
 
 func (k Keeper) isMatchedOrderPerpetuals(
@@ -508,13 +560,27 @@ func subtractFeeAndMaybeInsuranceFundPayments(
 	matchWithOrders *types.MatchWithOrders,
 	bigTakerFeeQuoteQuantums *big.Int,
 	bigMakerFeeQuoteQuantums *big.Int,
+	bigTakerFeeBaseQuantums *big.Int,
+	bigMakerFeeBaseQuantums *big.Int,
 	bigTakerQuoteBalanceDelta *big.Int,
 	bigMakerQuoteBalanceDelta *big.Int,
+	bigTakerBaseOrPerpQuantumsDelta *big.Int,
+	bigMakerBaseOrPerpQuantumsDelta *big.Int,
 	insuranceFundDelta *big.Int,
+	isPerp bool,
 ) {
-	// Subtract quote balance delta with fees paid.
-	bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, bigTakerFeeQuoteQuantums)
-	bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, bigMakerFeeQuoteQuantums)
+	if isPerp {
+		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, bigTakerFeeQuoteQuantums)
+		bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, bigMakerFeeQuoteQuantums)
+	} else {
+		if matchWithOrders.TakerOrder.IsBuy() {
+			bigTakerBaseOrPerpQuantumsDelta.Sub(bigTakerBaseOrPerpQuantumsDelta, bigTakerFeeBaseQuantums)
+			bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, bigMakerFeeQuoteQuantums)
+		} else {
+			bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, bigTakerFeeQuoteQuantums)
+			bigMakerBaseOrPerpQuantumsDelta.Sub(bigMakerBaseOrPerpQuantumsDelta, bigMakerFeeBaseQuantums)
+		}
+	}
 
 	// Subtract quote balance delta with insurance fund payments.
 	if matchWithOrders.TakerOrder.IsLiquidation() {
@@ -642,20 +708,6 @@ func (k Keeper) getSpotSubaccountUpdates(
 	return updates
 }
 
-func (k Keeper) getBaseIdFromMatchableOrder(
-	ctx sdk.Context,
-	matchWithOrders *types.MatchWithOrders,
-) uint32 {
-	clobPairId := matchWithOrders.MakerOrder.GetClobPairId()
-	clobPair, found := k.GetClobPair(ctx, clobPairId)
-	if !found {
-		panic(fmt.Sprintf("clob pair %d not found", clobPairId))
-	}
-
-	clobMetadata := clobPair.GetSpotClobMetadata()
-	return clobMetadata.BaseAssetId
-}
-
 func (k Keeper) setOrderFillAmountsAndPruning(
 	ctx sdk.Context,
 	order types.Order,
@@ -742,15 +794,36 @@ func setMatchedOrderFeeAmounts(
 	takerFeePpm int32,
 	makerFeePpm int32,
 	insuranceFundDelta *big.Int,
+	isPerp bool,
 ) (
 	bigTakerFeeQuoteQuantums *big.Int,
 	bigMakerFeeQuoteQuantums *big.Int,
+	bigTakerFeeBaseQuantums *big.Int,
+	bigMakerFeeBaseQuantums *big.Int,
 ) {
 	isTakerLiquidation := matchWithOrders.TakerOrder.IsLiquidation()
+	bigFillBaseQuantums := matchWithOrders.FillAmount.ToBigInt()
 
-	// Taker fees and maker fees/rebates are rounded towards positive infinity.
-	bigTakerFeeQuoteQuantums = lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
-	bigMakerFeeQuoteQuantums = lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
+	if isPerp {
+		// Perpetual: Fees are charged on the quote quantums.
+		bigTakerFeeQuoteQuantums = lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
+		bigMakerFeeQuoteQuantums = lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
+		bigTakerFeeBaseQuantums = big.NewInt(0)
+		bigMakerFeeBaseQuantums = big.NewInt(0)
+	} else {
+		// Spot: Buyer fee is on base quantums, seller fee is on quote quantums.
+		if matchWithOrders.TakerOrder.IsBuy() {
+			bigTakerFeeBaseQuantums = lib.BigIntMulSignedPpm(bigFillBaseQuantums, takerFeePpm, true)
+			bigMakerFeeQuoteQuantums = lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
+			bigTakerFeeQuoteQuantums = big.NewInt(0)
+			bigMakerFeeBaseQuantums = big.NewInt(0)
+		} else {
+			bigTakerFeeQuoteQuantums = lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
+			bigMakerFeeBaseQuantums = lib.BigIntMulSignedPpm(bigFillBaseQuantums, makerFeePpm, true)
+			bigTakerFeeBaseQuantums = big.NewInt(0)
+			bigMakerFeeQuoteQuantums = big.NewInt(0)
+		}
+	}
 
 	// If the taker is a liquidation order, it should never pay fees.
 	if isTakerLiquidation && bigTakerFeeQuoteQuantums.Sign() != 0 {
@@ -762,15 +835,27 @@ func setMatchedOrderFeeAmounts(
 			bigTakerFeeQuoteQuantums,
 		))
 	}
+
 	matchWithOrders.MakerFee = bigMakerFeeQuoteQuantums.Int64()
-	// Liquidation orders pay the liquidation fee instead of the standard taker fee
+
 	if matchWithOrders.TakerOrder.IsLiquidation() {
+		// Liquidation orders pay the liquidation fee instead of the standard taker fee
 		matchWithOrders.TakerFee = insuranceFundDelta.Int64()
 	} else {
-		matchWithOrders.TakerFee = bigTakerFeeQuoteQuantums.Int64()
+		if isPerp {
+			matchWithOrders.TakerFee = bigTakerFeeQuoteQuantums.Int64()
+		} else {
+			if matchWithOrders.TakerOrder.IsBuy() {
+				matchWithOrders.TakerFee = bigTakerFeeBaseQuantums.Int64()
+				matchWithOrders.MakerFee = bigMakerFeeQuoteQuantums.Int64()
+			} else {
+				matchWithOrders.TakerFee = bigTakerFeeQuoteQuantums.Int64()
+				matchWithOrders.MakerFee = bigMakerFeeBaseQuantums.Int64()
+			}
+		}
 	}
 
-	return bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums
+	return bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums, bigTakerFeeBaseQuantums, bigMakerFeeBaseQuantums
 }
 
 // getUpdatedOrderFillAmount accepts an order's current total fill amount, total base quantums, and a new fill amount,
