@@ -1343,7 +1343,7 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			err := keeper.TransferFeesToFeeCollectorModule(
+			err := keeper.TransferPerpFeesToFeeCollectorModule(
 				ctx,
 				tc.asset.Id,
 				tc.quantums,

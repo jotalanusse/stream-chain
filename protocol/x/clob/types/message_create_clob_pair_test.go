@@ -1,8 +1,9 @@
 package types_test
 
 import (
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"testing"
+
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/stretchr/testify/require"
@@ -15,7 +16,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 		expectedErr string
 	}{
 		{
-			desc: "Invalid Metadata (SpotClobMetadata)",
+			desc: "valid Metadata (SpotClobMetadata)",
 			msg: types.MsgCreateClobPair{
 				Authority: lib.GovModuleAddress.String(),
 				ClobPair: types.ClobPair{
@@ -25,7 +26,7 @@ func TestMsgCreateClobPair_ValidateBasic(t *testing.T) {
 					Status:           types.ClobPair_STATUS_ACTIVE,
 				},
 			},
-			expectedErr: "is not a perpetual CLOB",
+			expectedErr: "",
 		},
 		{
 			desc: "Empty authority",

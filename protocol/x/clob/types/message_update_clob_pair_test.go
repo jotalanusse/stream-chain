@@ -21,7 +21,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 		expectedErr string
 	}{
 		{
-			desc:      "Invalid Metadata (SpotClobMetadata)",
+			desc:      "valid Metadata (SpotClobMetadata)",
 			authority: validAuthority,
 			clobPair: types.ClobPair{
 				Metadata:         &types.ClobPair_SpotClobMetadata{},
@@ -29,7 +29,7 @@ func TestMsgUpdateClobPair_ValidateBasic(t *testing.T) {
 				SubticksPerTick:  1,
 				Status:           types.ClobPair_STATUS_ACTIVE,
 			},
-			expectedErr: "is not a perpetual CLOB",
+			expectedErr: "",
 		},
 		{
 			desc:      "UNSPECIFIED Status",
