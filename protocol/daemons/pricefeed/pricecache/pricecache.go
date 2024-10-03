@@ -18,6 +18,15 @@ type PriceCache struct {
 	mu            sync.RWMutex
 }
 
+func NewPriceCache() *PriceCache {
+	return &PriceCache{
+		priceUpdates:  PriceUpdates{},
+		height:        0,
+		round:         0,
+		consAddresses: make(map[string]struct{}),
+	}
+}
+
 type PriceUpdate struct {
 	MarketId  uint32
 	SpotPrice *big.Int
@@ -36,6 +45,7 @@ func (pc *PriceCache) SetPriceUpdates(
 	pc.priceUpdates = updates
 	pc.height = ctx.BlockHeight()
 	pc.round = round
+	pc.consAddresses = make(map[string]struct{})
 }
 
 func (pc *PriceCache) SetConsAddresses(
