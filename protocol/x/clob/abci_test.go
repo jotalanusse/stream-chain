@@ -1086,7 +1086,6 @@ func TestPrepareCheckState_WithProcessProposerMatchesEventsWithBadBlockHeight(t 
 		clob.PrepareCheckState(
 			ks.Ctx.WithBlockHeight(int64(blockHeight+1)),
 			ks.ClobKeeper,
-			&cometabci.RequestCommit{},
 		)
 	})
 }
@@ -1113,7 +1112,6 @@ func TestCommitBlocker_WithProcessProposerMatchesEventsWithBadBlockHeight(t *tes
 		clob.PrepareCheckState(
 			ks.Ctx.WithBlockHeight(int64(blockHeight+1)),
 			ks.ClobKeeper,
-			&cometabci.RequestCommit{},
 		)
 	})
 }
@@ -1242,7 +1240,6 @@ func TestPrepareCheckState(t *testing.T) {
 				BlockHeight: 4,
 			},
 			placedOperations: []types.Operation{},
-			extendCommitInfo: &cometabci.RequestCommit{},
 
 			expectedOperationsQueue: []types.InternalOperation{},
 			expectedBids:            []memclob.OrderWithRemainingSize{},
@@ -1261,7 +1258,6 @@ func TestPrepareCheckState(t *testing.T) {
 				BlockHeight: 4,
 			},
 			placedOperations: []types.Operation{},
-			extendCommitInfo: &cometabci.RequestCommit{},
 
 			expectedOperationsQueue: []types.InternalOperation{},
 			expectedBids:            []memclob.OrderWithRemainingSize{},
@@ -1297,7 +1293,6 @@ func TestPrepareCheckState(t *testing.T) {
 					constants.Order_Alice_Num0_Id0_Clob0_Buy10_Price10_GTB16.MustGetOrder(),
 				),
 			},
-			extendCommitInfo: &cometabci.RequestCommit{},
 
 			expectedOperationsQueue: []types.InternalOperation{
 				types.NewShortTermOrderPlacementInternalOperation(
@@ -1485,7 +1480,6 @@ func TestPrepareCheckState(t *testing.T) {
 			clob.PrepareCheckState(
 				ctx,
 				ks.ClobKeeper,
-				tc.extendCommitInfo,
 			)
 
 			// Verify test expectations.

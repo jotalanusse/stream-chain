@@ -703,10 +703,10 @@ github.com/Shopify/toxiproxy/v2 v2.5.0 h1:i4LPT+qrSlKNtQf5QliVjdP08GyAH8+BUIc9gT
 github.com/Shopify/toxiproxy/v2 v2.5.0/go.mod h1:yhM2epWtAmel9CB8r2+L+PCmhH6yH2pITaPAo7jxJl0=
 github.com/StackExchange/wmi v1.2.1 h1:VIkavFPXSjcnS+O8yTq7NI32k0R5Aj+v39y29VYDOSA=
 github.com/StackExchange/wmi v1.2.1/go.mod h1:rcmrprowKIVzvc+NUiLncP2uuArMWLCbu9SBzvHz7e8=
-github.com/StreamFinance-Protocol/cometbft v0.0.0-20241001122724-c1b88a873143 h1:Jpjv3XctUq80Zj8t3u62vLmpE31oGCWCrJT0ZmmS9zA=
-github.com/StreamFinance-Protocol/cometbft v0.0.0-20241001122724-c1b88a873143/go.mod h1:ifUDQWzuacyPvPOEcaREj1zKPU38kkzpc7ExPqBeRIs=
-github.com/StreamFinance-Protocol/cosmos-sdk v0.50.6-0.20241001125801-96327035f414 h1:qCBiUd3eTcnlghSlJs7G9Wx9Ddn/pT3v0+2Ajm5Wl1w=
-github.com/StreamFinance-Protocol/cosmos-sdk v0.50.6-0.20241001125801-96327035f414/go.mod h1:poHZaddYkgVIZzaiqYGQlmyBsuSjxS+/w4OH8Pafnio=
+github.com/StreamFinance-Protocol/cometbft v0.0.0-20240814171224-766008d3a774 h1:xMZ2R8Gfwyxc09+9rJPynYPzwPebayTVrPo8ReaoJz8=
+github.com/StreamFinance-Protocol/cometbft v0.0.0-20240814171224-766008d3a774/go.mod h1:ifUDQWzuacyPvPOEcaREj1zKPU38kkzpc7ExPqBeRIs=
+github.com/StreamFinance-Protocol/cosmos-sdk v0.50.6-0.20241003130646-82a7bac5f499 h1:WCocYTcSBeXLVJOaHckDaiq2b8YMEFZo0csrLfaxNwM=
+github.com/StreamFinance-Protocol/cosmos-sdk v0.50.6-0.20241003130646-82a7bac5f499/go.mod h1:yKd8Ul9tZLTyye90wbnDZ3KdG6u5qEs3K8j8Y5BWOZI=
 github.com/StreamFinance-Protocol/ibc-go/v8 v8.0.0-20240827003118-793a5001db90 h1:mN8k/wgr4zEcyLCVmpPcbDioZwo0+1qiE3syoEUsaWA=
 github.com/StreamFinance-Protocol/ibc-go/v8 v8.0.0-20240827003118-793a5001db90/go.mod h1:6KbkClvR2CQZADKFpF3dpVcyBiy9vLz5s5kbvfaK0Yk=
 github.com/VividCortex/gohistogram v1.0.0 h1:6+hBz+qvs0JOrrNhhmR7lFxo5sINxBCGXrdtl/UvroE=
