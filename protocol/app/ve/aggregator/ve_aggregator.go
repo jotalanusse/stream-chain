@@ -77,6 +77,7 @@ func (ma *MedianAggregator) AggregateDaemonVEIntoFinalPrices(
 
 	for _, vote := range votes {
 		consAddr := vote.ConsAddress.String()
+		fmt.Println("Adding vote to aggregator", consAddr, vote.DaemonVoteExtension)
 		voteExtension := vote.DaemonVoteExtension
 		ma.addVoteToAggregator(ctx, consAddr, voteExtension)
 	}
@@ -161,6 +162,8 @@ func GetDaemonVotesFromBlock(
 		return nil, fmt.Errorf("error fetching votes: %w", err)
 	}
 
+	fmt.Println("Got votes from block, amount of votes: ", len(votes))
+
 	return votes, nil
 }
 
@@ -189,7 +192,11 @@ func FetchVotesFromExtCommitInfo(
 ) ([]Vote, error) {
 	votes := make([]Vote, len(extCommitInfo.Votes))
 	for i, voteInfo := range extCommitInfo.Votes {
+		fmt.Println("About to decode", voteInfo.GetValidator().Address)
+		fmt.Println("which has a vote extension of:", voteInfo.VoteExtension)
 		voteExtension, err := veCodec.Decode(voteInfo.VoteExtension)
+		fmt.Println("decoded vote extension, with prices:", voteExtension.Prices, "and error:", err)
+
 		if err != nil {
 			return nil, fmt.Errorf("error decoding vote-extension: %w", err)
 		}
@@ -199,6 +206,7 @@ func FetchVotesFromExtCommitInfo(
 			DaemonVoteExtension: voteExtension,
 		}
 	}
+	fmt.Println("FINAL VOTES:", votes)
 
 	return votes, nil
 }

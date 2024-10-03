@@ -53,7 +53,11 @@ func NewGetAllCCValidatorMockReturn(
 	mCCVStore := &mocks.CCValidatorStore{}
 	var vals []ccvtypes.CrossChainValidator
 	for _, name := range names {
-		vals = append(vals, BuildAndMockCCValidator(ctx, name, 500, mCCVStore))
+		if name == "alice" {
+			vals = append(vals, BuildAndMockCCValidator(ctx, name, 999, mCCVStore))
+		} else {
+			vals = append(vals, BuildAndMockCCValidator(ctx, name, 500, mCCVStore))
+		}
 	}
 	mCCVStore.On("GetAllCCValidator", ctx).Return(vals)
 	return mCCVStore

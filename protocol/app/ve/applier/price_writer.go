@@ -1,6 +1,8 @@
 package price_writer
 
 import (
+	"fmt"
+
 	"cosmossdk.io/log"
 
 	aggregator "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/aggregator"
@@ -89,6 +91,8 @@ func (pa *PriceApplier) getPricesAndAggregateFromVE(
 	ctx sdk.Context,
 	request *abci.RequestFinalizeBlock,
 ) (map[string]voteweighted.AggregatorPricePair, error) {
+	fmt.Println("-----IN GET PRICES AND AGGREGATE FROM VE-----")
+
 	votes, err := aggregator.GetDaemonVotesFromBlock(
 		request.Txs,
 		pa.voteExtensionCodec,

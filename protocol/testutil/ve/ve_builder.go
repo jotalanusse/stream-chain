@@ -132,6 +132,21 @@ func CreateSignedExtendedVoteInfo(veInfo SignedVEInfo) (cometabci.ExtendedVoteIn
 	return voteInfo, nil
 }
 
+func CreateNonSignedAbsentExtendedVoteInfo(
+	veInfo SignedVEInfo,
+) (cometabci.ExtendedVoteInfo, error) {
+	voteInfo := cometabci.ExtendedVoteInfo{
+		Validator: cometabci.Validator{
+			Address: veInfo.Val,
+			Power:   veInfo.Power,
+		},
+		VoteExtension: nil,
+		BlockIdFlag:   cometproto.BlockIDFlagAbsent,
+	}
+
+	return voteInfo, nil
+}
+
 // CreateVoteExtensionBytes creates a vote extension bytes with the given prices, timestamp and height.
 func CreateVoteExtensionBytes(
 	prices []vetypes.PricePair,

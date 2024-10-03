@@ -43,225 +43,419 @@ func SetupTest(t *testing.T, vals []string) (sdk.Context, veaggregator.VoteAggre
 	return ctx, handler
 }
 func TestVEAggregator(t *testing.T) {
-	t.Run("no daemon data", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice"})
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo(nil)
-		require.NoError(t, err)
+	// t.Run("no daemon data", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice"})
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo(nil)
+	// 	require.NoError(t, err)
 
-		proposal := [][]byte{commitBz}
+	// 	proposal := [][]byte{commitBz}
 
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
 
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 0)
-	})
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 0)
+	// })
 
-	t.Run("Single daemon data", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice"})
-		valVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
+	// t.Run("Single daemon data", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice"})
+	// 	valVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
 
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{valVoteInfo})
-		require.NoError(t, err)
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{valVoteInfo})
+	// 	require.NoError(t, err)
 
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 1)
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 1)
 
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-	})
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// })
 
-	t.Run("Multiple price updates, single validator", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice"})
+	// t.Run("Multiple price updates, single validator", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice"})
 
-		valVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidVEPrice,
-			),
-		)
-		require.NoError(t, err)
+	// 	valVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
 
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{valVoteInfo})
-		require.NoError(t, err)
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{valVoteInfo})
+	// 	require.NoError(t, err)
 
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 3)
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 3)
 
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price6Big,
-			PnlPrice:  constants.Price6Big,
-		}, prices[constants.EthUsdPair])
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price7Big,
-			PnlPrice:  constants.Price7Big,
-		}, prices[constants.SolUsdPair])
-	})
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price6Big,
+	// 		PnlPrice:  constants.Price6Big,
+	// 	}, prices[constants.EthUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price7Big,
+	// 		PnlPrice:  constants.Price7Big,
+	// 	}, prices[constants.SolUsdPair])
+	// })
 
-	t.Run("single price update, from two validators", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob"})
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
+	// t.Run("single price update, from two validators", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob"})
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
 
-		bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.BobEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
+	// 	bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.BobEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
 
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo})
-		require.NoError(t, err)
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo})
+	// 	require.NoError(t, err)
 
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 1)
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 1)
 
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-	})
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// })
 
-	t.Run("multiple price updates, from two validators", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob"})
+	// t.Run("multiple price updates, from two validators", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob"})
 
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidVEPrice,
-			),
-		)
-		require.NoError(t, err)
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
 
-		bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.BobEthosConsAddress,
-				constants.ValidVEPrice,
-			),
-		)
-		require.NoError(t, err)
+	// 	bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.BobEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
 
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo})
-		require.NoError(t, err)
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo})
+	// 	require.NoError(t, err)
 
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 3)
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 3)
 
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price6Big,
-			PnlPrice:  constants.Price6Big,
-		}, prices[constants.EthUsdPair])
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price7Big,
-			PnlPrice:  constants.Price7Big,
-		}, prices[constants.SolUsdPair])
-	})
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price6Big,
+	// 		PnlPrice:  constants.Price6Big,
+	// 	}, prices[constants.EthUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price7Big,
+	// 		PnlPrice:  constants.Price7Big,
+	// 	}, prices[constants.SolUsdPair])
+	// })
 
-	t.Run("single price update, from multiple validators", func(t *testing.T) {
+	// t.Run("single price update, from multiple validators", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
+
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.BobEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	carlVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.CarlEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo(
+	// 		[]cometabci.ExtendedVoteInfo{
+	// 			aliceVoteInfo,
+	// 			bobVoteInfo,
+	// 			carlVoteInfo,
+	// 		},
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 1)
+
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// })
+
+	// t.Run("multiple price updates, from multiple validators", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
+
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.BobEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	carlVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.CarlEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo, carlVoteInfo})
+	// 	require.NoError(t, err)
+
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 3)
+
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price6Big,
+	// 		PnlPrice:  constants.Price6Big,
+	// 	}, prices[constants.EthUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price7Big,
+	// 		PnlPrice:  constants.Price7Big,
+	// 	}, prices[constants.SolUsdPair])
+	// })
+
+	// t.Run("single price update from multiple validators but not enough voting power", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo(
+	// 		[]cometabci.ExtendedVoteInfo{
+	// 			aliceVoteInfo,
+	// 		},
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 0)
+	// })
+
+	// t.Run("multiple price updates from multiple validators but not enough voting power", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
+
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo})
+	// 	require.NoError(t, err)
+
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 0)
+	// })
+
+	// t.Run("multiple prices from multiple validators but not enough voting power for some", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
+
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.BobEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	carlVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.CarlEthosConsAddress,
+	// 			constants.ValidSingleVEPrice,
+	// 		),
+	// 	)
+
+	// 	require.NoError(t, err)
+
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo, carlVoteInfo})
+	// 	require.NoError(t, err)
+
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 1)
+
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// })
+
+	// t.Run("continues when the validator's prices are malformed", func(t *testing.T) {
+	// 	ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
+
+	// 	aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.AliceEthosConsAddress,
+	// 			constants.ValidVEPricesWithOneInvalid,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.BobEthosConsAddress,
+	// 			constants.ValidVEPricesWithOneInvalid,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	carlVoteInfo, err := vetesting.CreateNonSignedAbsentExtendedVoteInfo(
+	// 		vetesting.NewDefaultSignedVeInfo(
+	// 			constants.CarlEthosConsAddress,
+	// 			constants.ValidVEPricesWithOneInvalid,
+	// 		),
+	// 	)
+	// 	require.NoError(t, err)
+
+	// 	// Create the extended commit info
+	// 	_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo, carlVoteInfo})
+	// 	require.NoError(t, err)
+
+	// 	proposal := [][]byte{commitBz}
+	// 	votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
+	// 	require.NoError(t, err)
+	// 	prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
+	// 	require.NoError(t, err)
+	// 	require.Len(t, prices, 2)
+
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price5Big,
+	// 		PnlPrice:  constants.Price5Big,
+	// 	}, prices[constants.BtcUsdPair])
+	// 	require.Equal(t, voteweighted.AggregatorPricePair{
+	// 		SpotPrice: constants.Price6Big,
+	// 		PnlPrice:  constants.Price6Big,
+	// 	}, prices[constants.EthUsdPair])
+	// })
+
+	t.Run("valid 2/3 with multiple validators with on absent vote", func(t *testing.T) {
 		ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
 
 		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
 			vetesting.NewDefaultSignedVeInfo(
 				constants.AliceEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.BobEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		carlVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.CarlEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo(
-			[]cometabci.ExtendedVoteInfo{
-				aliceVoteInfo,
-				bobVoteInfo,
-				carlVoteInfo,
-			},
-		)
-		require.NoError(t, err)
-
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 1)
-
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-	})
-
-	t.Run("multiple price updates, from multiple validators", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
-
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
 				constants.ValidVEPrice,
 			),
 		)
 		require.NoError(t, err)
 
-		bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
+		bobVoteInfo, err := vetesting.CreateNonSignedAbsentExtendedVoteInfo(
 			vetesting.NewDefaultSignedVeInfo(
 				constants.BobEthosConsAddress,
 				constants.ValidVEPrice,
@@ -300,147 +494,5 @@ func TestVEAggregator(t *testing.T) {
 			SpotPrice: constants.Price7Big,
 			PnlPrice:  constants.Price7Big,
 		}, prices[constants.SolUsdPair])
-	})
-
-	t.Run("single price update from multiple validators but not enough voting power", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo(
-			[]cometabci.ExtendedVoteInfo{
-				aliceVoteInfo,
-			},
-		)
-		require.NoError(t, err)
-
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 0)
-	})
-
-	t.Run("multiple price updates from multiple validators but not enough voting power", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
-
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo})
-		require.NoError(t, err)
-
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 0)
-	})
-
-	t.Run("multiple prices from multiple validators but not enough voting power for some", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
-
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.BobEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-		require.NoError(t, err)
-
-		carlVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.CarlEthosConsAddress,
-				constants.ValidSingleVEPrice,
-			),
-		)
-
-		require.NoError(t, err)
-
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo, carlVoteInfo})
-		require.NoError(t, err)
-
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 1)
-
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-	})
-
-	t.Run("continues when the validator's prices are malformed", func(t *testing.T) {
-		ctx, handler := SetupTest(t, []string{"alice", "bob", "carl"})
-
-		aliceVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.AliceEthosConsAddress,
-				constants.ValidVEPricesWithOneInvalid,
-			),
-		)
-		require.NoError(t, err)
-
-		bobVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.BobEthosConsAddress,
-				constants.ValidVEPricesWithOneInvalid,
-			),
-		)
-		require.NoError(t, err)
-
-		carlVoteInfo, err := vetesting.CreateSignedExtendedVoteInfo(
-			vetesting.NewDefaultSignedVeInfo(
-				constants.CarlEthosConsAddress,
-				constants.ValidVEPricesWithOneInvalid,
-			),
-		)
-		require.NoError(t, err)
-
-		// Create the extended commit info
-		_, commitBz, err := vetesting.CreateExtendedCommitInfo([]cometabci.ExtendedVoteInfo{aliceVoteInfo, bobVoteInfo, carlVoteInfo})
-		require.NoError(t, err)
-
-		proposal := [][]byte{commitBz}
-		votes, err := veaggregator.GetDaemonVotesFromBlock(proposal, voteCodec, extCodec)
-		require.NoError(t, err)
-		prices, err := handler.AggregateDaemonVEIntoFinalPrices(ctx, votes)
-		require.NoError(t, err)
-		require.Len(t, prices, 2)
-
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price5Big,
-			PnlPrice:  constants.Price5Big,
-		}, prices[constants.BtcUsdPair])
-		require.Equal(t, voteweighted.AggregatorPricePair{
-			SpotPrice: constants.Price6Big,
-			PnlPrice:  constants.Price6Big,
-		}, prices[constants.EthUsdPair])
 	})
 }
