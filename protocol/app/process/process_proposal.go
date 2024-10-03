@@ -5,7 +5,7 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve"
-	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
+	votescache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/votescache"
 
 	codec "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
 	veutils "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/utils"
@@ -45,7 +45,7 @@ func ProcessProposalHandler(
 	extCodec codec.ExtendedCommitCodec,
 	veCodec codec.VoteExtensionCodec,
 	pricesApplier ProcessProposalPriceApplier,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	validateVoteExtensionFn ve.ValidateVEConsensusInfoFn,
 ) sdk.ProcessProposalHandler {
 	return func(ctx sdk.Context, request *abci.RequestProcessProposal) (*abci.ResponseProcessProposal, error) {
@@ -131,7 +131,7 @@ func DecodeValidateAndCacheVE(
 	extCommitBz []byte,
 	validateVoteExtensionFn ve.ValidateVEConsensusInfoFn,
 	pricesKeeper ve.PreBlockExecPricesKeeper,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	voteCodec codec.VoteExtensionCodec,
 	extCodec codec.ExtendedCommitCodec,
 ) error {

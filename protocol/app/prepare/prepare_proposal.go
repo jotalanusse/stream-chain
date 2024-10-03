@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
+	votescache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/votescache"
+
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -60,7 +61,7 @@ func PrepareProposalHandler(
 	pricesKeeper ve.PreBlockExecPricesKeeper,
 	veCodec codec.VoteExtensionCodec,
 	extCommitCodec codec.ExtendedCommitCodec,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	validateVoteExtensionFn func(ctx sdk.Context, extCommitInfo abci.ExtendedCommitInfo) error,
 ) sdk.PrepareProposalHandler {
 	return func(ctx sdk.Context, request *abci.RequestPrepareProposal) (resp *abci.ResponsePrepareProposal, err error) {
@@ -185,7 +186,7 @@ func SetVE(
 	pricesKeeper ve.PreBlockExecPricesKeeper,
 	voteCodec codec.VoteExtensionCodec,
 	extCodec codec.ExtendedCommitCodec,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	validateVoteExtensionFn func(ctx sdk.Context, extCommitInfo abci.ExtendedCommitInfo) error,
 ) error {
 	if !veutils.AreVEEnabled(txSetterUtils.Ctx) {

@@ -6,7 +6,9 @@ import (
 	aggregator "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/aggregator"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
 	voteweighted "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/math"
-	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
+	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/pricecache"
+	votescache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/votescache"
+
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,7 +23,9 @@ type PriceApplier struct {
 	pricesKeeper PriceApplierPricesKeeper
 
 	// finalPriceCache is the cache that stores the final prices
-	veCache *pricecache.PriceCache
+	finalPriceCache *pricecache.PriceCache
+
+	veCache *votescache.VotesCache
 
 	// logger
 	logger log.Logger
@@ -35,7 +39,8 @@ func NewPriceApplier(
 	logger log.Logger,
 	voteAggregator aggregator.VoteAggregator,
 	pricesKeeper PriceApplierPricesKeeper,
-	veCache *pricecache.PriceCache,
+	finalPriceCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	voteExtensionCodec codec.VoteExtensionCodec,
 	extendedCommitCodec codec.ExtendedCommitCodec,
 ) *PriceApplier {
@@ -43,6 +48,7 @@ func NewPriceApplier(
 		voteAggregator:      voteAggregator,
 		pricesKeeper:        pricesKeeper,
 		logger:              logger,
+		finalPriceCache:     finalPriceCache,
 		veCache:             veCache,
 		voteExtensionCodec:  voteExtensionCodec,
 		extendedCommitCodec: extendedCommitCodec,
@@ -70,7 +76,7 @@ func (pa *PriceApplier) writePricesToStore(
 	request *abci.RequestFinalizeBlock,
 	writeToCache bool,
 ) error {
-	if pa.veCache.HasValidPrices(ctx.BlockHeight(), request.DecidedLastCommit.Round) {
+	if pa.finalPriceCache.HasValidPrices(ctx.BlockHeight(), request.DecidedLastCommit.Round) {
 		err := pa.writePricesToStoreFromCache(ctx)
 		return err
 	} else {
@@ -121,11 +127,11 @@ func (pa *PriceApplier) getPricesAndAggregateFromVE(
 }
 
 func (pa *PriceApplier) GetCachedPrices() pricecache.PriceUpdates {
-	return pa.veCache.GetPriceUpdates()
+	return pa.finalPriceCache.GetPriceUpdates()
 }
 
 func (pa *PriceApplier) writePricesToStoreFromCache(ctx sdk.Context) error {
-	pricesFromCache := pa.veCache.GetPriceUpdates()
+	pricesFromCache := pa.finalPriceCache.GetPriceUpdates()
 	for _, price := range pricesFromCache {
 		if price.SpotPrice != nil && price.PnlPrice != nil {
 			marketPriceUpdate := &pricestypes.MarketPriceUpdate{
@@ -245,7 +251,7 @@ func (pa *PriceApplier) WritePricesToStoreAndMaybeCache(
 	}
 
 	if writeToCache {
-		pa.veCache.SetPriceUpdates(ctx, finalPriceUpdates, round)
+		pa.finalPriceCache.SetPriceUpdates(ctx, finalPriceUpdates, round)
 	}
 
 	return nil
@@ -401,7 +407,7 @@ func (pa *PriceApplier) CacheSeenExtendedVotes(
 		seenValidators[vote.ConsAddress.String()] = struct{}{}
 	}
 
-	pa.veCache.SetConsAddresses(ctx.BlockHeight(), req.ExtendedCommitInfo.Round, seenValidators)
+	pa.veCache.SetSeenVotesInCache(ctx, seenValidators)
 
 	return nil
 }

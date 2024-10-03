@@ -10,7 +10,7 @@ import (
 	codec "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
 	vetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/types"
 	veutils "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/utils"
-	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
+	votescache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/votescache"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -44,7 +44,7 @@ func CleanAndValidateExtCommitInfo(
 	extCommitInfo cometabci.ExtendedCommitInfo,
 	veCodec codec.VoteExtensionCodec,
 	pricesKeeper PreBlockExecPricesKeeper,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	validateVEConsensusInfo ValidateVEConsensusInfoFn,
 ) (cometabci.ExtendedCommitInfo, error) {
 	for i, vote := range extCommitInfo.Votes {
@@ -69,7 +69,7 @@ func ValidateExtendedCommitInfo(
 	extCommitInfo cometabci.ExtendedCommitInfo,
 	veCodec codec.VoteExtensionCodec,
 	pk PreBlockExecPricesKeeper,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 	validateVEConsensusInfo ValidateVEConsensusInfoFn,
 ) error {
 	if err := validateVEConsensusInfo(ctx, extCommitInfo); err != nil {
@@ -102,7 +102,7 @@ func validateIndividualVoteExtension(
 	vote cometabci.ExtendedVoteInfo,
 	voteCodec codec.VoteExtensionCodec,
 	pricesKeeper PreBlockExecPricesKeeper,
-	veCache *pricecache.PriceCache,
+	veCache *votescache.VotesCache,
 ) error {
 	if isSeen := IsVoteExtensionSeen(veCache, getConsAddressFromValidator(vote.Validator)); !isSeen {
 		return fmt.Errorf("vote extension not seen")
@@ -429,8 +429,8 @@ func GetMaxMarketPairs(ctx sdk.Context, pricesKeeper PreBlockExecPricesKeeper) u
 	return uint32(len(markets))
 }
 
-func IsVoteExtensionSeen(veCache *pricecache.PriceCache, consAddress string) bool {
-	consAddresses := veCache.GetConsAddresses()
+func IsVoteExtensionSeen(veCache *votescache.VotesCache, consAddress string) bool {
+	consAddresses := veCache.GetSeenVotesInCache()
 	_, ok := consAddresses[consAddress]
 	return ok
 }

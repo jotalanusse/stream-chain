@@ -112,12 +112,14 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mempool"
 
 	// Daemons
+	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/pricecache"
+	votescache "github.com/StreamFinance-Protocol/stream-chain/protocol/caches/votescache"
 	deleveragingclient "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/deleveraging/client"
 	daemonflags "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/flags"
 	metricsclient "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/metrics/client"
 	pricefeedclient "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client/constants"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
+
 	pricefeed_types "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/types"
 	daemonserver "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server"
 	daemonservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types"
@@ -886,7 +888,8 @@ func New(
 	app.voteCodec = vecodec.NewDefaultVoteExtensionCodec()
 	app.extCodec = vecodec.NewDefaultExtendedCommitCodec()
 
-	veCache := pricecache.NewPriceCache()
+	priceCache := pricecache.NewPriceCache()
+	votesCache := votescache.NewVotesCache()
 
 	aggregatorFn := voteweighted.Median(
 		logger,
@@ -904,7 +907,8 @@ func New(
 		logger,
 		aggregator,
 		app.PricesKeeper,
-		veCache,
+		priceCache,
+		votesCache,
 		app.voteCodec,
 		app.extCodec,
 	)
@@ -1228,7 +1232,7 @@ func New(
 				app.PricesKeeper,
 				app.voteCodec,
 				app.extCodec,
-				veCache,
+				votesCache,
 				veValidationFn,
 			),
 		)
@@ -1257,7 +1261,7 @@ func New(
 				app.extCodec,
 				app.voteCodec,
 				priceApplier,
-				veCache,
+				votesCache,
 				veValidationFn,
 			),
 		)
