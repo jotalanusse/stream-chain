@@ -893,7 +893,6 @@ func New(
 
 	aggregator := veaggregator.NewVeAggregator(
 		logger,
-		daemonPriceCache,
 		app.PricesKeeper,
 		aggregatorFn,
 	)
