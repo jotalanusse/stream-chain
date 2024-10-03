@@ -384,3 +384,22 @@ func (pa *PriceApplier) shouldWritePriceToStore(
 
 	return isValidSpot, isValidPnl
 }
+
+func (pa *PriceApplier) CacheSeenExtendedVotes(
+	ctx sdk.Context,
+	req *abci.RequestCommit,
+) error {
+	votes, err := aggregator.FetchVotesFromExtCommitInfo(*req.ExtendedCommitInfo, pa.voteExtensionCodec)
+	if err != nil {
+		return err
+	}
+
+	seenValidators := make(map[string]struct{})
+	for _, vote := range votes {
+		seenValidators[vote.ConsAddress.String()] = struct{}{}
+	}
+
+	pa.finalPriceCache.SetConsAddresses(ctx.BlockHeight(), req.ExtendedCommitInfo.Round, seenValidators)
+
+	return nil
+}
