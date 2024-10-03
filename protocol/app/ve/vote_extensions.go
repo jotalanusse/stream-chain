@@ -95,7 +95,7 @@ func (h *VoteExtensionHandler) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		}
 
 		// apply prices from prev block to ensure that the prices are up to date
-		if err := h.priceApplier.ApplyPricesFromVE(ctx, reqFinalizeBlock, true); err != nil {
+		if err := h.priceApplier.ApplyPricesFromVE(ctx, reqFinalizeBlock, true, true); err != nil {
 			h.logger.Error(
 				"failed to aggregate oracle votes",
 				"height", request.Height,

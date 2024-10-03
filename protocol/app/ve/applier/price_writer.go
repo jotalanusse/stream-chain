@@ -55,8 +55,9 @@ func (pa *PriceApplier) ApplyPricesFromVE(
 	ctx sdk.Context,
 	request *abci.RequestFinalizeBlock,
 	writeToCache bool,
+	writeToStore bool,
 ) error {
-	if err := pa.writePricesToStore(ctx, request, writeToCache); err != nil {
+	if err := pa.writePricesToStore(ctx, request, writeToCache, writeToStore); err != nil {
 		return err
 	}
 
@@ -67,8 +68,9 @@ func (pa *PriceApplier) writePricesToStore(
 	ctx sdk.Context,
 	request *abci.RequestFinalizeBlock,
 	writeToCache bool,
+	writeToStore bool,
 ) error {
-	if pa.finalPriceCache.HasValidPrices(ctx.BlockHeight(), request.DecidedLastCommit.Round) {
+	if pa.finalPriceCache.HasValidPrices(ctx.BlockHeight(), request.DecidedLastCommit.Round) && writeToStore {
 		err := pa.writePricesToStoreFromCache(ctx)
 		return err
 	} else {
