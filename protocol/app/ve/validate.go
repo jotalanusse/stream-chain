@@ -104,13 +104,12 @@ func validateIndividualVoteExtension(
 	pricesKeeper PreBlockExecPricesKeeper,
 	veCache *votescache.VotesCache,
 ) error {
-	if isSeen := IsVoteExtensionSeen(veCache, getConsAddressFromValidator(vote.Validator)); !isSeen {
-		return fmt.Errorf("vote extension not seen")
-	}
-	// TODO(LIQ) - this might be a bug, if it's nil and we don't prune eventually we will
-	// dereference a nil pointer in the preblocker flow when we try to apply prices.
 	if vote.VoteExtension == nil && vote.ExtensionSignature == nil {
 		return nil
+	}
+
+	if isSeen := IsVoteExtensionSeen(veCache, getConsAddressFromValidator(vote.Validator)); !isSeen {
+		return fmt.Errorf("vote extension not seen")
 	}
 
 	if err := ValidateVEMarketsAndPrices(ctx, pricesKeeper, vote.VoteExtension, voteCodec); err != nil {
