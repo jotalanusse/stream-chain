@@ -12,7 +12,6 @@ import (
 	veaggregator "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/math"
 	vetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/types"
 	veutils "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/utils"
-	pricefeedtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/pricefeed"
 	pk "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -56,7 +55,6 @@ type MedianAggregator struct {
 
 func NewVeAggregator(
 	logger log.Logger,
-	daemonPriceCache *pricefeedtypes.MarketToExchangePrices,
 	pricekeeper pk.Keeper,
 	aggregateFn veaggregator.AggregateFn,
 ) VoteAggregator {

@@ -72,7 +72,6 @@ func (s *PreBlockTestSuite) SetupTest() {
 
 	aggregator := veaggregator.NewVeAggregator(
 		s.logger,
-		s.daemonPriceCache,
 		*s.pricesKeeper,
 		aggregationFn,
 	)

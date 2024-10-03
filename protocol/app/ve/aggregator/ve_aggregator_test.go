@@ -21,7 +21,7 @@ var (
 )
 
 func SetupTest(t *testing.T, vals []string) (sdk.Context, veaggregator.VoteAggregator) {
-	ctx, pk, _, daemonPriceCache, _, mTimeProvider := keepertest.PricesKeepers(t)
+	ctx, pk, _, _, _, mTimeProvider := keepertest.PricesKeepers(t)
 	mTimeProvider.On("Now").Return(constants.TimeT)
 
 	keepertest.CreateTestMarkets(t, ctx, pk)
@@ -36,7 +36,6 @@ func SetupTest(t *testing.T, vals []string) (sdk.Context, veaggregator.VoteAggre
 
 	handler := veaggregator.NewVeAggregator(
 		ctx.Logger(),
-		daemonPriceCache,
 		*pk,
 		aggregateFn,
 	)
