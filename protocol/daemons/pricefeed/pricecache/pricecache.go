@@ -11,10 +11,11 @@ import (
 // which are fetched in ExtendVoteHandler and PreBlocker. This is to avoid
 // redundant computation on calculating stake weighthed median prices in VEs
 type PriceCache struct {
-	priceUpdates PriceUpdates
-	height       int64
-	round        int32
-	mu           sync.RWMutex
+	priceUpdates  PriceUpdates
+	height        int64
+	round         int32
+	consAddresses map[string]struct{}
+	mu            sync.RWMutex
 }
 
 type PriceUpdate struct {
@@ -37,10 +38,29 @@ func (pc *PriceCache) SetPriceUpdates(
 	pc.round = round
 }
 
+func (pc *PriceCache) SetConsAddresses(
+	height int64,
+	round int32,
+	consAddresses map[string]struct{},
+) {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
+	if pc.height != height || pc.round != round {
+		return
+	}
+	pc.consAddresses = consAddresses
+}
+
 func (pc *PriceCache) GetPriceUpdates() PriceUpdates {
 	pc.mu.RLock()
 	defer pc.mu.RUnlock()
 	return pc.priceUpdates
+}
+
+func (pc *PriceCache) GetConsAddresses() map[string]struct{} {
+	pc.mu.RLock()
+	defer pc.mu.RUnlock()
+	return pc.consAddresses
 }
 
 func (pc *PriceCache) GetHeight() int64 {
