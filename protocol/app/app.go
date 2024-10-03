@@ -117,6 +117,7 @@ import (
 	metricsclient "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/metrics/client"
 	pricefeedclient "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client/constants"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
 	pricefeed_types "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/types"
 	daemonserver "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server"
 	daemonservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types"
@@ -885,6 +886,8 @@ func New(
 	app.voteCodec = vecodec.NewDefaultVoteExtensionCodec()
 	app.extCodec = vecodec.NewDefaultExtendedCommitCodec()
 
+	veCache := pricecache.NewPriceCache()
+
 	aggregatorFn := voteweighted.Median(
 		logger,
 		app.ConsumerKeeper,
@@ -901,6 +904,7 @@ func New(
 		logger,
 		aggregator,
 		app.PricesKeeper,
+		veCache,
 		app.voteCodec,
 		app.extCodec,
 	)
@@ -1224,6 +1228,7 @@ func New(
 				app.PricesKeeper,
 				app.voteCodec,
 				app.extCodec,
+				veCache,
 				veValidationFn,
 			),
 		)
@@ -1252,6 +1257,7 @@ func New(
 				app.extCodec,
 				app.voteCodec,
 				priceApplier,
+				veCache,
 				veValidationFn,
 			),
 		)

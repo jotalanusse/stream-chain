@@ -10,6 +10,7 @@ import (
 	codec "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/codec"
 	vetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/types"
 	veutils "github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve/utils"
+	pricecache "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/pricecache"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -43,10 +44,11 @@ func CleanAndValidateExtCommitInfo(
 	extCommitInfo cometabci.ExtendedCommitInfo,
 	veCodec codec.VoteExtensionCodec,
 	pricesKeeper PreBlockExecPricesKeeper,
+	veCache *pricecache.PriceCache,
 	validateVEConsensusInfo ValidateVEConsensusInfoFn,
 ) (cometabci.ExtendedCommitInfo, error) {
 	for i, vote := range extCommitInfo.Votes {
-		if err := validateIndividualVoteExtension(ctx, vote, veCodec, pricesKeeper); err != nil {
+		if err := validateIndividualVoteExtension(ctx, vote, veCodec, pricesKeeper, veCache); err != nil {
 			ctx.Logger().Info(
 				"failed to validate vote extension - pruning vote",
 				"err", err,
@@ -67,6 +69,7 @@ func ValidateExtendedCommitInfo(
 	extCommitInfo cometabci.ExtendedCommitInfo,
 	veCodec codec.VoteExtensionCodec,
 	pk PreBlockExecPricesKeeper,
+	veCache *pricecache.PriceCache,
 	validateVEConsensusInfo ValidateVEConsensusInfoFn,
 ) error {
 	if err := validateVEConsensusInfo(ctx, extCommitInfo); err != nil {
@@ -81,7 +84,7 @@ func ValidateExtendedCommitInfo(
 	for _, vote := range extCommitInfo.Votes {
 		addr := sdk.ConsAddress(vote.Validator.Address)
 
-		if err := validateIndividualVoteExtension(ctx, vote, veCodec, pk); err != nil {
+		if err := validateIndividualVoteExtension(ctx, vote, veCodec, pk, veCache); err != nil {
 			ctx.Logger().Error(
 				"failed to validate vote extension",
 				"height", height,
@@ -99,8 +102,13 @@ func validateIndividualVoteExtension(
 	vote cometabci.ExtendedVoteInfo,
 	voteCodec codec.VoteExtensionCodec,
 	pricesKeeper PreBlockExecPricesKeeper,
-
+	veCache *pricecache.PriceCache,
 ) error {
+	if isSeen := IsVoteExtensionSeen(veCache, getConsAddressFromValidator(vote.Validator)); !isSeen {
+		return fmt.Errorf("vote extension not seen")
+	}
+	// TODO(LIQ) - this might be a bug, if it's nil and we don't prune eventually we will
+	// dereference a nil pointer in the preblocker flow when we try to apply prices.
 	if vote.VoteExtension == nil && vote.ExtensionSignature == nil {
 		return nil
 	}
@@ -419,4 +427,16 @@ func validateVoteAddress(
 func GetMaxMarketPairs(ctx sdk.Context, pricesKeeper PreBlockExecPricesKeeper) uint32 {
 	markets := pricesKeeper.GetAllMarketParams(ctx)
 	return uint32(len(markets))
+}
+
+func IsVoteExtensionSeen(veCache *pricecache.PriceCache, consAddress string) bool {
+	consAddresses := veCache.GetConsAddresses()
+	_, ok := consAddresses[consAddress]
+	return ok
+}
+
+func getConsAddressFromValidator(
+	validator cometabci.Validator,
+) string {
+	return sdk.ConsAddress(validator.Address).String()
 }

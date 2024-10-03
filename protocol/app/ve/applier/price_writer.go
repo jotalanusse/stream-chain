@@ -21,7 +21,7 @@ type PriceApplier struct {
 	pricesKeeper PriceApplierPricesKeeper
 
 	// finalPriceCache is the cache that stores the final prices
-	finalPriceCache pricecache.PriceCache
+	veCache *pricecache.PriceCache
 
 	// logger
 	logger log.Logger
@@ -35,6 +35,7 @@ func NewPriceApplier(
 	logger log.Logger,
 	voteAggregator aggregator.VoteAggregator,
 	pricesKeeper PriceApplierPricesKeeper,
+	veCache *pricecache.PriceCache,
 	voteExtensionCodec codec.VoteExtensionCodec,
 	extendedCommitCodec codec.ExtendedCommitCodec,
 ) *PriceApplier {
@@ -42,6 +43,7 @@ func NewPriceApplier(
 		voteAggregator:      voteAggregator,
 		pricesKeeper:        pricesKeeper,
 		logger:              logger,
+		veCache:             veCache,
 		voteExtensionCodec:  voteExtensionCodec,
 		extendedCommitCodec: extendedCommitCodec,
 	}
@@ -68,7 +70,7 @@ func (pa *PriceApplier) writePricesToStore(
 	request *abci.RequestFinalizeBlock,
 	writeToCache bool,
 ) error {
-	if pa.finalPriceCache.HasValidPrices(ctx.BlockHeight(), request.DecidedLastCommit.Round) {
+	if pa.veCache.HasValidPrices(ctx.BlockHeight(), request.DecidedLastCommit.Round) {
 		err := pa.writePricesToStoreFromCache(ctx)
 		return err
 	} else {
@@ -119,11 +121,11 @@ func (pa *PriceApplier) getPricesAndAggregateFromVE(
 }
 
 func (pa *PriceApplier) GetCachedPrices() pricecache.PriceUpdates {
-	return pa.finalPriceCache.GetPriceUpdates()
+	return pa.veCache.GetPriceUpdates()
 }
 
 func (pa *PriceApplier) writePricesToStoreFromCache(ctx sdk.Context) error {
-	pricesFromCache := pa.finalPriceCache.GetPriceUpdates()
+	pricesFromCache := pa.veCache.GetPriceUpdates()
 	for _, price := range pricesFromCache {
 		if price.SpotPrice != nil && price.PnlPrice != nil {
 			marketPriceUpdate := &pricestypes.MarketPriceUpdate{
@@ -243,7 +245,7 @@ func (pa *PriceApplier) WritePricesToStoreAndMaybeCache(
 	}
 
 	if writeToCache {
-		pa.finalPriceCache.SetPriceUpdates(ctx, finalPriceUpdates, round)
+		pa.veCache.SetPriceUpdates(ctx, finalPriceUpdates, round)
 	}
 
 	return nil
@@ -399,7 +401,7 @@ func (pa *PriceApplier) CacheSeenExtendedVotes(
 		seenValidators[vote.ConsAddress.String()] = struct{}{}
 	}
 
-	pa.finalPriceCache.SetConsAddresses(ctx.BlockHeight(), req.ExtendedCommitInfo.Round, seenValidators)
+	pa.veCache.SetConsAddresses(ctx.BlockHeight(), req.ExtendedCommitInfo.Round, seenValidators)
 
 	return nil
 }
