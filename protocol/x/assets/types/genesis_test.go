@@ -27,6 +27,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        false,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 					{
 						Id:               1,
@@ -36,6 +37,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         0,
 						AtomicResolution: int32(-6),
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
@@ -58,6 +60,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         0,
 						AtomicResolution: int32(-6),
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
@@ -74,6 +77,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        true,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
@@ -90,6 +94,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        false,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 					{
 						Id:               0,
@@ -98,6 +103,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         0,
 						AtomicResolution: int32(-6),
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
@@ -114,6 +120,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        false,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 					{
 						Id:               1,
@@ -124,6 +131,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         0,
 						AtomicResolution: int32(-6),
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
@@ -140,6 +148,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        false,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 					{
 						Id:               2,
@@ -148,6 +157,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         0,
 						AtomicResolution: int32(-6),
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
@@ -164,6 +174,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						HasMarket:        false,
 						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 					{
 						Id:               1,
@@ -172,10 +183,28 @@ func TestGenesisState_Validate(t *testing.T) {
 						MarketId:         1,
 						AtomicResolution: int32(-6),
 						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(0),
 					},
 				},
 			},
 			expectedErr: types.ErrInvalidMarketId,
+		},
+		"Invalid max slippage ppm": {
+			genState: &types.GenesisState{
+				Assets: []types.Asset{
+					{
+						Id:               0,
+						Symbol:           types.AssetTDai.Symbol,
+						Denom:            types.AssetTDai.Denom,
+						DenomExponent:    types.AssetTDai.DenomExponent,
+						HasMarket:        false,
+						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+						AssetYieldIndex:  "1/1",
+						MaxSlippagePpm:   uint32(1_000_001),
+					},
+				},
+			},
+			expectedErr: types.ErrInvalidMaxSlippagePpm,
 		},
 	}
 	for name, tc := range tests {

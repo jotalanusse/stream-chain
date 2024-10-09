@@ -9,7 +9,8 @@
         "has_market": false,
         "market_id": 0,
         "atomic_resolution": -6,
-        "asset_yield_index": "1/1"
+        "asset_yield_index": "1/1",
+        "max_slippage_ppm": 0
       }
     ]
   },

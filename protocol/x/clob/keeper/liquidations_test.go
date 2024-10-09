@@ -1707,7 +1707,7 @@ func TestGetFillablePrice(t *testing.T) {
 			}
 
 			// Create the tdai asset
-			_, err := ks.AssetsKeeper.CreateAsset(ks.Ctx, constants.TDai.Id, constants.TDai.Symbol, constants.TDai.Denom, constants.TDai.DenomExponent, constants.TDai.HasMarket, constants.TDai.MarketId, constants.TDai.AtomicResolution, constants.TDai.AssetYieldIndex)
+			_, err := ks.AssetsKeeper.CreateAsset(ks.Ctx, constants.TDai.Id, constants.TDai.Symbol, constants.TDai.Denom, constants.TDai.DenomExponent, constants.TDai.HasMarket, constants.TDai.MarketId, constants.TDai.AtomicResolution, constants.TDai.AssetYieldIndex, constants.TDai.MaxSlippagePpm)
 			require.NoError(t, err)
 
 			// Create the default markets.

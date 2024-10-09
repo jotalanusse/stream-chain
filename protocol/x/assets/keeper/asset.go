@@ -25,6 +25,7 @@ func (k Keeper) CreateAsset(
 	marketId uint32,
 	atomicResolution int32,
 	assetYieldIndex string,
+	maxSlippagePpm uint32,
 ) (types.Asset, error) {
 	if prevAsset, exists := k.GetAsset(ctx, assetId); exists {
 		return types.Asset{}, errorsmod.Wrapf(
@@ -66,6 +67,11 @@ func (k Keeper) CreateAsset(
 		}
 	}
 
+	// validate max slippage ppm
+	if maxSlippagePpm > 1_000_000 {
+		return types.Asset{}, errorsmod.Wrap(types.ErrInvalidMaxSlippagePpm, lib.UintToString(maxSlippagePpm))
+	}
+
 	// Create the asset
 	asset := types.Asset{
 		Id:               assetId,
@@ -76,6 +82,7 @@ func (k Keeper) CreateAsset(
 		MarketId:         marketId,
 		AtomicResolution: atomicResolution,
 		AssetYieldIndex:  assetYieldIndex,
+		MaxSlippagePpm:   maxSlippagePpm,
 	}
 
 	// Validate market

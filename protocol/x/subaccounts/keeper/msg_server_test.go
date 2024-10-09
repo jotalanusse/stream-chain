@@ -926,6 +926,7 @@ func TestClaimYieldForSubaccount(t *testing.T) {
 					a.MarketId,
 					a.AtomicResolution,
 					a.AssetYieldIndex,
+					a.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}

@@ -4831,6 +4831,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 					a.MarketId,
 					a.AtomicResolution,
 					a.AssetYieldIndex,
+					a.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}
@@ -6355,6 +6356,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					a.MarketId,
 					a.AtomicResolution,
 					a.AssetYieldIndex,
+					a.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}
@@ -7502,6 +7504,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					a.MarketId,
 					a.AtomicResolution,
 					a.AssetYieldIndex,
+					a.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}
@@ -7984,6 +7987,7 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 					a.MarketId,
 					a.AtomicResolution,
 					a.AssetYieldIndex,
+					a.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}

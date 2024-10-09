@@ -18,6 +18,7 @@ var (
 	ErrInvalidDenomExponent         = errorsmod.Register(ModuleName, 11, "Invalid denom exponent")
 	ErrAssetAlreadyExists           = errorsmod.Register(ModuleName, 13, "Asset already exists")
 	ErrUnexpectedTDaiDenomExponent  = errorsmod.Register(ModuleName, 14, "TDai denom exponent is unexpected")
+	ErrInvalidMaxSlippagePpm        = errorsmod.Register(ModuleName, 15, "Invalid max slippage ppm")
 
 	// Errors for Not Implemented
 	ErrNotImplementedMulticollateral = errorsmod.Register(ModuleName, 401, "Not Implemented: Multi-Collateral")

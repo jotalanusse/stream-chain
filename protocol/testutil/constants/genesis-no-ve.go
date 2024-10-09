@@ -43,7 +43,8 @@ const GenesisStateNoVe = `{
           "id": 0,
           "market_id": 0,
           "symbol": "TDAI",
-          "asset_yield_index": "1/1"
+          "asset_yield_index": "1/1",
+          "max_slippage_ppm": 0
         }
       ]
     },
