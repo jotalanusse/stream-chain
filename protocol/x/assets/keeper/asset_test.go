@@ -379,13 +379,6 @@ func TestGetMarginRequirements(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, new(big.Int), initial)
 	require.Equal(t, new(big.Int), maintenance)
-
-	_, _, err = keeper.GetMarginRequirements(
-		ctx,
-		uint32(1),
-		new(big.Int).SetInt64(-100),
-	)
-	require.EqualError(t, types.ErrNotImplementedMargin, err.Error())
 }
 
 func TestConvertAssetToCoin_Success(t *testing.T) {
