@@ -206,7 +206,7 @@ func (k Keeper) GetNetCollateral(
 	}
 
 	// Get asset
-	_, exists := k.GetAsset(ctx, id)
+	asset, exists := k.GetAsset(ctx, id)
 	if !exists {
 		return big.NewInt(0), errorsmod.Wrap(types.ErrAssetDoesNotExist, lib.UintToString(id))
 	}
@@ -219,12 +219,45 @@ func (k Keeper) GetNetCollateral(
 	// Balance is positive.
 	// TODO(DEC-581): add multi-collateral support.
 	if bigQuantums.Sign() == 1 {
-		return big.NewInt(0), types.ErrNotImplementedMulticollateral
+		return k.GetSlippageAdjustedQuoteQuantums(ctx, asset, bigQuantums)
 	}
 
 	// Balance is negative.
 	// TODO(DEC-582): add margin-trading support.
 	return big.NewInt(0), types.ErrNotImplementedMargin
+}
+
+func (k Keeper) GetSlippageAdjustedQuoteQuantums(
+	ctx sdk.Context,
+	asset types.Asset,
+	bigQuantums *big.Int,
+) (*big.Int, error) {
+	marketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, asset.MarketId)
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	bigQuoteQuantums := lib.BaseToQuoteQuantums(
+		bigQuantums,
+		asset.AtomicResolution,
+		marketPrice.SpotPrice,
+		marketPrice.Exponent,
+	)
+
+	slippageNormalizer := new(big.Rat).SetFrac(
+		big.NewInt(1_000_000+int64(asset.MaxSlippagePpm)),
+		big.NewInt(1_000_000),
+	)
+
+	normalizedQuoteQuantums := new(big.Rat).Quo(
+		new(big.Rat).SetInt(bigQuoteQuantums),
+		slippageNormalizer,
+	)
+
+	return new(big.Int).Div(
+		normalizedQuoteQuantums.Num(),
+		normalizedQuoteQuantums.Denom(),
+	), nil
 }
 
 // GetMarginRequirements returns the initial and maintenance margin-
@@ -238,26 +271,8 @@ func (k Keeper) GetMarginRequirements(
 	bigMaintenanceMarginQuoteQuantums *big.Int,
 	err error,
 ) {
-	// QuoteBalance does not contribute to any margin requirements.
-	if id == types.AssetTDai.Id {
-		return big.NewInt(0), big.NewInt(0), nil
-	}
 
-	// Get asset
-	_, exists := k.GetAsset(ctx, id)
-	if !exists {
-		return big.NewInt(0), big.NewInt(0), errorsmod.Wrap(
-			types.ErrAssetDoesNotExist, lib.UintToString(id))
-	}
-
-	// Balance is zero or positive.
-	if bigQuantums.Sign() >= 0 {
-		return big.NewInt(0), big.NewInt(0), nil
-	}
-
-	// Balance is negative.
-	// TODO(DEC-582): margin-trading
-	return big.NewInt(0), big.NewInt(0), types.ErrNotImplementedMargin
+	return big.NewInt(0), big.NewInt(0), nil
 }
 
 // ConvertAssetToCoin converts the given `assetId` and `quantums` used in `x/asset`,

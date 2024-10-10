@@ -7924,39 +7924,6 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 				},
 			},
 		},
-		"asset with no balance and update": {
-			expectedErr: asstypes.ErrNotImplementedMulticollateral,
-			assets: []*asstypes.Asset{
-				constants.BtcUsd,
-			},
-			assetPositions: []*types.AssetPosition{
-				&constants.Long_Asset_1BTC,
-			},
-			assetUpdates: []types.AssetUpdate{
-				{
-					AssetId:          constants.BtcUsd.Id,
-					BigQuantumsDelta: big.NewInt(100_000_000), // 1 BTC
-				},
-			},
-		},
-		"single positive asset": {
-			expectedErr: asstypes.ErrNotImplementedMulticollateral,
-			assets: []*asstypes.Asset{
-				constants.BtcUsd,
-			},
-			assetPositions: []*types.AssetPosition{
-				&constants.Long_Asset_1BTC,
-			},
-		},
-		"single negative asset": {
-			expectedErr: asstypes.ErrNotImplementedMulticollateral,
-			assets: []*asstypes.Asset{
-				constants.BtcUsd,
-			},
-			assetPositions: []*types.AssetPosition{
-				&constants.Short_Asset_1BTC,
-			},
-		},
 	}
 
 	for name, tc := range tests {

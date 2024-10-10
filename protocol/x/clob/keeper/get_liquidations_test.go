@@ -229,16 +229,6 @@ func TestGetSubaccountCollateralizationInfo(t *testing.T) {
 				"0: Perpetual does not exist",
 			),
 		},
-		"Non TDai asset in subaccount returns error": {
-			subaccount: constants.Carl_Num0_1BTC_short_50000_non_TDai,
-			perpetuals: []perptypes.Perpetual{
-				constants.BtcUsd_NoMarginRequirement,
-			},
-			feeParams: constants.PerpetualFeeParams,
-			expectedError: errors.New(
-				"Not Implemented: Multi-Collateral",
-			),
-		},
 	}
 
 	for name, tc := range tests {

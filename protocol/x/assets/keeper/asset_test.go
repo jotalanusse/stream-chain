@@ -352,13 +352,6 @@ func TestGetNetCollateral(t *testing.T) {
 	_, err = keeper.GetNetCollateral(
 		ctx,
 		uint32(1),
-		new(big.Int).SetInt64(100),
-	)
-	require.EqualError(t, types.ErrNotImplementedMulticollateral, err.Error())
-
-	_, err = keeper.GetNetCollateral(
-		ctx,
-		uint32(1),
 		new(big.Int).SetInt64(-100),
 	)
 	require.EqualError(t, types.ErrNotImplementedMargin, err.Error())
@@ -781,4 +774,118 @@ func TestIsPositionUpdatable(t *testing.T) {
 	// Return error for non-existent asset
 	_, err = keeper.IsPositionUpdatable(ctx, 100)
 	require.ErrorContains(t, err, "Asset does not exist")
+}
+
+func TestGetNetCollateralWithSlippage(t *testing.T) {
+
+	tests := map[string]struct {
+		asset          types.Asset
+		bigQuantums    *big.Int
+		expectedResult *big.Int
+		expectedError  error
+	}{
+		"success - tdai no slippage adjustment": {
+			asset: types.Asset{
+				Id:               constants.TDai.Id,
+				Symbol:           constants.TDai.Symbol,
+				Denom:            constants.TDai.Denom,
+				DenomExponent:    constants.TDai.DenomExponent,
+				HasMarket:        constants.TDai.HasMarket,
+				MarketId:         constants.TDai.MarketId,
+				AtomicResolution: constants.TDai.AtomicResolution,
+				MaxSlippagePpm:   constants.TDai.MaxSlippagePpm,
+			},
+			bigQuantums:    big.NewInt(1_000_000),
+			expectedResult: big.NewInt(1_000_000),
+		},
+		"success - tdai with slippage adjustment": {
+			asset: types.Asset{
+				Id:               constants.TDai.Id,
+				Symbol:           constants.TDai.Symbol,
+				Denom:            constants.TDai.Denom,
+				DenomExponent:    constants.TDai.DenomExponent,
+				HasMarket:        constants.TDai.HasMarket,
+				MarketId:         constants.TDai.MarketId,
+				AtomicResolution: constants.TDai.AtomicResolution,
+				MaxSlippagePpm:   uint32(10_000), // 1%
+			},
+			bigQuantums:    big.NewInt(1_000_000),
+			expectedResult: big.NewInt(1_000_000),
+		},
+		"success - BTC with no slippage": {
+			asset: types.Asset{
+				Id:               constants.BtcUsd.Id,
+				Symbol:           constants.BtcUsd.Symbol,
+				Denom:            constants.BtcUsd.Denom,
+				DenomExponent:    constants.BtcUsd.DenomExponent,
+				HasMarket:        constants.BtcUsd.HasMarket,
+				MarketId:         constants.BtcUsd.MarketId,
+				AtomicResolution: constants.BtcUsd.AtomicResolution,
+				MaxSlippagePpm:   constants.BtcUsd.MaxSlippagePpm,
+			},
+			bigQuantums:    big.NewInt(1_000_000),
+			expectedResult: big.NewInt(500_000_000),
+		},
+		"success - BTC with slippage": {
+			asset: types.Asset{
+				Id:               constants.BtcUsd.Id,
+				Symbol:           constants.BtcUsd.Symbol,
+				Denom:            constants.BtcUsd.Denom,
+				DenomExponent:    constants.BtcUsd.DenomExponent,
+				HasMarket:        constants.BtcUsd.HasMarket,
+				MarketId:         constants.BtcUsd.MarketId,
+				AtomicResolution: constants.BtcUsd.AtomicResolution,
+				MaxSlippagePpm:   uint32(10_000), // 1%
+			},
+			bigQuantums:    big.NewInt(1_000_000),
+			expectedResult: big.NewInt(495_049_504),
+		},
+		"success - BTC with large slippage": {
+			asset: types.Asset{
+				Id:               constants.BtcUsd.Id,
+				Symbol:           constants.BtcUsd.Symbol,
+				Denom:            constants.BtcUsd.Denom,
+				DenomExponent:    constants.BtcUsd.DenomExponent,
+				HasMarket:        constants.BtcUsd.HasMarket,
+				MarketId:         constants.BtcUsd.MarketId,
+				AtomicResolution: constants.BtcUsd.AtomicResolution,
+				MaxSlippagePpm:   uint32(500_000), // 50%
+			},
+			bigQuantums:    big.NewInt(1_000_000),
+			expectedResult: big.NewInt(333_333_333),
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
+
+			// Set up test markets
+			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			// Create the asset
+			_, err := keeper.CreateAsset(
+				ctx,
+				tc.asset.Id,
+				tc.asset.Symbol,
+				tc.asset.Denom,
+				tc.asset.DenomExponent,
+				tc.asset.HasMarket,
+				tc.asset.MarketId,
+				tc.asset.AtomicResolution,
+				tc.asset.AssetYieldIndex,
+				tc.asset.MaxSlippagePpm,
+			)
+			require.NoError(t, err)
+
+			result, err := keeper.GetNetCollateral(ctx, tc.asset.Id, tc.bigQuantums)
+
+			if tc.expectedError != nil {
+				require.ErrorIs(t, err, tc.expectedError)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tc.expectedResult, result)
+			}
+		})
+	}
 }

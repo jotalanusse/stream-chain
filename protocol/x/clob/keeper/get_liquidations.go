@@ -5,7 +5,6 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	assetstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/heap"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -96,7 +95,7 @@ func (k Keeper) GetSubaccountCollateralizationInfo(
 		return false, false, nil, err
 	}
 
-	err = updateCollateralizationInfoGivenAssets(settledSubaccount, bigTotalNetCollateral)
+	err = k.UpdateCollateralizationInfoGivenAssets(ctx, settledSubaccount, bigTotalNetCollateral)
 	if err != nil {
 		return false, false, nil, err
 	}
@@ -153,20 +152,18 @@ func getPerpetualLiquidityTierAndPrice(
 	return perpetual, price, liquidityTier, nil
 }
 
-func updateCollateralizationInfoGivenAssets(
+func (k Keeper) UpdateCollateralizationInfoGivenAssets(
+	ctx sdk.Context,
 	settledSubaccount satypes.Subaccount,
 	bigTotalNetCollateral *big.Int,
 ) error {
 	// Note that we only expect TDai before multi-collateral support is added.
 	for _, assetPosition := range settledSubaccount.AssetPositions {
-		if assetPosition.AssetId != assetstypes.AssetTDai.Id {
-			return errorsmod.Wrapf(
-				assetstypes.ErrNotImplementedMulticollateral,
-				"Asset %d is not supported",
-				assetPosition.AssetId,
-			)
+		bigNetCollateralQuoteQuantums, err := k.assetsKeeper.GetNetCollateral(ctx, assetPosition.AssetId, assetPosition.GetBigQuantums())
+		if err != nil {
+			return err
 		}
-		bigTotalNetCollateral.Add(bigTotalNetCollateral, assetPosition.GetBigQuantums())
+		bigTotalNetCollateral.Add(bigTotalNetCollateral, bigNetCollateralQuoteQuantums)
 	}
 	return nil
 }
