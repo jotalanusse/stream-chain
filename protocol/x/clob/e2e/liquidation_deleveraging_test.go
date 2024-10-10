@@ -90,7 +90,6 @@ func TestLiquidationConfig(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-90_000_000), // -0.9 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -108,7 +107,6 @@ func TestLiquidationConfig(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-10_000_000), // -0.1 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -162,7 +160,6 @@ func TestLiquidationConfig(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(10_000_000), // 0.1 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -180,7 +177,6 @@ func TestLiquidationConfig(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(90_000_000), // 0.9 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -446,7 +442,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-75_000_000), // -0.75 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -464,7 +459,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(75_000_000), // 0.75 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -550,7 +544,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-75_000_000), // -0.75 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -568,7 +561,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(75_000_000), // 0.75 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -642,7 +634,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-75_000_000), // -0.75 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -700,7 +691,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 							// Deleveraging fails for remaining amount.
 							Quantums:     dtypes.NewInt(-50_000_000), // -0.5 BTC
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),

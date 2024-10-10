@@ -138,13 +138,10 @@ func UpdatePerpetualPositions(
 					panic(fmt.Sprintf("perpetual id %d not found in perpIdToFundingIndex", pu.PerpetualId))
 				}
 
-				yieldIndex := "0/1"
-
 				perpetualPosition := &types.PerpetualPosition{
 					PerpetualId:  pu.PerpetualId,
 					Quantums:     dtypes.NewIntFromBigInt(pu.GetBigQuantums()),
 					FundingIndex: fundingIndex,
-					YieldIndex:   yieldIndex,
 				}
 
 				// Add the new position to the map.

@@ -775,7 +775,6 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 							PerpetualId:  1,
 							Quantums:     dtypes.NewInt(1_000_000_000), // 1 ETH
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: keepertest.CreateTDaiAssetPosition(
@@ -1207,7 +1206,6 @@ func TestProcessDeleveraging(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(-90_000_000), // -0.9 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1224,7 +1222,6 @@ func TestProcessDeleveraging(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(90_000_000), // 0.9 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1283,7 +1280,6 @@ func TestProcessDeleveraging(t *testing.T) {
 						PerpetualId:  1,
 						Quantums:     dtypes.NewInt(-10_000_000_000), // -10 ETH
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),

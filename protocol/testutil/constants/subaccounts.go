@@ -59,7 +59,6 @@ var (
 				PerpetualId:  3,
 				Quantums:     dtypes.NewInt(1_000_000_000), // 1 ISO
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -73,7 +72,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -87,7 +85,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // +1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -117,7 +114,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-10_000_000_000), // -100 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -131,7 +127,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -145,7 +140,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-200_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -159,7 +153,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -177,7 +170,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(-100_000_000), // -1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -195,7 +187,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(-100_000_000), // -1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -213,7 +204,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(-100_000_000), // -1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 	}
@@ -230,7 +220,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -248,7 +237,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(-100_000_000), // -1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -265,7 +253,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -283,7 +270,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(-100_000_000), // -1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -300,7 +286,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -317,12 +302,10 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 			{
 				PerpetualId: 1,
 				Quantums:    dtypes.NewInt(1_000_000_000), // 1 ETH
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -418,7 +401,6 @@ var (
 				PerpetualId:  3,
 				Quantums:     dtypes.NewInt(-1_000_000_000), // -1 ISO
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -432,7 +414,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(10_000_000), // 0.1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -449,7 +430,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -463,7 +443,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(10_000_000), // 0.1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -478,7 +457,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -496,7 +474,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -510,7 +487,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -528,7 +504,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -546,7 +521,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -563,7 +537,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -581,7 +554,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -599,7 +571,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -617,7 +588,6 @@ var (
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000), // 1 BTC
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -655,7 +625,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-10_000_000_000), // -100 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -669,7 +638,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(10_000_000_000), // 100 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -687,7 +655,6 @@ var (
 				PerpetualId:  4,
 				Quantums:     dtypes.NewInt(-10_000_000), // -1 ISO2
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -701,7 +668,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -715,7 +681,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -729,12 +694,10 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 			{
 				PerpetualId: 1,
 				Quantums:    dtypes.NewInt(1_000_000_000), // 1 ETH
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -748,12 +711,10 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(1), // tiny BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 			{
 				PerpetualId: 1,
 				Quantums:    dtypes.NewInt(1_000_000_000), // 1 ETH
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -768,7 +729,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -782,7 +742,6 @@ var (
 			{
 				PerpetualId: 1,
 				Quantums:    dtypes.NewInt(1_000_000_000), // 1 ETH
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -812,7 +771,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(25_000_000), // 0.25 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -826,7 +784,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(50_000_000), // 0.5 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -840,7 +797,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -854,7 +810,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(-10_000_000_000), // -100 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -871,7 +826,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -885,7 +839,6 @@ var (
 			{
 				PerpetualId: 1,
 				Quantums:    dtypes.NewInt(1_000_000_000), // 1 ETH
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -899,7 +852,6 @@ var (
 			{
 				PerpetualId: 0,
 				Quantums:    dtypes.NewInt(100_000_000), // 1 BTC
-				YieldIndex:  big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),

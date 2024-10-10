@@ -97,7 +97,6 @@ func TestDepositYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(3),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 
@@ -220,7 +219,6 @@ func TestDepositYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(3),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 
@@ -373,7 +371,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -388,7 +385,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -414,7 +410,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -433,7 +428,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 		},
@@ -454,7 +448,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -473,7 +466,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -500,7 +492,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -519,7 +510,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -550,13 +540,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -580,13 +568,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 		},
@@ -612,13 +598,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(1, 2).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(11, 9).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -642,13 +626,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -680,13 +662,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -710,13 +690,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -753,19 +731,16 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(constants.PerpetualPosition_OneISOLong.PerpetualId),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -794,19 +769,16 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(constants.PerpetualPosition_OneISOLong.PerpetualId),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -833,7 +805,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(constants.PerpetualPosition_OneISOLong.PerpetualId),
 					Quantums:     dtypes.NewInt(-1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -852,7 +823,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(constants.PerpetualPosition_OneISOLong.PerpetualId),
 					Quantums:     dtypes.NewInt(-1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -894,7 +864,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -913,7 +882,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -977,7 +945,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			PerpIdToPerp: map[uint32]perptypes.Perpetual{
@@ -1003,30 +970,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 			globalAssetYieldIndex:     big.NewRat(1, 1),
 			availableYield:            big.NewInt(1_000_000_000_000_000_000),
 			expectedErr:               types.ErrGeneralYieldIndexSmallerThanYieldIndexInSubaccount,
-		},
-		"Failure: Tries to add yield when subaccount has perp position that is not in perpIdToPerp map": {
-			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(100_000_000_000)),
-			subaccountAssetYieldIndex: big.NewRat(1, 1).String(),
-			globalAssetYieldIndex:     big.NewRat(1, 1),
-			availableYield:            big.NewInt(1_000_000_000_000_000_000),
-			perpetuals: []perptypes.Perpetual{
-				constants.BtcUsd_NoMarginRequirement,
-			},
-			perpetualPositions: []*types.PerpetualPosition{
-				{
-					PerpetualId:  uint32(0),
-					Quantums:     dtypes.NewInt(-1_000_000_000),
-					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
-				},
-			},
-			PerpIdToPerp: map[uint32]perptypes.Perpetual{
-				1: constants.BtcUsd_NoMarginRequirement,
-			},
-
-			expectedErr: errorsmod.Wrap(
-				perptypes.ErrPerpetualDoesNotExist, "0",
-			),
 		},
 	}
 	for name, tc := range tests {
@@ -1235,7 +1178,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1245,7 +1187,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1277,7 +1218,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1287,7 +1227,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedTDaiYieldPoolBalance: big.NewInt(200_000_000_000),
@@ -1315,7 +1254,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1325,7 +1263,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(1_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1359,7 +1296,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1369,7 +1305,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1408,13 +1343,11 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1424,13 +1357,11 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 				{
 					PerpetualId:  uint32(1),
 					Quantums:     dtypes.NewInt(-2_000_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1460,7 +1391,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1470,7 +1400,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1506,7 +1435,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(3),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1516,7 +1444,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(3),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1553,7 +1480,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1563,7 +1489,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1599,7 +1524,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedPerpetualPositions: []*types.PerpetualPosition{
@@ -1607,7 +1531,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1637,7 +1560,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1648,7 +1570,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1678,7 +1599,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1689,52 +1609,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
-				},
-			},
-			expectedAssetPositions: []*types.AssetPosition{
-				{
-					AssetId:  uint32(0),
-					Quantums: dtypes.NewInt(100_000_000_000),
-				},
-			},
-			expectedTDaiYieldPoolBalance: big.NewInt(200_000_000_000),
-			expectedCollateralPoolTDaiBalances: map[string]int64{
-				types.ModuleAddress.String(): 100_000_000_000,
-			},
-		},
-		"Success yield claim: Perp yield index in subaccount badly initialized so defaults to 0": {
-			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(100_000_000_000)), // $100,000
-			subaccountAssetYieldIndex: constants.AssetYieldIndex_Zero,
-			globalAssetYieldIndex:     big.NewRat(1, 1),
-			fundsInTDaiPool:           big.NewInt(200_000_000_000),
-			collateralPoolTDaiBalances: map[string]int64{
-				types.ModuleAddress.String(): 100_000_000_000,
-			},
-			perpetuals: []perptypes.Perpetual{
-				{
-					Params:       constants.BtcUsd_NoMarginRequirement.Params,
-					FundingIndex: constants.BtcUsd_NoMarginRequirement.FundingIndex,
-					OpenInterest: constants.BtcUsd_NoMarginRequirement.OpenInterest,
-				},
-			},
-			perpetualPositions: []*types.PerpetualPosition{
-				{
-					PerpetualId:  uint32(0),
-					Quantums:     dtypes.NewInt(100_000_000),
-					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   "",
-				},
-			},
-			subaccountId:            &defaultSubaccountId,
-			expectedErr:             nil,
-			expectedAssetYieldIndex: big.NewRat(1, 2).String(),
-			expectedPerpetualPositions: []*types.PerpetualPosition{
-				{
-					PerpetualId:  uint32(0),
-					Quantums:     dtypes.NewInt(100_000_000),
-					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1768,7 +1642,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1778,7 +1651,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{
@@ -1854,7 +1726,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			subaccountId:            &defaultSubaccountId,
@@ -1864,7 +1735,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 					PerpetualId:  uint32(0),
 					Quantums:     dtypes.NewInt(-100_000_000),
 					FundingIndex: dtypes.NewInt(0),
-					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 			expectedAssetPositions: []*types.AssetPosition{

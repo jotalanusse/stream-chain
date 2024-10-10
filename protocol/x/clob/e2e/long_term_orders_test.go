@@ -671,7 +671,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 							Quantums: dtypes.NewInt(int64(
 								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
@@ -698,7 +697,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 							Quantums: dtypes.NewInt(-int64(
 								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
@@ -1010,7 +1008,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 							Quantums: dtypes.NewInt(int64(
 								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
@@ -1040,7 +1037,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 									PlaceOrder_Bob_Num0_Id1_Clob0_Sell1_Price50000_GTB20.Order.GetQuantums(),
 							)),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
@@ -1639,7 +1635,6 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 							Quantums: dtypes.NewInt(int64(
 								Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
@@ -1666,7 +1661,6 @@ func TestRegression_InvalidTimeInForce(t *testing.T) {
 							Quantums: dtypes.NewInt(-int64(
 								Invalid_TIF_LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
