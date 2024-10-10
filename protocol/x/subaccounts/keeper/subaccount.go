@@ -47,16 +47,7 @@ func (k Keeper) SetSubaccount(ctx sdk.Context, subaccount types.Subaccount) {
 
 	for _, perpetualPosition := range subaccount.PerpetualPositions {
 		if perpetualPosition.YieldIndex == "" {
-			perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
-			if err != nil {
-				panic(err)
-			}
-			yieldIndex, err := getCurrentYieldIndexForPerp(perpetual)
-			if err != nil {
-				perpetualPosition.YieldIndex = "0/1"
-			} else {
-				perpetualPosition.YieldIndex = yieldIndex.String()
-			}
+			perpetualPosition.YieldIndex = "0/1"
 		}
 	}
 
@@ -406,15 +397,9 @@ func (k Keeper) UpdateSubaccounts(
 		}
 	}
 
-	perpIdToYieldIndex := make(map[uint32]string)
-	for _, perp := range allPerps {
-		perpIdToYieldIndex[perp.Params.Id] = perp.YieldIndex
-	}
-
 	UpdatePerpetualPositions(
 		settledUpdates,
 		perpIdToFundingIndex,
-		perpIdToYieldIndex,
 	)
 
 	UpdateAssetPositions(settledUpdates)

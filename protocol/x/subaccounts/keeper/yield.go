@@ -232,10 +232,7 @@ func calculateNewPerpYield(
 	perpYieldIndex *big.Rat,
 	err error,
 ) {
-	perpYieldIndex, err = getCurrentYieldIndexForPerp(perpetual)
-	if err != nil {
-		return nil, nil, err
-	}
+	perpYieldIndex = big.NewRat(0, 1)
 
 	newPerpYield, err = calculatePerpetualYieldInQuoteQuantums(perpetualPosition, perpYieldIndex)
 	if err != nil {
@@ -243,24 +240,6 @@ func calculateNewPerpYield(
 	}
 
 	return newPerpYield, perpYieldIndex, nil
-}
-
-func getCurrentYieldIndexForPerp(
-	perp perptypes.Perpetual,
-) (
-	yieldIndex *big.Rat,
-	err error,
-) {
-	if perp.YieldIndex == "" {
-		fmt.Println("perp.YieldIndex is empty in getCurrentYieldIndexForPerp")
-		return nil, types.ErrPerpYieldIndexUninitialized
-	}
-
-	generalYieldIndex, success := new(big.Rat).SetString(perp.YieldIndex)
-	if !success {
-		return nil, types.ErrRatConversion
-	}
-	return generalYieldIndex, nil
 }
 
 func calculatePerpetualYieldInQuoteQuantums(

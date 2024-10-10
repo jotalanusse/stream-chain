@@ -412,7 +412,6 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 					perpetual.Params.MarketType,
 					perpetual.Params.DangerIndexPpm,
 					perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					perpetual.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -843,7 +842,6 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -1368,7 +1366,6 @@ func TestProcessDeleveraging(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -1607,7 +1604,6 @@ func TestProcessDeleveragingAtOraclePrice(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -1790,7 +1786,6 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}

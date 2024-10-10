@@ -28,7 +28,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 		initialSDaiSupply           *big.Int
 		initialTDaiSupply           *big.Int
 		initialAssetYieldIndex      string
-		initialPerpYieldIndexes     []string
 
 		newBlockHeight        *big.Int
 		newSDaiConversionRate *big.Int
@@ -37,7 +36,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 		expectedSDaiConversionRate     *big.Int
 		expectedTDAISupply             *big.Int
 		expectedAssetYieldIndex        string
-		expectedPerpYieldIndexes       []string
 
 		expErr      bool
 		expErrMsg   string
@@ -52,7 +50,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
@@ -61,7 +58,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			expectedSDaiConversionRate:     keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 			expectedTDAISupply:             big.NewInt(2),
 			expectedAssetYieldIndex:        "2/1",
-			expectedPerpYieldIndexes:       []string{"5/1", "3/1"},
 			expEvent:                       true,
 			expErr:                         false,
 			customSetup:                    func(ctx sdk.Context, k *keeper.Keeper) {},
@@ -75,7 +71,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiSupply:           keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
 			initialTDaiSupply:           keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("1234567891234567891234567890"),
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 100),
@@ -84,7 +79,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			expectedLastUpdatedBlockHeight: big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 100),
 			expectedTDAISupply:             keeper.ConvertStringToBigIntWithPanicOnErr("152415787806736"),
 			expectedAssetYieldIndex:        "76207893903368/4938271605",
-			expectedPerpYieldIndexes:       []string{"76202955631763/987654321", "76202955631763/1646090535"},
 			expEvent:                       true,
 			expErr:                         false,
 			customSetup:                    func(ctx sdk.Context, k *keeper.Keeper) {},
@@ -97,7 +91,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:                 big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate:          keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
@@ -105,7 +98,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			expectedSDaiConversionRate:     keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 			expectedTDAISupply:             big.NewInt(0),
 			expectedAssetYieldIndex:        "1/1",
-			expectedPerpYieldIndexes:       []string{"0/1", "0/1"},
 			expEvent:                       false,
 			expErr:                         false,
 			customSetup:                    func(ctx sdk.Context, k *keeper.Keeper) {},
@@ -118,7 +110,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
@@ -127,7 +118,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			expectedSDaiConversionRate:     keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 			expectedTDAISupply:             big.NewInt(0),
 			expectedAssetYieldIndex:        "1/1",
-			expectedPerpYieldIndexes:       []string{"0/1", "0/1"},
 			expEvent:                       false,
 			expErr:                         false,
 			customSetup:                    func(ctx sdk.Context, k *keeper.Keeper) {},
@@ -140,7 +130,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
@@ -149,7 +138,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			expectedSDaiConversionRate:     big.NewInt(1),
 			expectedTDAISupply:             big.NewInt(1),
 			expectedAssetYieldIndex:        "1/1",
-			expectedPerpYieldIndexes:       []string{"0/1", "0/1"},
 			expEvent:                       false,
 			expErr:                         false,
 			customSetup:                    func(ctx sdk.Context, k *keeper.Keeper) {},
@@ -162,7 +150,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
@@ -171,7 +158,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			expectedSDaiConversionRate:     keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 			expectedTDAISupply:             big.NewInt(1),
 			expectedAssetYieldIndex:        "1/1",
-			expectedPerpYieldIndexes:       []string{"0/1", "0/1"},
 			expEvent:                       false,
 			expErr:                         false,
 			customSetup:                    func(ctx sdk.Context, k *keeper.Keeper) {},
@@ -184,18 +170,16 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: nil,
 
-			expectedTDAISupply:       big.NewInt(0),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expEvent:                 false,
-			expErr:                   true,
-			expErrMsg:                "sDaiConversionRate or blockHeight cannot be nil",
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			expectedTDAISupply:      big.NewInt(0),
+			expectedAssetYieldIndex: "1/1",
+			expEvent:                false,
+			expErr:                  true,
+			expErrMsg:               "sDaiConversionRate or blockHeight cannot be nil",
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
 			name:                        "Invalid: new blockHeight is nil",
@@ -205,18 +189,16 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        nil,
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 
-			expectedTDAISupply:       big.NewInt(0),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expEvent:                 false,
-			expErr:                   true,
-			expErrMsg:                "sDaiConversionRate or blockHeight cannot be nil",
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			expectedTDAISupply:      big.NewInt(0),
+			expectedAssetYieldIndex: "1/1",
+			expEvent:                false,
+			expErr:                  true,
+			expErrMsg:               "sDaiConversionRate or blockHeight cannot be nil",
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
 			name:                        "Invalid: blockHeight is zero",
@@ -226,18 +208,16 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(0),
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 
-			expectedTDAISupply:       big.NewInt(0),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expEvent:                 false,
-			expErr:                   true,
-			expErrMsg:                "blockHeight must be positive: 0",
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			expectedTDAISupply:      big.NewInt(0),
+			expectedAssetYieldIndex: "1/1",
+			expEvent:                false,
+			expErr:                  true,
+			expErrMsg:               "blockHeight must be positive: 0",
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
 			name:                        "Invalid: blockHeight is negative",
@@ -247,18 +227,16 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(-1),
 			newSDaiConversionRate: keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 
-			expectedTDAISupply:       big.NewInt(0),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expEvent:                 false,
-			expErr:                   true,
-			expErrMsg:                "blockHeight must be positive: -1",
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			expectedTDAISupply:      big.NewInt(0),
+			expectedAssetYieldIndex: "1/1",
+			expEvent:                false,
+			expErr:                  true,
+			expErrMsg:               "blockHeight must be positive: -1",
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
 			name:                        "Invalid: sDaiConversionRate is zero",
@@ -268,18 +246,16 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: big.NewInt(0),
 
-			expectedTDAISupply:       big.NewInt(0),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expEvent:                 false,
-			expErr:                   true,
-			expErrMsg:                "sDai conversion rate must be greater than 1.0: 0",
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			expectedTDAISupply:      big.NewInt(0),
+			expectedAssetYieldIndex: "1/1",
+			expEvent:                false,
+			expErr:                  true,
+			expErrMsg:               "sDai conversion rate must be greater than 1.0: 0",
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
 			name:                        "Invalid: sDaiConversionRate is negative",
@@ -289,18 +265,16 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			initialSDaiLastBlockUpdated: big.NewInt(0),
 			initialSDaiConversionRate:   big.NewInt(1),
 			initialAssetYieldIndex:      "1/1",
-			initialPerpYieldIndexes:     []string{"0/1", "0/1"},
 
 			newBlockHeight:        big.NewInt(types.SDAI_UPDATE_BLOCK_DELAY + 101),
 			newSDaiConversionRate: big.NewInt(-1),
 
-			expectedTDAISupply:       big.NewInt(0),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expEvent:                 false,
-			expErr:                   true,
-			expErrMsg:                "sDai conversion rate must be greater than 1.0: -1",
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			expectedTDAISupply:      big.NewInt(0),
+			expectedAssetYieldIndex: "1/1",
+			expEvent:                false,
+			expErr:                  true,
+			expErrMsg:               "sDai conversion rate must be greater than 1.0: -1",
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 	}
 
@@ -347,13 +321,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
-			allPerps := perpetualsKeeper.GetAllPerpetuals(ctx)
-			for i, yieldIndex := range tc.initialPerpYieldIndexes {
-				perp := allPerps[i]
-				perp.YieldIndex = yieldIndex
-				perpetualsKeeper.SetPerpetualForTest(ctx, perp)
-			}
-
 			tc.customSetup(ctx, k)
 
 			err = k.ProcessNewSDaiConversionRateUpdate(ctx, tc.newSDaiConversionRate, tc.newBlockHeight)
@@ -387,10 +354,6 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 				assetYieldIndex, found := k.GetAssetYieldIndex(ctx)
 				require.True(t, found)
 				require.Equal(t, tc.expectedAssetYieldIndex, assetYieldIndex.String())
-				allPerps := perpetualsKeeper.GetAllPerpetuals(ctx)
-				for i, perpYieldIndex := range tc.expectedPerpYieldIndexes {
-					require.Equal(t, perpYieldIndex, allPerps[i].YieldIndex)
-				}
 
 				actualEvents := testkeeper.GetUpdateYieldParamsFromIndexerBlock(ctx, k)
 				if tc.expEvent {
@@ -412,172 +375,159 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 	expectEvent := true
 
 	testCases := []struct {
-		name                     string
-		initialSDaiSupply        *big.Int
-		initialTDaiSupply        *big.Int
-		sDaiConversionRate       *big.Int
-		initialAssetYieldIndex   string
-		initialPerpYieldIndexes  []string
-		expectedTDAISupply       *big.Int
-		expectedAssetYieldIndex  string
-		expectedPerpYieldIndexes []string
-		expErr                   bool
-		customSetup              func(ctx sdk.Context, k *keeper.Keeper)
+		name                    string
+		initialSDaiSupply       *big.Int
+		initialTDaiSupply       *big.Int
+		sDaiConversionRate      *big.Int
+		initialAssetYieldIndex  string
+		initialPerpYieldIndexes []string
+		expectedTDAISupply      *big.Int
+		expectedAssetYieldIndex string
+		expErr                  bool
+		customSetup             func(ctx sdk.Context, k *keeper.Keeper)
 	}{
 		{
-			name:                     "Basic: valid",
-			initialSDaiSupply:        big.NewInt(1000000000000),
-			initialTDaiSupply:        big.NewInt(1),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
-			initialAssetYieldIndex:   "1/1",
-			initialPerpYieldIndexes:  []string{"0/1", "0/1"},
-			expectedTDAISupply:       big.NewInt(2),
-			expectedAssetYieldIndex:  "2/1",
-			expectedPerpYieldIndexes: []string{"5/1", "3/1"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Basic: valid",
+			initialSDaiSupply:       big.NewInt(1000000000000),
+			initialTDaiSupply:       big.NewInt(1),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
+			initialAssetYieldIndex:  "1/1",
+			initialPerpYieldIndexes: []string{"0/1", "0/1"},
+			expectedTDAISupply:      big.NewInt(2),
+			expectedAssetYieldIndex: "2/1",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Basic: Large new yield",
-			initialSDaiSupply:        big.NewInt(1000000000000),
-			initialTDaiSupply:        big.NewInt(1),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("10" + strings.Repeat("0", 27)),
-			initialAssetYieldIndex:   "1/1",
-			initialPerpYieldIndexes:  []string{"0/1", "0/1"},
-			expectedTDAISupply:       big.NewInt(10),
-			expectedAssetYieldIndex:  "10/1",
-			expectedPerpYieldIndexes: []string{"45/1", "27/1"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Basic: Large new yield",
+			initialSDaiSupply:       big.NewInt(1000000000000),
+			initialTDaiSupply:       big.NewInt(1),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("10" + strings.Repeat("0", 27)),
+			initialAssetYieldIndex:  "1/1",
+			initialPerpYieldIndexes: []string{"0/1", "0/1"},
+			expectedTDAISupply:      big.NewInt(10),
+			expectedAssetYieldIndex: "10/1",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Basic: Small new yield",
-			initialSDaiSupply:        big.NewInt(10000000000000000),
-			initialTDaiSupply:        big.NewInt(10000),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1000100000000000000000000000"),
-			initialAssetYieldIndex:   "1/1",
-			initialPerpYieldIndexes:  []string{"0/1", "0/1"},
-			expectedTDAISupply:       big.NewInt(10001),
-			expectedAssetYieldIndex:  "10001/10000",
-			expectedPerpYieldIndexes: []string{"1/2000", "3/10000"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Basic: Small new yield",
+			initialSDaiSupply:       big.NewInt(10000000000000000),
+			initialTDaiSupply:       big.NewInt(10000),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1000100000000000000000000000"),
+			initialAssetYieldIndex:  "1/1",
+			initialPerpYieldIndexes: []string{"0/1", "0/1"},
+			expectedTDAISupply:      big.NewInt(10001),
+			expectedAssetYieldIndex: "10001/10000",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Large amounts: Large new yield",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
-			initialAssetYieldIndex:   "1/1",
-			initialPerpYieldIndexes:  []string{"0/1", "0/1"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("15241578780673"),
-			expectedAssetYieldIndex:  "15241578780673/9876543210",
-			expectedPerpYieldIndexes: []string{"15231702237463/1975308642", "15231702237463/3292181070"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Large amounts: Large new yield",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
+			initialAssetYieldIndex:  "1/1",
+			initialPerpYieldIndexes: []string{"0/1", "0/1"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("15241578780673"),
+			expectedAssetYieldIndex: "15241578780673/9876543210",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Large amounts: Small new yield",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("997630627509663"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1010101010101010101010101010"),
-			initialAssetYieldIndex:   "1/1",
-			initialPerpYieldIndexes:  []string{"0/1", "0/1"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("997630627509664"),
-			expectedAssetYieldIndex:  "997630627509664/997630627509663",
-			expectedPerpYieldIndexes: []string{"5/997630627509663", "1/332543542503221"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Large amounts: Small new yield",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("997630627509663"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1010101010101010101010101010"),
+			initialAssetYieldIndex:  "1/1",
+			initialPerpYieldIndexes: []string{"0/1", "0/1"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("997630627509664"),
+			expectedAssetYieldIndex: "997630627509664/997630627509663",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Initial AssetYieldIndex non-zero: Large new yield",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
-			initialAssetYieldIndex:   "876/543",
-			initialPerpYieldIndexes:  []string{"123456/123457", "98765/198765"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("15241578780673"),
-			expectedAssetYieldIndex:  "2225270501978258/893827160505",
-			expectedPerpYieldIndexes: []string{"1880704126834176343/243865679015394", "201856963166180783/43624691358570"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Initial AssetYieldIndex non-zero: Large new yield",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
+			initialAssetYieldIndex:  "876/543",
+			initialPerpYieldIndexes: []string{"123456/123457", "98765/198765"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("15241578780673"),
+			expectedAssetYieldIndex: "2225270501978258/893827160505",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Initial AssetYieldIndex non-zero: Small new yield",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("997630627509663"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1010101010101010101010101010"),
-			initialAssetYieldIndex:   "345/678",
-			initialPerpYieldIndexes:  []string{"9876/5432", "123456789/12345678"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("997630627509664"),
-			expectedAssetYieldIndex:  "57363761081805680/112732260908591919",
-			expectedPerpYieldIndexes: []string{"351878574188766391/193540341736874622", "4561639773348077684783/456163944080453380982"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Initial AssetYieldIndex non-zero: Small new yield",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("997630627509663"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1010101010101010101010101010"),
+			initialAssetYieldIndex:  "345/678",
+			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("997630627509664"),
+			expectedAssetYieldIndex: "57363761081805680/112732260908591919",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Granular Mint",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139000"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
-			initialAssetYieldIndex:   "345/678",
-			initialPerpYieldIndexes:  []string{"9876/5432", "123456789/12345678"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
-			expectedAssetYieldIndex:  "207602199060021/407983452065690",
-			expectedPerpYieldIndexes: []string{"4457128951994701/2451511185421270", "123815946305724809777/12381593727953401150"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Granular Mint",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139000"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
+			initialAssetYieldIndex:  "345/678",
+			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
+			expectedAssetYieldIndex: "207602199060021/407983452065690",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Zero sDai in Pool",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("0"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("0"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
-			initialAssetYieldIndex:   "1/1",
-			initialPerpYieldIndexes:  []string{"0/1", "0/1"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("0"),
-			expectedAssetYieldIndex:  "1/1",
-			expectedPerpYieldIndexes: []string{"0/1", "0/1"},
-			expErr:                   false,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) { expectEvent = false },
+			name:                    "Zero sDai in Pool",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("0"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("0"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
+			initialAssetYieldIndex:  "1/1",
+			initialPerpYieldIndexes: []string{"0/1", "0/1"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("0"),
+			expectedAssetYieldIndex: "1/1",
+			expErr:                  false,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) { expectEvent = false },
 		},
 		{
-			name:                     "Failure: Zero tDai Minted",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
-			initialAssetYieldIndex:   "345/678",
-			initialPerpYieldIndexes:  []string{"9876/5432", "123456789/12345678"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
-			expectedAssetYieldIndex:  "345/678",
-			expectedPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
-			expErr:                   true,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Failure: Zero tDai Minted",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
+			initialAssetYieldIndex:  "345/678",
+			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
+			expectedAssetYieldIndex: "345/678",
+			expErr:                  true,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Failure: Lower tDai amount after yield",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139250"), // supply after mint: 1083141908139240
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
-			initialAssetYieldIndex:   "345/678",
-			initialPerpYieldIndexes:  []string{"9876/5432", "123456789/12345678"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139250"),
-			expectedAssetYieldIndex:  "345/678",
-			expectedPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
-			expErr:                   true,
-			customSetup:              func(ctx sdk.Context, k *keeper.Keeper) {},
+			name:                    "Failure: Lower tDai amount after yield",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139250"), // supply after mint: 1083141908139240
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
+			initialAssetYieldIndex:  "345/678",
+			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139250"),
+			expectedAssetYieldIndex: "345/678",
+			expErr:                  true,
+			customSetup:             func(ctx sdk.Context, k *keeper.Keeper) {},
 		},
 		{
-			name:                     "Granular Mint",
-			initialSDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
-			initialTDaiSupply:        keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139000"),
-			sDaiConversionRate:       keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
-			initialAssetYieldIndex:   "345/678",
-			initialPerpYieldIndexes:  []string{"9876/5432", "123456789/12345678"},
-			expectedTDAISupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
-			expectedAssetYieldIndex:  "9026182567827/9026182567825",
-			expectedPerpYieldIndexes: []string{"4457128951994701/2451511185421270", "123815946305724809777/12381593727953401150"},
-			expErr:                   false,
+			name:                    "Granular Mint",
+			initialSDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("987654321234567898765432123"),
+			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139000"),
+			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
+			initialAssetYieldIndex:  "345/678",
+			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
+			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
+			expectedAssetYieldIndex: "9026182567827/9026182567825",
+			expErr:                  false,
 			customSetup: func(ctx sdk.Context, k *keeper.Keeper) {
 				store := ctx.KVStore(k.GetStoreKeyForTestingOnly())
 				store.Delete([]byte(types.AssetYieldIndexPrefix))
@@ -625,13 +575,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
-			allPerps := perpetualsKeeper.GetAllPerpetuals(ctx)
-			for i, yieldIndex := range tc.initialPerpYieldIndexes {
-				perp := allPerps[i]
-				perp.YieldIndex = yieldIndex
-				perpetualsKeeper.SetPerpetualForTest(ctx, perp)
-			}
-
 			tc.customSetup(ctx, k)
 
 			err = k.UpdateMintStateOnSDaiConversionRateUpdate(ctx)
@@ -655,10 +598,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 				assetYieldIndex, found := k.GetAssetYieldIndex(ctx)
 				require.True(t, found)
 				require.Equal(t, tc.expectedAssetYieldIndex, assetYieldIndex.String())
-				allPerps := perpetualsKeeper.GetAllPerpetuals(ctx)
-				for i, perpYieldIndex := range tc.expectedPerpYieldIndexes {
-					require.Equal(t, perpYieldIndex, allPerps[i].YieldIndex)
-				}
 
 				actualEvents := testkeeper.GetUpdateYieldParamsFromIndexerBlock(ctx, k)
 				if expectEvent {

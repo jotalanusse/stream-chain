@@ -1,6 +1,8 @@
 package types
 
-import "github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+import (
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+)
 
 const (
 	// TDai denom is defined as equal to the Uusdc denom.

@@ -563,9 +563,6 @@ message UpdatePerpetualEventV1 {
 
   // The maximum cumulative insurance fund delta per block for isolated markets.
   string isolated_market_max_cumulative_insurance_fund_delta_per_block = 7;
-
-  // The perp yield index of this perpetual market
-  string perp_yield_index = 8;
 }
 
 // UpdateYieldParamsV1 message contains all the information about an update

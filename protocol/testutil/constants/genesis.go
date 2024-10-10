@@ -706,8 +706,7 @@ const GenesisState = `{
             "market_id": 0,
             "ticker": "BTC-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         },
         {
           "params": {
@@ -718,8 +717,7 @@ const GenesisState = `{
             "market_id": 1,
             "ticker": "ETH-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         }
       ]
     },

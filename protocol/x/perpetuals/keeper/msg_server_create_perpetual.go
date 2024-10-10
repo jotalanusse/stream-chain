@@ -35,7 +35,6 @@ func (k msgServer) CreatePerpetual(
 		msg.Params.MarketType,
 		msg.Params.DangerIndexPpm,
 		msg.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-		"0/1", // yield index should be initialised at 0 to start increment
 	)
 	if err != nil {
 		return &types.MsgCreatePerpetualResponse{}, err

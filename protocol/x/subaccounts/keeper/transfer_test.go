@@ -1539,7 +1539,6 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.MarketType,
 				tc.perpetual.Params.DangerIndexPpm,
 				tc.perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-				tc.perpetual.YieldIndex,
 			)
 			require.NoError(t, err)
 
