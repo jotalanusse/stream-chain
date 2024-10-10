@@ -27,8 +27,7 @@ BEGIN
         "atomicResolution" = perpetual_market_record."atomicResolution",
         "liquidityTierId" = perpetual_market_record."liquidityTierId",
         "dangerIndexPpm" = perpetual_market_record."dangerIndexPpm",
-        "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock" = perpetual_market_record."isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock",
-
+        "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock" = perpetual_market_record."isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock"
     WHERE "id" = perpetual_market_id
     RETURNING * INTO perpetual_market_record;
 
