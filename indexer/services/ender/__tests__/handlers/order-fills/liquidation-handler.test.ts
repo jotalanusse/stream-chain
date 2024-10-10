@@ -69,7 +69,6 @@ import {
   defaultLiquidation,
   defaultLiquidationEvent,
   defaultPreviousHeight,
-  defaultZeroPerpYieldIndex,
 } from '../../helpers/constants';
 import { DydxIndexerSubtypes } from '../../../src/lib/types';
 import { LiquidationHandler } from '../../../src/handlers/order-fills/liquidation-handler';
@@ -146,7 +145,6 @@ describe('LiquidationHandler', () => {
     openEventId: testConstants.defaultTendermintEventId4,
     lastEventId: testConstants.defaultTendermintEventId4,
     settledFunding: '200000',
-    perpYieldIndex: defaultZeroPerpYieldIndex,
   };
 
   describe('getParallelizationIds', () => {

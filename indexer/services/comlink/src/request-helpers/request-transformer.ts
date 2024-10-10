@@ -103,7 +103,6 @@ export function perpetualPositionToResponseObject(
     sumOpen: position.sumOpen,
     sumClose: position.sumClose,
     netFunding: netFunding.toFixed(),
-    perpYieldIndex: position.perpYieldIndex,
   };
 }
 
@@ -366,7 +365,6 @@ export function perpetualMarketToResponseObject(
     openInterestLowerCap: liquidityTier.openInterestLowerCap,
     openInterestUpperCap: liquidityTier.openInterestUpperCap,
     baseOpenInterest: perpetualMarket.baseOpenInterest,
-    perpYieldIndex: perpetualMarket.perpYieldIndex,
   };
 }
 

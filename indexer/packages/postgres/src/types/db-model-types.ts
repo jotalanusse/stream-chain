@@ -44,7 +44,6 @@ export interface PerpetualPositionFromDatabase extends IdBasedModelFromDatabase 
   closeEventId?: Buffer;
   lastEventId: Buffer;
   settledFunding: string;
-  perpYieldIndex: string;
 }
 
 export interface OrderFromDatabase extends IdBasedModelFromDatabase {
@@ -90,7 +89,6 @@ export interface PerpetualMarketFromDatabase {
   liquidityTierId: number;
   marketType: PerpetualMarketType;
   baseOpenInterest: string;
-  perpYieldIndex: string;
 }
 
 export interface FillFromDatabase {
