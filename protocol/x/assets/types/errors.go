@@ -21,6 +21,5 @@ var (
 	ErrInvalidMaxSlippagePpm        = errorsmod.Register(ModuleName, 15, "Invalid max slippage ppm")
 
 	// Errors for Not Implemented
-	ErrNotImplementedMulticollateral = errorsmod.Register(ModuleName, 401, "Not Implemented: Multi-Collateral")
-	ErrNotImplementedMargin          = errorsmod.Register(ModuleName, 402, "Not Implemented: Margin-Trading of Assets")
+	ErrNotImplementedMargin = errorsmod.Register(ModuleName, 402, "Not Implemented: Margin-Trading of Assets")
 )

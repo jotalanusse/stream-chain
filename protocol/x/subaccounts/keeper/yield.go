@@ -118,7 +118,7 @@ func getYieldFromAssetPositions(
 ) {
 	for _, assetPosition := range subaccount.AssetPositions {
 		if assetPosition.AssetId != assettypes.AssetTDai.Id {
-			return nil, assettypes.ErrNotImplementedMulticollateral
+			continue
 		}
 
 		newAssetYield, err := calculateAssetYieldInQuoteQuantums(subaccount, assetYieldIndex, assetPosition)

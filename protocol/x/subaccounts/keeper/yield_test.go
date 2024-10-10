@@ -938,6 +938,28 @@ func TestAddYieldToSubaccount(t *testing.T) {
 				},
 			},
 		},
+		"Successfully handles other asset than tDai": {
+			assetPositions: []*types.AssetPosition{
+				{
+					AssetId:  1,
+					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    0,
+				},
+			},
+			subaccountAssetYieldIndex: big.NewRat(1, 1).String(),
+			globalAssetYieldIndex:     big.NewRat(2, 1),
+			availableYield:            big.NewInt(1_000_000_000_000_000_000),
+			expectedErr:               nil,
+			expectedTotalYield:        big.NewInt(0),
+			expectedAssetYieldIndex:   big.NewRat(2, 1).String(),
+			expectedAssetPositions: []*types.AssetPosition{
+				{
+					AssetId:  1,
+					Quantums: dtypes.NewInt(100_000_000_000),
+					Index:    0,
+				},
+			},
+		},
 		"Failure: subaccount's asset yield index is empty": {
 			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(100_000_000_000)),
 			subaccountAssetYieldIndex: "",
@@ -981,19 +1003,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 			globalAssetYieldIndex:     big.NewRat(1, 1),
 			availableYield:            big.NewInt(1_000_000_000_000_000_000),
 			expectedErr:               types.ErrGeneralYieldIndexSmallerThanYieldIndexInSubaccount,
-		},
-		"Failure: other asset than tDai": {
-			assetPositions: []*types.AssetPosition{
-				{
-					AssetId:  1,
-					Quantums: dtypes.NewInt(100_000_000_000),
-					Index:    0,
-				},
-			},
-			subaccountAssetYieldIndex: big.NewRat(1, 1).String(),
-			globalAssetYieldIndex:     big.NewRat(1, 1),
-			availableYield:            big.NewInt(1_000_000_000_000_000_000),
-			expectedErr:               assettypes.ErrNotImplementedMulticollateral,
 		},
 		"Failure: Tries to add yield when subaccount has perp position that is not in perpIdToPerp map": {
 			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(100_000_000_000)),

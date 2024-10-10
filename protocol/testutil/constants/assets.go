@@ -44,6 +44,7 @@ var (
 		HasMarket:        true,
 		MarketId:         uint32(0),
 		AtomicResolution: int32(-8),
+		MaxSlippagePpm:   uint32(0),
 	}
 
 	TDai = &asstypes.Asset{
@@ -54,5 +55,6 @@ var (
 		HasMarket:        false,
 		MarketId:         uint32(0),
 		AtomicResolution: int32(-6),
+		MaxSlippagePpm:   uint32(0),
 	}
 )
