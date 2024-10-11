@@ -6,7 +6,6 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -182,11 +181,21 @@ func GetIsolatedPerpetualStateTransition(
 	// If the updated subaccount does not have any perpetual positions, then an isolated perpetual
 	// position must have been closed due to the perpetual update.
 	if len(updatedSubaccount.PerpetualPositions) == 0 {
+
+		assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
+		assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
+
+		for _, assetPosition := range updatedSubaccount.AssetPositions {
+			assetIds = append(assetIds, assetPosition.AssetId)
+			assetSizes = append(assetSizes, assetPosition.GetBigQuantums())
+		}
+
 		return &types.IsolatedPerpetualPositionStateTransition{
-			SubaccountId:  updatedSubaccount.Id,
-			PerpetualId:   perpetualUpdate.PerpetualId,
-			QuoteQuantums: updatedSubaccount.GetTDaiPosition(),
-			Transition:    types.Closed,
+			SubaccountId: updatedSubaccount.Id,
+			PerpetualId:  perpetualUpdate.PerpetualId,
+			AssetIds:     assetIds,
+			BigQuantums:  assetSizes,
+			Transition:   types.Closed,
 		}, nil
 	}
 
@@ -196,37 +205,34 @@ func GetIsolatedPerpetualStateTransition(
 	// If the size of the update and the position are the same, the perpetual update must have opened
 	// the position.
 	if perpetualUpdate.GetBigQuantums().Cmp(perpetualPosition.GetBigQuantums()) == 0 {
-		if len(settledUpdateWithUpdatedSubaccount.AssetUpdates) != 1 {
-			return nil, errorsmod.Wrapf(
-				types.ErrFailedToUpdateSubaccounts,
-				"Subaccount with id %v opened perpteual position with perpetual id %d with invalid number of"+
-					" changes to asset positions (%d), should only be 1 asset update",
-				updatedSubaccount.Id,
-				perpetualUpdate.PerpetualId,
-				len(settledUpdateWithUpdatedSubaccount.AssetUpdates),
-			)
-		}
-		if settledUpdateWithUpdatedSubaccount.AssetUpdates[0].AssetId != assettypes.AssetTDai.Id {
-			return nil, errorsmod.Wrapf(
-				types.ErrFailedToUpdateSubaccounts,
-				"Subaccount with id %v opened perpteual position with perpetual id %d without a change to the"+
-					" quote currency's asset position.",
-				updatedSubaccount.Id,
-				perpetualUpdate.PerpetualId,
-			)
-		}
 		// Collateral equal to the quote currency asset position before the update was applied needs to be transferred.
 		// Subtract the delta from the updated subaccount's quote currency asset position size to get the size
 		// of the quote currency asset position.
-		quoteQuantumsBeforeUpdate := new(big.Int).Sub(
-			updatedSubaccount.GetTDaiPosition(),
-			settledUpdateWithUpdatedSubaccount.AssetUpdates[0].GetBigQuantums(),
-		)
+		assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
+		assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
+
+		assetUpdateMap := make(map[uint32]*big.Int)
+		for _, assetUpdate := range settledUpdateWithUpdatedSubaccount.AssetUpdates {
+			assetUpdateMap[assetUpdate.AssetId] = assetUpdate.GetBigQuantums()
+		}
+
+		for _, assetPosition := range updatedSubaccount.AssetPositions {
+			assetIds = append(assetIds, assetPosition.AssetId)
+
+			updateQuantums, exists := assetUpdateMap[assetPosition.AssetId]
+			if !exists {
+				assetSizes = append(assetSizes, assetPosition.GetBigQuantums())
+			} else {
+				assetSizes = append(assetSizes, new(big.Int).Sub(assetPosition.GetBigQuantums(), updateQuantums))
+			}
+		}
+
 		return &types.IsolatedPerpetualPositionStateTransition{
-			SubaccountId:  updatedSubaccount.Id,
-			PerpetualId:   perpetualUpdate.PerpetualId,
-			QuoteQuantums: quoteQuantumsBeforeUpdate,
-			Transition:    types.Opened,
+			SubaccountId: updatedSubaccount.Id,
+			PerpetualId:  perpetualUpdate.PerpetualId,
+			AssetIds:     assetIds,
+			BigQuantums:  assetSizes,
+			Transition:   types.Opened,
 		}, nil
 	}
 
@@ -247,9 +253,11 @@ func (k *Keeper) transferCollateralForIsolatedPerpetual(
 		return nil
 	}
 
-	// If there are zero quantums to transfer, don't transfer collateral.
-	if stateTransition.QuoteQuantums.Sign() == 0 {
-		return nil
+	if len(stateTransition.AssetIds) != len(stateTransition.BigQuantums) {
+		return errorsmod.Wrap(
+			types.ErrFailedToUpdateSubaccounts,
+			"Asset IDs and big quantums arrays must be the same length",
+		)
 	}
 
 	isolatedCollateralPoolAddr, err := k.GetCollateralPoolFromPerpetualId(ctx, stateTransition.PerpetualId)
@@ -280,39 +288,47 @@ func (k *Keeper) transferCollateralForIsolatedPerpetual(
 		)
 	}
 
-	// Invalid to transfer negative quantums. This should already be caught by collateralization
-	// checks as well.
-	if stateTransition.QuoteQuantums.Sign() == -1 {
-		return errorsmod.Wrapf(
-			types.ErrFailedToUpdateSubaccounts,
-			"Subaccount with id %v %s perpteual position with perpetual id %d with negative collateral %s to transfer",
-			stateTransition.SubaccountId,
-			stateTransition.Transition.String(),
-			stateTransition.PerpetualId,
-			stateTransition.QuoteQuantums.String(),
+	for i, _ := range stateTransition.AssetIds {
+
+		// If there are zero quantums to transfer, don't transfer collateral.
+		if stateTransition.BigQuantums[i].Sign() == 0 {
+			continue
+		}
+
+		// Invalid to transfer negative quantums. This should already be caught by collateralization
+		// checks as well.
+		if stateTransition.BigQuantums[i].Sign() == -1 {
+			return errorsmod.Wrapf(
+				types.ErrFailedToUpdateSubaccounts,
+				"Subaccount with id %v %s perpteual position with perpetual id %d with negative collateral asset id %d with size %s to transfer",
+				stateTransition.SubaccountId,
+				stateTransition.Transition.String(),
+				stateTransition.PerpetualId,
+				stateTransition.AssetIds[i],
+				stateTransition.BigQuantums[i].String(),
+			)
+		}
+
+		// Transfer collateral between collateral pools.
+		_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
+			ctx,
+			stateTransition.AssetIds[i],
+			stateTransition.BigQuantums[i],
 		)
-	}
+		if err != nil {
+			return err
+		}
 
-	// Transfer collateral between collateral pools.
-	_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
-		ctx,
-		// TODO(DEC-715): Support non-TDai assets.
-		assettypes.AssetTDai.Id,
-		stateTransition.QuoteQuantums,
-	)
-	if err != nil {
-		return err
-	}
+		if err = k.bankKeeper.SendCoins(
+			ctx,
+			fromModuleAddr,
+			toModuleAddr,
+			[]sdk.Coin{coinToTransfer},
+		); err != nil {
+			return err
+		}
 
-	if err = k.bankKeeper.SendCoins(
-		ctx,
-		fromModuleAddr,
-		toModuleAddr,
-		[]sdk.Coin{coinToTransfer},
-	); err != nil {
-		return err
 	}
-
 	return nil
 }
 

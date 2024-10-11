@@ -131,10 +131,11 @@ func TestGetIsolatedPerpetualStateTransition(t *testing.T) {
 				constants.IsoUsd_IsolatedMarket,
 			},
 			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
-				SubaccountId:  &constants.Alice_Num0,
-				PerpetualId:   uint32(3),
-				QuoteQuantums: constants.TDai_Asset_10_000.GetBigQuantums(),
-				Transition:    types.Closed,
+				SubaccountId: &constants.Alice_Num0,
+				PerpetualId:  uint32(3),
+				AssetIds:     []uint32{assettypes.AssetTDai.Id},
+				BigQuantums:  []*big.Int{constants.TDai_Asset_10_000.GetBigQuantums()},
+				Transition:   types.Closed,
 			},
 		},
 		`If single isolated perpetual update, existing perpetual position with same size, state transition is returned for
@@ -169,10 +170,11 @@ func TestGetIsolatedPerpetualStateTransition(t *testing.T) {
 				constants.IsoUsd_IsolatedMarket,
 			},
 			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
-				SubaccountId:  &constants.Alice_Num0,
-				PerpetualId:   uint32(3),
-				QuoteQuantums: big.NewInt(10_000_000), // $-40 - (-$50)
-				Transition:    types.Opened,
+				SubaccountId: &constants.Alice_Num0,
+				PerpetualId:  uint32(3),
+				AssetIds:     []uint32{assettypes.AssetTDai.Id},
+				BigQuantums:  []*big.Int{big.NewInt(10_000_000)}, // $-40 - (-$50)
+				Transition:   types.Opened,
 			},
 		},
 		`If single isolated perpetual update, existing perpetual position with different size, nil state transition

@@ -53,11 +53,7 @@ var (
 	ErrDuplicateSubaccountIds   = errorsmod.Register(ModuleName, 202, "duplicate subaccount id found in genesis")
 
 	// 300 - 399: asset position related.
-	ErrAssetPositionsOutOfOrder       = errorsmod.Register(ModuleName, 300, "asset positions are out of order")
-	ErrAssetPositionZeroQuantum       = errorsmod.Register(ModuleName, 301, "asset position's quantum cannot be zero")
-	ErrAssetPositionNotSupported      = errorsmod.Register(ModuleName, 302, "asset position is not supported")
-	ErrMultAssetPositionsNotSupported = errorsmod.Register(
-		ModuleName, 303, "having multiple asset positions is not supported")
+	ErrAssetPositionZeroQuantum            = errorsmod.Register(ModuleName, 301, "asset position's quantum cannot be zero")
 	ErrNegativeAssetYieldIndexNotSupported = errorsmod.Register(ModuleName, 304, "negative asset yield index not supported")
 
 	// 400 - 499: perpetual position related.

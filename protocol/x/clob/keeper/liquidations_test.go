@@ -4960,19 +4960,19 @@ func TestUpdateTDaiPosition(t *testing.T) {
 				},
 			},
 			quantumsDelta: big.NewInt(500),
-			expectedError: true,
+			expectedSubaccount: satypes.Subaccount{
+				AssetPositions: []*satypes.AssetPosition{
+					{AssetId: 0, Quantums: dtypes.NewInt(500)},
+					{AssetId: 1, Quantums: dtypes.NewInt(1000)},
+				},
+			},
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			err := keeper.UpdateTDaiPosition(&tc.subaccount, tc.quantumsDelta)
-			if tc.expectedError {
-				require.Error(t, err)
-			} else {
-				require.NoError(t, err)
-				require.Equal(t, tc.expectedSubaccount, tc.subaccount)
-			}
+			keeper.UpdateTDaiPosition(&tc.subaccount, tc.quantumsDelta)
+			require.Equal(t, tc.expectedSubaccount, tc.subaccount)
 		})
 	}
 }

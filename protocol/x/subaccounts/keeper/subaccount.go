@@ -511,7 +511,7 @@ func (k Keeper) CanUpdateSubaccounts(
 }
 
 // getSettledSubaccount returns 1. a new settled subaccount given an unsettled subaccount,
-// updating the TDai AssetPosition (including yield claims), FundingIndex, and L
+// updating the AssetPositions (including yield claims), FundingIndex, and L
 // astFundingPayment fields accordingly (does not persist any changes) and 2. a map with
 // perpetual ID as key and last funding payment as value (for emitting funding payments to
 // indexer).
@@ -533,7 +533,7 @@ func (k Keeper) GetSettledSubaccount(
 }
 
 // GetSettledSubaccountWithPerpetuals returns 1. a new settled subaccount given an unsettled subaccount,
-// updating the TDai AssetPosition, FundingIndex, and LastFundingPayment fields accordingly
+// updating the AssetPositions, FundingIndex, and LastFundingPayment fields accordingly
 // (does not persist any changes) and 2. a map with perpetual ID as key and last funding
 // payment as value (for emitting funding payments to indexer).
 //

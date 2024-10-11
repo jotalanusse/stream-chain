@@ -9,11 +9,9 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
-	assetstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/heap"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
@@ -1164,27 +1162,14 @@ func (k Keeper) SimulateClosePerpetualPosition(
 	}
 	bigNetCollateralQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, position.GetBigQuantums())
 
-	err = UpdateTDaiPosition(&subaccount, bigNetCollateralQuoteQuantums)
-	if err != nil {
-		return satypes.Subaccount{}, err
-	}
+	UpdateTDaiPosition(&subaccount, bigNetCollateralQuoteQuantums)
 	return subaccount, nil
 }
 
-func UpdateTDaiPosition(subaccount *satypes.Subaccount, quantumsDelta *big.Int) (err error) {
-	assetPosition := subaccount.AssetPositions[0]
-	if assetPosition.AssetId != assetstypes.AssetTDai.Id {
-		return errors.New("first asset position must be TDai")
-	}
+func UpdateTDaiPosition(subaccount *satypes.Subaccount, quantumsDelta *big.Int) {
 
-	assetPosition.Quantums = dtypes.NewIntFromBigInt(new(big.Int).Add(assetPosition.Quantums.BigInt(), quantumsDelta))
-
-	if assetPosition.Quantums.BigInt().Sign() == 0 {
-		subaccount.AssetPositions = []*satypes.AssetPosition{}
-	} else {
-		subaccount.AssetPositions = []*satypes.AssetPosition{assetPosition}
-	}
-	return nil
+	tdaiAmount := subaccount.GetTDaiPosition()
+	subaccount.SetTDaiAssetPosition(new(big.Int).Add(tdaiAmount, quantumsDelta))
 }
 
 func RemovePerpetualPosition(subaccount *satypes.Subaccount, perpetualId uint32) {
