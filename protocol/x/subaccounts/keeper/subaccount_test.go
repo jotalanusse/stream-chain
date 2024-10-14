@@ -3570,6 +3570,72 @@ func TestUpdateSubaccounts(t *testing.T) {
 			},
 			msgSenderEnabled: true,
 		},
+		`Successfully claims yield when opening isolated position`: {
+			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
+			subaccountAssetYieldIndex: big.NewRat(1, 1).String(),
+			globalAssetYieldIndex:     big.NewRat(2, 1),
+			collateralPoolTDaiBalances: map[string]int64{
+				types.ModuleAddress.String(): 1_500_000_000_000, // $1,500,000 TDai
+			},
+			fundsInTDaiPool: big.NewInt(2_000_000_000_000),
+			expectedCollateralPoolTDaiBalances: map[string]int64{
+				types.ModuleAddress.String(): 500_000_000_000, // $500,000 TDai
+				authtypes.NewModuleAddress(
+					types.ModuleName + ":" + lib.UintToString(constants.PerpetualPosition_OneISOLong.PerpetualId),
+				).String(): 2_000_000_000_000, // $1,000,000 TDai as collateral + $1,000,000 TDai yield claim
+			},
+			expectedTDaiYieldPoolBalance: big.NewInt(1_000_000_000_000),
+			expectedAssetYieldIndex:      big.NewRat(2, 1).String(),
+			expectedSuccess:              true,
+			expectedSuccessPerUpdate:     []types.UpdateResult{types.Success},
+			perpetuals: []perptypes.Perpetual{
+				constants.BtcUsd_NoMarginRequirement,
+				constants.IsoUsd_IsolatedMarket,
+			},
+			perpetualPositions: []*types.PerpetualPosition{},
+			expectedPerpetualPositions: []*types.PerpetualPosition{
+				{
+					PerpetualId:  uint32(3),
+					Quantums:     dtypes.NewInt(1_000_000_000), // 1 ISO
+					FundingIndex: dtypes.NewInt(0),
+				},
+			},
+			expectedUpdatedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
+				defaultSubaccountId: {
+					{
+						PerpetualId:  uint32(3),
+						Quantums:     dtypes.NewInt(1_000_000_000), // 1 ISO
+						FundingIndex: dtypes.NewInt(0),
+					},
+				},
+			},
+			expectedAssetPositions: []*types.AssetPosition{
+				{
+					AssetId:  uint32(0),
+					Quantums: dtypes.NewInt(1_999_900_000_000),
+				},
+			},
+			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
+				defaultSubaccountId: {
+					{
+						AssetId:  uint32(0),
+						Quantums: dtypes.NewInt(1_999_900_000_000),
+					},
+				},
+			},
+			updates: []types.Update{
+				{
+					AssetUpdates: testutil.CreateTDaiAssetUpdate(big.NewInt(-100_000_000)), // -$100
+					PerpetualUpdates: []types.PerpetualUpdate{
+						{
+							PerpetualId:      uint32(3),
+							BigQuantumsDelta: big.NewInt(1_000_000_000), // 1 ISO
+						},
+					},
+				},
+			},
+			msgSenderEnabled: true,
+		},
 		"Successfully claims yield for multiple subaccounts": {
 			globalAssetYieldIndex: big.NewRat(9, 4),
 			fundsInTDaiPool:       big.NewInt(1_200_000_000_000),
