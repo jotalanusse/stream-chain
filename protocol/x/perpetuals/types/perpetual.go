@@ -42,11 +42,28 @@ func (p *PerpetualParams) Validate() error {
 		)
 	}
 
-	if p.MarketType == PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED && len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
-		return errorsmod.Wrap(
-			ErrIsolatedMarketMultiCollateralAssetsEmpty,
-			"In validate perpetual params",
-		)
+	if p.MarketType == PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
+		if len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+			return errorsmod.Wrap(
+				ErrIsolatedMarketMultiCollateralAssetsEmpty,
+				"In validate perpetual params",
+			)
+		} else {
+			// Check that MultiCollateralAssets contains 0
+			containsZero := false
+			for _, asset := range p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+				if asset == 0 {
+					containsZero = true
+					break
+				}
+			}
+			if !containsZero {
+				return errorsmod.Wrap(
+					ErrIsolatedMarketMultiCollateralAssetDoesNotContainTDai,
+					"MultiCollateralAssets does not contain tdai",
+				)
+			}
+		}
 	}
 
 	return nil

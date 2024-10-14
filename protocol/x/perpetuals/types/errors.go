@@ -172,6 +172,11 @@ var (
 		35,
 		"multi collateral asssets is uninitialized",
 	)
+	ErrIsolatedMarketMultiCollateralAssetDoesNotContainTDai = errorsmod.Register(
+		ModuleName,
+		36,
+		"multi collateral asset does not contain tdai",
+	)
 
 	// Miscallaneous errors
 	ErrNotImplementedFunding = errorsmod.Register(ModuleName, 1001, "Not Implemented: Perpetuals Funding")

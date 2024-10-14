@@ -40,6 +40,44 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			},
 			expectedErr: "DefaultFundingPpm magnitude exceeds maximum value",
 		},
+		{
+			desc: "Invalid Isolated market max cumulative insurance fund delta per block",
+			params: types.PerpetualParams{
+				Ticker:            "test",
+				DefaultFundingPpm: 1_000_000,
+				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
+				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{1},
+				},
+			},
+			expectedErr: "isolated market max cumulative insurance fund delta per block is zero",
+		},
+		{
+			desc: "Invalid Isolated market collateral assets",
+			params: types.PerpetualParams{
+				Ticker:            "test",
+				DefaultFundingPpm: 1_000_000,
+				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
+				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(100),
+				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{1},
+				},
+			},
+			expectedErr: "MultiCollateralAssets does not contain tdai: multi collateral asset does not contain tdai",
+		},
+		{
+			desc: "Valud Isolated market",
+			params: types.PerpetualParams{
+				Ticker:            "test",
+				DefaultFundingPpm: 1_000_000,
+				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
+				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(100),
+				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{0},
+				},
+			},
+			expectedErr: "",
+		},
 	}
 
 	for _, tc := range tests {
