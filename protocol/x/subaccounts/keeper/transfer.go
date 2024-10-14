@@ -30,21 +30,16 @@ func (k Keeper) getValidSubaccountUpdatesForTransfer(
 		bigBalanceDelta.Neg(bigBalanceDelta)
 	}
 
-	if assetId == 0 {
-		updates = []types.Update{
-			{
-				SubaccountId: subaccountId,
-				AssetUpdates: []types.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigBalanceDelta,
-					},
+	updates = []types.Update{
+		{
+			SubaccountId: subaccountId,
+			AssetUpdates: []types.AssetUpdate{
+				{
+					AssetId:          assetId,
+					BigQuantumsDelta: bigBalanceDelta,
 				},
 			},
-		}
-	} else {
-		// TODO(DEC-715): Support non-TDai assets.
-		return nil, types.ErrAssetTransferThroughBankNotImplemented
+		},
 	}
 
 	success, successPerUpdate, err := k.CanUpdateSubaccounts(ctx, updates, types.Transfer)
@@ -93,10 +88,6 @@ func (k Keeper) DepositFundsFromAccountToSubaccount(
 	assetId uint32,
 	quantums *big.Int,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	if quantums.Sign() <= 0 {
 		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, lib.UintToString(assetId))
@@ -156,10 +147,6 @@ func (k Keeper) WithdrawFundsFromSubaccountToAccount(
 	assetId uint32,
 	quantums *big.Int,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	if quantums.Sign() <= 0 {
 		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, lib.UintToString(assetId))
@@ -398,17 +385,13 @@ func (k Keeper) TransferFundsFromSubaccountToSubaccount(
 	assetId uint32,
 	quantums *big.Int,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	updates := []types.Update{
 		{
 			SubaccountId: senderSubaccountId,
 			AssetUpdates: []types.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          assetId,
 					BigQuantumsDelta: new(big.Int).Neg(quantums),
 				},
 			},
@@ -417,7 +400,7 @@ func (k Keeper) TransferFundsFromSubaccountToSubaccount(
 			SubaccountId: recipientSubaccountId,
 			AssetUpdates: []types.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          assetId,
 					BigQuantumsDelta: new(big.Int).Set(quantums),
 				},
 			},

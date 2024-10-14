@@ -65,6 +65,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Success() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNumberOne,
+		assetstypes.AssetTDai.Id,
 		uint64(1_000_000),
 		new(big.Int).SetUint64(499_000_000),
 		new(big.Int).SetUint64(501_000_000),
@@ -80,6 +81,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_InsufficientBalance() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNumberOne,
+		assetstypes.AssetTDai.Id,
 		uint64(501_000_000), // Sender only has $500
 		new(big.Int).SetUint64(500_000_000),
 		new(big.Int).SetUint64(500_000_000),
@@ -95,6 +97,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Nonexistent() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNonExistent,
+		assetstypes.AssetTDai.Id,
 		uint64(1_000_000),
 		new(big.Int).SetUint64(499_000_000),
 		new(big.Int).SetUint64(1_000_000),
@@ -105,6 +108,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Nonexistent() {
 func (s *SendingIntegrationTestSuite) sendTransferAndVerifyBalance(
 	senderSubaccountNumber uint32,
 	recipientSubaccountNumber uint32,
+	assetId uint32,
 	amount uint64,
 	expectedSenderQuoteBalance *big.Int,
 	expectedRecipientQuoteBalance *big.Int,
@@ -113,9 +117,9 @@ func (s *SendingIntegrationTestSuite) sendTransferAndVerifyBalance(
 	transferTx := fmt.Sprintf(
 		"docker exec interchain-security-instance interchain-security-cd"+
 			" tx sending create-transfer dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6 %d"+
-			" dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6 %d %d --from dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6"+
+			" dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6 %d %d %d --from dydx1eeeggku6dzk3mv7wph3zq035rhtd890smfq5z6"+
 			" --chain-id consu --home /consu/validatoralice --keyring-backend test -y",
-		senderSubaccountNumber, recipientSubaccountNumber, amount)
+		senderSubaccountNumber, recipientSubaccountNumber, assetId, amount)
 	_, _, err := network.QueryCustomNetwork(transferTx)
 	if err != nil {
 		s.T().Fatalf("failed to send transfer: %v", err)

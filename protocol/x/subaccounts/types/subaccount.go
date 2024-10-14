@@ -81,7 +81,7 @@ func (m *Subaccount) SetTDaiAssetPosition(newTDaiPosition *big.Int) {
 	TDaiAssetPosition := m.getTDaiAssetPosition()
 	if newTDaiPosition == nil || newTDaiPosition.Sign() == 0 {
 		if TDaiAssetPosition != nil {
-			m.AssetPositions = m.AssetPositions[1:]
+			m.removeTDaiAssetPosition()
 		}
 	} else {
 		if TDaiAssetPosition == nil {
@@ -99,9 +99,24 @@ func (m *Subaccount) getTDaiAssetPosition() *AssetPosition {
 		return nil
 	}
 
-	firstAsset := m.AssetPositions[0]
-	if firstAsset.AssetId != assettypes.AssetTDai.Id {
-		return nil
+	for _, assetPosition := range m.AssetPositions {
+		if assetPosition.AssetId == assettypes.AssetTDai.Id {
+			return assetPosition
+		}
 	}
-	return firstAsset
+	return nil
+}
+
+func (m *Subaccount) removeTDaiAssetPosition() {
+	if m == nil || len(m.AssetPositions) == 0 {
+		return
+	}
+
+	for i, assetPosition := range m.AssetPositions {
+		if assetPosition.AssetId == assettypes.AssetTDai.Id {
+			// Remove the TDai asset position from the slice
+			m.AssetPositions = append(m.AssetPositions[:i], m.AssetPositions[i+1:]...)
+			return
+		}
+	}
 }

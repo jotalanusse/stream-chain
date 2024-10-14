@@ -45,6 +45,17 @@ const GenesisState = `{
           "symbol": "TDAI",
           "asset_yield_index": "1/1",
           "max_slippage_ppm": 0
+        },
+        {
+          "atomic_resolution": -8,
+          "denom": "btc-denom",
+          "denom_exponent": "-8",
+          "has_market": true,
+          "id": 1,
+          "market_id": 0,
+          "symbol": "BTC",
+          "asset_yield_index": "1/1",
+          "max_slippage_ppm": 0
         }
       ]
     },
@@ -123,6 +134,10 @@ const GenesisState = `{
             {
               "denom": "utdai",
               "amount": "100000000000000000"
+            },
+            {
+              "denom": "btc-denom",
+              "amount": "100000000000000000"
             }
           ]
         },
@@ -132,6 +147,10 @@ const GenesisState = `{
             {
               "denom": "utdai",
               "amount": "1300000000000000000"
+            },
+            {
+              "denom": "btc-denom",
+              "amount": "100000000000000000"
             }
           ]
         },
@@ -1267,6 +1286,21 @@ const GenesisState = `{
           ],
           "id": {
             "number": 0,
+            "owner": "dydx1fjg6zp6vv8t9wvy4lps03r5l4g7tkjw9wvmh70"
+          },
+          "margin_enabled": true,
+          "asset_yield_index": "1/1"
+        },
+        {
+          "asset_positions": [
+            {
+              "asset_id": 1,
+              "index": 0,
+              "quantums": "100000000000000000"
+            }
+          ],
+          "id": {
+            "number": 11,
             "owner": "dydx1fjg6zp6vv8t9wvy4lps03r5l4g7tkjw9wvmh70"
           },
           "margin_enabled": true,

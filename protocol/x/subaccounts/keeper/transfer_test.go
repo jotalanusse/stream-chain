@@ -387,16 +387,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			collateralPoolAddr:         types.ModuleAddress,
 			expectedErr:                types.ErrAssetTransferQuantumsNotPositive,
 		},
-		"WithdrawFundsFromSubaccountToAccount: do not support assets other than TDai": {
-			testTransferFundToAccount:  true,
-			accAddressBalance:          big.NewInt(500),
-			asset:                      *constants.BtcUsd,
-			subaccountModuleAccBalance: big.NewInt(500),
-			quantums:                   big.NewInt(500),
-			assetPositions:             keepertest.CreateTDaiAssetPosition(big.NewInt(500)),
-			collateralPoolAddr:         types.ModuleAddress,
-			expectedErr:                types.ErrAssetTransferThroughBankNotImplemented,
-		},
 		"WithdrawFundsFromSubaccountToAccount: asset ID doesn't exist": {
 			testTransferFundToAccount:  true,
 			accAddressBalance:          big.NewInt(500),
@@ -427,16 +417,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			assetPositions:             keepertest.CreateTDaiAssetPosition(big.NewInt(500)),
 			collateralPoolAddr:         types.ModuleAddress,
 			expectedErr:                types.ErrAssetTransferQuantumsNotPositive,
-		},
-		"DepositFundsFromAccountToSubaccount: do not support assets other than TDai": {
-			testTransferFundToAccount:  false,
-			accAddressBalance:          big.NewInt(500),
-			asset:                      *constants.BtcUsd,
-			subaccountModuleAccBalance: big.NewInt(500),
-			quantums:                   big.NewInt(500),
-			assetPositions:             keepertest.CreateTDaiAssetPosition(big.NewInt(500)),
-			collateralPoolAddr:         types.ModuleAddress,
-			expectedErr:                types.ErrAssetTransferThroughBankNotImplemented,
 		},
 		"DepositFundsFromAccountToSubaccount: failure, asset ID doesn't exist": {
 			testTransferFundToAccount:  false,

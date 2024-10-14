@@ -195,6 +195,9 @@ func UpdateAssetPositions(
 				}
 			} else {
 				// This subaccount does not have a matching asset position for this update.
+				if au.GetBigQuantums().Sign() == 0 {
+					continue
+				}
 
 				// Create the new asset position.
 				assetPosition := &types.AssetPosition{
