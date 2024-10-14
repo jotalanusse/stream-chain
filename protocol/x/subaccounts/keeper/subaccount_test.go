@@ -168,6 +168,7 @@ func TestGetCollateralPool(t *testing.T) {
 				testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 
 				rateLimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+				perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 				require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 				for _, p := range tc.perpetuals {
@@ -182,6 +183,7 @@ func TestGetCollateralPool(t *testing.T) {
 						p.Params.MarketType,
 						p.Params.DangerIndexPpm,
 						p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+						p.Params.IsolatedMarketMultiCollateralAssets,
 					)
 					require.NoError(t, err)
 				}
@@ -4388,6 +4390,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 				globalAssetYieldIndex = tc.globalAssetYieldIndex
 			}
 			rateLimitKeeper.SetAssetYieldIndex(ctx, globalAssetYieldIndex)
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0, 1}})
 
 			for _, m := range tc.marketParamPrices {
 				_, err := pricesKeeper.CreateMarket(
@@ -5912,6 +5915,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 
 			ratelimitKeeper.SetSDAIPrice(ctx, rate)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// ratelimitKeeper.SetCurrentDaiYieldEpochNumber(ctx, 0)
 			for _, m := range tc.marketParamPrices {
@@ -5953,6 +5957,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+					p.Params.IsolatedMarketMultiCollateralAssets,
 				)
 				require.NoError(t, err)
 
@@ -7050,6 +7055,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 
 			ratelimitKeeper.SetSDAIPrice(ctx, rate)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// ratelimitKeeper.SetCurrentDaiYieldEpochNumber(ctx, 0)
 
@@ -7091,6 +7097,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+					p.Params.IsolatedMarketMultiCollateralAssets,
 				)
 				require.NoError(t, err)
 			}
@@ -7487,6 +7494,7 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 
 			ratelimitKeeper.SetSDAIPrice(ctx, rate)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// ratelimitKeeper.SetCurrentDaiYieldEpochNumber(ctx, 0)
 
@@ -7519,6 +7527,7 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+					p.Params.IsolatedMarketMultiCollateralAssets,
 				)
 				require.NoError(t, err)
 			}

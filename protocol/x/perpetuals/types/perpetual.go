@@ -42,5 +42,12 @@ func (p *PerpetualParams) Validate() error {
 		)
 	}
 
+	if p.MarketType == PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED && len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+		return errorsmod.Wrap(
+			ErrIsolatedMarketMultiCollateralAssetsEmpty,
+			"In validate perpetual params",
+		)
+	}
+
 	return nil
 }

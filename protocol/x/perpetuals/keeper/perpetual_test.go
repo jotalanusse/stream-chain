@@ -36,6 +36,7 @@ import (
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 )
 
@@ -100,6 +101,7 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			liquidityTier,
 			uint32(0),
 			uint64(1000000),
+			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 		)
 		require.NoError(t, err)
 
@@ -157,6 +159,11 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			uint64(1000000),
 			newItem.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 		)
+		require.Equal(
+			t,
+			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			newItem.Params.IsolatedMarketMultiCollateralAssets,
+		)
 	}
 
 	// Verify that expected indexer events were emitted.
@@ -198,6 +205,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 		marketType                                            types.PerpetualMarketType
 		dangerIndexPpm                                        uint32
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
+		IsolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
 		expectedError                                         error
 		yieldIndex                                            string
 	}{
@@ -309,6 +317,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 				tc.marketType,
 				tc.dangerIndexPpm,
 				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.IsolatedMarketMultiCollateralAssets,
 			)
 
 			require.Error(t, err)
@@ -326,6 +335,7 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 		liquidityTier                                         uint32
 		dangerIndexPpm                                        uint32
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
+		isolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
 		expectedError                                         error
 	}{
 		"Perpetual doesn't exist": {
@@ -336,7 +346,8 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(999)),
+			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			expectedError:                                         errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(999)),
 		},
 		"Isolated market requires non zero max delta": {
 			id:                0,
@@ -346,7 +357,8 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: errorsmod.Wrap(types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero, fmt.Sprint(0)),
+			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			expectedError:                                         errorsmod.Wrap(types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero, fmt.Sprint(0)),
 		},
 		"Price doesn't exist": {
 			id:                0,
@@ -356,7 +368,8 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(1_000_000),
-			expectedError: errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
+			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			expectedError:                                         errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
 		},
 		"Ticker is an empty string": {
 			id:                0,
@@ -366,7 +379,8 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: types.ErrTickerEmptyString,
+			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			expectedError:                                         types.ErrTickerEmptyString,
 		},
 		"Modified to empty liquidity tier": {
 			id:                0,
@@ -376,7 +390,8 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			liquidityTier:     999,
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(1_000_000),
-			expectedError: errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
+			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			expectedError:                                         errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
 		},
 	}
 
@@ -397,6 +412,7 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
 				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.isolatedMarketMultiCollateralAssets,
 			)
 
 			require.Error(t, err)
@@ -466,6 +482,7 @@ func TestHasPerpetual(t *testing.T) {
 			perps[perp].Params.MarketType,
 			perps[perp].Params.DangerIndexPpm,
 			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
 		)
 		require.NoError(t, err)
 	}
@@ -547,6 +564,7 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 			perps[perp].Params.MarketType,
 			perps[perp].Params.DangerIndexPpm,
 			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
 		)
 		require.NoError(t, err)
 	}
@@ -973,6 +991,7 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
+				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			)
 			require.NoError(t, err)
 
@@ -1186,6 +1205,7 @@ func TestGetNetNotional_Success(t *testing.T) {
 				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
+				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			)
 			require.NoError(t, err)
 
@@ -1351,6 +1371,7 @@ func TestGetNotionalInBaseQuantums_Success(t *testing.T) {
 				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
+				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			)
 			require.NoError(t, err)
 
@@ -1517,6 +1538,7 @@ func TestGetNetCollateral_Success(t *testing.T) {
 				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
+				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			)
 			require.NoError(t, err)
 
@@ -2253,6 +2275,7 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+					p.Params.IsolatedMarketMultiCollateralAssets,
 				)
 				require.NoError(t, err)
 				oldPerps[i] = perp
@@ -3605,6 +3628,7 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 			perp: *perptest.GeneratePerpetual(
 				perptest.WithMarketType(types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED),
 				perptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000_000),
+				perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 			),
 			expected: true,
 		},

@@ -9,6 +9,7 @@ import (
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	testkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
 	"github.com/stretchr/testify/require"
@@ -316,6 +317,7 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			k.SetSDAILastBlockUpdated(ctx, tc.initialSDaiLastBlockUpdated)
 			k.SetSDAIPrice(ctx, tc.initialSDaiConversionRate)
 			k.SetAssetYieldIndex(ctx, keeper.ConvertStringToBigRatWithPanicOnErr(tc.initialAssetYieldIndex))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
@@ -570,6 +572,7 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 
 			k.SetSDAIPrice(ctx, tc.sDaiConversionRate)
 			k.SetAssetYieldIndex(ctx, keeper.ConvertStringToBigRatWithPanicOnErr(tc.initialAssetYieldIndex))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
@@ -773,6 +776,8 @@ func TestSetNewYieldIndex(t *testing.T) {
 			ctx := tApp.InitChain()
 			k := tApp.App.RatelimitKeeper
 			k.SetAssetYieldIndex(ctx, tc.initialAssetYieldIndex)
+			perpetualsKeeper := tApp.App.PerpetualsKeeper
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			tc.customSetup(ctx, tApp)
 
 			err := k.SetNewYieldIndex(ctx, tc.totalTDaiPreMint, tc.totalTDaiMinted)

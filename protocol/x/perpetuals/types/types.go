@@ -79,6 +79,7 @@ type PerpetualsKeeper interface {
 		marketType PerpetualMarketType,
 		dangerIndexPpm uint32,
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,
 	) (Perpetual, error)
 	ModifyPerpetual(
 		ctx sdk.Context,
@@ -89,6 +90,7 @@ type PerpetualsKeeper interface {
 		liquidityTier uint32,
 		dangerIndexPpm uint32,
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,
 	) (Perpetual, error)
 	ModifyOpenInterest(
 		ctx sdk.Context,
@@ -110,6 +112,8 @@ type PerpetualsKeeper interface {
 		liquidityTier LiquidityTier,
 		err error,
 	)
+	SetMultiCollateralAssets(ctx sdk.Context, assets MultiCollateralAssetsArray)
+	GetMultiCollateralAssets(ctx sdk.Context) (assets MultiCollateralAssetsArray, found bool)
 	SetParams(
 		ctx sdk.Context,
 		params Params,

@@ -364,6 +364,13 @@ var (
 		2005,
 		"Order would violate isolated subaccount constraints.",
 	)
+
+	ErrWouldViolateMultiCollateralConstraints = errorsmod.Register(
+		ModuleName,
+		2006,
+		"Order would violate multi collateral constraints.",
+	)
+
 	ErrInvalidOrderFlag = errorsmod.Register(
 		ModuleName,
 		3000,

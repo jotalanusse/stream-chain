@@ -106,14 +106,16 @@ var (
 		"/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParamsResponse": nil,
 
 		// perpetuals
-		"/dydxprotocol.perpetuals.MsgCreatePerpetual":               &perpetuals.MsgCreatePerpetual{},
-		"/dydxprotocol.perpetuals.MsgCreatePerpetualResponse":       nil,
-		"/dydxprotocol.perpetuals.MsgSetLiquidityTier":              &perpetuals.MsgSetLiquidityTier{},
-		"/dydxprotocol.perpetuals.MsgSetLiquidityTierResponse":      nil,
-		"/dydxprotocol.perpetuals.MsgUpdateParams":                  &perpetuals.MsgUpdateParams{},
-		"/dydxprotocol.perpetuals.MsgUpdateParamsResponse":          nil,
-		"/dydxprotocol.perpetuals.MsgUpdatePerpetualParams":         &perpetuals.MsgUpdatePerpetualParams{},
-		"/dydxprotocol.perpetuals.MsgUpdatePerpetualParamsResponse": nil,
+		"/dydxprotocol.perpetuals.MsgCreatePerpetual":                  &perpetuals.MsgCreatePerpetual{},
+		"/dydxprotocol.perpetuals.MsgCreatePerpetualResponse":          nil,
+		"/dydxprotocol.perpetuals.MsgSetLiquidityTier":                 &perpetuals.MsgSetLiquidityTier{},
+		"/dydxprotocol.perpetuals.MsgSetLiquidityTierResponse":         nil,
+		"/dydxprotocol.perpetuals.MsgSetMultiCollateralAssets":         &perpetuals.MsgSetMultiCollateralAssets{},
+		"/dydxprotocol.perpetuals.MsgSetMultiCollateralAssetsResponse": nil,
+		"/dydxprotocol.perpetuals.MsgUpdateParams":                     &perpetuals.MsgUpdateParams{},
+		"/dydxprotocol.perpetuals.MsgUpdateParamsResponse":             nil,
+		"/dydxprotocol.perpetuals.MsgUpdatePerpetualParams":            &perpetuals.MsgUpdatePerpetualParams{},
+		"/dydxprotocol.perpetuals.MsgUpdatePerpetualParamsResponse":    nil,
 
 		// prices
 		"/dydxprotocol.prices.MsgCreateOracleMarket":         &prices.MsgCreateOracleMarket{},

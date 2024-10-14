@@ -25,6 +25,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -81,6 +82,7 @@ func (k Keeper) CreatePerpetual(
 	marketType types.PerpetualMarketType,
 	dangerIndexPpm uint32,
 	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 ) (types.Perpetual, error) {
 	// Check if perpetual exists.
 	if k.HasPerpetual(ctx, id) {
@@ -102,6 +104,7 @@ func (k Keeper) CreatePerpetual(
 			MarketType:        marketType,
 			DangerIndexPpm:    dangerIndexPpm,
 			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			IsolatedMarketMultiCollateralAssets:                   isolatedMarketMultiCollateralAssets,
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),
@@ -145,6 +148,7 @@ func (k Keeper) ModifyPerpetual(
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
 	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 ) (types.Perpetual, error) {
 	// Get perpetual.
 	perpetual, err := k.GetPerpetual(ctx, id)
@@ -159,6 +163,7 @@ func (k Keeper) ModifyPerpetual(
 	perpetual.Params.LiquidityTier = liquidityTier
 	perpetual.Params.DangerIndexPpm = dangerIndexPpm
 	perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
+	perpetual.Params.IsolatedMarketMultiCollateralAssets = isolatedMarketMultiCollateralAssets
 
 	// Store the modified perpetual.
 	if err := k.ValidateAndSetPerpetual(ctx, perpetual); err != nil {
@@ -1653,6 +1658,23 @@ func (k Keeper) setLiquidityTier(
 	b := k.cdc.MustMarshal(&liquidityTier)
 	liquidityTierStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.LiquidityTierKeyPrefix))
 	liquidityTierStore.Set(lib.Uint32ToKey(liquidityTier.Id), b)
+}
+
+func (k Keeper) SetMultiCollateralAssets(ctx sdk.Context, assets perptypes.MultiCollateralAssetsArray) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&assets)
+	store.Set([]byte(types.MultiCollateralAssetsKeyPrefix), bz)
+}
+
+func (k Keeper) GetMultiCollateralAssets(ctx sdk.Context) (assets perptypes.MultiCollateralAssetsArray, found bool) {
+	store := ctx.KVStore(k.storeKey)
+	bz := store.Get([]byte(types.MultiCollateralAssetsKeyPrefix))
+	if bz == nil {
+		return perptypes.MultiCollateralAssetsArray{}, false
+	}
+	assets = perptypes.MultiCollateralAssetsArray{}
+	k.cdc.MustUnmarshal(bz, &assets)
+	return assets, true
 }
 
 /* === PARAMETERS FUNCTIONS === */

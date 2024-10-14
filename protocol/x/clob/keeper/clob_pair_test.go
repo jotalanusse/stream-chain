@@ -49,6 +49,7 @@ func TestCreatePerpetualClobPair_MultiplePerpetual(t *testing.T) {
 	require.NoError(t, conversionErr)
 	ks.RatelimitKeeper.SetSDAIPrice(ks.Ctx, rate)
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
+	ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	prices.InitGenesis(ks.Ctx, *ks.PricesKeeper, constants.Prices_DefaultGenesisState)
 	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)

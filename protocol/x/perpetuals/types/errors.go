@@ -162,6 +162,16 @@ var (
 		33,
 		"isolated market max cumulative insurance fund delta per block is zero",
 	)
+	ErrIsolatedMarketMultiCollateralAssetsEmpty = errorsmod.Register(
+		ModuleName,
+		34,
+		"isolated market collateral asssets is empty",
+	)
+	ErrMultiCollateralAssetsUninitialized = errorsmod.Register(
+		ModuleName,
+		35,
+		"multi collateral asssets is uninitialized",
+	)
 
 	// Miscallaneous errors
 	ErrNotImplementedFunding = errorsmod.Register(ModuleName, 1001, "Not Implemented: Perpetuals Funding")

@@ -184,6 +184,7 @@ const (
 	// with either multiple positions in isolated perpetuals or both an isolated and a cross perpetual
 	// position.
 	ViolatesIsolatedSubaccountConstraints
+	ViolatesMultiCollateralConstraints
 )
 
 // String returns a string representation of this `OrderStatus` enum.
@@ -205,6 +206,8 @@ func (os OrderStatus) String() string {
 		return "LiquidationExceededSubaccountMaxInsuranceLost"
 	case ViolatesIsolatedSubaccountConstraints:
 		return "ViolatesIsolatedSubaccountConstraints"
+	case ViolatesMultiCollateralConstraints:
+		return "ViolatesMultiCollateralConstraints"
 	default:
 		return "Unknown"
 	}

@@ -685,6 +685,7 @@ func TestClaimYieldForSubaccount(t *testing.T) {
 				globalAssetYieldIndex = tc.globalAssetYieldIndex
 			}
 			rateLimitKeeper.SetAssetYieldIndex(ctx, globalAssetYieldIndex)
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Always creates TDai asset first
 			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))

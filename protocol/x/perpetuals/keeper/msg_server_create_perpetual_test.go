@@ -10,6 +10,7 @@ import (
 	pricestest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/prices"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -30,6 +31,7 @@ func TestCreatePerpetual(t *testing.T) {
 		perptest.WithMarketId(2),
 		perptest.WithMarketType(types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED),
 		perptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000_000),
+		perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 	)
 	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
 	testMarket2 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(2))

@@ -27,6 +27,10 @@ func (u UpdateResult) IsIsolatedSubaccountError() bool {
 	return u == ViolatesIsolatedSubaccountConstraints
 }
 
+func (u UpdateResult) IsMultiCollateralError() bool {
+	return u == ViolatesMultiCollateralConstraints
+}
+
 // GetErrorFromUpdateResults generates a helpful error when UpdateSubaccounts or
 // CanUpdateSubaccounts returns one or more failed updates.
 func GetErrorFromUpdateResults(
@@ -62,6 +66,7 @@ var updateResultStringMap = map[UpdateResult]string{
 	WithdrawalsAndTransfersBlocked:        "WithdrawalsAndTransfersBlocked",
 	UpdateCausedError:                     "UpdateCausedError",
 	ViolatesIsolatedSubaccountConstraints: "ViolatesIsolatedSubaccountConstraints",
+	ViolatesMultiCollateralConstraints:    "ViolatesMultiCollateralConstraints",
 }
 
 const (
@@ -71,6 +76,7 @@ const (
 	WithdrawalsAndTransfersBlocked
 	UpdateCausedError
 	ViolatesIsolatedSubaccountConstraints
+	ViolatesMultiCollateralConstraints
 )
 
 // Update is used by the subaccounts keeper to allow other modules

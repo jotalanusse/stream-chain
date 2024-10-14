@@ -245,6 +245,7 @@ func TestDepositYieldToSubaccount(t *testing.T) {
 			require.NoError(t, conversionErr)
 			rateLimitKeeper.SetSDAIPrice(ctx, rate)
 			rateLimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 
@@ -993,6 +994,7 @@ func TestAddYieldToSubaccount(t *testing.T) {
 				globalAssetYieldIndex = tc.globalAssetYieldIndex
 			}
 			rateLimitKeeper.SetAssetYieldIndex(ctx, globalAssetYieldIndex)
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			availableYield := big.NewInt(0)
 			if tc.availableYield != nil {
@@ -1770,6 +1772,7 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 				globalAssetYieldIndex = tc.globalAssetYieldIndex
 			}
 			rateLimitKeeper.SetAssetYieldIndex(ctx, globalAssetYieldIndex)
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Always creates TDai asset first
 			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))

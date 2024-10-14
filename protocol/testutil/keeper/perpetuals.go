@@ -20,6 +20,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -180,6 +181,7 @@ func CreateTestPerpetuals(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			p.Params.MarketType,
 			p.Params.DangerIndexPpm,
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			p.Params.IsolatedMarketMultiCollateralAssets,
 		)
 		require.NoError(t, err)
 	}
@@ -290,6 +292,7 @@ func CreateNPerpetuals(
 			marketType,
 			0,
 			maxInsuranceFundDelta,
+			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 		)
 		if err != nil {
 			return items, err
@@ -342,6 +345,7 @@ func CreateTestPricesAndPerpetualMarkets(
 			perp.Params.MarketType,
 			perp.Params.DangerIndexPpm,
 			perp.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			perp.Params.IsolatedMarketMultiCollateralAssets,
 		)
 		require.NoError(t, err)
 	}

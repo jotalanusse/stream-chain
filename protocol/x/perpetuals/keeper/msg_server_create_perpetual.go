@@ -35,6 +35,7 @@ func (k msgServer) CreatePerpetual(
 		msg.Params.MarketType,
 		msg.Params.DangerIndexPpm,
 		msg.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+		msg.Params.IsolatedMarketMultiCollateralAssets,
 	)
 	if err != nil {
 		return &types.MsgCreatePerpetualResponse{}, err

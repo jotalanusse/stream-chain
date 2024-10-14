@@ -21,6 +21,8 @@ service Msg {
   // updates the existing liquidity tier otherwise.
   rpc SetLiquidityTier(MsgSetLiquidityTier)
       returns (MsgSetLiquidityTierResponse);
+  rpc SetMultiCollateralAssets(MsgSetMultiCollateralAssets)
+      returns (MsgSetMultiCollateralAssetsResponse);
   // UpdatePerpetualParams updates the parameters of a perpetual market.
   rpc UpdatePerpetualParams(MsgUpdatePerpetualParams)
       returns (MsgUpdatePerpetualParamsResponse);
@@ -57,6 +59,17 @@ message MsgSetLiquidityTier {
 
 // MsgSetLiquidityTierResponse defines the SetLiquidityTier response type.
 message MsgSetLiquidityTierResponse {}
+
+message MsgSetMultiCollateralAssets {
+  option (cosmos.msg.v1.signer) = "authority";
+
+  // The address that controls the module.
+  string authority = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  MultiCollateralAssetsArray multi_collateral_assets = 2 [ (gogoproto.nullable) = false ];
+}
+
+message MsgSetMultiCollateralAssetsResponse{}
 
 // MsgUpdatePerpetualParams is a message used by x/gov to update the parameters
 // of a perpetual.

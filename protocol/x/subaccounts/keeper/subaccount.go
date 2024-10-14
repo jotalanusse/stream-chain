@@ -705,6 +705,14 @@ func (k Keeper) internalCanUpdateSubaccounts(
 		return success, successPerUpdate, nil
 	}
 
+	success, successPerUpdate, err = k.checkMultiCollateralAssetConstraints(ctx, settledUpdates, perpetuals)
+	if err != nil {
+		return false, nil, err
+	}
+	if !success {
+		return success, successPerUpdate, nil
+	}
+
 	// Block all withdrawals and transfers if either of the following is true within the last
 	// `WITHDRAWAL_AND_TRANSFERS_BLOCKED_AFTER_NEGATIVE_TNC_SUBACCOUNT_SEEN_BLOCKS`:
 	// - There was a negative TNC subaccount seen for any of the collateral pools of subaccounts being updated

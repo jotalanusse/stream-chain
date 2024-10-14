@@ -86,6 +86,7 @@ type PerpetualsKeeper interface {
 	GetInsuranceFundModuleAddress(ctx sdk.Context, perpetualId uint32) (sdk.AccAddress, error)
 	ModifyOpenInterest(ctx sdk.Context, perpetualId uint32, bigQuantums *big.Int) error
 	IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error)
+	GetMultiCollateralAssets(ctx sdk.Context) (assets perptypes.MultiCollateralAssetsArray, found bool)
 }
 
 // BankKeeper defines the expected interface needed to retrieve account balances.

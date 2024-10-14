@@ -200,6 +200,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -443,6 +444,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -719,6 +721,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Success(t *testing.T) {
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -1048,6 +1051,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -1519,6 +1523,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.MarketType,
 				tc.perpetual.Params.DangerIndexPpm,
 				tc.perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.perpetual.Params.IsolatedMarketMultiCollateralAssets,
 			)
 			require.NoError(t, err)
 

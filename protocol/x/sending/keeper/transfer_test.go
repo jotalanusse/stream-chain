@@ -120,6 +120,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
+	ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	perpetuals := []perptypes.Perpetual{
 		constants.BtcUsd_100PercentMarginRequirement,
@@ -138,6 +139,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 			p.Params.MarketType,
 			p.Params.DangerIndexPpm,
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			p.Params.IsolatedMarketMultiCollateralAssets,
 		)
 		require.NoError(t, err)
 	}
@@ -252,6 +254,7 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 	keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
+	ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	perpetuals := []perptypes.Perpetual{
 		constants.BtcUsd_100PercentMarginRequirement,
@@ -270,6 +273,7 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 			p.Params.MarketType,
 			p.Params.DangerIndexPpm,
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			p.Params.IsolatedMarketMultiCollateralAssets,
 		)
 		require.NoError(t, err)
 	}

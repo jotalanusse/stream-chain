@@ -390,6 +390,9 @@ func (k Keeper) PlaceStatefulOrder(
 			if updateResult.IsIsolatedSubaccountError() {
 				err = types.ErrWouldViolateIsolatedSubaccountConstraints
 			}
+			if updateResult.IsMultiCollateralError() {
+				err = types.ErrWouldViolateMultiCollateralConstraints
+			}
 			return errorsmod.Wrapf(
 				err,
 				"PlaceStatefulOrder: order (%+v), result (%s)",

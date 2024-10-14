@@ -520,6 +520,8 @@ func (m *MemClobPriceTimePriority) PlaceOrder(
 				removalReason = types.OrderRemoval_REMOVAL_REASON_POST_ONLY_WOULD_CROSS_MAKER_ORDER
 			} else if errors.Is(err, types.ErrWouldViolateIsolatedSubaccountConstraints) {
 				removalReason = types.OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS
+			} else if errors.Is(err, types.ErrWouldViolateMultiCollateralConstraints) {
+				removalReason = types.OrderRemoval_REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS
 			}
 
 			if !m.operationsToPropose.IsOrderRemovalInOperationsQueue(order.OrderId) {
@@ -861,6 +863,9 @@ func (m *MemClobPriceTimePriority) matchOrder(
 	// isolated subaccount constraints, return an error so that the order is canceled.
 	if !order.IsLiquidation() && takerOrderStatus.OrderStatus == types.ViolatesIsolatedSubaccountConstraints {
 		matchingErr = types.ErrWouldViolateIsolatedSubaccountConstraints
+	}
+	if !order.IsLiquidation() && takerOrderStatus.OrderStatus == types.ViolatesMultiCollateralConstraints {
+		matchingErr = types.ErrWouldViolateMultiCollateralConstraints
 	}
 
 	// If the match is valid and placing the taker order generated valid matches, update memclob state.
@@ -2028,6 +2033,8 @@ func updateResultToOrderStatus(updateResult satypes.UpdateResult) types.OrderSta
 		return types.InternalError
 	case satypes.ViolatesIsolatedSubaccountConstraints:
 		return types.ViolatesIsolatedSubaccountConstraints
+	case satypes.ViolatesMultiCollateralConstraints:
+		return types.ViolatesMultiCollateralConstraints
 	default:
 		return types.Undercollateralized
 	}

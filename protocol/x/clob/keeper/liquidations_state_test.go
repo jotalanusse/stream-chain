@@ -278,6 +278,7 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+					p.Params.IsolatedMarketMultiCollateralAssets,
 				)
 				require.NoError(t, err)
 			}

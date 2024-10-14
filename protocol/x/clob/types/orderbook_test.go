@@ -78,6 +78,11 @@ func TestString(t *testing.T) {
 
 			expectedString: "ViolatesIsolatedSubaccountConstraints",
 		},
+		"Order status is ViolatesMultiCollateralConstraints": {
+			orderStatus: types.ViolatesMultiCollateralConstraints,
+
+			expectedString: "ViolatesMultiCollateralConstraints",
+		},
 		"Order status is unknown enum value": {
 			orderStatus: 999,
 

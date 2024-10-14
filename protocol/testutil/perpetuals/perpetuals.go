@@ -56,6 +56,12 @@ func WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(delta uint64) Per
 	}
 }
 
+func WithIsolatedMarketMultiCollateralAssets(assets perptypes.MultiCollateralAssetsArray) PerpetualModifierOption {
+	return func(cp *perptypes.Perpetual) {
+		cp.Params.IsolatedMarketMultiCollateralAssets = &assets
+	}
+}
+
 // GeneratePerpetual returns a `Perpetual` object set to default values.
 // Passing in `PerpetualModifierOption` methods alters the value of the `Perpetual` returned.
 // It will start with the default, valid `Perpetual` value defined within the method

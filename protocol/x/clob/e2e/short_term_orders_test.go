@@ -26,6 +26,7 @@ import (
 	vetesting "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/ve"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 )
@@ -35,6 +36,7 @@ func TestPlaceOrder(t *testing.T) {
 	ctx := tApp.InitChain()
 
 	tApp.App.RatelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+	tApp.App.PerpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	aliceSubaccount := tApp.App.SubaccountsKeeper.GetSubaccount(ctx, constants.Alice_Num0)
 	bobSubaccount := tApp.App.SubaccountsKeeper.GetSubaccount(ctx, constants.Bob_Num0)
@@ -641,17 +643,22 @@ func TestPlaceOrder(t *testing.T) {
 			rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate
 			rate, conversionErr := ratelimitkeeper.ConvertStringToBigInt(rateString)
 			require.NoError(t, conversionErr)
+
 			tApp.App.RatelimitKeeper.SetSDAIPrice(tApp.App.NewUncachedContext(false, tmproto.Header{}), rate)
 			tApp.App.RatelimitKeeper.SetAssetYieldIndex(tApp.App.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-
-			tApp.ParallelApp.RatelimitKeeper.SetSDAIPrice(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), rate)
-			tApp.ParallelApp.RatelimitKeeper.SetAssetYieldIndex(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-
-			tApp.NoCheckTxApp.RatelimitKeeper.SetSDAIPrice(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), rate)
-			tApp.NoCheckTxApp.RatelimitKeeper.SetAssetYieldIndex(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
+			tApp.App.PerpetualsKeeper.SetMultiCollateralAssets(tApp.App.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			tApp.CrashingApp.RatelimitKeeper.SetSDAIPrice(tApp.CrashingApp.NewUncachedContext(false, tmproto.Header{}), rate)
 			tApp.CrashingApp.RatelimitKeeper.SetAssetYieldIndex(tApp.CrashingApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
+			tApp.CrashingApp.PerpetualsKeeper.SetMultiCollateralAssets(tApp.CrashingApp.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
+
+			tApp.NoCheckTxApp.RatelimitKeeper.SetSDAIPrice(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), rate)
+			tApp.NoCheckTxApp.RatelimitKeeper.SetAssetYieldIndex(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
+			tApp.NoCheckTxApp.PerpetualsKeeper.SetMultiCollateralAssets(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
+
+			tApp.ParallelApp.RatelimitKeeper.SetSDAIPrice(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), rate)
+			tApp.ParallelApp.RatelimitKeeper.SetAssetYieldIndex(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
+			tApp.ParallelApp.PerpetualsKeeper.SetMultiCollateralAssets(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx = tApp.InitChain()
 

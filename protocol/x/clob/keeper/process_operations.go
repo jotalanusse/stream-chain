@@ -392,6 +392,8 @@ func (k Keeper) PersistOrderRemovalToState(
 	case types.OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS:
 		// TODO (CLOB-877)
 		k.statUnverifiedOrderRemoval(ctx, orderRemoval, orderToRemove)
+	case types.OrderRemoval_REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS:
+		k.statUnverifiedOrderRemoval(ctx, orderRemoval, orderToRemove)
 	default:
 		return errorsmod.Wrapf(
 			types.ErrInvalidOrderRemovalReason,
