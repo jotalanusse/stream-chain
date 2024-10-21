@@ -19,6 +19,17 @@ import (
 	gometrics "github.com/hashicorp/go-metrics"
 )
 
+type MatchDeltasAndFees struct {
+	BigTakerFeeQuoteQuantums       *big.Int
+	BigMakerFeeQuoteQuantums       *big.Int
+	BigTakerQuoteBalanceDelta      *big.Int
+	BigMakerQuoteBalanceDelta      *big.Int
+	BigTakerPerpetualQuantumsDelta *big.Int
+	BigMakerPerpetualQuantumsDelta *big.Int
+	BigRouterTakerFeeQuoteQuantums *big.Int
+	BigRouterMakerFeeQuoteQuantums *big.Int
+}
+
 // ProcessSingleMatch accepts a single match and its associated orders matched in the block,
 // persists the resulting subaccount updates and state fill amounts.
 // This function assumes that the provided match with orders has undergone stateless validations.
@@ -176,217 +187,85 @@ func (k Keeper) persistMatchedOrders(
 ) {
 	isTakerLiquidation := matchWithOrders.TakerOrder.IsLiquidation()
 
-	// Taker fees and maker fees/rebates are rounded towards positive infinity.
-	bigTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
-	bigMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
+	matchDeltasAndFees := k.calculateFeeQuantums(
+		bigFillQuoteQuantums,
+		takerFeePpm,
+		makerFeePpm,
+		routerTakerFeePpm,
+		routerMakerFeePpm,
+	)
 
-	bigRouterTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerTakerFeePpm, true)
-	bigRouterMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerMakerFeePpm, true)
-
-	matchWithOrders.MakerFee = bigMakerFeeQuoteQuantums.Int64() + bigRouterMakerFeeQuoteQuantums.Int64()
-	// Liquidation orders pay the liquidation fee instead of the standard taker fee
-	if matchWithOrders.TakerOrder.IsLiquidation() {
-		matchWithOrders.TakerFee = insuranceFundDelta.Int64() + validatorFeeQuoteQuantums.Int64() + liquidityFeeQuoteQuantums.Int64()
-	} else {
-		matchWithOrders.TakerFee = bigTakerFeeQuoteQuantums.Int64() + bigRouterTakerFeeQuoteQuantums.Int64()
-	}
+	k.setTakerAndMakerOrderFees(
+		matchWithOrders,
+		&matchDeltasAndFees,
+		insuranceFundDelta,
+		validatorFeeQuoteQuantums,
+		liquidityFeeQuoteQuantums,
+	)
 
 	// If the taker is a liquidation order, it should never pay fees.
-	if isTakerLiquidation && bigTakerFeeQuoteQuantums.Sign() != 0 {
+	if isTakerLiquidation && matchDeltasAndFees.BigTakerFeeQuoteQuantums.Sign() != 0 {
 		panic(fmt.Sprintf(
 			`Taker order is liquidation and should never pay taker fees.
       TakerOrder: %v
       bigTakerFeeQuoteQuantums: %v`,
 			matchWithOrders.TakerOrder,
-			bigTakerFeeQuoteQuantums,
+			matchDeltasAndFees.BigTakerFeeQuoteQuantums,
 		))
 	}
 
-	bigTakerQuoteBalanceDelta := new(big.Int).Set(bigFillQuoteQuantums)
-	bigMakerQuoteBalanceDelta := new(big.Int).Set(bigFillQuoteQuantums)
-
-	bigTakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.ToBigInt()
-	bigMakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.ToBigInt()
-
-	if matchWithOrders.TakerOrder.IsBuy() {
-		bigTakerQuoteBalanceDelta.Neg(bigTakerQuoteBalanceDelta)
-		bigMakerPerpetualQuantumsDelta.Neg(bigMakerPerpetualQuantumsDelta)
-	} else {
-		bigMakerQuoteBalanceDelta.Neg(bigMakerQuoteBalanceDelta)
-		bigTakerPerpetualQuantumsDelta.Neg(bigTakerPerpetualQuantumsDelta)
-	}
-
-	// Subtract quote balance delta with fees paid.
-	bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, bigTakerFeeQuoteQuantums)
-	bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, bigMakerFeeQuoteQuantums)
-
-	bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, bigRouterTakerFeeQuoteQuantums)
-	bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, bigRouterMakerFeeQuoteQuantums)
-
-	// Subtract quote balance delta with insurance fund payments.
-	if matchWithOrders.TakerOrder.IsLiquidation() {
-		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, insuranceFundDelta)
-		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, validatorFeeQuoteQuantums)
-		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, liquidityFeeQuoteQuantums)
-	}
-
-	// Create the subaccount update.
-	updates := []satypes.Update{
-		// Taker update
-		{
-			AssetUpdates: []satypes.AssetUpdate{
-				{
-					AssetId:          assettypes.AssetTDai.Id,
-					BigQuantumsDelta: bigTakerQuoteBalanceDelta,
-				},
-			},
-			PerpetualUpdates: []satypes.PerpetualUpdate{
-				{
-					PerpetualId:      perpetualId,
-					BigQuantumsDelta: bigTakerPerpetualQuantumsDelta,
-				},
-			},
-			SubaccountId: matchWithOrders.TakerOrder.GetSubaccountId(),
-		},
-		// Maker update
-		{
-			AssetUpdates: []satypes.AssetUpdate{
-				{
-					AssetId:          assettypes.AssetTDai.Id,
-					BigQuantumsDelta: bigMakerQuoteBalanceDelta,
-				},
-			},
-			PerpetualUpdates: []satypes.PerpetualUpdate{
-				{
-					PerpetualId:      perpetualId,
-					BigQuantumsDelta: bigMakerPerpetualQuantumsDelta,
-				},
-			},
-			SubaccountId: matchWithOrders.MakerOrder.GetSubaccountId(),
-		},
-	}
-
-	if !isTakerLiquidation {
-		if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
-					},
-				},
-				SubaccountId: *matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId,
-			})
-		}
-		if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
-					},
-				},
-				SubaccountId: *matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId,
-			})
-		}
-	}
-
-	// Apply the update.
-	success, successPerUpdate, err := k.subaccountsKeeper.UpdateSubaccounts(
-		ctx,
-		updates,
-		satypes.Match,
+	k.modifyBalanceDeltas(
+		matchWithOrders,
+		bigFillQuoteQuantums,
+		&matchDeltasAndFees,
+		insuranceFundDelta,
+		validatorFeeQuoteQuantums,
+		liquidityFeeQuoteQuantums,
 	)
-	if err != nil {
-		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
-	}
 
-	takerUpdateResult = successPerUpdate[0]
-	makerUpdateResult = successPerUpdate[1]
+	updates := k.createBaseSubaccountUpdates(
+		matchWithOrders,
+		perpetualId,
+		&matchDeltasAndFees,
+	)
 
-	// If not successful, return error indicating why.
-	if updateResultErr := satypes.GetErrorFromUpdateResults(
-		success,
-		successPerUpdate,
+	k.maybeModifySubaccountUpdatesWithRouterFees(
+		matchWithOrders,
+		&matchDeltasAndFees,
 		updates,
-	); updateResultErr != nil {
-		return takerUpdateResult, makerUpdateResult, updateResultErr
-	}
+	)
 
-	if !success {
-		panic(
-			fmt.Sprintf(
-				"persistMatchedOrders: UpdateSubaccounts failed but err == nil and no error returned"+
-					"from successPerUpdate but success was false. Error: %v, Updates: %+v, SuccessPerUpdate: %+v",
-				err,
-				updates,
-				successPerUpdate,
-			),
-		)
-	}
-
-	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId); err != nil {
+	takerUpdateResult,
+		makerUpdateResult,
+		err = k.applySubaccountUpdates(ctx, *updates)
+	if err != nil {
 		return takerUpdateResult, makerUpdateResult, err
 	}
 
-	// Transfer the liquidity and validator fees
-	err = k.subaccountsKeeper.TransferLiquidityFee(ctx, liquidityFeeQuoteQuantums, perpetualId)
-	if err != nil {
-		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
-	}
-
-	err = k.subaccountsKeeper.TransferValidatorFee(ctx, validatorFeeQuoteQuantums, perpetualId)
-	if err != nil {
-		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
-	}
-
-	// Transfer the fee amount from subacounts module to fee collector module account.
-	bigTotalFeeQuoteQuantums := new(big.Int).Add(bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums)
-	if err := k.subaccountsKeeper.TransferFeesToFeeCollectorModule(
+	if err := k.transferFees(
 		ctx,
-		assettypes.AssetTDai.Id,
-		bigTotalFeeQuoteQuantums,
+		matchWithOrders,
+		insuranceFundDelta,
+		validatorFeeQuoteQuantums,
+		liquidityFeeQuoteQuantums,
+		&matchDeltasAndFees,
 		perpetualId,
 	); err != nil {
-		return takerUpdateResult, makerUpdateResult, errorsmod.Wrapf(
-			types.ErrSubaccountFeeTransferFailed,
-			"persistMatchedOrders: subaccounts (%v, %v) updated, but fee transfer (bigFeeQuoteQuantums: %v)"+
-				" to fee-collector failed. Err: %v",
-			matchWithOrders.MakerOrder.GetSubaccountId(),
-			matchWithOrders.TakerOrder.GetSubaccountId(),
-			bigTotalFeeQuoteQuantums,
-			err,
-		)
+		return takerUpdateResult, makerUpdateResult, err
 	}
 
 	// Update the last trade price for the perpetual.
 	k.SetTradePricesForPerpetual(ctx, perpetualId, matchWithOrders.MakerOrder.GetOrderSubticks())
 
-	k.statsKeeper.RecordFill(
+	k.recordFillStatsAndEmitEvent(
 		ctx,
-		matchWithOrders.TakerOrder.GetSubaccountId().Owner,
-		matchWithOrders.MakerOrder.GetSubaccountId().Owner,
+		matchWithOrders,
+		&matchDeltasAndFees,
+		insuranceFundDelta,
+		validatorFeeQuoteQuantums,
+		liquidityFeeQuoteQuantums,
 		bigFillQuoteQuantums,
-	)
-
-	// Emit an event indicating a match occurred.
-	ctx.EventManager().EmitEvent(
-		types.NewCreateMatchEvent(
-			matchWithOrders.TakerOrder.GetSubaccountId(),
-			matchWithOrders.MakerOrder.GetSubaccountId(),
-			bigTakerFeeQuoteQuantums,
-			bigMakerFeeQuoteQuantums,
-			bigTakerQuoteBalanceDelta,
-			bigMakerQuoteBalanceDelta,
-			bigTakerPerpetualQuantumsDelta,
-			bigMakerPerpetualQuantumsDelta,
-			insuranceFundDelta,
-			validatorFeeQuoteQuantums,
-			liquidityFeeQuoteQuantums,
-			isTakerLiquidation,
-			false,
-			perpetualId,
-		),
+		perpetualId,
 	)
 
 	return takerUpdateResult, makerUpdateResult, nil
@@ -657,4 +536,279 @@ func (k Keeper) calculateTakerFillAmounts(ctx sdk.Context, matchWithOrders *type
 	}
 
 	return newTakerTotalFillAmount, curTakerPruneableBlockHeight, nil
+}
+
+func (k Keeper) calculateFeeQuantums(
+	bigFillQuoteQuantums *big.Int,
+	takerFeePpm int32,
+	makerFeePpm int32,
+	routerTakerFeePpm int32,
+	routerMakerFeePpm int32,
+) MatchDeltasAndFees {
+	bigTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
+	bigMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
+	bigRouterTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerTakerFeePpm, true)
+	bigRouterMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerMakerFeePpm, true)
+
+	return MatchDeltasAndFees{
+		BigTakerFeeQuoteQuantums:       bigTakerFeeQuoteQuantums,
+		BigMakerFeeQuoteQuantums:       bigMakerFeeQuoteQuantums,
+		BigRouterTakerFeeQuoteQuantums: bigRouterTakerFeeQuoteQuantums,
+		BigRouterMakerFeeQuoteQuantums: bigRouterMakerFeeQuoteQuantums,
+	}
+}
+
+func (k Keeper) setTakerAndMakerOrderFees(
+	matchWithOrders *types.MatchWithOrders,
+	matchDeltasAndFees *MatchDeltasAndFees,
+	insuranceFundDelta *big.Int,
+	validatorFeeQuoteQuantums *big.Int,
+	liquidityFeeQuoteQuantums *big.Int,
+) {
+	isTakerLiquidation := matchWithOrders.TakerOrder.IsLiquidation()
+	matchWithOrders.MakerFee = matchDeltasAndFees.BigMakerFeeQuoteQuantums.Int64() + matchDeltasAndFees.BigRouterMakerFeeQuoteQuantums.Int64()
+	if isTakerLiquidation {
+		matchWithOrders.TakerFee = insuranceFundDelta.Int64() + validatorFeeQuoteQuantums.Int64() + liquidityFeeQuoteQuantums.Int64()
+	} else {
+		matchWithOrders.TakerFee = matchDeltasAndFees.BigTakerFeeQuoteQuantums.Int64() + matchDeltasAndFees.BigRouterTakerFeeQuoteQuantums.Int64()
+	}
+}
+
+func (k Keeper) modifyBalanceDeltas(
+	matchWithOrders *types.MatchWithOrders,
+	bigFillQuoteQuantums *big.Int,
+	matchDeltasAndFees *MatchDeltasAndFees,
+	insuranceFundDelta *big.Int,
+	validatorFeeQuoteQuantums *big.Int,
+	liquidityFeeQuoteQuantums *big.Int,
+) {
+	bigTakerQuoteBalanceDelta := new(big.Int).Set(bigFillQuoteQuantums)
+	bigMakerQuoteBalanceDelta := new(big.Int).Set(bigFillQuoteQuantums)
+	bigTakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.ToBigInt()
+	bigMakerPerpetualQuantumsDelta := matchWithOrders.FillAmount.ToBigInt()
+
+	if matchWithOrders.TakerOrder.IsBuy() {
+		bigTakerQuoteBalanceDelta.Neg(bigTakerQuoteBalanceDelta)
+		bigMakerPerpetualQuantumsDelta.Neg(bigMakerPerpetualQuantumsDelta)
+	} else {
+		bigMakerQuoteBalanceDelta.Neg(bigMakerQuoteBalanceDelta)
+		bigTakerPerpetualQuantumsDelta.Neg(bigTakerPerpetualQuantumsDelta)
+	}
+
+	bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, matchDeltasAndFees.BigTakerFeeQuoteQuantums)
+	bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, matchDeltasAndFees.BigMakerFeeQuoteQuantums)
+	bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, matchDeltasAndFees.BigRouterTakerFeeQuoteQuantums)
+	bigMakerQuoteBalanceDelta.Sub(bigMakerQuoteBalanceDelta, matchDeltasAndFees.BigRouterMakerFeeQuoteQuantums)
+
+	if matchWithOrders.TakerOrder.IsLiquidation() {
+		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, insuranceFundDelta)
+		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, validatorFeeQuoteQuantums)
+		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, liquidityFeeQuoteQuantums)
+	}
+
+	matchDeltasAndFees.BigTakerQuoteBalanceDelta = bigTakerQuoteBalanceDelta
+	matchDeltasAndFees.BigMakerQuoteBalanceDelta = bigMakerQuoteBalanceDelta
+	matchDeltasAndFees.BigTakerPerpetualQuantumsDelta = bigTakerPerpetualQuantumsDelta
+	matchDeltasAndFees.BigMakerPerpetualQuantumsDelta = bigMakerPerpetualQuantumsDelta
+}
+
+func (k Keeper) createBaseSubaccountUpdates(
+	matchWithOrders *types.MatchWithOrders,
+	perpetualId uint32,
+	matchDeltasAndFees *MatchDeltasAndFees,
+) *[]satypes.Update {
+	updates := []satypes.Update{
+		{
+			AssetUpdates: []satypes.AssetUpdate{
+				{
+					AssetId:          assettypes.AssetTDai.Id,
+					BigQuantumsDelta: matchDeltasAndFees.BigTakerQuoteBalanceDelta,
+				},
+			},
+			PerpetualUpdates: []satypes.PerpetualUpdate{
+				{
+					PerpetualId:      perpetualId,
+					BigQuantumsDelta: matchDeltasAndFees.BigTakerPerpetualQuantumsDelta,
+				},
+			},
+			SubaccountId: matchWithOrders.TakerOrder.GetSubaccountId(),
+		},
+		{
+			AssetUpdates: []satypes.AssetUpdate{
+				{
+					AssetId:          assettypes.AssetTDai.Id,
+					BigQuantumsDelta: matchDeltasAndFees.BigMakerQuoteBalanceDelta,
+				},
+			},
+			PerpetualUpdates: []satypes.PerpetualUpdate{
+				{
+					PerpetualId:      perpetualId,
+					BigQuantumsDelta: matchDeltasAndFees.BigMakerPerpetualQuantumsDelta,
+				},
+			},
+			SubaccountId: matchWithOrders.MakerOrder.GetSubaccountId(),
+		},
+	}
+	return &updates
+}
+
+func (k Keeper) maybeModifySubaccountUpdatesWithRouterFees(
+	matchWithOrders *types.MatchWithOrders,
+	matchDeltasAndFees *MatchDeltasAndFees,
+	updates *[]satypes.Update,
+) {
+	isTakerLiquidation := matchWithOrders.TakerOrder.IsLiquidation()
+	if isTakerLiquidation {
+		return
+	}
+
+	if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil && matchDeltasAndFees.BigRouterTakerFeeQuoteQuantums.Sign() != 0 {
+		*updates = append(*updates, satypes.Update{
+			AssetUpdates: []satypes.AssetUpdate{
+				{
+					AssetId:          assettypes.AssetTDai.Id,
+					BigQuantumsDelta: matchDeltasAndFees.BigRouterTakerFeeQuoteQuantums,
+				},
+			},
+			SubaccountId: *matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId,
+		})
+	}
+	if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil && matchDeltasAndFees.BigRouterMakerFeeQuoteQuantums.Sign() != 0 {
+		*updates = append(*updates, satypes.Update{
+			AssetUpdates: []satypes.AssetUpdate{
+				{
+					AssetId:          assettypes.AssetTDai.Id,
+					BigQuantumsDelta: matchDeltasAndFees.BigRouterMakerFeeQuoteQuantums,
+				},
+			},
+			SubaccountId: *matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId,
+		})
+	}
+}
+
+func (k Keeper) applySubaccountUpdates(
+	ctx sdk.Context,
+	updates []satypes.Update,
+) (satypes.UpdateResult, satypes.UpdateResult, error) {
+	success, successPerUpdate, err := k.subaccountsKeeper.UpdateSubaccounts(ctx, updates, satypes.Match)
+	if err != nil {
+		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
+	}
+
+	takerUpdateResult := successPerUpdate[0]
+	makerUpdateResult := successPerUpdate[1]
+
+	if updateResultErr := satypes.GetErrorFromUpdateResults(success, successPerUpdate, updates); updateResultErr != nil {
+		return takerUpdateResult, makerUpdateResult, updateResultErr
+	}
+
+	if !success {
+		panic(fmt.Sprintf(
+			"persistMatchedOrders: UpdateSubaccounts failed but err == nil and no error returned"+
+				"from successPerUpdate but success was false. Error: %v, Updates: %+v, SuccessPerUpdate: %+v",
+			err,
+			updates,
+			successPerUpdate,
+		))
+	}
+
+	return takerUpdateResult, makerUpdateResult, nil
+}
+
+func (k Keeper) transferFees(
+	ctx sdk.Context,
+	matchWithOrders *types.MatchWithOrders,
+	insuranceFundDelta *big.Int,
+	validatorFeeQuoteQuantums *big.Int,
+	liquidityFeeQuoteQuantums *big.Int,
+	matchDeltasAndFees *MatchDeltasAndFees,
+	perpetualId uint32,
+) error {
+	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId); err != nil {
+		return err
+	}
+
+	if err := k.subaccountsKeeper.TransferLiquidityFee(ctx, liquidityFeeQuoteQuantums, perpetualId); err != nil {
+		return err
+	}
+
+	if err := k.subaccountsKeeper.TransferValidatorFee(ctx, validatorFeeQuoteQuantums, perpetualId); err != nil {
+		return err
+	}
+
+	bigTotalFeeQuoteQuantums := new(big.Int).Add(matchDeltasAndFees.BigTakerFeeQuoteQuantums, matchDeltasAndFees.BigMakerFeeQuoteQuantums)
+	err := k.subaccountsKeeper.TransferFeesToFeeCollectorModule(
+		ctx,
+		assettypes.AssetTDai.Id,
+		bigTotalFeeQuoteQuantums,
+		perpetualId,
+	)
+
+	if err != nil {
+		return errorsmod.Wrapf(
+			types.ErrSubaccountFeeTransferFailed,
+			"persistMatchedOrders: subaccounts (%v, %v) updated, but fee transfer (bigFeeQuoteQuantums: %v)"+
+				" to fee-collector failed. Err: %v",
+			matchWithOrders.MakerOrder.GetSubaccountId(),
+			matchWithOrders.TakerOrder.GetSubaccountId(),
+			bigTotalFeeQuoteQuantums,
+			err,
+		)
+	}
+
+	return nil
+}
+
+func (k Keeper) recordFillStatsAndEmitEvent(
+	ctx sdk.Context,
+	matchWithOrders *types.MatchWithOrders,
+	matchDeltasAndFees *MatchDeltasAndFees,
+	insuranceFundDelta *big.Int,
+	validatorFeeQuoteQuantums *big.Int,
+	liquidityFeeQuoteQuantums *big.Int,
+	bigFillQuoteQuantums *big.Int,
+	perpetualId uint32,
+) {
+	k.SetTradePricesForPerpetual(ctx, perpetualId, matchWithOrders.MakerOrder.GetOrderSubticks())
+	k.statsKeeper.RecordFill(ctx, matchWithOrders.TakerOrder.GetSubaccountId().Owner, matchWithOrders.MakerOrder.GetSubaccountId().Owner, bigFillQuoteQuantums)
+	k.emitMatchEvent(
+		ctx,
+		matchWithOrders,
+		matchDeltasAndFees,
+		insuranceFundDelta,
+		validatorFeeQuoteQuantums,
+		liquidityFeeQuoteQuantums,
+		perpetualId,
+	)
+}
+
+func (k Keeper) emitMatchEvent(
+	ctx sdk.Context,
+	matchWithOrders *types.MatchWithOrders,
+	matchDeltasAndFees *MatchDeltasAndFees,
+	insuranceFundDelta *big.Int,
+	validatorFeeQuoteQuantums *big.Int,
+	liquidityFeeQuoteQuantums *big.Int,
+	perpetualId uint32,
+) {
+	isTakerLiquidation := matchWithOrders.TakerOrder.IsLiquidation()
+
+	ctx.EventManager().EmitEvent(
+		types.NewCreateMatchEvent(
+			matchWithOrders.TakerOrder.GetSubaccountId(),
+			matchWithOrders.MakerOrder.GetSubaccountId(),
+			matchDeltasAndFees.BigTakerFeeQuoteQuantums,
+			matchDeltasAndFees.BigMakerFeeQuoteQuantums,
+			matchDeltasAndFees.BigTakerQuoteBalanceDelta,
+			matchDeltasAndFees.BigMakerQuoteBalanceDelta,
+			matchDeltasAndFees.BigTakerPerpetualQuantumsDelta,
+			matchDeltasAndFees.BigMakerPerpetualQuantumsDelta,
+			insuranceFundDelta,
+			validatorFeeQuoteQuantums,
+			liquidityFeeQuoteQuantums,
+			isTakerLiquidation,
+			false,
+			perpetualId,
+		),
+	)
 }
