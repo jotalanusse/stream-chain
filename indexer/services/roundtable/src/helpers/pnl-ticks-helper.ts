@@ -23,9 +23,9 @@ import _ from 'lodash';
 import { DateTime } from 'luxon';
 
 import config from '../config';
-import { TDAI_ASSET_ID, ZERO } from '../lib/constants';
 import { redisClient } from './redis';
 import { SubaccountTDaiTransferMap } from './types';
+import { TDAI_ASSET_ID, ZERO } from '../lib/constants';
 
 /**
  * Normalizes a time to the nearest PNL_TICK_UPDATE_INTERVAL_MS.
