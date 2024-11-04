@@ -18,6 +18,6 @@ Note: Messages on Indexer WebSocket feeds are typically more recent than data fe
 const contentStart = data.indexOf('# Authentication');
 
 // Combine our custom intro with the existing content
-const cleanedContent = customIntro + '\n\n' + data.slice(contentStart);
+const cleanedContent = `${customIntro}\n\n${data.slice(contentStart)}`;
 
 writeFileSync(filePath, cleanedContent);
