@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dydxprotocol/v4-clients.git"
+    "url": "git+https://github.com/StreamFinance-Protocol/stream-chain.git"
   },
   "author": "Klyra Trading Inc.",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/dydxprotocol/v4-clients/issues"
+    "url": "https://github.com/StreamFinance-Protocol/stream-chain/issues"
   },
-  "homepage": "https://github.com/dydxprotocol/v4-clients#readme",
+  "homepage": "https://github.com/StreamFinance-Protocol/stream-chain#readme",
   "dependencies": {
     "@babel/core": "^7.12.0",
     "@cosmjs/amino": "^0.32.1",

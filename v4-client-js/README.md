@@ -32,4 +32,3 @@ Pending: Different configurations may be needed to generate JS for Android app
 
 Using the `npm version` command will update the appropriate version tags within the package locks and also will add a git tag with the version number..
 For example `npm version minor` will perform the necessary changes for a minor version release. After the change is merged, a GitHub action will
-[publish](https://github.com/dydxprotocol/v4-clients/blob/master/.github/workflows/js-publish.yml) the new release.
