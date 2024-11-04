@@ -1,0 +1,52 @@
+{
+    "exchanges": [
+      {
+        "exchangeName": "Binance",
+        "ticker": "BTCUSDT",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "Bybit",
+        "ticker": "BTCUSDT",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "CoinbasePro",
+        "ticker": "BTC-USD",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "Huobi",
+        "ticker": "btcusdt",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "Kraken",
+        "ticker": "XXBTZUSD",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "Kucoin",
+        "ticker": "BTC-USDT",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "Mexc",
+        "ticker": "BTC_USDT",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      },
+      {
+        "exchangeName": "Okx",
+        "ticker": "BTC-USDT",
+        "adjustByMarket": "GOOG-USD",
+        "invert": true
+      }
+    ]
+  }

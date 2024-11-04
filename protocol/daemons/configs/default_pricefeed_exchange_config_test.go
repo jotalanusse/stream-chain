@@ -97,6 +97,11 @@ const (
 	TimeoutMs = 3000
 	MaxQueries = 1
 	[[exchanges]]
+	ExchangeId = "Yahoo"
+	IntervalMs = 2000
+	TimeoutMs = 3000
+	MaxQueries = 1
+	[[exchanges]]
 	ExchangeId = "Okx"
 	IntervalMs = 2000
 	TimeoutMs = 3000

@@ -1,0 +1,8 @@
+{
+    "exchanges": [
+      {
+        "exchangeName": "Yahoo",
+        "ticker": "GME"
+      }
+    ]
+  }

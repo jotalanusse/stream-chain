@@ -3,6 +3,8 @@ package types
 import (
 	"context"
 	"net/http"
+	"os"
+	"strings"
 )
 
 // RequestHandlerImpl is the struct that implements the `RequestHandler` interface.
@@ -27,6 +29,14 @@ func (r *RequestHandlerImpl) Get(ctx context.Context, url string) (*http.Respons
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
+	}
+	if strings.Contains(url, "apidojo-yahoo-finance-v1.p.rapidapi.com") {
+		req.Header.Add("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+		apiKey := os.Getenv("YAHOO_FINANCE_API_KEY")
+		if apiKey == "" {
+			panic("YAHOO_FINANCE_API_KEY environment variable is not set")
+		}
+		req.Header.Add("x-rapidapi-key", apiKey)
 	}
 
 	return r.client.Do(req)

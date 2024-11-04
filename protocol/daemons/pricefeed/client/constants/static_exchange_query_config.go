@@ -121,6 +121,14 @@ var (
 			TimeoutMs:  defaultTimeoutMs,
 			MaxQueries: defaultMaxQueries,
 		},
+		// Yahoo has a limit of 2 requests per second.
+		// https://rapidapi.com/apidojo/api/yahoo-finance1/pricing
+		exchange_common.EXCHANGE_ID_YAHOO: {
+			ExchangeId: exchange_common.EXCHANGE_ID_YAHOO,
+			IntervalMs: 6_000,
+			TimeoutMs:  defaultTimeoutMs,
+			MaxQueries: 1,
+		},
 		exchange_common.EXCHANGE_ID_TEST_VOLATILE_EXCHANGE: {
 			ExchangeId: exchange_common.EXCHANGE_ID_TEST_VOLATILE_EXCHANGE,
 			IntervalMs: defaultIntervalMs,
