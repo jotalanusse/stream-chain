@@ -33,18 +33,8 @@ NATIVE_TOKEN="asample"
 NATIVE_TOKEN_WHOLE_COIN="sample" 
 # Human readable name of token.
 COIN_NAME="Sample Coin Name"
-# Market ID in the oracle price list for the rewards token.
-REWARDS_TOKEN_MARKET_ID=1
 # Genesis time of the chain.
 GENESIS_TIME="2023-12-31T00:00:00Z"
-# Start time of the community vesting schedule.
-COMMUNITY_VEST_START_TIME="2001-01-01T00:00:00Z"
-# End time of the community vesting schedule.
-COMMUNITY_VEST_END_TIME="2050-01-01T00:00:00Z"
-# Start time of the rewards vesting schedule.
-REWARDS_VEST_START_TIME="2001-01-01T00:00:00Z"
-# End time of the rewards vesting schedule.
-REWARDS_VEST_END_TIME="2050-01-01T00:00:00Z"
 
 ################## End of required values to be updated ##################
 
@@ -91,25 +81,6 @@ function overwrite_genesis_production() {
 	dasel put -t bool -f "$GENESIS" '.app_state.gov.params.burn_proposal_deposit_prevote' -v 'false' 
 	dasel put -t bool -f "$GENESIS" '.app_state.gov.params.burn_vote_quorum' -v 'false' 
 	dasel put -t bool -f "$GENESIS" '.app_state.gov.params.burn_vote_veto' -v 'true'
-
-	# Rewards params
-	dasel put -t string -f "$GENESIS" '.app_state.rewards.params.denom' -v "$NATIVE_TOKEN"
-	dasel put -t int -f "$GENESIS" '.app_state.rewards.params.fee_multiplier_ppm' -v '0'
-	dasel put -t int -f "$GENESIS" '.app_state.rewards.params.market_id' -v "$REWARDS_TOKEN_MARKET_ID"
-
-	# Vest params
-	# For community treasury
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[0].vester_account' -v "community_vester"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[0].treasury_account' -v "community_treasury"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[0].denom' -v "$NATIVE_TOKEN"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[0].start_time' -v "$COMMUNITY_VEST_START_TIME"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[0].end_time' -v "$COMMUNITY_VEST_END_TIME"
-	# For rewards treasury
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[1].vester_account' -v "rewards_vester"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[1].treasury_account' -v "rewards_treasury"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[1].denom' -v "$NATIVE_TOKEN"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[1].start_time' -v "$REWARDS_VEST_START_TIME"
-	dasel put -t string -f "$GENESIS" '.app_state.vest.vest_entries.[1].end_time' -v "$REWARDS_VEST_END_TIME"
 
 	# Delayed message params
 	# Schedule a delayed message to swap fee tiers to the standard schedule after ~120 days of blocks.

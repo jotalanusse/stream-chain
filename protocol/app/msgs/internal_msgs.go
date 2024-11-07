@@ -11,10 +11,8 @@ import (
 	perpetuals "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	prices "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	ratelimit "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
-	rewards "github.com/StreamFinance-Protocol/stream-chain/protocol/x/rewards/types"
 	sending "github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	stats "github.com/StreamFinance-Protocol/stream-chain/protocol/x/stats/types"
-	vest "github.com/StreamFinance-Protocol/stream-chain/protocol/x/vest/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	auth "github.com/cosmos/cosmos-sdk/x/auth/types"
 	bank "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -151,10 +149,6 @@ var (
 		"/klyraprotocol.ratelimit.MsgSetLimitParams":         &ratelimit.MsgSetLimitParams{},
 		"/klyraprotocol.ratelimit.MsgSetLimitParamsResponse": nil,
 
-		// rewards
-		"/klyraprotocol.rewards.MsgUpdateParams":         &rewards.MsgUpdateParams{},
-		"/klyraprotocol.rewards.MsgUpdateParamsResponse": nil,
-
 		// sending
 		"/klyraprotocol.sending.MsgSendFromModuleToAccount":         &sending.MsgSendFromModuleToAccount{},
 		"/klyraprotocol.sending.MsgSendFromModuleToAccountResponse": nil,
@@ -162,11 +156,5 @@ var (
 		// stats
 		"/klyraprotocol.stats.MsgUpdateParams":         &stats.MsgUpdateParams{},
 		"/klyraprotocol.stats.MsgUpdateParamsResponse": nil,
-
-		// vest
-		"/klyraprotocol.vest.MsgSetVestEntry":            &vest.MsgSetVestEntry{},
-		"/klyraprotocol.vest.MsgSetVestEntryResponse":    nil,
-		"/klyraprotocol.vest.MsgDeleteVestEntry":         &vest.MsgDeleteVestEntry{},
-		"/klyraprotocol.vest.MsgDeleteVestEntryResponse": nil,
 	}
 )
