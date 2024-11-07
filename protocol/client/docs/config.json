@@ -71,14 +71,6 @@
       }
     },
     {
-      "url": "./tmp-swagger-gen/klyraprotocol/rewards/query.swagger.json",
-      "operationIds": {
-        "rename": {
-          "Params": "RewardParams"
-        }
-      }
-    },
-    {
       "url": "./tmp-swagger-gen/klyraprotocol/sending/query.swagger.json",
       "operationIds": {
         "rename": {
@@ -99,14 +91,6 @@
       "operationIds": {
         "rename": {
           "Params": "SubaccountParams"
-        }
-      }
-    },
-    {
-      "url": "./tmp-swagger-gen/klyraprotocol/vest/query.swagger.json",
-      "operationIds": {
-        "rename": {
-          "Params": "VestParams"
         }
       }
     },

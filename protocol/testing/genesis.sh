@@ -12,11 +12,9 @@ EIGHTEEN_ZEROS="$NINE_ZEROS$NINE_ZEROS"
 # Address of the `subaccounts` module account.
 # Obtained from `authtypes.NewModuleAddress(subaccounttypes.ModuleName)`.
 SUBACCOUNTS_MODACC_ADDR="klyra1v88c3xv9xyv3eetdx0tvcmq7ung3dywptd5ps3"
-REWARDS_VESTER_ACCOUNT_ADDR="klyra1ltyc6y4skclzafvpznpt2qjwmfwgsndp29jvn2"
 SDAIPOOL_ACCOUNT_ADDR="klyra1r3fsd6humm0ghyq0te5jf8eumklmclyaw0hs3y"
 
 TDAI_DENOM="utdai"
-REWARD_TOKEN="adv4tnt"
 NATIVE_TOKEN="adv4tnt" # public testnet token
 SDAI_DENOM="ibc/DEEFE2DEFDC8EA8879923C4CCA42BB888C3CD03FF7ECFEFB1C2FEC27A732ACC8"
 DEFAULT_SDAIPOOL_BALANCE=2600000000000000000000000000000
@@ -63,12 +61,6 @@ function edit_genesis() {
 		if [ -z "$INITIAL_CLOB_PAIR_STATUS" ]; then
 		# Default to initialie clob pairs as active.
 		INITIAL_CLOB_PAIR_STATUS='STATUS_ACTIVE'
-	fi
-
-	REWARDS_VESTER_ACCOUNT_BALANCE="$7"
-	if [ -z "$REWARDS_VESTER_ACCOUNT_BALANCE" ]; then
-		# Default to 200 million full coins.
-		REWARDS_VESTER_ACCOUNT_BALANCE="200000000$EIGHTEEN_ZEROS"
 	fi
 
 	echo "$NATIVE_TOKEN"
@@ -1114,17 +1106,6 @@ function edit_genesis() {
 		next_bank_idx=$(($next_bank_idx+1))
 	fi
 
-	if [ $(echo "$REWARDS_VESTER_ACCOUNT_BALANCE > 0" | bc -l) -eq 1 ]; then
-		# Initialize bank balance of reward vester account.
-		dasel put -t json -f "$GENESIS" ".app_state.bank.balances.[]" -v "{}"
-		dasel put -t string -f "$GENESIS" ".app_state.bank.balances.[$next_bank_idx].address" -v "${REWARDS_VESTER_ACCOUNT_ADDR}"
-		dasel put -t json -f "$GENESIS" ".app_state.bank.balances.[$next_bank_idx].coins.[]" -v "{}"
-		dasel put -t string -f "$GENESIS" ".app_state.bank.balances.[$next_bank_idx].coins.[0].denom" -v "${REWARD_TOKEN}"
-		dasel put -t string -f "$GENESIS" ".app_state.bank.balances.[$next_bank_idx].coins.[0].amount" -v "$REWARDS_VESTER_ACCOUNT_BALANCE"
-		next_bank_idx=$(($next_bank_idx+1))
-
-	fi
-
 	dasel put -t json -f "$GENESIS" ".app_state.bank.balances.[]" -v "{}"
 	dasel put -t string -f "$GENESIS" ".app_state.bank.balances.[$next_bank_idx].address" -v "${SDAIPOOL_ACCOUNT_ADDR}"
 	dasel put -t json -f "$GENESIS" ".app_state.bank.balances.[$next_bank_idx].coins.[]" -v "{}"
@@ -1134,9 +1115,6 @@ function edit_genesis() {
 
 	# Set denom metadata
 	set_denom_metadata "$NATIVE_TOKEN" "$NATIVE_TOKEN_WHOLE_COIN" "$COIN_NAME"
-
-	# Use ATOM-USD as test oracle price of the reward token.
-	dasel put -t int -f "$GENESIS" '.app_state.rewards.params.market_id' -v '11'
 
 	# Update clob module.
 	# Clob: BTC-USD

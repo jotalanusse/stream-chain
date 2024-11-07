@@ -123,10 +123,6 @@ func TestInternalMsgSamples_Gov_Key(t *testing.T) {
 		"/klyraprotocol.ratelimit.MsgSetLimitParams",
 		"/klyraprotocol.ratelimit.MsgSetLimitParamsResponse",
 
-		// rewards
-		"/klyraprotocol.rewards.MsgUpdateParams",
-		"/klyraprotocol.rewards.MsgUpdateParamsResponse",
-
 		// sending
 		"/klyraprotocol.sending.MsgSendFromModuleToAccount",
 		"/klyraprotocol.sending.MsgSendFromModuleToAccountResponse",
@@ -134,12 +130,6 @@ func TestInternalMsgSamples_Gov_Key(t *testing.T) {
 		// stats
 		"/klyraprotocol.stats.MsgUpdateParams",
 		"/klyraprotocol.stats.MsgUpdateParamsResponse",
-
-		// vest
-		"/klyraprotocol.vest.MsgDeleteVestEntry",
-		"/klyraprotocol.vest.MsgDeleteVestEntryResponse",
-		"/klyraprotocol.vest.MsgSetVestEntry",
-		"/klyraprotocol.vest.MsgSetVestEntryResponse",
 	}
 
 	require.Equal(t, expectedMsgs, lib.GetSortedKeys[sort.StringSlice](msgs.InternalMsgSamplesGovAuth))

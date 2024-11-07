@@ -220,16 +220,6 @@ var (
 		"/klyraprotocol.stats.MsgUpdateParams":         {},
 		"/klyraprotocol.stats.MsgUpdateParamsResponse": {},
 
-		// vest
-		"/klyraprotocol.vest.MsgSetVestEntry":            {},
-		"/klyraprotocol.vest.MsgSetVestEntryResponse":    {},
-		"/klyraprotocol.vest.MsgDeleteVestEntry":         {},
-		"/klyraprotocol.vest.MsgDeleteVestEntryResponse": {},
-
-		// rewards
-		"/klyraprotocol.rewards.MsgUpdateParams":         {},
-		"/klyraprotocol.rewards.MsgUpdateParamsResponse": {},
-
 		// subaccounts
 		"/klyraprotocol.subaccounts.MsgClaimYieldForSubaccount":         {},
 		"/klyraprotocol.subaccounts.MsgClaimYieldForSubaccountResponse": {},
