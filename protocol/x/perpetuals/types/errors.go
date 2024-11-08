@@ -172,10 +172,10 @@ var (
 		35,
 		"multi collateral asssets is uninitialized",
 	)
-	ErrIsolatedMarketMultiCollateralAssetDoesNotContainTDai = errorsmod.Register(
+	ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset = errorsmod.Register(
 		ModuleName,
 		36,
-		"multi collateral asset does not contain tdai",
+		"multi collateral asset does not contain quote asset",
 	)
 
 	// Miscallaneous errors

@@ -49,18 +49,18 @@ func (p *PerpetualParams) Validate() error {
 				"In validate perpetual params",
 			)
 		} else {
-			// Check that MultiCollateralAssets contains 0
-			containsZero := false
+			// Check that MultiCollateralAssets contains the quote asset
+			containsQuoteAsset := false
 			for _, asset := range p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
-				if asset == 0 {
-					containsZero = true
+				if asset == p.QuoteAssetId {
+					containsQuoteAsset = true
 					break
 				}
 			}
-			if !containsZero {
+			if !containsQuoteAsset {
 				return errorsmod.Wrap(
-					ErrIsolatedMarketMultiCollateralAssetDoesNotContainTDai,
-					"MultiCollateralAssets does not contain tdai",
+					ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+					"MultiCollateralAssets does not contain quote asset",
 				)
 			}
 		}

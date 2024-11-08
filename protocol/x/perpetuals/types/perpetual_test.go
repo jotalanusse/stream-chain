@@ -49,6 +49,7 @@ func TestPerpetualParams_Validate(t *testing.T) {
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
 				},
+				QuoteAssetId: 1,
 			},
 			expectedErr: "isolated market max cumulative insurance fund delta per block is zero",
 		},
@@ -62,11 +63,12 @@ func TestPerpetualParams_Validate(t *testing.T) {
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
 				},
+				QuoteAssetId: 0,
 			},
-			expectedErr: "MultiCollateralAssets does not contain tdai: multi collateral asset does not contain tdai",
+			expectedErr: "multi collateral asset does not contain quote asset",
 		},
 		{
-			desc: "Valud Isolated market",
+			desc: "Valid Isolated market",
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
@@ -75,6 +77,7 @@ func TestPerpetualParams_Validate(t *testing.T) {
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},
+				QuoteAssetId: 0,
 			},
 			expectedErr: "",
 		},

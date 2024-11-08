@@ -689,6 +689,7 @@ func TestEndBlocker_Success(t *testing.T) {
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}
@@ -1466,6 +1467,7 @@ func TestPrepareCheckState(t *testing.T) {
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}

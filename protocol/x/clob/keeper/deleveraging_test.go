@@ -414,6 +414,7 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 					perpetual.Params.DangerIndexPpm,
 					perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					perpetual.Params.IsolatedMarketMultiCollateralAssets,
+					perpetual.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}
@@ -845,6 +846,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}
@@ -1368,6 +1370,7 @@ func TestProcessDeleveraging(t *testing.T) {
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}
@@ -1608,6 +1611,7 @@ func TestProcessDeleveragingAtOraclePrice(t *testing.T) {
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}
@@ -1792,6 +1796,7 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}

@@ -62,6 +62,12 @@ func WithIsolatedMarketMultiCollateralAssets(assets perptypes.MultiCollateralAss
 	}
 }
 
+func WithQuoteAssetId(quoteAssetId uint32) PerpetualModifierOption {
+	return func(cp *perptypes.Perpetual) {
+		cp.Params.QuoteAssetId = quoteAssetId
+	}
+}
+
 // GeneratePerpetual returns a `Perpetual` object set to default values.
 // Passing in `PerpetualModifierOption` methods alters the value of the `Perpetual` returned.
 // It will start with the default, valid `Perpetual` value defined within the method

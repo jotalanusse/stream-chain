@@ -2391,6 +2391,7 @@ func setupProcessProposerOperationsTestCase(
 			p.Params.DangerIndexPpm,
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			p.Params.IsolatedMarketMultiCollateralAssets,
+			p.Params.QuoteAssetId,
 		)
 		require.NoError(t, err)
 	}
