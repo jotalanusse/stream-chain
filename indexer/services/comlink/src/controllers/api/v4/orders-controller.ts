@@ -37,7 +37,6 @@ import {
   handleControllerError,
 } from '../../../lib/helpers';
 import { rateLimiterMiddleware } from '../../../lib/rate-limit';
-import { rejectRestrictedCountries } from '../../../lib/restrict-countries';
 import {
   CheckLimitSchema,
   CheckParentSubaccountSchema,
@@ -307,7 +306,6 @@ class OrdersController extends Controller {
 
 router.get(
   '/',
-  rejectRestrictedCountries,
   rateLimiterMiddleware(getReqRateLimiter),
   ...CheckSubaccountSchema,
   ...CheckLimitSchema,
@@ -530,7 +528,6 @@ router.get(
 
 router.get(
   '/:orderId',
-  rejectRestrictedCountries,
   ...checkSchema({
     orderId: {
       in: ['params'],

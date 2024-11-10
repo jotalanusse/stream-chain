@@ -21,7 +21,6 @@ import { complianceCheck } from '../../../lib/compliance-check';
 import { NotFoundError } from '../../../lib/errors';
 import { getChildSubaccountIds, handleControllerError } from '../../../lib/helpers';
 import { rateLimiterMiddleware } from '../../../lib/rate-limit';
-import { rejectRestrictedCountries } from '../../../lib/restrict-countries';
 import {
   CheckLimitAndCreatedBeforeOrAtAndOnOrAfterSchema,
   CheckParentSubaccountSchema,
@@ -170,7 +169,6 @@ class HistoricalPnlController extends Controller {
 
 router.get(
   '/',
-  rejectRestrictedCountries,
   rateLimiterMiddleware(getReqRateLimiter),
   ...CheckSubaccountSchema,
   ...CheckLimitAndCreatedBeforeOrAtAndOnOrAfterSchema,

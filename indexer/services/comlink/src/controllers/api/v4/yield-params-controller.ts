@@ -17,7 +17,6 @@ import { complianceCheck } from '../../../lib/compliance-check';
 import { NotFoundError } from '../../../lib/errors';
 import { handleControllerError } from '../../../lib/helpers';
 import { rateLimiterMiddleware } from '../../../lib/rate-limit';
-import { rejectRestrictedCountries } from '../../../lib/restrict-countries';
 import {
   CheckLimitAndYieldParamsSchema,
 } from '../../../lib/validation/schemas';
@@ -89,7 +88,6 @@ class YieldParamsController extends Controller {
 
 router.get(
   '/',
-  rejectRestrictedCountries,
   rateLimiterMiddleware(getReqRateLimiter),
   ...CheckLimitAndYieldParamsSchema,
   handleValidationErrors,

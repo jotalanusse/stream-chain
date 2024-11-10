@@ -38,7 +38,6 @@ import {
   initializePerpetualPositionsWithFunding,
 } from '../../../lib/helpers';
 import { rateLimiterMiddleware } from '../../../lib/rate-limit';
-import { rejectRestrictedCountries } from '../../../lib/restrict-countries';
 import {
   CheckLimitAndCreatedBeforeOrAtSchema,
   CheckSubaccountSchema,
@@ -150,7 +149,6 @@ class PerpetualPositionsController extends Controller {
 
 router.get(
   '/',
-  rejectRestrictedCountries,
   rateLimiterMiddleware(getReqRateLimiter),
   ...CheckSubaccountSchema,
   ...CheckLimitAndCreatedBeforeOrAtSchema,

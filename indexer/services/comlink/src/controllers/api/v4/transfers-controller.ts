@@ -27,7 +27,6 @@ import { complianceCheck } from '../../../lib/compliance-check';
 import { NotFoundError } from '../../../lib/errors';
 import { getChildSubaccountNums, handleControllerError } from '../../../lib/helpers';
 import { rateLimiterMiddleware } from '../../../lib/rate-limit';
-import { rejectRestrictedCountries } from '../../../lib/restrict-countries';
 import {
   CheckLimitAndCreatedBeforeOrAtSchema,
   CheckParentSubaccountSchema,
@@ -240,7 +239,6 @@ class TransfersController extends Controller {
 
 router.get(
   '/',
-  rejectRestrictedCountries,
   rateLimiterMiddleware(getReqRateLimiter),
   ...CheckSubaccountSchema,
   ...CheckLimitAndCreatedBeforeOrAtSchema,
