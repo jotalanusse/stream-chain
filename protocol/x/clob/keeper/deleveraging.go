@@ -98,10 +98,17 @@ func (k Keeper) MaybeDeleverageSubaccount(
 		labels...,
 	)
 
+	quoteCurrencyAtomicResolution := assettypes.AssetTDai.AtomicResolution
+	potentialQuoteAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err == nil {
+		quoteCurrencyAtomicResolution = potentialQuoteAtomicResolution
+	}
+
 	if quoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
 		ctx,
 		perpetualId,
 		new(big.Int).Abs(deltaQuantums),
+		quoteCurrencyAtomicResolution,
 	); err == nil {
 		metrics.IncrCounterWithLabels(
 			metrics.ClobDeleverageSubaccountTotalQuoteQuantums,
@@ -140,10 +147,16 @@ func (k Keeper) GetInsuranceFundBalanceInQuoteQuantums(
 ) (
 	balance *big.Int,
 ) {
-	tdaiAsset, exists := k.assetsKeeper.GetAsset(ctx, assettypes.AssetTDai.Id)
-	if !exists {
-		panic("GetInsuranceFundBalanceInQuoteQuantums: TDai asset not found in state")
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		return nil
 	}
+
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, perpetual.Params.QuoteAssetId)
+	if !exists {
+		panic("GetInsuranceFundBalanceInQuoteQuantums: quote asset not found in state")
+	}
+
 	insuranceFundAddr, err := k.perpetualsKeeper.GetInsuranceFundModuleAddress(ctx, perpetualId)
 	if err != nil {
 		return nil
@@ -151,10 +164,10 @@ func (k Keeper) GetInsuranceFundBalanceInQuoteQuantums(
 	insuranceFundBalanceCoin := k.bankKeeper.GetBalance(
 		ctx,
 		insuranceFundAddr,
-		tdaiAsset.Denom,
+		quoteAsset.Denom,
 	)
 
-	balance, _, err = k.assetsKeeper.ConvertCoinToAsset(ctx, tdaiAsset.Id, insuranceFundBalanceCoin)
+	balance, _, err = k.assetsKeeper.ConvertCoinToAsset(ctx, quoteAsset.Id, insuranceFundBalanceCoin)
 
 	if err != nil {
 		return nil
@@ -496,9 +509,14 @@ func (k Keeper) getDeleveragingQuoteQuantumsDelta(
 	deltaQuantums *big.Int,
 	isFinalSettlement bool,
 ) (deltaQuoteQuantums *big.Int, err error) {
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return nil, err
+	}
+
 	// If market is in final settlement and the subaccount has non-negative TNC, use the oracle price.
 	if isFinalSettlement {
-		return k.perpetualsKeeper.GetNetNotional(ctx, perpetualId, new(big.Int).Neg(deltaQuantums))
+		return k.perpetualsKeeper.GetNetNotional(ctx, perpetualId, new(big.Int).Neg(deltaQuantums), quoteCurrencyAtomicResolution)
 	}
 
 	// For standard deleveraging, use the bankruptcy price.
@@ -508,6 +526,20 @@ func (k Keeper) getDeleveragingQuoteQuantumsDelta(
 		perpetualId,
 		deltaQuantums,
 	)
+}
+
+func (k Keeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error) {
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		return 0, err
+	}
+
+	quoteAssetId := perpetual.Params.QuoteAssetId
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, quoteAssetId)
+	if !exists {
+		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual %+v", perpetual)
+	}
+	return quoteAsset.AtomicResolution, nil
 }
 
 // ProcessDeleveraging processes a deleveraging operation by closing both the liquidated subaccount's
@@ -563,12 +595,17 @@ func (k Keeper) ProcessDeleveraging(
 	deleveragedSubaccountPerpetualQuantumsDelta := deltaBaseQuantums
 	offsettingSubaccountPerpetualQuantumsDelta := new(big.Int).Neg(deltaBaseQuantums)
 
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		return err
+	}
+
 	updates := []satypes.Update{
 		// Liquidated subaccount update.
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          perpetual.Params.QuoteAssetId,
 					BigQuantumsDelta: deleveragedSubaccountQuoteBalanceDelta,
 				},
 			},
@@ -584,7 +621,7 @@ func (k Keeper) ProcessDeleveraging(
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          perpetual.Params.QuoteAssetId,
 					BigQuantumsDelta: offsettingSubaccountQuoteBalanceDelta,
 				},
 			},
@@ -609,11 +646,17 @@ func (k Keeper) ProcessDeleveraging(
 		return updateErr
 	}
 
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return err
+	}
+
 	// Stat quantums deleveraged in quote quantums.
 	if deleveragedQuoteQuantums, err := k.perpetualsKeeper.GetNetCollateral(
 		ctx,
 		perpetualId,
 		new(big.Int).Abs(deltaBaseQuantums),
+		quoteCurrencyAtomicResolution,
 	); err == nil {
 		labels := []metrics.Label{
 			metrics.GetLabelForIntValue(metrics.PerpetualId, int(perpetualId)),

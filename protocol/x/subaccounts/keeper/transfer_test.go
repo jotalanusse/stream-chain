@@ -1246,16 +1246,6 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 			expectedSubaccountsModuleAccBalance: big.NewInt(500),
 			expectedFeeModuleAccBalance:         big.NewInt(1500),
 		},
-		"failure - asset other than TDai not supported": {
-			feeModuleAccBalance:                 big.NewInt(1500),
-			asset:                               *constants.BtcUsd,
-			subaccountModuleAccBalance:          big.NewInt(500),
-			quantums:                            big.NewInt(500),
-			collateralPoolAddr:                  types.ModuleAddress,
-			expectedErr:                         types.ErrAssetTransferThroughBankNotImplemented,
-			expectedSubaccountsModuleAccBalance: big.NewInt(500),
-			expectedFeeModuleAccBalance:         big.NewInt(1500),
-		},
 		"success - transfer quantums is negative": {
 			feeModuleAccBalance:                 big.NewInt(1500),
 			asset:                               *constants.TDai,
@@ -1568,18 +1558,18 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 						tc.expectedErr.Error(),
 						func() {
 							//nolint:errcheck
-							keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId())
+							keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId)
 						},
 					)
 				} else {
 					require.ErrorIs(
 						t,
-						keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId()),
+						keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId),
 						tc.expectedErr,
 					)
 				}
 			} else {
-				require.NoError(t, keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId()))
+				require.NoError(t, keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId))
 			}
 
 			// Check the subaccount module balance.

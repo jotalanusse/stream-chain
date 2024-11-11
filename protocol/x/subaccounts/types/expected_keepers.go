@@ -17,6 +17,7 @@ type ProductKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigNetCollateralQuoteQuantums *big.Int,
 		err error,
@@ -25,6 +26,7 @@ type ProductKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigInitialMarginQuoteQuantums *big.Int,
 		bigMaintenanceMarginQuoteQuantums *big.Int,
@@ -87,6 +89,7 @@ type PerpetualsKeeper interface {
 	ModifyOpenInterest(ctx sdk.Context, perpetualId uint32, bigQuantums *big.Int) error
 	IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error)
 	GetMultiCollateralAssets(ctx sdk.Context) (assets perptypes.MultiCollateralAssetsArray, found bool)
+	GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error)
 }
 
 // BankKeeper defines the expected interface needed to retrieve account balances.

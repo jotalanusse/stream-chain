@@ -1630,6 +1630,7 @@ func TestProcessDeleveragingAtOraclePrice(t *testing.T) {
 				ks.Ctx,
 				uint32(0),
 				tc.deltaQuantums,
+				assettypes.AssetTDai.AtomicResolution,
 			)
 			fillPriceQuoteQuantums.Neg(fillPriceQuoteQuantums)
 			require.NoError(t, err)

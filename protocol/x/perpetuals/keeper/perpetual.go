@@ -423,6 +423,7 @@ func (k Keeper) getFundingIndexDelta(
 	perp types.Perpetual,
 	big8hrFundingRatePpm *big.Int,
 	timeSinceLastFunding uint32,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	fundingIndexDelta *big.Int,
 	err error,
@@ -448,6 +449,7 @@ func (k Keeper) getFundingIndexDelta(
 	bigFundingIndexDelta := lib.FundingRateToIndex(
 		proratedFundingRate,
 		perp.Params.AtomicResolution,
+		quoteCurrencyAtomicResolution,
 		marketPrice.SpotPrice,
 		marketPrice.Exponent,
 	)
@@ -558,7 +560,7 @@ func (k Keeper) sampleAllPerpetuals(ctx sdk.Context) (
 					SpotPrice: daemonPrice.SpotPrice,
 				},
 				BaseAtomicResolution:        perp.Params.AtomicResolution,
-				QuoteAtomicResolution:       lib.QuoteCurrencyAtomicResolution,
+				QuoteAtomicResolution:       lib.TDAIAtomicResolution,
 				ImpactNotionalQuoteQuantums: bigImpactNotionalQuoteQuantums,
 				MaxAbsPremiumVotePpm:        maxAbsPremiumVotePpm,
 			},
@@ -628,44 +630,6 @@ func (k Keeper) GetRemoveSampleTailsFunc(
 
 		return premiums[bottomRemoval:end]
 	}
-}
-
-func (k Keeper) CalculateYieldIndexForEpoch(
-	ctx sdk.Context,
-	totalTDaiPreMint *big.Int,
-	totalTDaiMinted *big.Int,
-	marketPrice pricestypes.MarketPrice,
-	perpetual types.Perpetual,
-) (
-	yieldIndex *big.Rat,
-	err error,
-) {
-	if totalTDaiPreMint == nil || totalTDaiPreMint.Cmp(big.NewInt(0)) == 0 {
-		return nil, types.ErrTotalTDaiPreMintIsNil
-	}
-
-	if totalTDaiMinted == nil {
-		return nil, types.ErrTotalTDaiMintedIsNil
-	}
-
-	if perpetual.Params.MarketId != marketPrice.Id {
-		return nil, errorsmod.Wrapf(types.ErrPerpAndPriceMarketsMismatched, "Perpetual Market Id: %v. Price Market Id: %v.", perpetual.Params.MarketId, marketPrice.Id)
-	}
-
-	oneBaseQuantum := big.NewInt(1)
-
-	priceForOneBaseQuantum := lib.BaseToQuoteQuantums(
-		oneBaseQuantum,
-		perpetual.Params.AtomicResolution,
-		marketPrice.PnlPrice,
-		marketPrice.Exponent,
-	)
-
-	totalDaiMintedTimesPrice := new(big.Int).Mul(totalTDaiMinted, priceForOneBaseQuantum)
-
-	yieldIndex = new(big.Rat).SetFrac(totalDaiMintedTimesPrice, totalTDaiPreMint)
-
-	return yieldIndex, nil
 }
 
 // MaybeProcessNewFundingTickEpoch processes funding ticks if the current block
@@ -797,6 +761,11 @@ func (k Keeper) MaybeProcessNewFundingTickEpoch(ctx sdk.Context) {
 		}
 
 		if bigFundingRatePpm.Sign() != 0 {
+			quoteCurrencyAtomicResolution, err := k.clobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perp.Params.Id)
+			if err != nil {
+				panic(err)
+			}
+
 			fundingIndexDelta, err := k.getFundingIndexDelta(
 				ctx,
 				perp,
@@ -805,6 +774,7 @@ func (k Keeper) MaybeProcessNewFundingTickEpoch(ctx sdk.Context) {
 				// TODO(DEC-1483): Handle the case when duration value is updated
 				// during the epoch.
 				fundingTickEpochInfo.Duration,
+				quoteCurrencyAtomicResolution,
 			)
 			if err != nil {
 				panic(err)
@@ -853,6 +823,7 @@ func (k Keeper) GetNetNotional(
 	ctx sdk.Context,
 	id uint32,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigNetNotionalQuoteQuantums *big.Int,
 	err error,
@@ -876,7 +847,7 @@ func (k Keeper) GetNetNotional(
 		return new(big.Int), err
 	}
 
-	return GetNetNotionalInQuoteQuantums(perpetual, marketPrice, bigQuantums), nil
+	return GetNetNotionalInQuoteQuantums(perpetual, marketPrice, bigQuantums, quoteCurrencyAtomicResolution), nil
 }
 
 // GetNetNotionalInQuoteQuantums returns the net notional in quote quantums, which can be
@@ -890,52 +861,19 @@ func GetNetNotionalInQuoteQuantums(
 	perpetual types.Perpetual,
 	marketPrice pricestypes.MarketPrice,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigNetNotionalQuoteQuantums *big.Int,
 ) {
 	bigQuoteQuantums := lib.BaseToQuoteQuantums(
 		bigQuantums,
 		perpetual.Params.AtomicResolution,
+		quoteCurrencyAtomicResolution,
 		marketPrice.PnlPrice,
 		marketPrice.Exponent,
 	)
 
 	return bigQuoteQuantums
-}
-
-// GetNotionalInBaseQuantums returns the net notional in base quantums, which can be represented
-// by the following equation:
-// `quoteQuantums * 10^baseAtomicResolution / (marketPrice * 10^marketExponent * 10^quoteAtomicResolution)`.
-// Note that longs are positive, and shorts are negative.
-// Returns an error if a perpetual with `id` does not exist or if the `perpetual.Params.MarketId` does
-// not exist.
-func (k Keeper) GetNotionalInBaseQuantums(
-	ctx sdk.Context,
-	id uint32,
-	bigQuoteQuantums *big.Int,
-) (
-	bigBaseQuantums *big.Int,
-	err error,
-) {
-	defer telemetry.ModuleMeasureSince(
-		types.ModuleName,
-		time.Now(),
-		metrics.GetNotionalInBaseQuantums,
-		metrics.Latency,
-	)
-
-	perpetual, marketPrice, err := k.GetPerpetualAndMarketPrice(ctx, id)
-	if err != nil {
-		return new(big.Int), err
-	}
-
-	bigBaseQuantums = lib.QuoteToBaseQuantums(
-		bigQuoteQuantums,
-		perpetual.Params.AtomicResolution,
-		marketPrice.PnlPrice,
-		marketPrice.Exponent,
-	)
-	return bigBaseQuantums, nil
 }
 
 // GetNetCollateral returns the net collateral in quote quantums. The net collateral is equal to
@@ -948,12 +886,13 @@ func (k Keeper) GetNetCollateral(
 	ctx sdk.Context,
 	id uint32,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigNetCollateralQuoteQuantums *big.Int,
 	err error,
 ) {
 	// The net collateral is equal to the net open notional.
-	return k.GetNetNotional(ctx, id, bigQuantums)
+	return k.GetNetNotional(ctx, id, bigQuantums, quoteCurrencyAtomicResolution)
 }
 
 // GetMarginRequirements returns initial and maintenance margin requirements in quote quantums, given the position
@@ -974,6 +913,7 @@ func (k Keeper) GetMarginRequirements(
 	ctx sdk.Context,
 	id uint32,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigInitialMarginQuoteQuantums *big.Int,
 	bigMaintenanceMarginQuoteQuantums *big.Int,
@@ -1010,6 +950,7 @@ func (k Keeper) GetMarginRequirements(
 		marketPrice,
 		liquidityTier,
 		bigQuantums,
+		quoteCurrencyAtomicResolution,
 	)
 	return bigInitialMarginQuoteQuantums, bigMaintenanceMarginQuoteQuantums, nil
 }
@@ -1023,6 +964,7 @@ func GetMarginRequirementsInQuoteQuantums(
 	marketPrice pricestypes.MarketPrice,
 	liquidityTier types.LiquidityTier,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigInitialMarginQuoteQuantums *big.Int,
 	bigMaintenanceMarginQuoteQuantums *big.Int,
@@ -1034,6 +976,7 @@ func GetMarginRequirementsInQuoteQuantums(
 	bigQuoteQuantums := lib.BaseToQuoteQuantums(
 		bigAbsQuantums,
 		perpetual.Params.AtomicResolution,
+		quoteCurrencyAtomicResolution,
 		marketPrice.PnlPrice,
 		marketPrice.Exponent,
 	)
@@ -1042,6 +985,7 @@ func GetMarginRequirementsInQuoteQuantums(
 	openInterestQuoteQuantums := lib.BaseToQuoteQuantums(
 		perpetual.OpenInterest.BigInt(), // OpenInterest is represented as base quantums.
 		perpetual.Params.AtomicResolution,
+		quoteCurrencyAtomicResolution,
 		marketPrice.PnlPrice,
 		marketPrice.Exponent,
 	)

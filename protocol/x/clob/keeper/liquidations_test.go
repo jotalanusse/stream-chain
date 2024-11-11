@@ -4941,9 +4941,10 @@ func TestRemovePerpetualPosition(t *testing.T) {
 	}
 }
 
-func TestUpdateTDaiPosition(t *testing.T) {
+func TestUpdateQuoteAssetPosition(t *testing.T) {
 	tests := map[string]struct {
 		subaccount         satypes.Subaccount
+		quoteAssetId       uint32
 		quantumsDelta      *big.Int
 		expectedSubaccount satypes.Subaccount
 		expectedError      bool
@@ -4954,6 +4955,7 @@ func TestUpdateTDaiPosition(t *testing.T) {
 					{AssetId: 0, Quantums: dtypes.NewInt(1000)},
 				},
 			},
+			quoteAssetId:  0,
 			quantumsDelta: big.NewInt(500),
 			expectedSubaccount: satypes.Subaccount{
 				AssetPositions: []*satypes.AssetPosition{
@@ -4967,6 +4969,7 @@ func TestUpdateTDaiPosition(t *testing.T) {
 					{AssetId: 0, Quantums: dtypes.NewInt(1000)},
 				},
 			},
+			quoteAssetId:  0,
 			quantumsDelta: big.NewInt(-300),
 			expectedSubaccount: satypes.Subaccount{
 				AssetPositions: []*satypes.AssetPosition{
@@ -4980,6 +4983,7 @@ func TestUpdateTDaiPosition(t *testing.T) {
 					{AssetId: 0, Quantums: dtypes.NewInt(1000)},
 				},
 			},
+			quoteAssetId:  0,
 			quantumsDelta: big.NewInt(-1000),
 			expectedSubaccount: satypes.Subaccount{
 				AssetPositions: []*satypes.AssetPosition{},
@@ -4991,6 +4995,7 @@ func TestUpdateTDaiPosition(t *testing.T) {
 					{AssetId: 1, Quantums: dtypes.NewInt(1000)},
 				},
 			},
+			quoteAssetId:  0,
 			quantumsDelta: big.NewInt(500),
 			expectedSubaccount: satypes.Subaccount{
 				AssetPositions: []*satypes.AssetPosition{
@@ -5003,7 +5008,7 @@ func TestUpdateTDaiPosition(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			keeper.UpdateTDaiPosition(&tc.subaccount, tc.quantumsDelta)
+			keeper.UpdateQuoteAssetPosition(&tc.subaccount, tc.quantumsDelta, tc.quoteAssetId)
 			require.Equal(t, tc.expectedSubaccount, tc.subaccount)
 		})
 	}

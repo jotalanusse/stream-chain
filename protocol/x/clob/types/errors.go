@@ -512,7 +512,7 @@ var (
 	ErrAssetUpdateNotImplemented = errorsmod.Register(
 		ModuleName,
 		9001,
-		"Updates for assets other than TDAI are not implemented",
+		"Updates for assets other than Quote Asset are not implemented",
 	)
 	ErrNotImplemented = errorsmod.Register(
 		ModuleName,
@@ -523,6 +523,11 @@ var (
 		ModuleName,
 		9003,
 		"Reduce-only is currently disabled for non-FOK/IOC orders",
+	)
+	ErrMultiCollateralNotImplemented = errorsmod.Register(
+		ModuleName,
+		9004,
+		"Multi-collateral is not implemented",
 	)
 
 	// Equity tier limit errors.

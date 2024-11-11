@@ -345,6 +345,7 @@ func TestGetNetCollateral(t *testing.T) {
 		ctx,
 		types.AssetTDai.Id,
 		new(big.Int).SetInt64(100),
+		types.AssetTDai.DenomExponent,
 	)
 	require.NoError(t, err)
 	require.Equal(t, new(big.Int).SetInt64(100), netCollateral)
@@ -353,6 +354,7 @@ func TestGetNetCollateral(t *testing.T) {
 		ctx,
 		uint32(1),
 		new(big.Int).SetInt64(-100),
+		types.AssetTDai.DenomExponent,
 	)
 	require.EqualError(t, types.ErrNotImplementedMargin, err.Error())
 }
@@ -366,6 +368,7 @@ func TestGetMarginRequirements(t *testing.T) {
 		ctx,
 		types.AssetTDai.Id,
 		new(big.Int).SetInt64(100),
+		types.AssetTDai.AtomicResolution,
 	)
 	require.NoError(t, err)
 	require.Equal(t, new(big.Int), initial)
@@ -375,6 +378,7 @@ func TestGetMarginRequirements(t *testing.T) {
 		ctx,
 		uint32(1),
 		new(big.Int).SetInt64(100),
+		types.AssetTDai.AtomicResolution,
 	)
 	require.NoError(t, err)
 	require.Equal(t, new(big.Int), initial)
@@ -871,7 +875,7 @@ func TestGetNetCollateralWithSlippage(t *testing.T) {
 			)
 			require.NoError(t, err)
 
-			result, err := keeper.GetNetCollateral(ctx, tc.asset.Id, tc.bigQuantums)
+			result, err := keeper.GetNetCollateral(ctx, tc.asset.Id, tc.bigQuantums, types.AssetTDai.DenomExponent)
 
 			if tc.expectedError != nil {
 				require.ErrorIs(t, err, tc.expectedError)

@@ -24,13 +24,13 @@ func (k Keeper) ClaimYieldForSubaccountFromIdAndSetNewState(
 	}
 
 	subaccount := k.GetSubaccount(ctx, *subaccountId)
-	if len(subaccount.AssetPositions) == 0 && len(subaccount.PerpetualPositions) == 0 {
-		return types.ErrNoYieldToClaim
-	}
 
-	perpIdToPerp, assetYieldIndex, availableYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
+	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
 	if err != nil {
 		return err
+	}
+	if !earnsTdaiYield {
+		return types.ErrNoYieldToClaim
 	}
 
 	settledSubaccount, totalYieldInQuantums, err := AddYieldToSubaccount(subaccount, perpIdToPerp, assetYieldIndex, availableYield)
@@ -46,6 +46,44 @@ func (k Keeper) ClaimYieldForSubaccountFromIdAndSetNewState(
 	k.SetSubaccount(ctx, settledSubaccount)
 
 	return nil
+}
+
+func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
+	ctx sdk.Context,
+	subaccount types.Subaccount,
+) (
+	earnsTdaiYield bool,
+	err error,
+) {
+	if len(subaccount.AssetPositions) == 0 && len(subaccount.PerpetualPositions) == 0 {
+		return false, nil
+	}
+
+	if subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) == 0 {
+		if len(subaccount.PerpetualPositions) == 0 {
+			return false, nil
+		}
+		// all perpetuals in a subaccount have the same supported collateral assets
+		perpetualPosition := subaccount.PerpetualPositions[0]
+		perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
+		if err != nil {
+			return false, err
+		}
+		if perpetual.Params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
+			found := false
+			for _, asset := range perpetual.Params.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+				if asset == assettypes.AssetTDai.Id {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return false, nil
+			}
+		}
+	}
+
+	return true, nil
 }
 
 func AddYieldToSubaccount(

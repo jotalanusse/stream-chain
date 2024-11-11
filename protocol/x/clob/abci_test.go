@@ -359,14 +359,14 @@ func TestEndBlocker_Success(t *testing.T) {
 						constants.BtcUsdExponent,
 						constants.ClobPair_Btc,
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution,
 					),
 					PnlPrice: types.SubticksToPrice(
 						types.Subticks(10),
 						constants.BtcUsdExponent,
 						constants.ClobPair_Btc,
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution,
 					),
 				})
 
@@ -379,14 +379,14 @@ func TestEndBlocker_Success(t *testing.T) {
 						constants.EthUsdExponent,
 						constants.ClobPair_Eth,
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution
 					),
 					PnlPrice: types.SubticksToPrice(
 						types.Subticks(35),
 						constants.EthUsdExponent,
 						constants.ClobPair_Eth,
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution,
 					),
 				})
 

@@ -18,7 +18,7 @@ var (
 		DenomExponent:    TDaiDenomExponent,
 		Denom:            TDaiDenom,
 		HasMarket:        false,
-		AtomicResolution: lib.QuoteCurrencyAtomicResolution,
+		AtomicResolution: lib.TDAIAtomicResolution,
 		AssetYieldIndex:  "1/1",
 		MaxSlippagePpm:   uint32(0),
 	}

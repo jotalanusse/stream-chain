@@ -197,13 +197,11 @@ func (k Keeper) GetNetCollateral(
 	ctx sdk.Context,
 	id uint32,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigNetCollateralQuoteQuantums *big.Int,
 	err error,
 ) {
-	if id == types.AssetTDai.Id {
-		return new(big.Int).Set(bigQuantums), nil
-	}
 
 	// Get asset
 	asset, exists := k.GetAsset(ctx, id)
@@ -219,7 +217,7 @@ func (k Keeper) GetNetCollateral(
 	// Balance is positive.
 	// TODO(DEC-581): add multi-collateral support.
 	if bigQuantums.Sign() == 1 {
-		return k.GetSlippageAdjustedQuoteQuantums(ctx, asset, bigQuantums)
+		return k.GetSlippageAdjustedQuoteQuantums(ctx, asset, bigQuantums, quoteCurrencyAtomicResolution)
 	}
 
 	// Balance is negative.
@@ -231,6 +229,7 @@ func (k Keeper) GetSlippageAdjustedQuoteQuantums(
 	ctx sdk.Context,
 	asset types.Asset,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (*big.Int, error) {
 	marketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, asset.MarketId)
 	if err != nil {
@@ -240,6 +239,7 @@ func (k Keeper) GetSlippageAdjustedQuoteQuantums(
 	bigQuoteQuantums := lib.BaseToQuoteQuantums(
 		bigQuantums,
 		asset.AtomicResolution,
+		quoteCurrencyAtomicResolution,
 		marketPrice.SpotPrice,
 		marketPrice.Exponent,
 	)
@@ -266,6 +266,7 @@ func (k Keeper) GetMarginRequirements(
 	ctx sdk.Context,
 	id uint32,
 	bigQuantums *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) (
 	bigInitialMarginQuoteQuantums *big.Int,
 	bigMaintenanceMarginQuoteQuantums *big.Int,

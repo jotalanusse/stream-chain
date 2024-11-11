@@ -284,25 +284,32 @@ func (k Keeper) fetchParamsToSettleSubaccount(
 	perpIdToPerp map[uint32]perptypes.Perpetual,
 	assetYieldIndex *big.Rat,
 	availableYield *big.Int,
+	earnsTdaiYield bool,
 	err error,
 ) {
+
+	earnsTdaiYield, err = k.CheckIfSubaccountEarnsTdaiYield(ctx, subaccount)
+	if err != nil {
+		return nil, nil, nil, false, err
+	}
+
 	assetYieldIndex, found := k.ratelimitKeeper.GetAssetYieldIndex(ctx)
 	if !found {
-		return nil, nil, nil, errors.New("could not find asset yield index")
+		return nil, nil, nil, false, errors.New("could not find asset yield index")
 	}
 
 	perpIdToPerp, err = k.getPerpIdToPerpMapForSubaccount(ctx, subaccount)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil, false, err
 	}
 
 	availableYieldCoin := k.bankKeeper.GetBalance(ctx, authtypes.NewModuleAddress(ratelimittypes.TDaiPoolAccount), assettypes.AssetTDai.Denom)
 	availableYield, _, err = k.assetsKeeper.ConvertCoinToAsset(ctx, assettypes.AssetTDai.Id, availableYieldCoin)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil, false, err
 	}
 
-	return perpIdToPerp, assetYieldIndex, availableYield, nil
+	return perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, nil
 }
 
 func (k Keeper) getPerpIdToPerpMapForSubaccount(
@@ -524,12 +531,12 @@ func (k Keeper) GetSettledSubaccount(
 	yieldForSubaccount *big.Int,
 	err error,
 ) {
-	perpIdToPerp, assetYieldIndex, availableYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
+	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
 	if err != nil {
 		return types.Subaccount{}, nil, nil, err
 	}
 
-	return GetSettledSubaccountWithPerpetuals(subaccount, perpIdToPerp, assetYieldIndex, availableYield)
+	return GetSettledSubaccountWithPerpetuals(subaccount, perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield)
 }
 
 // GetSettledSubaccountWithPerpetuals returns 1. a new settled subaccount given an unsettled subaccount,
@@ -543,6 +550,7 @@ func GetSettledSubaccountWithPerpetuals(
 	perpetuals map[uint32]perptypes.Perpetual,
 	assetYieldIndex *big.Rat,
 	availableYield *big.Int,
+	earnsTdaiYield bool,
 ) (
 	settledSubaccount types.Subaccount,
 	fundingPayments map[uint32]dtypes.SerializableInt,
@@ -553,14 +561,18 @@ func GetSettledSubaccountWithPerpetuals(
 	newPerpetualPositions := []*types.PerpetualPosition{}
 	fundingPayments = make(map[uint32]dtypes.SerializableInt)
 
-	// TODO [YBCP-86]: Optimize yield addition if no yield to be claimed
-	subaccountWithYield, totalNewYield, err := AddYieldToSubaccount(subaccount, perpetuals, assetYieldIndex, availableYield)
-	if err != nil {
-		return types.Subaccount{}, nil, nil, err
-	}
+	var subaccountWithYield types.Subaccount = subaccount
 
-	if totalNewYield.Cmp(big.NewInt(0)) < 0 {
-		return types.Subaccount{}, nil, nil, types.ErrYieldClaimedNegative
+	if earnsTdaiYield {
+		// TODO [YBCP-86]: Optimize yield addition if no yield to be claimed
+		subaccountWithYield, totalNewYield, err = AddYieldToSubaccount(subaccount, perpetuals, assetYieldIndex, availableYield)
+		if err != nil {
+			return types.Subaccount{}, nil, nil, err
+		}
+
+		if totalNewYield.Cmp(big.NewInt(0)) < 0 {
+			return types.Subaccount{}, nil, nil, types.ErrYieldClaimedNegative
+		}
 	}
 
 	// Iterate through and settle all perpetual positions.
@@ -600,12 +612,17 @@ func GetSettledSubaccountWithPerpetuals(
 		AssetYieldIndex:    subaccountWithYield.AssetYieldIndex,
 	}
 
-	newTDaiPosition := newSubaccount.GetTDaiPosition()
-	totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
-	newTDaiPosition.Add(newTDaiPosition, totalNetSettlement)
+	if len(subaccountWithYield.PerpetualPositions) > 0 {
+		perpetual := perpetuals[subaccountWithYield.PerpetualPositions[0].PerpetualId]
+		quoteAssetId := perpetual.Params.QuoteAssetId
+		totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
 
-	// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
-	newSubaccount.SetTDaiAssetPosition(newTDaiPosition)
+		newQuoteAssetPosition := newSubaccount.GetAssetPosition(quoteAssetId)
+		newQuoteAssetPosition.Add(newQuoteAssetPosition, totalNetSettlement)
+
+		// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
+		newSubaccount.SetAssetPosition(newQuoteAssetPosition, quoteAssetId)
+	}
 	return newSubaccount, fundingPayments, totalNewYield, nil
 }
 
@@ -1045,12 +1062,27 @@ func (k Keeper) internalGetNetCollateralAndMarginRequirements(
 		return big.NewInt(0), big.NewInt(0), big.NewInt(0), err
 	}
 
+	quoteCurrencyAtomicResolution := assettypes.AssetTDai.AtomicResolution
+	if len(perpetualSizes) > 0 {
+		quoteCurrencyAtomicResolution, err = k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualSizes[0].GetId())
+		if err != nil {
+			return big.NewInt(0), big.NewInt(0), big.NewInt(0), err
+		}
+	} else {
+		if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {
+			quoteCurrencyAtomicResolution, err = k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, settledUpdate.SettledSubaccount.PerpetualPositions[0].GetId())
+			if err != nil {
+				return big.NewInt(0), big.NewInt(0), big.NewInt(0), err
+			}
+		}
+	}
+
 	// The calculate function increments `netCollateral`, `initialMargin`, and `maintenanceMargin`
 	// given a `ProductKeeper` and a `PositionSize`.
 	calculate := func(pk types.ProductKeeper, size types.PositionSize) error {
 		id := size.GetId()
 		bigQuantums := size.GetBigQuantums()
-		bigNetCollateralQuoteQuantums, err := pk.GetNetCollateral(ctx, id, bigQuantums)
+		bigNetCollateralQuoteQuantums, err := pk.GetNetCollateral(ctx, id, bigQuantums, quoteCurrencyAtomicResolution)
 		if err != nil {
 			return err
 		}
@@ -1059,7 +1091,7 @@ func (k Keeper) internalGetNetCollateralAndMarginRequirements(
 
 		bigInitialMarginRequirements,
 			bigMaintenanceMarginRequirements,
-			err := pk.GetMarginRequirements(ctx, id, bigQuantums)
+			err := pk.GetMarginRequirements(ctx, id, bigQuantums, quoteCurrencyAtomicResolution)
 		if err != nil {
 			return err
 		}

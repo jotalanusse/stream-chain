@@ -33,6 +33,7 @@ import (
 	perptest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/perpetuals"
 	pricefeed_testutil "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/pricefeed"
 	pricestest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/prices"
+	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -1027,6 +1028,7 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 				pc.Ctx,
 				perpetual.Params.Id,
 				tc.bigBaseQuantums,
+				assettypes.AssetTDai.AtomicResolution,
 			)
 			require.NoError(t, err)
 
@@ -1056,6 +1058,7 @@ func TestGetMarginRequirements_PerpetualNotFound(t *testing.T) {
 		pc.Ctx,
 		nonExistentPerpetualId,
 		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 	require.EqualError(t, err, errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(nonExistentPerpetualId)).Error())
 	require.ErrorIs(t, err, types.ErrPerpetualDoesNotExist)
@@ -1081,6 +1084,7 @@ func TestGetMarginRequirements_MarketNotFound(t *testing.T) {
 		pc.Ctx,
 		perpetual.Params.Id,
 		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 
 	expectedErrorStr := fmt.Sprintf(
@@ -1112,6 +1116,7 @@ func TestGetMarginRequirements_LiquidityTierNotFound(t *testing.T) {
 		pc.Ctx,
 		perpetual.Params.Id,
 		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 
 	require.EqualError(
@@ -1233,6 +1238,7 @@ func TestGetNetNotional_Success(t *testing.T) {
 				pc.Ctx,
 				perpetual.Params.Id,
 				tc.bigBaseQuantums,
+				assettypes.AssetTDai.AtomicResolution,
 			)
 			require.NoError(t, err)
 
@@ -1255,6 +1261,7 @@ func TestGetNetNotional_PerpetualNotFound(t *testing.T) {
 		pc.Ctx,
 		nonExistentPerpetualId,
 		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 	require.EqualError(t, err, errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(nonExistentPerpetualId)).Error())
 	require.ErrorIs(t, err, types.ErrPerpetualDoesNotExist)
@@ -1280,173 +1287,7 @@ func TestGetNetNotional_MarketNotFound(t *testing.T) {
 		pc.Ctx,
 		perpetual.Params.Id,
 		big.NewInt(-1),
-	)
-	expectedErrorStr := fmt.Sprintf(
-		"Market ID %d does not exist on perpetual ID %d",
-		perpetual.Params.MarketId,
-		perpetual.Params.Id,
-	)
-	require.EqualError(t, err, errorsmod.Wrap(types.ErrMarketDoesNotExist, expectedErrorStr).Error())
-	require.ErrorIs(t, err, types.ErrMarketDoesNotExist)
-}
-
-func TestGetNotionalInBaseQuantums_Success(t *testing.T) {
-	tests := map[string]struct {
-		price                              uint64
-		exponent                           int32
-		baseCurrencyAtomicResolution       int32
-		bigQuoteQuantums                   *big.Int
-		bigExpectedNetNotionalBaseQuantums *big.Int
-	}{
-		"Positive exponent, atomic resolution 6, long position": {
-			price:                              5_555,
-			exponent:                           2,
-			baseCurrencyAtomicResolution:       -6,
-			bigQuoteQuantums:                   big.NewInt(3_888_500_000),
-			bigExpectedNetNotionalBaseQuantums: big.NewInt(7_000),
-		},
-		"Positive exponent, atomic resolution 6, short position": {
-			price:                              5_555,
-			exponent:                           2,
-			baseCurrencyAtomicResolution:       -6,
-			bigQuoteQuantums:                   big.NewInt(-3_888_500_000),
-			bigExpectedNetNotionalBaseQuantums: big.NewInt(-7_000),
-		},
-		"Negative exponent, atomic resolution 6, short position": {
-			price:                              5_555,
-			exponent:                           -2,
-			baseCurrencyAtomicResolution:       -6,
-			bigQuoteQuantums:                   big.NewInt(-388_850),
-			bigExpectedNetNotionalBaseQuantums: big.NewInt(-7_000),
-		},
-		"Zero exponent, atomic resolution 6, short position": {
-			price:                              5_555,
-			exponent:                           0,
-			baseCurrencyAtomicResolution:       -6,
-			bigQuoteQuantums:                   big.NewInt(-38_885_000),
-			bigExpectedNetNotionalBaseQuantums: big.NewInt(-7_000),
-		},
-		"Positive exponent, atomic resolution 4, long position": {
-			price:                              5_555,
-			exponent:                           4,
-			baseCurrencyAtomicResolution:       -4,
-			bigQuoteQuantums:                   big.NewInt(38_885_000_000_000),
-			bigExpectedNetNotionalBaseQuantums: big.NewInt(7_000),
-		},
-		"Positive exponent, atomic resolution 0, long position": {
-			price:                              5_555,
-			exponent:                           4,
-			baseCurrencyAtomicResolution:       -0,
-			bigQuoteQuantums:                   big.NewInt(388_850_000_000_000_000),
-			bigExpectedNetNotionalBaseQuantums: big.NewInt(7_000),
-		},
-		"Price and quantums are max uints": {
-			price:                        math.MaxUint64,
-			exponent:                     1,
-			baseCurrencyAtomicResolution: -6,
-			bigQuoteQuantums: big_testutil.MustFirst(
-				new(big.Int).SetString("3402823669209384634264811192843491082250", 10),
-			),
-			bigExpectedNetNotionalBaseQuantums: new(big.Int).SetUint64(math.MaxUint64),
-		},
-	}
-
-	// Run tests.
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			// Test suite setup.
-			pc := keepertest.PerpetualsKeepers(t)
-			// Create liquidity tiers.
-			keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper) // Create a new market param and price.
-			marketId := keepertest.GetNumMarkets(t, pc.Ctx, pc.PricesKeeper)
-			_, err := pc.PricesKeeper.CreateMarket(
-				pc.Ctx,
-				pricestypes.MarketParam{
-					Id:                 marketId,
-					Pair:               "marketName",
-					Exponent:           tc.exponent,
-					MinExchanges:       uint32(1),
-					MinPriceChangePpm:  uint32(50),
-					ExchangeConfigJson: "{}",
-				},
-				pricestypes.MarketPrice{
-					Id:        marketId,
-					Exponent:  tc.exponent,
-					SpotPrice: tc.price,
-					PnlPrice:  tc.price,
-				},
-			)
-			require.NoError(t, err)
-
-			// Create `Perpetual` struct with baseAssetAtomicResolution and marketId.
-			perpetual, err := pc.PerpetualsKeeper.CreatePerpetual(
-				pc.Ctx,
-				0,                               // PerpetualId
-				"GetNetNotionalTicker",          // Ticker
-				marketId,                        // MarketId
-				tc.baseCurrencyAtomicResolution, // AtomicResolution
-				int32(0),                        // DefaultFundingPpm
-				0,                               // LiquidityTier
-				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
-				0,
-				0,
-				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-				0,
-			)
-			require.NoError(t, err)
-
-			// Verify collateral requirements are calculated correctly.
-			bigNotionalBaseQuantums, err := pc.PerpetualsKeeper.GetNotionalInBaseQuantums(
-				pc.Ctx,
-				perpetual.Params.Id,
-				tc.bigQuoteQuantums,
-			)
-			require.NoError(t, err)
-
-			if tc.bigExpectedNetNotionalBaseQuantums.Cmp(bigNotionalBaseQuantums) != 0 {
-				t.Fatalf(
-					"%s: expectedNetNotionalBaseQuantums: %s, collateralBaseQuantums: %s",
-					name,
-					tc.bigExpectedNetNotionalBaseQuantums.String(),
-					bigNotionalBaseQuantums.String(),
-				)
-			}
-		})
-	}
-}
-
-func TestGetNotionalInBaseQuantums_PerpetualNotFound(t *testing.T) {
-	pc := keepertest.PerpetualsKeepers(t)
-	nonExistentPerpetualId := uint32(0)
-	_, err := pc.PerpetualsKeeper.GetNotionalInBaseQuantums(
-		pc.Ctx,
-		nonExistentPerpetualId,
-		big.NewInt(-1),
-	)
-	require.EqualError(t, err, errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(nonExistentPerpetualId)).Error())
-	require.ErrorIs(t, err, types.ErrPerpetualDoesNotExist)
-}
-
-func TestGetNotionalInBaseQuantums_MarketNotFound(t *testing.T) {
-	pc := keepertest.PerpetualsKeepers(t)
-
-	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
-	perpetual := perps[0]
-
-	// Store the perpetual with a bad MarketId.
-	nonExistentMarketId := uint32(999)
-	perpetual.Params.MarketId = nonExistentMarketId
-	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
-	b := cdc.MustMarshal(&perpetual)
-	perpetualStore := prefix.NewStore(pc.Ctx.KVStore(pc.StoreKey), []byte(types.PerpetualKeyPrefix))
-	perpetualStore.Set(lib.Uint32ToKey(perpetual.Params.Id), b)
-
-	// Getting margin requirements for perpetual with bad MarketId should return an error.
-	_, err := pc.PerpetualsKeeper.GetNotionalInBaseQuantums(
-		pc.Ctx,
-		perpetual.Params.Id,
-		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 	expectedErrorStr := fmt.Sprintf(
 		"Market ID %d does not exist on perpetual ID %d",
@@ -1568,6 +1409,7 @@ func TestGetNetCollateral_Success(t *testing.T) {
 				pc.Ctx,
 				perpetual.Params.Id,
 				tc.bigBaseQuantums,
+				assettypes.AssetTDai.AtomicResolution,
 			)
 			require.NoError(t, err)
 
@@ -1590,6 +1432,7 @@ func TestGetNetCollateral_PerpetualNotFound(t *testing.T) {
 		pc.Ctx,
 		nonExistentPerpetualId,
 		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 	require.EqualError(t, err, errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(nonExistentPerpetualId)).Error())
 	require.ErrorIs(t, err, types.ErrPerpetualDoesNotExist)
@@ -1615,6 +1458,7 @@ func TestGetNetCollateral_MarketNotFound(t *testing.T) {
 		pc.Ctx,
 		perpetual.Params.Id,
 		big.NewInt(-1),
+		assettypes.AssetTDai.AtomicResolution,
 	)
 	expectedErrorStr := fmt.Sprintf(
 		"Market ID %d does not exist on perpetual ID %d",

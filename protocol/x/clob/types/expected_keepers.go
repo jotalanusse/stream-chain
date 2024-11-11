@@ -75,16 +75,19 @@ type SubaccountsKeeper interface {
 		ctx sdk.Context,
 		amount *big.Int,
 		perpetualId uint32,
+		assetId uint32,
 	) error
 	TransferLiquidityFee(
 		ctx sdk.Context,
 		liquidityFeeQuoteQuantums *big.Int,
 		perpetualId uint32,
+		assetId uint32,
 	) error
 	TransferValidatorFee(
 		ctx sdk.Context,
 		validatorFeeQuoteQuantums *big.Int,
 		perpetualId uint32,
+		assetId uint32,
 	) error
 	GetCollateralPoolFromPerpetualId(
 		ctx sdk.Context,
@@ -104,7 +107,7 @@ type SubaccountsKeeper interface {
 type AssetsKeeper interface {
 	GetAsset(ctx sdk.Context, id uint32) (val assettypes.Asset, exists bool)
 	ConvertCoinToAsset(ctx sdk.Context, assetId uint32, coin sdk.Coin) (quantums *big.Int, convertedDenom *big.Int, err error)
-	GetNetCollateral(ctx sdk.Context, id uint32, bigQuantums *big.Int) (bigNetCollateralQuoteQuantums *big.Int, err error)
+	GetNetCollateral(ctx sdk.Context, id uint32, bigQuantums *big.Int, quoteCurrencyAtomicResolution int32) (bigNetCollateralQuoteQuantums *big.Int, err error)
 }
 
 type BlockTimeKeeper interface {
@@ -120,22 +123,16 @@ type PerpetualsKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigNetNotionalQuoteQuantums *big.Int,
-		err error,
-	)
-	GetNotionalInBaseQuantums(
-		ctx sdk.Context,
-		id uint32,
-		bigQuoteQuantums *big.Int,
-	) (
-		bigBaseQuantums *big.Int,
 		err error,
 	)
 	GetNetCollateral(
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigNetCollateralQuoteQuantums *big.Int,
 		err error,
@@ -144,6 +141,7 @@ type PerpetualsKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigInitialMarginQuoteQuantums *big.Int,
 		bigMaintenanceMarginQuoteQuantums *big.Int,

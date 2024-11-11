@@ -27,22 +27,16 @@ type PerpetualsKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigNetNotionalQuoteQuantums *big.Int,
-		err error,
-	)
-	GetNotionalInBaseQuantums(
-		ctx sdk.Context,
-		id uint32,
-		bigQuoteQuantums *big.Int,
-	) (
-		bigBaseQuantums *big.Int,
 		err error,
 	)
 	GetNetCollateral(
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigNetCollateralQuoteQuantums *big.Int,
 		err error,
@@ -51,6 +45,7 @@ type PerpetualsKeeper interface {
 		ctx sdk.Context,
 		id uint32,
 		bigQuantums *big.Int,
+		quoteCurrencyAtomicResolution int32,
 	) (
 		bigInitialMarginQuoteQuantums *big.Int,
 		bigMaintenanceMarginQuoteQuantums *big.Int,

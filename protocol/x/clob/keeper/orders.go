@@ -1041,6 +1041,11 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 
 	// Retrieve the associated `PerpetualId` for the `ClobPair`.
 	perpetualId := clobPair.MustGetPerpetualId()
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		panic(fmt.Sprintf("AddOrderToOrderbookSubaccountUpdatesCheck: failed to get perpetual %v", err))
+	}
+	quoteAssetId := perpetual.Params.QuoteAssetId
 
 	iterateOverOpenOrdersStart := time.Now()
 	for subaccountId, openOrders := range subaccountOpenOrders {
@@ -1076,6 +1081,7 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 			pendingUpdates.AddPerpetualFill(
 				subaccountId,
 				perpetualId,
+				quoteAssetId,
 				openOrder.IsBuy,
 				makerFeePpm,
 				bigFillAmount,
@@ -1141,7 +1147,7 @@ func (k Keeper) GetOraclePriceSubticksRat(ctx sdk.Context, clobPair types.ClobPa
 		marketPrice,
 		clobPair,
 		perpetual.Params.AtomicResolution,
-		lib.QuoteCurrencyAtomicResolution,
+		lib.TDAIAtomicResolution,
 	)
 	if oraclePriceSubticksRat.Cmp(big.NewRat(0, 1)) == 0 {
 		panic(
