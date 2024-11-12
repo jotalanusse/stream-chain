@@ -15,7 +15,7 @@ import {
 import { InvalidMessageHandler } from '../../src/lib/invalid-message';
 import { PingHandler } from '../../src/lib/ping';
 import config from '../../src/config';
-import { isRestrictedCountryHeaders, COUNTRY_HEADER_KEY } from '@klyraprotocol-indexer/compliance';
+import { COUNTRY_HEADER_KEY } from '@klyraprotocol-indexer/compliance';
 
 jest.mock('uuid');
 jest.mock('../../src/helpers/wss');
@@ -97,46 +97,6 @@ describe('Index', () => {
           type: OutgoingMessageType.CONNECTED,
         }),
       );
-    });
-
-    describe('geoblocking', () => {
-      const isRestrictedCountrySpy: jest.Mock = isRestrictedCountryHeaders as unknown as jest.Mock;
-
-      beforeAll(() => {
-        config.INDEXER_LEVEL_GEOBLOCKING_ENABLED = true;
-      });
-
-      afterAll(() => {
-        config.INDEXER_LEVEL_GEOBLOCKING_ENABLED = defaultGeoblockingEnabled;
-      });
-
-      it('rejects connection if from restricted country', () => {
-        jest.spyOn(websocket, 'terminate').mockImplementation(jest.fn());
-        // restricted country headers
-        isRestrictedCountrySpy.mockReturnValue(true);
-
-        const message: IncomingMessage = new IncomingMessage(new Socket());
-        mockConnect(websocket, message);
-        expect(websocket.terminate).toHaveBeenCalled();
-        expect(Object.keys(index.connections)).toHaveLength(0);
-        expect(wsOnSpy).not.toHaveBeenCalled();
-        expect(wsTerminateSpy).toHaveBeenCalled();
-        expect(sendMessage).not.toHaveBeenCalled();
-      });
-
-      it('does not reject connection if from restricted country', () => {
-        (v4 as unknown as jest.Mock).mockReturnValueOnce(connectionId);
-        // non-restricted country headers
-        isRestrictedCountrySpy.mockReturnValue(false);
-
-        const message: IncomingMessage = new IncomingMessage(new Socket());
-        mockConnect(websocket, message);
-
-        // Test that the connection is tracked.
-        expect(index.connections[connectionId]).not.toBeUndefined();
-        expect(index.connections[connectionId].ws).toEqual(websocket);
-        expect(index.connections[connectionId].messageId).toEqual(0);
-      });
     });
   });
 

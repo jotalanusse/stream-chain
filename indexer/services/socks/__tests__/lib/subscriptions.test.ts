@@ -10,7 +10,6 @@ import { btcTicker, invalidChannel, invalidTicker } from '../constants';
 import { axiosRequest } from '../../src/lib/axios';
 import { AxiosSafeServerError, makeAxiosSafeServerError } from '@klyraprotocol-indexer/base';
 import { BlockedError } from '../../src/lib/errors';
-import { isRestrictedCountry } from '@klyraprotocol-indexer/compliance';
 
 jest.mock('ws');
 jest.mock('../../src/helpers/wss');
@@ -89,9 +88,6 @@ describe('Subscriptions', () => {
     axiosRequestMock = (axiosRequest as jest.Mock);
     axiosRequestMock.mockClear();
     axiosRequestMock.mockImplementation(() => (JSON.stringify(initialMessage)));
-    (isRestrictedCountry as jest.Mock).mockImplementation((country: string): boolean => {
-      return country === restrictedCountry;
-    });
   });
 
   describe('subscribe', () => {

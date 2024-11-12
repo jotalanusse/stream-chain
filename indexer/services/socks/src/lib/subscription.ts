@@ -3,7 +3,6 @@ import {
   logger,
   stats,
 } from '@klyraprotocol-indexer/base';
-import { isRestrictedCountry } from '@klyraprotocol-indexer/compliance';
 import {
   APIOrderStatus,
   BestEffortOpenedStatus,
@@ -521,13 +520,6 @@ export class Subscriptions {
   ): Promise<string> {
     if (id === undefined) {
       throw new Error('Invalid undefined id');
-    }
-
-    // TODO(IND-508): Change this to match technical spec for persistent geo-blocking. This may
-    // either have to replicate any blocking logic added on comlink, or re-direct to comlink to
-    // determine if subscribing to a specific subaccount is blocked.
-    if (country !== undefined && isRestrictedCountry(country)) {
-      throw new BlockedError();
     }
 
     try {
