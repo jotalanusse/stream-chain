@@ -99,6 +99,12 @@ export class Index {
    * @param req HTTP request accompanying new connection request.
    */
   private onConnection(ws: WebSocket, req: IncomingMessage): void {
+    logger.info({
+      at: 'index#onConnection',
+      message: 'XXX CONNECTING NOW',
+      url: ws.url,
+      protocol: ws.protocol,
+    });
     const connectionId: string = uuidv4();
 
     this.connections[connectionId] = {
@@ -106,6 +112,13 @@ export class Index {
       messageId: 0,
       countryCode: this.countryRestrictor.getCountry(req),
     };
+
+    logger.info({
+      at: 'index#onConnection',
+      message: 'XXX AFTER GETTING COUNTRY CONNECTIONS',
+      url: ws.url,
+      protocol: ws.protocol,
+    });
 
     const numConcurrentConnections: number = Object.keys(this.connections).length;
     logger.info({

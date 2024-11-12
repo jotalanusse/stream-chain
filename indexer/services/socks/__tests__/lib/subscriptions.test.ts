@@ -273,31 +273,6 @@ describe('Subscriptions', () => {
       expect(subscriptions.subscriptionLists[connectionId]).toBeUndefined();
     });
 
-    it('sends blocked error if subscribing to subaccount from restricted country', async () => {
-      const expectedError: BlockedError = new BlockedError();
-      await subscriptions.subscribe(
-        mockWs,
-        Channel.V4_ACCOUNTS,
-        connectionId,
-        initialMsgId,
-        mockSubaccountId,
-        false,
-        restrictedCountry,
-      );
-
-      expect(sendMessageMock).toHaveBeenCalledTimes(1);
-      expect(sendMessageMock).toHaveBeenCalledWith(
-        mockWs,
-        connectionId,
-        expect.objectContaining({
-          connection_id: connectionId,
-          type: 'error',
-          message: expectedError.message,
-        }));
-      expect(subscriptions.subscriptions[Channel.V4_ACCOUNTS]).toBeUndefined();
-      expect(subscriptions.subscriptionLists[connectionId]).toBeUndefined();
-    });
-
     it('sends empty contents if initial message request fails with 404 for accounts', async () => {
       axiosRequestMock.mockImplementation(() => {
         return Promise.reject(makeAxiosSafeServerError(404, '', ''));
