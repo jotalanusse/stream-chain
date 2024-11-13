@@ -63,6 +63,7 @@ const (
 	// REMOVAL_REASON_FULLY_FILLED represents a removal of an order that
 	//  would lead to the subaccount violating isolated subaccount constraints.
 	OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS OrderRemoval_RemovalReason = 8
+	OrderRemoval_REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS    OrderRemoval_RemovalReason = 9
 )
 
 var OrderRemoval_RemovalReason_name = map[int32]string{
@@ -75,6 +76,7 @@ var OrderRemoval_RemovalReason_name = map[int32]string{
 	6: "REMOVAL_REASON_CONDITIONAL_IOC_WOULD_REST_ON_BOOK",
 	7: "REMOVAL_REASON_FULLY_FILLED",
 	8: "REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS",
+	9: "REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS",
 }
 
 var OrderRemoval_RemovalReason_value = map[string]int32{
@@ -87,6 +89,7 @@ var OrderRemoval_RemovalReason_value = map[string]int32{
 	"REMOVAL_REASON_CONDITIONAL_IOC_WOULD_REST_ON_BOOK":        6,
 	"REMOVAL_REASON_FULLY_FILLED":                              7,
 	"REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS":  8,
+	"REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS":     9,
 }
 
 func (x OrderRemoval_RemovalReason) String() string {

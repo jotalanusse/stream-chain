@@ -92,8 +92,12 @@ func TestUpdateResultString(t *testing.T) {
 			value:          types.ViolatesIsolatedSubaccountConstraints,
 			expectedResult: "ViolatesIsolatedSubaccountConstraints",
 		},
+		"ViolatesMultiCollateralConstraints": {
+			value:          types.ViolatesMultiCollateralConstraints,
+			expectedResult: "ViolatesMultiCollateralConstraints",
+		},
 		"UnexpectedError": {
-			value:          types.UpdateResult(6),
+			value:          types.UpdateResult(7),
 			expectedResult: "UnexpectedError",
 		},
 	}

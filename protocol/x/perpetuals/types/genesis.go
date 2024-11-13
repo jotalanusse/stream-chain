@@ -25,8 +25,9 @@ const (
 // DefaultGenesis returns the default Perpetual genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Perpetuals:     []Perpetual{},
-		LiquidityTiers: []LiquidityTier{},
+		MultiCollateralAssets: MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+		Perpetuals:            []Perpetual{},
+		LiquidityTiers:        []LiquidityTier{},
 		Params: Params{
 			FundingRateClampFactorPpm: DefaultFundingRateClampFactorPpm,
 			PremiumVoteClampFactorPpm: DefaultPremiumVoteClampFactorPpm,
@@ -38,6 +39,11 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
+
+	if err := gs.MultiCollateralAssets.Validate(); err != nil {
+		return err
+	}
+
 	// Validate parameters.
 	if err := gs.Params.Validate(); err != nil {
 		return err

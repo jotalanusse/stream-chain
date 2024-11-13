@@ -57,6 +57,8 @@ type Asset struct {
 	// all-time history of the yield mechanism for assets.
 	// Starts at 0. This string should always be converted big.Rat.
 	AssetYieldIndex string `protobuf:"bytes,8,opt,name=asset_yield_index,json=assetYieldIndex,proto3" json:"asset_yield_index,omitempty"`
+	// The max slippage in ppm for the asset.
+	MaxSlippagePpm uint32 `protobuf:"varint,9,opt,name=max_slippage_ppm,json=maxSlippagePpm,proto3" json:"max_slippage_ppm,omitempty"`
 }
 
 func (m *Asset) Reset()         { *m = Asset{} }
@@ -148,6 +150,13 @@ func (m *Asset) GetAssetYieldIndex() string {
 	return ""
 }
 
+func (m *Asset) GetMaxSlippagePpm() uint32 {
+	if m != nil {
+		return m.MaxSlippagePpm
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Asset)(nil), "klyraprotocol.assets.Asset")
 }
@@ -199,6 +208,11 @@ func (m *Asset) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.MaxSlippagePpm != 0 {
+		i = encodeVarintAsset(dAtA, i, uint64(m.MaxSlippagePpm))
+		i--
+		dAtA[i] = 0x48
+	}
 	if len(m.AssetYieldIndex) > 0 {
 		i -= len(m.AssetYieldIndex)
 		copy(dAtA[i:], m.AssetYieldIndex)
@@ -296,6 +310,9 @@ func (m *Asset) Size() (n int) {
 	l = len(m.AssetYieldIndex)
 	if l > 0 {
 		n += 1 + l + sovAsset(uint64(l))
+	}
+	if m.MaxSlippagePpm != 0 {
+		n += 1 + sovAsset(uint64(m.MaxSlippagePpm))
 	}
 	return n
 }
@@ -531,6 +548,25 @@ func (m *Asset) Unmarshal(dAtA []byte) error {
 			}
 			m.AssetYieldIndex = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 9:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxSlippagePpm", wireType)
+			}
+			m.MaxSlippagePpm = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAsset
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.MaxSlippagePpm |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipAsset(dAtA[iNdEx:])

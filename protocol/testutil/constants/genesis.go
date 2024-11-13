@@ -43,7 +43,19 @@ const GenesisState = `{
           "id": 0,
           "market_id": 0,
           "symbol": "TDAI",
-          "asset_yield_index": "1/1"
+          "asset_yield_index": "1/1",
+          "max_slippage_ppm": 0
+        },
+        {
+          "atomic_resolution": -8,
+          "denom": "btc-denom",
+          "denom_exponent": "-8",
+          "has_market": true,
+          "id": 1,
+          "market_id": 0,
+          "symbol": "BTC",
+          "asset_yield_index": "1/1",
+          "max_slippage_ppm": 0
         }
       ]
     },
@@ -122,6 +134,10 @@ const GenesisState = `{
             {
               "denom": "utdai",
               "amount": "100000000000000000"
+            },
+            {
+              "denom": "btc-denom",
+              "amount": "100000000000000000"
             }
           ]
         },
@@ -131,6 +147,10 @@ const GenesisState = `{
             {
               "denom": "utdai",
               "amount": "1300000000000000000"
+            },
+            {
+              "denom": "btc-denom",
+              "amount": "100000000000000000"
             }
           ]
         },
@@ -864,6 +884,9 @@ const GenesisState = `{
       }
     },
     "perpetuals": {
+      "multi_collateral_assets": {
+        "multi_collateral_assets": [0]
+      },
       "liquidity_tiers": [
         {
           "base_position_notional": 1000000000000,
@@ -889,8 +912,7 @@ const GenesisState = `{
             "market_id": 0,
             "ticker": "BTC-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         },
         {
           "params": {
@@ -901,8 +923,7 @@ const GenesisState = `{
             "market_id": 1,
             "ticker": "ETH-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         }
       ]
     },
@@ -1470,6 +1491,21 @@ const GenesisState = `{
           "id": {
             "number": 0,
             "owner": "klyra1fjg6zp6vv8t9wvy4lps03r5l4g7tkjw93awcky"
+          },
+          "margin_enabled": true,
+          "asset_yield_index": "1/1"
+        },
+        {
+          "asset_positions": [
+            {
+              "asset_id": 1,
+              "index": 0,
+              "quantums": "100000000000000000"
+            }
+          ],
+          "id": {
+            "number": 11,
+            "owner": "dydx1fjg6zp6vv8t9wvy4lps03r5l4g7tkjw9wvmh70"
           },
           "margin_enabled": true,
           "asset_yield_index": "1/1"

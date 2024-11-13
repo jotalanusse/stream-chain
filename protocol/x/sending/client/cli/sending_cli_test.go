@@ -110,6 +110,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Success() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNumberOne,
+		assetstypes.AssetTDai.Id,
 		uint64(1_000_000),
 		new(big.Int).SetUint64(499_000_000),
 		new(big.Int).SetUint64(501_000_000),
@@ -124,6 +125,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_InsufficientBalance() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNumberOne,
+		assetstypes.AssetTDai.Id,
 		uint64(501_000_000), // Sender only has $500
 		new(big.Int).SetUint64(500_000_000),
 		new(big.Int).SetUint64(500_000_000),
@@ -138,6 +140,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Nonexistent() {
 	s.sendTransferAndVerifyBalance(
 		subaccountNumberZero,
 		subaccountNonExistent,
+		assetstypes.AssetTDai.Id,
 		uint64(1_000_000),
 		new(big.Int).SetUint64(499_000_000),
 		new(big.Int).SetUint64(1_000_000),
@@ -147,6 +150,7 @@ func (s *SendingIntegrationTestSuite) TestCLISending_Nonexistent() {
 func (s *SendingIntegrationTestSuite) sendTransferAndVerifyBalance(
 	senderSubaccountNumber uint32,
 	recipientSubaccountNumber uint32,
+	assetId uint32,
 	amount uint64,
 	expectedSenderQuoteBalance *big.Int,
 	expectedRecipientQuoteBalance *big.Int,

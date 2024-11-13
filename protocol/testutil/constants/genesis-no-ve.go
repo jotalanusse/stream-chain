@@ -43,7 +43,8 @@ const GenesisStateNoVe = `{
           "id": 0,
           "market_id": 0,
           "symbol": "TDAI",
-          "asset_yield_index": "1/1"
+          "asset_yield_index": "1/1",
+          "max_slippage_ppm": 0
         }
       ]
     },
@@ -864,6 +865,9 @@ const GenesisStateNoVe = `{
       }
     },
     "perpetuals": {
+      "multi_collateral_assets": {
+        "multi_collateral_assets": [0]
+      },
       "liquidity_tiers": [
         {
           "base_position_notional": 1000000000000,
@@ -889,8 +893,7 @@ const GenesisStateNoVe = `{
             "market_id": 0,
             "ticker": "BTC-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         },
         {
           "params": {
@@ -901,8 +904,7 @@ const GenesisStateNoVe = `{
             "market_id": 1,
             "ticker": "ETH-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         }
       ]
     },

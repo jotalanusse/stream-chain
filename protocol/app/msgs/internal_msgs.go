@@ -130,14 +130,16 @@ var (
 		"/klyraprotocol.govplus.MsgSlashValidatorResponse": nil,
 
 		// perpetuals
-		"/klyraprotocol.perpetuals.MsgCreatePerpetual":               &perpetuals.MsgCreatePerpetual{},
-		"/klyraprotocol.perpetuals.MsgCreatePerpetualResponse":       nil,
-		"/klyraprotocol.perpetuals.MsgSetLiquidityTier":              &perpetuals.MsgSetLiquidityTier{},
-		"/klyraprotocol.perpetuals.MsgSetLiquidityTierResponse":      nil,
-		"/klyraprotocol.perpetuals.MsgUpdateParams":                  &perpetuals.MsgUpdateParams{},
-		"/klyraprotocol.perpetuals.MsgUpdateParamsResponse":          nil,
-		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParams":         &perpetuals.MsgUpdatePerpetualParams{},
-		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParamsResponse": nil,
+		"/klyraprotocol.perpetuals.MsgCreatePerpetual":                  &perpetuals.MsgCreatePerpetual{},
+		"/klyraprotocol.perpetuals.MsgCreatePerpetualResponse":          nil,
+		"/klyraprotocol.perpetuals.MsgSetLiquidityTier":                 &perpetuals.MsgSetLiquidityTier{},
+		"/klyraprotocol.perpetuals.MsgSetLiquidityTierResponse":         nil,
+		"/klyraprotocol.perpetuals.MsgUpdateParams":                     &perpetuals.MsgUpdateParams{},
+		"/klyraprotocol.perpetuals.MsgUpdateParamsResponse":             nil,
+		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParams":            &perpetuals.MsgUpdatePerpetualParams{},
+		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParamsResponse":    nil,
+		"/klyraprotocol.perpetuals.MsgSetMultiCollateralAssets":         &perpetuals.MsgSetMultiCollateralAssets{},
+		"/klyraprotocol.perpetuals.MsgSetMultiCollateralAssetsResponse": nil,
 
 		// prices
 		"/klyraprotocol.prices.MsgCreateOracleMarket":         &prices.MsgCreateOracleMarket{},

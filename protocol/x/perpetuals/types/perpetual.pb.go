@@ -61,10 +61,6 @@ type Perpetual struct {
 	// Total size of open long contracts, measured in base_quantums.
 	OpenInterest    github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,3,opt,name=open_interest,json=openInterest,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"open_interest"`
 	LastFundingRate github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,4,opt,name=last_funding_rate,json=lastFundingRate,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"last_funding_rate"`
-	// The current yield index is determined by the cumulative
-	// all-time history of the yield mechanism. Starts at 0.
-	// This string should always be converted big.Rat.
-	YieldIndex string `protobuf:"bytes,5,opt,name=yield_index,json=yieldIndex,proto3" json:"yield_index,omitempty"`
 }
 
 func (m *Perpetual) Reset()         { *m = Perpetual{} }
@@ -107,11 +103,48 @@ func (m *Perpetual) GetParams() PerpetualParams {
 	return PerpetualParams{}
 }
 
-func (m *Perpetual) GetYieldIndex() string {
-	if m != nil {
-		return m.YieldIndex
+type MultiCollateralAssetsArray struct {
+	MultiCollateralAssets []uint32 `protobuf:"varint,1,rep,packed,name=multi_collateral_assets,json=multiCollateralAssets,proto3" json:"multi_collateral_assets,omitempty"`
+}
+
+func (m *MultiCollateralAssetsArray) Reset()         { *m = MultiCollateralAssetsArray{} }
+func (m *MultiCollateralAssetsArray) String() string { return proto.CompactTextString(m) }
+func (*MultiCollateralAssetsArray) ProtoMessage()    {}
+func (*MultiCollateralAssetsArray) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ddf8d3a2c492c2a6, []int{1}
+}
+func (m *MultiCollateralAssetsArray) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MultiCollateralAssetsArray) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MultiCollateralAssetsArray.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
 	}
-	return ""
+}
+func (m *MultiCollateralAssetsArray) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MultiCollateralAssetsArray.Merge(m, src)
+}
+func (m *MultiCollateralAssetsArray) XXX_Size() int {
+	return m.Size()
+}
+func (m *MultiCollateralAssetsArray) XXX_DiscardUnknown() {
+	xxx_messageInfo_MultiCollateralAssetsArray.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MultiCollateralAssetsArray proto.InternalMessageInfo
+
+func (m *MultiCollateralAssetsArray) GetMultiCollateralAssets() []uint32 {
+	if m != nil {
+		return m.MultiCollateralAssets
+	}
+	return nil
 }
 
 // PerpetualParams represents the parameters of a perpetual on the Klyra
@@ -141,7 +174,11 @@ type PerpetualParams struct {
 	// liquidations
 	DangerIndexPpm uint32 `protobuf:"varint,8,opt,name=danger_index_ppm,json=dangerIndexPpm,proto3" json:"danger_index_ppm,omitempty"`
 	// The maximum insurance fund delta per block for isolated perpetual markets.
-	IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64 `protobuf:"varint,9,opt,name=isolated_market_max_cumulative_insurance_fund_delta_per_block,json=isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"isolated_market_max_cumulative_insurance_fund_delta_per_block,omitempty"`
+	IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64                      `protobuf:"varint,9,opt,name=isolated_market_max_cumulative_insurance_fund_delta_per_block,json=isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"isolated_market_max_cumulative_insurance_fund_delta_per_block,omitempty"`
+	IsolatedMarketMultiCollateralAssets                   *MultiCollateralAssetsArray `protobuf:"bytes,10,opt,name=isolated_market_multi_collateral_assets,json=isolatedMarketMultiCollateralAssets,proto3" json:"isolated_market_multi_collateral_assets,omitempty"`
+	// The quote asset for this perpetual.
+	// Price oracles must always be quoted in terms of this asset.
+	QuoteAssetId uint32 `protobuf:"varint,11,opt,name=quote_asset_id,json=quoteAssetId,proto3" json:"quote_asset_id,omitempty"`
 }
 
 func (m *PerpetualParams) Reset()         { *m = PerpetualParams{} }
@@ -236,6 +273,20 @@ func (m *PerpetualParams) GetDangerIndexPpm() uint32 {
 func (m *PerpetualParams) GetIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock() uint64 {
 	if m != nil {
 		return m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
+	}
+	return 0
+}
+
+func (m *PerpetualParams) GetIsolatedMarketMultiCollateralAssets() *MultiCollateralAssetsArray {
+	if m != nil {
+		return m.IsolatedMarketMultiCollateralAssets
+	}
+	return nil
+}
+
+func (m *PerpetualParams) GetQuoteAssetId() uint32 {
+	if m != nil {
+		return m.QuoteAssetId
 	}
 	return 0
 }
@@ -581,13 +632,6 @@ func (m *Perpetual) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.YieldIndex) > 0 {
-		i -= len(m.YieldIndex)
-		copy(dAtA[i:], m.YieldIndex)
-		i = encodeVarintPerpetual(dAtA, i, uint64(len(m.YieldIndex)))
-		i--
-		dAtA[i] = 0x2a
-	}
 	{
 		size := m.LastFundingRate.Size()
 		i -= size
@@ -631,6 +675,47 @@ func (m *Perpetual) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MultiCollateralAssetsArray) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MultiCollateralAssetsArray) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MultiCollateralAssetsArray) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.MultiCollateralAssets) > 0 {
+		dAtA3 := make([]byte, len(m.MultiCollateralAssets)*10)
+		var j2 int
+		for _, num := range m.MultiCollateralAssets {
+			for num >= 1<<7 {
+				dAtA3[j2] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j2++
+			}
+			dAtA3[j2] = uint8(num)
+			j2++
+		}
+		i -= j2
+		copy(dAtA[i:], dAtA3[:j2])
+		i = encodeVarintPerpetual(dAtA, i, uint64(j2))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *PerpetualParams) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -651,6 +736,23 @@ func (m *PerpetualParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.QuoteAssetId != 0 {
+		i = encodeVarintPerpetual(dAtA, i, uint64(m.QuoteAssetId))
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.IsolatedMarketMultiCollateralAssets != nil {
+		{
+			size, err := m.IsolatedMarketMultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPerpetual(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
 	if m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock != 0 {
 		i = encodeVarintPerpetual(dAtA, i, uint64(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock))
 		i--
@@ -722,21 +824,21 @@ func (m *MarketPremiums) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	var l int
 	_ = l
 	if len(m.Premiums) > 0 {
-		dAtA2 := make([]byte, len(m.Premiums)*5)
-		var j3 int
+		dAtA5 := make([]byte, len(m.Premiums)*5)
+		var j6 int
 		for _, num := range m.Premiums {
-			x4 := (uint32(num) << 1) ^ uint32((num >> 31))
-			for x4 >= 1<<7 {
-				dAtA2[j3] = uint8(uint64(x4)&0x7f | 0x80)
-				j3++
-				x4 >>= 7
+			x7 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x7 >= 1<<7 {
+				dAtA5[j6] = uint8(uint64(x7)&0x7f | 0x80)
+				j6++
+				x7 >>= 7
 			}
-			dAtA2[j3] = uint8(x4)
-			j3++
+			dAtA5[j6] = uint8(x7)
+			j6++
 		}
-		i -= j3
-		copy(dAtA[i:], dAtA2[:j3])
-		i = encodeVarintPerpetual(dAtA, i, uint64(j3))
+		i -= j6
+		copy(dAtA[i:], dAtA5[:j6])
+		i = encodeVarintPerpetual(dAtA, i, uint64(j6))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -880,9 +982,21 @@ func (m *Perpetual) Size() (n int) {
 	n += 1 + l + sovPerpetual(uint64(l))
 	l = m.LastFundingRate.Size()
 	n += 1 + l + sovPerpetual(uint64(l))
-	l = len(m.YieldIndex)
-	if l > 0 {
-		n += 1 + l + sovPerpetual(uint64(l))
+	return n
+}
+
+func (m *MultiCollateralAssetsArray) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.MultiCollateralAssets) > 0 {
+		l = 0
+		for _, e := range m.MultiCollateralAssets {
+			l += sovPerpetual(uint64(e))
+		}
+		n += 1 + sovPerpetual(uint64(l)) + l
 	}
 	return n
 }
@@ -920,6 +1034,13 @@ func (m *PerpetualParams) Size() (n int) {
 	}
 	if m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock != 0 {
 		n += 1 + sovPerpetual(uint64(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock))
+	}
+	if m.IsolatedMarketMultiCollateralAssets != nil {
+		l = m.IsolatedMarketMultiCollateralAssets.Size()
+		n += 1 + l + sovPerpetual(uint64(l))
+	}
+	if m.QuoteAssetId != 0 {
+		n += 1 + sovPerpetual(uint64(m.QuoteAssetId))
 	}
 	return n
 }
@@ -1162,38 +1283,132 @@ func (m *Perpetual) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field YieldIndex", wireType)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPerpetual(dAtA[iNdEx:])
+			if err != nil {
+				return err
 			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPerpetual
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthPerpetual
 			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPerpetual
-			}
-			if postIndex > l {
+			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.YieldIndex = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MultiCollateralAssetsArray) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPerpetual
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MultiCollateralAssetsArray: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MultiCollateralAssetsArray: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType == 0 {
+				var v uint32
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowPerpetual
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= uint32(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.MultiCollateralAssets = append(m.MultiCollateralAssets, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowPerpetual
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthPerpetual
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthPerpetual
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.MultiCollateralAssets) == 0 {
+					m.MultiCollateralAssets = make([]uint32, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint32
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowPerpetual
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= uint32(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.MultiCollateralAssets = append(m.MultiCollateralAssets, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field MultiCollateralAssets", wireType)
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPerpetual(dAtA[iNdEx:])
@@ -1428,6 +1643,61 @@ func (m *PerpetualParams) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsolatedMarketMultiCollateralAssets", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPerpetual
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPerpetual
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPerpetual
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.IsolatedMarketMultiCollateralAssets == nil {
+				m.IsolatedMarketMultiCollateralAssets = &MultiCollateralAssetsArray{}
+			}
+			if err := m.IsolatedMarketMultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field QuoteAssetId", wireType)
+			}
+			m.QuoteAssetId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPerpetual
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.QuoteAssetId |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

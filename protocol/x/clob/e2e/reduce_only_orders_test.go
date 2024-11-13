@@ -78,7 +78,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(100),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -96,7 +95,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(99_999_900),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -146,7 +144,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(100),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -164,7 +161,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(99_999_900),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -214,7 +210,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(150),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -232,7 +227,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(99_999_850),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -285,7 +279,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(150),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -303,7 +296,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(99_999_850),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -354,7 +346,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(150),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -372,7 +363,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(99_999_850),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -429,7 +419,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(50_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -447,7 +436,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(50_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -503,7 +491,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(25_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -521,7 +508,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(75_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -551,6 +537,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 								constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 								constants.EthUsd_20PercentInitial_10PercentMaintenance,
 							}
+							genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 						},
 					)
 					return genesis
@@ -769,6 +756,12 @@ func TestReduceOnlyOrderFailure(t *testing.T) {
 						},
 					)
 				}
+				testapp.UpdateGenesisDocWithAppStateForModule(
+					&genesis,
+					func(genesisState *perptypes.GenesisState) {
+						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
+					},
+				)
 				return genesis
 			}).Build()
 
@@ -1076,6 +1069,12 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 							},
 						)
 					}
+					testapp.UpdateGenesisDocWithAppStateForModule(
+						&genesis,
+						func(genesisState *perptypes.GenesisState) {
+							genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
+						},
+					)
 					return genesis
 				}).
 				WithCrashingAppCheckTxNonDeterminismChecksEnabled(false).

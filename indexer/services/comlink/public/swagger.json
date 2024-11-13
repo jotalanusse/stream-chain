@@ -65,9 +65,6 @@
           "unrealizedPnl": {
             "type": "string"
           },
-          "perpYieldIndex": {
-            "type": "string"
-          },
           "closedAt": {
             "allOf": [
               {
@@ -94,8 +91,7 @@
           "sumOpen",
           "sumClose",
           "netFunding",
-          "unrealizedPnl",
-          "perpYieldIndex"
+          "unrealizedPnl"
         ],
         "type": "object",
         "additionalProperties": false
@@ -857,9 +853,6 @@
           },
           "baseOpenInterest": {
             "type": "string"
-          },
-          "perpYieldIndex": {
-            "type": "string"
           }
         },
         "required": [
@@ -884,8 +877,7 @@
           "stepBaseQuantums",
           "subticksPerTick",
           "marketType",
-          "baseOpenInterest",
-          "perpYieldIndex"
+          "baseOpenInterest"
         ],
         "type": "object",
         "additionalProperties": false

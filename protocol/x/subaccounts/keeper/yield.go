@@ -3,7 +3,6 @@ package keeper
 import (
 	"math/big"
 
-	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -24,13 +23,13 @@ func (k Keeper) ClaimYieldForSubaccountFromIdAndSetNewState(
 	}
 
 	subaccount := k.GetSubaccount(ctx, *subaccountId)
-	if len(subaccount.AssetPositions) == 0 && len(subaccount.PerpetualPositions) == 0 {
-		return types.ErrNoYieldToClaim
-	}
 
-	perpIdToPerp, assetYieldIndex, availableYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
+	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
 	if err != nil {
 		return err
+	}
+	if !earnsTdaiYield {
+		return types.ErrNoYieldToClaim
 	}
 
 	settledSubaccount, totalYieldInQuantums, err := AddYieldToSubaccount(subaccount, perpIdToPerp, assetYieldIndex, availableYield)
@@ -48,6 +47,44 @@ func (k Keeper) ClaimYieldForSubaccountFromIdAndSetNewState(
 	return nil
 }
 
+func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
+	ctx sdk.Context,
+	subaccount types.Subaccount,
+) (
+	earnsTdaiYield bool,
+	err error,
+) {
+	if len(subaccount.AssetPositions) == 0 && len(subaccount.PerpetualPositions) == 0 {
+		return false, nil
+	}
+
+	if subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) == 0 {
+		if len(subaccount.PerpetualPositions) == 0 {
+			return false, nil
+		}
+		// all perpetuals in a subaccount have the same supported collateral assets
+		perpetualPosition := subaccount.PerpetualPositions[0]
+		perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
+		if err != nil {
+			return false, err
+		}
+		if perpetual.Params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
+			found := false
+			for _, asset := range perpetual.Params.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+				if asset == assettypes.AssetTDai.Id {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return false, nil
+			}
+		}
+	}
+
+	return true, nil
+}
+
 func AddYieldToSubaccount(
 	subaccount types.Subaccount,
 	perpIdToPerp map[uint32]perptypes.Perpetual,
@@ -58,17 +95,10 @@ func AddYieldToSubaccount(
 	totalNewYieldInQuantums *big.Int,
 	err error,
 ) {
-	assetYield, err := getYieldFromAssetPositions(subaccount, assetYieldIndex)
+	totalNewYieldInQuantums, err = getYieldFromAssetPositions(subaccount, assetYieldIndex)
 	if err != nil {
 		return types.Subaccount{}, nil, err
 	}
-
-	totalNewPerpYield, newPerpetualPositions, err := getYieldFromPerpPositions(subaccount, perpIdToPerp)
-	if err != nil {
-		return types.Subaccount{}, nil, err
-	}
-
-	totalNewYieldInQuantums = new(big.Int).Add(assetYield, totalNewPerpYield)
 
 	totalNewYieldInQuantums = HandleInsufficientYieldDueToNegativeTNC(totalNewYieldInQuantums, availableYieldInQuantums)
 
@@ -76,7 +106,7 @@ func AddYieldToSubaccount(
 	newSubaccount := types.Subaccount{
 		Id:                 subaccount.Id,
 		AssetPositions:     subaccount.AssetPositions,
-		PerpetualPositions: newPerpetualPositions,
+		PerpetualPositions: subaccount.PerpetualPositions,
 		MarginEnabled:      subaccount.MarginEnabled,
 		AssetYieldIndex:    assetYieldIndexString,
 	}
@@ -117,7 +147,7 @@ func getYieldFromAssetPositions(
 ) {
 	for _, assetPosition := range subaccount.AssetPositions {
 		if assetPosition.AssetId != assettypes.AssetTDai.Id {
-			return nil, assettypes.ErrNotImplementedMulticollateral
+			continue
 		}
 
 		newAssetYield, err := calculateAssetYieldInQuoteQuantums(subaccount, assetYieldIndex, assetPosition)
@@ -177,128 +207,6 @@ func calculateAssetYieldInQuoteQuantums(
 	newAssetAmount := new(big.Rat).Mul(assetAmount, yieldIndexQuotient)
 	newYieldRat := new(big.Rat).Sub(newAssetAmount, assetAmount)
 
-	newYield = lib.BigRatRound(newYieldRat, false)
-
-	return newYield, nil
-}
-
-// -------------------PERP YIELD --------------------------
-
-func getYieldFromPerpPositions(
-	subaccount types.Subaccount,
-	perpIdToPerp map[uint32]perptypes.Perpetual,
-) (
-	totalNewPerpYield *big.Int,
-	newPerpetualPositions []*types.PerpetualPosition,
-	err error,
-) {
-	totalNewPerpYield = big.NewInt(0)
-	newPerpetualPositions = []*types.PerpetualPosition{}
-
-	for _, perpetualPosition := range subaccount.PerpetualPositions {
-		perpetual, found := perpIdToPerp[perpetualPosition.PerpetualId]
-		if !found {
-			return nil,
-				nil,
-				errorsmod.Wrap(
-					perptypes.ErrPerpetualDoesNotExist, lib.UintToString(perpetualPosition.PerpetualId),
-				)
-		}
-
-		perpYield, perpYieldIndex, err := calculateNewPerpYield(perpetual, perpetualPosition)
-		if err != nil {
-			return nil, nil, err
-		}
-		totalNewPerpYield = new(big.Int).Add(totalNewPerpYield, perpYield)
-
-		newPerpetualPosition := types.PerpetualPosition{
-			PerpetualId:  perpetualPosition.PerpetualId,
-			Quantums:     perpetualPosition.Quantums,
-			FundingIndex: perpetualPosition.FundingIndex,
-			YieldIndex:   perpYieldIndex.String(),
-		}
-		newPerpetualPositions = append(newPerpetualPositions, &newPerpetualPosition)
-	}
-	return totalNewPerpYield, newPerpetualPositions, nil
-}
-
-func calculateNewPerpYield(
-	perpetual perptypes.Perpetual,
-	perpetualPosition *types.PerpetualPosition,
-) (
-	newPerpYield *big.Int,
-	perpYieldIndex *big.Rat,
-	err error,
-) {
-	perpYieldIndex, err = getCurrentYieldIndexForPerp(perpetual)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	newPerpYield, err = calculatePerpetualYieldInQuoteQuantums(perpetualPosition, perpYieldIndex)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return newPerpYield, perpYieldIndex, nil
-}
-
-func getCurrentYieldIndexForPerp(
-	perp perptypes.Perpetual,
-) (
-	yieldIndex *big.Rat,
-	err error,
-) {
-	if perp.YieldIndex == "" {
-		return nil, types.ErrPerpYieldIndexUninitialized
-	}
-
-	generalYieldIndex, success := new(big.Rat).SetString(perp.YieldIndex)
-	if !success {
-		return nil, types.ErrRatConversion
-	}
-	return generalYieldIndex, nil
-}
-
-func calculatePerpetualYieldInQuoteQuantums(
-	perpPosition *types.PerpetualPosition,
-	generalYieldIndex *big.Rat,
-) (
-	newYield *big.Int,
-	err error,
-) {
-	if perpPosition == nil {
-		return nil, types.ErrPositionIsNil
-	}
-
-	if generalYieldIndex == nil {
-		return nil, types.ErrGlobalYieldIndexNil
-	}
-
-	if generalYieldIndex.Cmp(big.NewRat(0, 1)) < 0 {
-		return nil, types.ErrGlobalYieldIndexNegative
-	}
-
-	if generalYieldIndex.Cmp(big.NewRat(0, 1)) == 0 {
-		return big.NewInt(0), nil
-	}
-
-	if perpPosition.YieldIndex == "" {
-		return nil, types.ErrPerpYieldIndexUninitialized
-	}
-
-	currentYieldIndex, success := new(big.Rat).SetString(perpPosition.YieldIndex)
-	if !success {
-		return nil, types.ErrRatConversion
-	}
-
-	if generalYieldIndex.Cmp(currentYieldIndex) < 0 {
-		return nil, types.ErrGeneralYieldIndexSmallerThanYieldIndexInSubaccount
-	}
-
-	yieldIndexDifference := new(big.Rat).Sub(generalYieldIndex, currentYieldIndex)
-	perpAmount := new(big.Rat).SetInt(perpPosition.GetBigQuantums())
-	newYieldRat := new(big.Rat).Mul(perpAmount, yieldIndexDifference)
 	newYield = lib.BigRatRound(newYieldRat, false)
 
 	return newYield, nil

@@ -12,7 +12,6 @@ export enum QueryableField {
   ID = 'id',
   ADDRESS = 'address',
   ASSET_YIELD_INDEX = 'assetYieldIndex',
-  PERP_YIELD_INDEX = 'perpYieldIndex',
   SUBACCOUNT_NUMBER = 'subaccountNumber',
   SUBACCOUNT_ID = 'subaccountId',
   SENDER_SUBACCOUNT_ID = 'senderSubaccountId',
@@ -129,7 +128,6 @@ export interface PerpetualPositionQueryConfig extends QueryConfig {
   [QueryableField.STATUS]?: PerpetualPositionStatus[];
   [QueryableField.CREATED_BEFORE_OR_AT_HEIGHT]?: string;
   [QueryableField.CREATED_BEFORE_OR_AT]?: string;
-  [QueryableField.PERP_YIELD_INDEX]?: string;
 }
 
 export interface OrderQueryConfig extends QueryConfig {

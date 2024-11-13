@@ -112,7 +112,6 @@ describe('update-perpetual-handler', () => {
       dangerIndexPpm: defaultUpdatePerpetualEvent.dangerIndexPpm,
       isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock:
         defaultUpdatePerpetualEvent.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-      perpYieldIndex: defaultUpdatePerpetualEvent.perpYieldIndex,
     }));
     expect(perpetualMarket).toEqual(
       perpetualMarketRefresher.getPerpetualMarketFromId(
@@ -124,7 +123,6 @@ describe('update-perpetual-handler', () => {
     const transactionIndex: number = 0;
     const updatedPerpetualEvent = {
       ...defaultUpdatePerpetualEvent,
-      perpYieldIndex: '1/1',
     };
     const kafkaMessage: KafkaMessage = createKafkaMessageFromUpdatePerpetualEvent({
       updatePerpetualEvent: updatedPerpetualEvent,
@@ -146,7 +144,6 @@ describe('update-perpetual-handler', () => {
       marketId: updatedPerpetualEvent.marketId,
       atomicResolution: updatedPerpetualEvent.atomicResolution,
       liquidityTierId: updatedPerpetualEvent.liquidityTier,
-      perpYieldIndex: '1/1',
     }));
     expect(perpetualMarket).toEqual(
       perpetualMarketRefresher.getPerpetualMarketFromId(

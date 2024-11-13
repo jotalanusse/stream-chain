@@ -52,8 +52,6 @@ import {
   SingleTradeMessage,
 } from '../../src/lib/types';
 
-export const defaultZeroPerpYieldIndex: string = '0/1';
-export const onePerpYieldIndex: string = '1/1';
 export const defaultMarketPriceUpdate: MarketEventV1 = {
   marketId: 0,
   priceUpdate: {
@@ -205,7 +203,6 @@ export const defaultUpdatePerpetualEvent: UpdatePerpetualEventV1 = {
   liquidityTier: 1,
   dangerIndexPpm: 1000000,
   isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: '0',
-  perpYieldIndex: '0/1',
 };
 
 export const defaultUpdateClobPairEvent: UpdateClobPairEventV1 = {

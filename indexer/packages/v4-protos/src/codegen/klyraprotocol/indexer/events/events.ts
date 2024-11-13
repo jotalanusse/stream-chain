@@ -1406,9 +1406,6 @@ export interface UpdatePerpetualEventV1 {
   /** The maximum cumulative insurance fund delta per block for isolated markets. */
 
   isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: string;
-  /** The perp yield index of this perpetual market */
-
-  perpYieldIndex: string;
 }
 /**
  * UpdatePerpetualEventV1 message contains all the information about an update
@@ -1457,9 +1454,6 @@ export interface UpdatePerpetualEventV1SDKType {
   /** The maximum cumulative insurance fund delta per block for isolated markets. */
 
   isolated_market_max_cumulative_insurance_fund_delta_per_block: string;
-  /** The perp yield index of this perpetual market */
-
-  perp_yield_index: string;
 }
 /**
  * UpdateYieldParamsV1 message contains all the information about an update
@@ -3519,8 +3513,7 @@ function createBaseUpdatePerpetualEventV1(): UpdatePerpetualEventV1 {
     atomicResolution: 0,
     liquidityTier: 0,
     dangerIndexPpm: 0,
-    isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: "",
-    perpYieldIndex: ""
+    isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: ""
   };
 }
 
@@ -3552,10 +3545,6 @@ export const UpdatePerpetualEventV1 = {
 
     if (message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock !== "") {
       writer.uint32(58).string(message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock);
-    }
-
-    if (message.perpYieldIndex !== "") {
-      writer.uint32(66).string(message.perpYieldIndex);
     }
 
     return writer;
@@ -3598,10 +3587,6 @@ export const UpdatePerpetualEventV1 = {
           message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = reader.string();
           break;
 
-        case 8:
-          message.perpYieldIndex = reader.string();
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -3620,7 +3605,6 @@ export const UpdatePerpetualEventV1 = {
     message.liquidityTier = object.liquidityTier ?? 0;
     message.dangerIndexPpm = object.dangerIndexPpm ?? 0;
     message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = object.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock ?? "";
-    message.perpYieldIndex = object.perpYieldIndex ?? "";
     return message;
   }
 

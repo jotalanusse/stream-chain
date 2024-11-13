@@ -2,7 +2,6 @@ package types
 
 import (
 	"fmt"
-	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
@@ -11,26 +10,6 @@ import (
 
 func (p *Perpetual) GetId() uint32 {
 	return p.Params.Id
-}
-
-func (p *Perpetual) GetYieldIndexAsRat() (*big.Rat, error) {
-	if p == nil {
-		return nil, ErrPerpIsNil
-	}
-
-	yieldIndex := p.GetYieldIndex()
-
-	if yieldIndex == "" {
-		return nil, ErrYieldIndexDoesNotExist
-	}
-
-	result, success := new(big.Rat).SetString(yieldIndex)
-
-	if !success {
-		return nil, ErrRatToStringConversion
-	}
-
-	return result, nil
 }
 
 // Stateless validation on Perpetual params.
@@ -62,6 +41,30 @@ func (p *PerpetualParams) Validate() error {
 			ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
 			lib.UintToString(p.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 		)
+	}
+
+	if p.MarketType == PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
+		if len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+			return errorsmod.Wrap(
+				ErrIsolatedMarketMultiCollateralAssetsEmpty,
+				"In validate perpetual params",
+			)
+		} else {
+			// Check that MultiCollateralAssets contains the quote asset
+			containsQuoteAsset := false
+			for _, asset := range p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+				if asset == p.QuoteAssetId {
+					containsQuoteAsset = true
+					break
+				}
+			}
+			if !containsQuoteAsset {
+				return errorsmod.Wrap(
+					ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+					"MultiCollateralAssets does not contain quote asset",
+				)
+			}
+		}
 	}
 
 	return nil

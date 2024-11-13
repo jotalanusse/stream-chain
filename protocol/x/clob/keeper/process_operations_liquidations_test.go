@@ -438,7 +438,6 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(-50_000_000), // .5 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				constants.Dave_Num0: {
@@ -446,7 +445,6 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(50_000_000), // .5 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 			},
@@ -552,7 +550,6 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(-50_000_000), // .5 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				constants.Dave_Num0: {
@@ -560,7 +557,6 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(50_000_000), // .5 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 			},
@@ -893,7 +889,6 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(-50_000_000), // .5 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				constants.Dave_Num0: {
@@ -901,7 +896,6 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(50_000_000), // .5 BTC
 						FundingIndex: dtypes.ZeroInt(),
-						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 			},

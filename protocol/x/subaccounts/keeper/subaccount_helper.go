@@ -104,7 +104,6 @@ func getUpdatedPerpetualPositions(
 func UpdatePerpetualPositions(
 	settledUpdates []SettledUpdate,
 	perpIdToFundingIndex map[uint32]dtypes.SerializableInt,
-	perpIdToYieldIndex map[uint32]string,
 ) {
 	// Apply the updates.
 	for i, u := range settledUpdates {
@@ -139,16 +138,10 @@ func UpdatePerpetualPositions(
 					panic(fmt.Sprintf("perpetual id %d not found in perpIdToFundingIndex", pu.PerpetualId))
 				}
 
-				yieldIndex, exists := perpIdToYieldIndex[pu.PerpetualId]
-				if !exists {
-					panic(fmt.Sprintf("perpetual id %d not found in perpIdToYieldIndex", pu.PerpetualId))
-				}
-
 				perpetualPosition := &types.PerpetualPosition{
 					PerpetualId:  pu.PerpetualId,
 					Quantums:     dtypes.NewIntFromBigInt(pu.GetBigQuantums()),
 					FundingIndex: fundingIndex,
-					YieldIndex:   yieldIndex,
 				}
 
 				// Add the new position to the map.
@@ -202,6 +195,9 @@ func UpdateAssetPositions(
 				}
 			} else {
 				// This subaccount does not have a matching asset position for this update.
+				if au.GetBigQuantums().Sign() == 0 {
+					continue
+				}
 
 				// Create the new asset position.
 				assetPosition := &types.AssetPosition{

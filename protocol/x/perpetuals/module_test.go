@@ -90,7 +90,7 @@ func TestAppModuleBasic_RegisterInterfaces(t *testing.T) {
 	// due to it using an unexported method on the interface thus we use reflection to access the field
 	// directly that contains the registrations.
 	fv := reflect.ValueOf(registry).Elem().FieldByName("implInterfaces")
-	require.Len(t, fv.MapKeys(), 10)
+	require.Len(t, fv.MapKeys(), 12)
 }
 
 func TestAppModuleBasic_DefaultGenesis(t *testing.T) {
@@ -104,7 +104,7 @@ func TestAppModuleBasic_DefaultGenesis(t *testing.T) {
 	require.Equal(
 		t,
 		`{"perpetuals":[],"liquidity_tiers":[],"params":{"funding_rate_clamp_factor_ppm":6000000,`+
-			`"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15}}`,
+			`"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15},"multi_collateral_assets":{"multi_collateral_assets":[0]}}`,
 		string(json),
 	)
 }
@@ -137,11 +137,38 @@ func TestAppModuleBasic_ValidateGenesisErrBadState(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
+		},
+		"multi_collateral_assets": {
+			"multi_collateral_assets": [0]
 		}
 	 }`)
 
 	err := am.ValidateGenesis(cdc, nil, h)
 	require.EqualError(t, err, "Ticker must be non-empty string")
+}
+
+func TestAppModuleBasic_ValidateGenesisErrBadMultiCollateral(t *testing.T) {
+	am := createAppModuleBasic(t)
+
+	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
+
+	h := json.RawMessage(`{
+		"perpetuals":[
+		   {
+			  "params":{
+				"ticker":""
+			  }
+		   }
+		],
+		"params":{
+		   "funding_rate_clamp_factor_ppm":6000000,
+		   "premium_vote_clamp_factor_ppm":60000000,
+		   "min_num_votes_per_sample":15
+		}
+	 }`)
+
+	err := am.ValidateGenesis(cdc, nil, h)
+	require.EqualError(t, err, "no supported multi collateral assets")
 }
 
 func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
@@ -162,6 +189,9 @@ func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
+		},
+		"multi_collateral_assets": {
+			"multi_collateral_assets": [0]
 		}
 	 }`)
 
@@ -269,6 +299,9 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	}
 
 	msg := `{
+		"multi_collateral_assets": {
+			"multi_collateral_assets": [0]
+		},
 		"perpetuals":[
 		   {
 			  "params": {
@@ -278,8 +311,7 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "market_type": "PERPETUAL_MARKET_TYPE_CROSS",
 				 "danger_index_ppm": 0,
 				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000
-			  },
-			  "yield_index":"0/1"
+			  }
 		   }
 		],
 		"liquidity_tiers":[
@@ -321,12 +353,12 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "liquidity_tier":0,
 				 "market_type": "PERPETUAL_MARKET_TYPE_CROSS",
 				 "danger_index_ppm": 0,
-				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": "1000000"
+				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": "1000000",
+				 "isolated_market_multi_collateral_assets": null
 			  },
 			  "funding_index":"0",
 			  "open_interest":"0",
-			  "last_funding_rate":"0",
-			  "yield_index":"0/1"
+			  "last_funding_rate":"0"
 		   }
 		],
 		"liquidity_tiers":[
@@ -345,6 +377,9 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
+		},
+		"multi_collateral_assets": {
+			"multi_collateral_assets": [0]
 		}
 	 }`
 	require.Equal(t,

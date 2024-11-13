@@ -200,6 +200,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -235,6 +236,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 				tc.asset.MarketId,
 				tc.asset.AtomicResolution,
 				tc.asset.AssetYieldIndex,
+				tc.asset.MaxSlippagePpm,
 			)
 			require.NoError(t, err)
 
@@ -386,16 +388,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			collateralPoolAddr:         types.ModuleAddress,
 			expectedErr:                types.ErrAssetTransferQuantumsNotPositive,
 		},
-		"WithdrawFundsFromSubaccountToAccount: do not support assets other than TDai": {
-			testTransferFundToAccount:  true,
-			accAddressBalance:          big.NewInt(500),
-			asset:                      *constants.BtcUsd,
-			subaccountModuleAccBalance: big.NewInt(500),
-			quantums:                   big.NewInt(500),
-			assetPositions:             keepertest.CreateTDaiAssetPosition(big.NewInt(500)),
-			collateralPoolAddr:         types.ModuleAddress,
-			expectedErr:                types.ErrAssetTransferThroughBankNotImplemented,
-		},
 		"WithdrawFundsFromSubaccountToAccount: asset ID doesn't exist": {
 			testTransferFundToAccount:  true,
 			accAddressBalance:          big.NewInt(500),
@@ -427,16 +419,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			collateralPoolAddr:         types.ModuleAddress,
 			expectedErr:                types.ErrAssetTransferQuantumsNotPositive,
 		},
-		"DepositFundsFromAccountToSubaccount: do not support assets other than TDai": {
-			testTransferFundToAccount:  false,
-			accAddressBalance:          big.NewInt(500),
-			asset:                      *constants.BtcUsd,
-			subaccountModuleAccBalance: big.NewInt(500),
-			quantums:                   big.NewInt(500),
-			assetPositions:             keepertest.CreateTDaiAssetPosition(big.NewInt(500)),
-			collateralPoolAddr:         types.ModuleAddress,
-			expectedErr:                types.ErrAssetTransferThroughBankNotImplemented,
-		},
 		"DepositFundsFromAccountToSubaccount: failure, asset ID doesn't exist": {
 			testTransferFundToAccount:  false,
 			accAddressBalance:          big.NewInt(500),
@@ -462,6 +444,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -504,6 +487,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 					tc.asset.MarketId,
 					tc.asset.AtomicResolution,
 					tc.asset.AssetYieldIndex,
+					tc.asset.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}
@@ -737,6 +721,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Success(t *testing.T) {
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -759,6 +744,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Success(t *testing.T) {
 				tc.asset.MarketId,
 				tc.asset.AtomicResolution,
 				tc.asset.AssetYieldIndex,
+				tc.asset.MaxSlippagePpm,
 			)
 			require.NoError(t, err)
 
@@ -1065,6 +1051,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
+			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -1094,6 +1081,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 					tc.asset.MarketId,
 					tc.asset.AtomicResolution,
 					tc.asset.AssetYieldIndex,
+					tc.asset.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}
@@ -1258,16 +1246,6 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 			expectedSubaccountsModuleAccBalance: big.NewInt(500),
 			expectedFeeModuleAccBalance:         big.NewInt(1500),
 		},
-		"failure - asset other than TDai not supported": {
-			feeModuleAccBalance:                 big.NewInt(1500),
-			asset:                               *constants.BtcUsd,
-			subaccountModuleAccBalance:          big.NewInt(500),
-			quantums:                            big.NewInt(500),
-			collateralPoolAddr:                  types.ModuleAddress,
-			expectedErr:                         types.ErrAssetTransferThroughBankNotImplemented,
-			expectedSubaccountsModuleAccBalance: big.NewInt(500),
-			expectedFeeModuleAccBalance:         big.NewInt(1500),
-		},
 		"success - transfer quantums is negative": {
 			feeModuleAccBalance:                 big.NewInt(1500),
 			asset:                               *constants.TDai,
@@ -1349,6 +1327,7 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 					tc.asset.MarketId,
 					tc.asset.AtomicResolution,
 					tc.asset.AssetYieldIndex,
+					tc.asset.MaxSlippagePpm,
 				)
 				require.NoError(t, err)
 			}
@@ -1534,7 +1513,8 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.MarketType,
 				tc.perpetual.Params.DangerIndexPpm,
 				tc.perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-				tc.perpetual.YieldIndex,
+				tc.perpetual.Params.IsolatedMarketMultiCollateralAssets,
+				tc.perpetual.Params.QuoteAssetId,
 			)
 			require.NoError(t, err)
 
@@ -1578,18 +1558,18 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 						tc.expectedErr.Error(),
 						func() {
 							//nolint:errcheck
-							keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId())
+							keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId)
 						},
 					)
 				} else {
 					require.ErrorIs(
 						t,
-						keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId()),
+						keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId),
 						tc.expectedErr,
 					)
 				}
 			} else {
-				require.NoError(t, keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId()))
+				require.NoError(t, keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId))
 			}
 
 			// Check the subaccount module balance.

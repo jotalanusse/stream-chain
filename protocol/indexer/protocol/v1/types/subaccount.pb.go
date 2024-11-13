@@ -96,9 +96,6 @@ type IndexerPerpetualPosition struct {
 	// 2. a positive value means funding payment was paid out and
 	// a negative value means funding payment was received.
 	FundingPayment github_com_StreamFinance_Protocol_stream_chain_protocol_dtypes.SerializableInt `protobuf:"bytes,4,opt,name=funding_payment,json=fundingPayment,proto3,customtype=github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes.SerializableInt" json:"funding_payment"`
-	// The current yield index last time this position was settled.
-	// Should be converted from string to big.Rat.
-	PerpYieldIndex string `protobuf:"bytes,5,opt,name=perp_yield_index,json=perpYieldIndex,proto3" json:"perp_yield_index,omitempty"`
 }
 
 func (m *IndexerPerpetualPosition) Reset()         { *m = IndexerPerpetualPosition{} }
@@ -139,13 +136,6 @@ func (m *IndexerPerpetualPosition) GetPerpetualId() uint32 {
 		return m.PerpetualId
 	}
 	return 0
-}
-
-func (m *IndexerPerpetualPosition) GetPerpYieldIndex() string {
-	if m != nil {
-		return m.PerpYieldIndex
-	}
-	return ""
 }
 
 // IndexerAssetPosition define an account’s positions of an `Asset`.
@@ -306,13 +296,6 @@ func (m *IndexerPerpetualPosition) MarshalToSizedBuffer(dAtA []byte) (int, error
 	_ = i
 	var l int
 	_ = l
-	if len(m.PerpYieldIndex) > 0 {
-		i -= len(m.PerpYieldIndex)
-		copy(dAtA[i:], m.PerpYieldIndex)
-		i = encodeVarintSubaccount(dAtA, i, uint64(len(m.PerpYieldIndex)))
-		i--
-		dAtA[i] = 0x2a
-	}
 	{
 		size := m.FundingPayment.Size()
 		i -= size
@@ -436,10 +419,6 @@ func (m *IndexerPerpetualPosition) Size() (n int) {
 	n += 1 + l + sovSubaccount(uint64(l))
 	l = m.FundingPayment.Size()
 	n += 1 + l + sovSubaccount(uint64(l))
-	l = len(m.PerpYieldIndex)
-	if l > 0 {
-		n += 1 + l + sovSubaccount(uint64(l))
-	}
 	return n
 }
 
@@ -713,38 +692,6 @@ func (m *IndexerPerpetualPosition) Unmarshal(dAtA []byte) error {
 			if err := m.FundingPayment.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PerpYieldIndex", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowSubaccount
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthSubaccount
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthSubaccount
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.PerpYieldIndex = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

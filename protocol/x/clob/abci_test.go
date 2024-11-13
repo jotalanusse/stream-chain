@@ -127,6 +127,7 @@ func TestEndBlocker_Failure(t *testing.T) {
 			require.NoError(t, conversionErr)
 			ks.RatelimitKeeper.SetSDAIPrice(ctx, rate)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
+			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			for _, orderId := range tc.expiredStatefulOrderIds {
 				mockIndexerEventManager.On("AddBlockEvent",
@@ -358,14 +359,14 @@ func TestEndBlocker_Success(t *testing.T) {
 						constants.BtcUsdExponent,
 						constants.ClobPair_Btc,
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution,
 					),
 					PnlPrice: types.SubticksToPrice(
 						types.Subticks(10),
 						constants.BtcUsdExponent,
 						constants.ClobPair_Btc,
 						constants.BtcUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution,
 					),
 				})
 
@@ -378,14 +379,14 @@ func TestEndBlocker_Success(t *testing.T) {
 						constants.EthUsdExponent,
 						constants.ClobPair_Eth,
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution
 					),
 					PnlPrice: types.SubticksToPrice(
 						types.Subticks(35),
 						constants.EthUsdExponent,
 						constants.ClobPair_Eth,
 						constants.EthUsd_20PercentInitial_10PercentMaintenance.Params.AtomicResolution,
-						lib.QuoteCurrencyAtomicResolution,
+						lib.TDAIAtomicResolution,
 					),
 				})
 
@@ -687,7 +688,8 @@ func TestEndBlocker_Success(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					p.YieldIndex,
+					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}
@@ -1039,6 +1041,7 @@ func TestLiquidateSubaccounts(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = constants.LiquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
+						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -1437,6 +1440,7 @@ func TestPrepareCheckState(t *testing.T) {
 			require.NoError(t, conversionErr)
 			ks.RatelimitKeeper.SetSDAIPrice(ctx, rate)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
+			ks.PerpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Create the default markets.
 			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
@@ -1462,7 +1466,8 @@ func TestPrepareCheckState(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					p.YieldIndex,
+					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}

@@ -70,7 +70,6 @@ import {
   defaultOrderEvent,
   defaultPreviousHeight,
   defaultTakerOrder,
-  defaultZeroPerpYieldIndex,
 } from '../../helpers/constants';
 import { KlyraIndexerSubtypes } from '../../../src/lib/types';
 import { OrderHandler } from '../../../src/handlers/order-fills/order-handler';
@@ -146,7 +145,6 @@ describe('OrderHandler', () => {
     openEventId: testConstants.defaultTendermintEventId4,
     lastEventId: testConstants.defaultTendermintEventId4,
     settledFunding: '200000',
-    perpYieldIndex: defaultZeroPerpYieldIndex,
   };
 
   describe('getParallelizationIds', () => {

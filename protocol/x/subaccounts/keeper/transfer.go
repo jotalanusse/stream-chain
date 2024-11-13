@@ -6,7 +6,6 @@ import (
 	errorsmod "cosmossdk.io/errors"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -30,21 +29,16 @@ func (k Keeper) getValidSubaccountUpdatesForTransfer(
 		bigBalanceDelta.Neg(bigBalanceDelta)
 	}
 
-	if assetId == 0 {
-		updates = []types.Update{
-			{
-				SubaccountId: subaccountId,
-				AssetUpdates: []types.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigBalanceDelta,
-					},
+	updates = []types.Update{
+		{
+			SubaccountId: subaccountId,
+			AssetUpdates: []types.AssetUpdate{
+				{
+					AssetId:          assetId,
+					BigQuantumsDelta: bigBalanceDelta,
 				},
 			},
-		}
-	} else {
-		// TODO(DEC-715): Support non-TDai assets.
-		return nil, types.ErrAssetTransferThroughBankNotImplemented
+		},
 	}
 
 	success, successPerUpdate, err := k.CanUpdateSubaccounts(ctx, updates, types.Transfer)
@@ -93,10 +87,6 @@ func (k Keeper) DepositFundsFromAccountToSubaccount(
 	assetId uint32,
 	quantums *big.Int,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	if quantums.Sign() <= 0 {
 		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, lib.UintToString(assetId))
@@ -156,10 +146,6 @@ func (k Keeper) WithdrawFundsFromSubaccountToAccount(
 	assetId uint32,
 	quantums *big.Int,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	if quantums.Sign() <= 0 {
 		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, lib.UintToString(assetId))
@@ -218,10 +204,6 @@ func (k Keeper) TransferFeesToFeeCollectorModule(
 	quantums *big.Int,
 	perpetualId uint32,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	if quantums.Sign() == 0 {
 		return nil
@@ -275,6 +257,7 @@ func (k Keeper) TransferInsuranceFundPayments(
 	ctx sdk.Context,
 	insuranceFundDelta *big.Int,
 	perpetualId uint32,
+	assetId uint32,
 ) error {
 	if insuranceFundDelta.Sign() == 0 {
 		return nil
@@ -282,11 +265,10 @@ func (k Keeper) TransferInsuranceFundPayments(
 
 	_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
 		ctx,
-		assettypes.AssetTDai.Id,
+		assetId,
 		new(big.Int).Abs(insuranceFundDelta),
 	)
 	if err != nil {
-		// Panic if TDai does not exist.
 		panic(err)
 	}
 
@@ -319,6 +301,7 @@ func (k Keeper) TransferLiquidityFee(
 	ctx sdk.Context,
 	liquidityFeeQuoteQuantums *big.Int,
 	perpetualId uint32,
+	assetId uint32,
 ) error {
 	if liquidityFeeQuoteQuantums.Sign() < 0 {
 		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, "Liquidity fee quote quantums cannot be negative")
@@ -330,11 +313,10 @@ func (k Keeper) TransferLiquidityFee(
 
 	_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
 		ctx,
-		assettypes.AssetTDai.Id,
+		assetId,
 		new(big.Int).Abs(liquidityFeeQuoteQuantums),
 	)
 	if err != nil {
-		// Panic if TDai does not exist.
 		panic(err)
 	}
 
@@ -357,6 +339,7 @@ func (k Keeper) TransferValidatorFee(
 	ctx sdk.Context,
 	validatorFeeQuoteQuantums *big.Int,
 	perpetualId uint32,
+	assetId uint32,
 ) error {
 	if validatorFeeQuoteQuantums.Sign() < 0 {
 		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, "Validator fee quote quantums cannot be negative")
@@ -368,11 +351,10 @@ func (k Keeper) TransferValidatorFee(
 
 	_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
 		ctx,
-		assettypes.AssetTDai.Id,
+		assetId,
 		new(big.Int).Abs(validatorFeeQuoteQuantums),
 	)
 	if err != nil {
-		// Panic if TDai does not exist.
 		panic(err)
 	}
 
@@ -398,17 +380,13 @@ func (k Keeper) TransferFundsFromSubaccountToSubaccount(
 	assetId uint32,
 	quantums *big.Int,
 ) error {
-	// TODO(DEC-715): Support non-TDai assets.
-	if assetId != assettypes.AssetTDai.Id {
-		return types.ErrAssetTransferThroughBankNotImplemented
-	}
 
 	updates := []types.Update{
 		{
 			SubaccountId: senderSubaccountId,
 			AssetUpdates: []types.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          assetId,
 					BigQuantumsDelta: new(big.Int).Neg(quantums),
 				},
 			},
@@ -417,7 +395,7 @@ func (k Keeper) TransferFundsFromSubaccountToSubaccount(
 			SubaccountId: recipientSubaccountId,
 			AssetUpdates: []types.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          assetId,
 					BigQuantumsDelta: new(big.Int).Set(quantums),
 				},
 			},

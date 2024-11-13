@@ -87,18 +87,18 @@ describe('request-transformer', () => {
         atomicResolution: perpetualMarket.atomicResolution,
         dangerIndexPpm: perpetualMarket.dangerIndexPpm,
         isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock:
-          perpetualMarket.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-        quantumConversionExponent: perpetualMarket.quantumConversionExponent,
-        tickSize: Big(10).pow(-2).toFixed(), // 100 * 1e-8 * 1e-6 / 10e-10 = 1e-2
-        stepSize: Big(10).pow(-9).toFixed(), // 10 * 1e-10 = 1e-9
-        stepBaseQuantums: perpetualMarket.stepBaseQuantums,
-        subticksPerTick: perpetualMarket.subticksPerTick,
-        marketType: perpetualMarket.marketType,
-        openInterestLowerCap: liquidityTier.openInterestLowerCap,
-        openInterestUpperCap: liquidityTier.openInterestUpperCap,
-        baseOpenInterest: perpetualMarket.baseOpenInterest,
-        perpYieldIndex: perpetualMarket.perpYieldIndex,
-      });
+            perpetualMarket.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+          quantumConversionExponent: perpetualMarket.quantumConversionExponent,
+          tickSize: Big(10).pow(-2).toFixed(), // 100 * 1e-8 * 1e-6 / 10e-10 = 1e-2
+          stepSize: Big(10).pow(-9).toFixed(), // 10 * 1e-10 = 1e-9
+          stepBaseQuantums: perpetualMarket.stepBaseQuantums,
+          subticksPerTick: perpetualMarket.subticksPerTick,
+          marketType: perpetualMarket.marketType,
+          openInterestLowerCap: liquidityTier.openInterestLowerCap,
+          openInterestUpperCap: liquidityTier.openInterestUpperCap,
+          baseOpenInterest: perpetualMarket.baseOpenInterest,
+        },
+      );
     });
   });
 

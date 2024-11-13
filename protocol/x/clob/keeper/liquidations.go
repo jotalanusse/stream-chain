@@ -2,18 +2,16 @@ package keeper
 
 import (
 	"errors"
-	"fmt"
 	"math"
 	"math/big"
 	"time"
 
 	errorsmod "cosmossdk.io/errors"
 
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
-	assetstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/heap"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
@@ -189,9 +187,6 @@ func (k Keeper) insertIntoLiquidationHeapIfUnhealthy(
 		return err
 	}
 
-	fmt.Printf("insertIntoLiquidationHeapIfUnhealthy subaccountId: %v, priority: %v\n",
-		subaccountId, priority)
-
 	if isLiquidatable {
 		subaccountIds.AddSubaccount(subaccountId, priority)
 	}
@@ -346,11 +341,17 @@ func (k Keeper) handleLiquidationMetrics(
 		labels,
 	)
 
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return
+	}
+
 	// Stat the volume of liquidation orders placed.
 	if totalQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
 		ctx,
 		perpetualId,
 		liquidationOrder.GetBaseQuantums().ToBigInt(),
+		quoteCurrencyAtomicResolution,
 	); err == nil {
 		metrics.IncrCounterWithLabels(
 			metrics.LiquidationsPlacePerpetualLiquidationQuoteQuantums,
@@ -615,12 +616,17 @@ func (k Keeper) getFillablePriceCalculationInputs(
 		return nil, nil, nil, nil, 0, 0, nil, types.ErrInvalidPerpetualPositionSizeDelta
 	}
 
-	pnnvBig, err = k.perpetualsKeeper.GetNetCollateral(ctx, perpetualId, bigPositionSizeQuantums)
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return nil, nil, nil, nil, 0, 0, nil, err
 	}
 
-	_, pmmrBig, err = k.perpetualsKeeper.GetMarginRequirements(ctx, perpetualId, bigPositionSizeQuantums)
+	pnnvBig, err = k.perpetualsKeeper.GetNetCollateral(ctx, perpetualId, bigPositionSizeQuantums, quoteCurrencyAtomicResolution)
+	if err != nil {
+		return nil, nil, nil, nil, 0, 0, nil, err
+	}
+
+	_, pmmrBig, err = k.perpetualsKeeper.GetMarginRequirements(ctx, perpetualId, bigPositionSizeQuantums, quoteCurrencyAtomicResolution)
 	if err != nil {
 		return nil, nil, nil, nil, 0, 0, nil, err
 	}
@@ -802,6 +808,11 @@ func (k Keeper) getBankruptcyPriceCalculationInputs(
 	pmmradBig *big.Int,
 	err error,
 ) {
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return nil, nil, nil, nil, nil, nil, err
+	}
+
 	tncBig, _, tmmrBig, err = k.subaccountsKeeper.GetNetCollateralAndMarginRequirements(ctx, satypes.Update{SubaccountId: subaccountId})
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
@@ -816,6 +827,7 @@ func (k Keeper) getBankruptcyPriceCalculationInputs(
 		ctx,
 		perpetualId,
 		bigPositionSizeQuantums,
+		quoteCurrencyAtomicResolution,
 	)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
@@ -825,12 +837,13 @@ func (k Keeper) getBankruptcyPriceCalculationInputs(
 		ctx,
 		perpetualId,
 		new(big.Int).Add(bigPositionSizeQuantums, deltaQuantums),
+		quoteCurrencyAtomicResolution,
 	)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
 	}
 
-	_, pmmrBig, err = k.perpetualsKeeper.GetMarginRequirements(ctx, perpetualId, bigPositionSizeQuantums)
+	_, pmmrBig, err = k.perpetualsKeeper.GetMarginRequirements(ctx, perpetualId, bigPositionSizeQuantums, quoteCurrencyAtomicResolution)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
 	}
@@ -842,6 +855,7 @@ func (k Keeper) getBankruptcyPriceCalculationInputs(
 			bigPositionSizeQuantums,
 			deltaQuantums,
 		),
+		quoteCurrencyAtomicResolution,
 	)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
@@ -1162,29 +1176,23 @@ func (k Keeper) SimulateClosePerpetualPosition(
 	if err != nil {
 		return satypes.Subaccount{}, err
 	}
-	bigNetCollateralQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, position.GetBigQuantums())
 
-	err = UpdateTDaiPosition(&subaccount, bigNetCollateralQuoteQuantums)
-	if err != nil {
-		return satypes.Subaccount{}, err
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, perpetual.Params.QuoteAssetId)
+	if !exists {
+		return satypes.Subaccount{}, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual %+v", perpetual)
 	}
+	quoteCurrencyAtomicResolution := quoteAsset.AtomicResolution
+
+	bigNetCollateralQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, position.GetBigQuantums(), quoteCurrencyAtomicResolution)
+
+	UpdateQuoteAssetPosition(&subaccount, bigNetCollateralQuoteQuantums, perpetual.Params.QuoteAssetId)
 	return subaccount, nil
 }
 
-func UpdateTDaiPosition(subaccount *satypes.Subaccount, quantumsDelta *big.Int) (err error) {
-	assetPosition := subaccount.AssetPositions[0]
-	if assetPosition.AssetId != assetstypes.AssetTDai.Id {
-		return errors.New("first asset position must be TDai")
-	}
+func UpdateQuoteAssetPosition(subaccount *satypes.Subaccount, quantumsDelta *big.Int, quoteAssetId uint32) {
 
-	assetPosition.Quantums = dtypes.NewIntFromBigInt(new(big.Int).Add(assetPosition.Quantums.BigInt(), quantumsDelta))
-
-	if assetPosition.Quantums.BigInt().Sign() == 0 {
-		subaccount.AssetPositions = []*satypes.AssetPosition{}
-	} else {
-		subaccount.AssetPositions = []*satypes.AssetPosition{assetPosition}
-	}
-	return nil
+	quoteAmount := subaccount.GetAssetPosition(quoteAssetId)
+	subaccount.SetAssetPosition(new(big.Int).Add(quoteAmount, quantumsDelta), quoteAssetId)
 }
 
 func RemovePerpetualPosition(subaccount *satypes.Subaccount, perpetualId uint32) {

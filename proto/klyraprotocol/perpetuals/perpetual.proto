@@ -30,11 +30,6 @@ message Perpetual {
                              "protocol/dtypes.SerializableInt",
     (gogoproto.nullable) = false
   ];
-
-  // The current yield index is determined by the cumulative
-  // all-time history of the yield mechanism. Starts at 0.
-  // This string should always be converted big.Rat.
-  string yield_index = 5;
 }
 
 enum PerpetualMarketType {
@@ -44,7 +39,11 @@ enum PerpetualMarketType {
   PERPETUAL_MARKET_TYPE_ISOLATED = 1;
 }
 
-// PerpetualParams represents the parameters of a perpetual on the Klyra
+message MultiCollateralAssetsArray {
+  repeated uint32 multi_collateral_assets = 1;
+}
+
+// PerpetualParams represents the parameters of a perpetual on the dYdX
 // exchange.
 message PerpetualParams {
   // Unique, sequentially-generated.
@@ -80,6 +79,8 @@ message PerpetualParams {
 
   // The maximum insurance fund delta per block for isolated perpetual markets.
   uint64 isolated_market_max_cumulative_insurance_fund_delta_per_block = 9;
+
+  MultiCollateralAssetsArray isolated_market_multi_collateral_assets = 10;
 }
 
 // MarketPremiums stores a list of premiums for a single perpetual market.

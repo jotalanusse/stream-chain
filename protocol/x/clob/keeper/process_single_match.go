@@ -12,7 +12,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
-	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -124,6 +123,18 @@ func (k Keeper) ProcessSingleMatch(
 	// Update subaccount total quantums liquidated and total insurance fund lost for liquidation orders.
 	if matchWithOrders.TakerOrder.IsLiquidation() {
 		if err := k.updateLiquidationMetricsAndCummalativeInsuranceFundDelta(ctx, matchWithOrders, perpetualId, fillAmount, takerInsuranceFundDelta); err != nil {
+		quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+		if err != nil {
+			return false, takerUpdateResult, makerUpdateResult, nil, err
+		}
+
+		notionalLiquidatedQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
+			ctx,
+			perpetualId,
+			fillAmount.ToBigInt(),
+			quoteCurrencyAtomicResolution,
+		)
+		if err != nil {
 			return false, takerUpdateResult, makerUpdateResult, nil, err
 		}
 	}
@@ -234,13 +245,18 @@ func (k Keeper) persistMatchedOrders(
 		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, liquidityFeeQuoteQuantums)
 	}
 
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		panic(fmt.Sprintf("persistMatchedOrders: failed to get perpetual %v", err))
+	}
+
 	// Create the subaccount update.
 	updates := []satypes.Update{
 		// Taker update
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          perpetual.Params.QuoteAssetId,
 					BigQuantumsDelta: bigTakerQuoteBalanceDelta,
 				},
 			},
@@ -256,7 +272,7 @@ func (k Keeper) persistMatchedOrders(
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          assettypes.AssetTDai.Id,
+					AssetId:          perpetual.Params.QuoteAssetId,
 					BigQuantumsDelta: bigMakerQuoteBalanceDelta,
 				},
 			},
@@ -331,17 +347,17 @@ func (k Keeper) persistMatchedOrders(
 		)
 	}
 
-	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId); err != nil {
+	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId, perpetual.Params.QuoteAssetId); err != nil {
 		return takerUpdateResult, makerUpdateResult, err
 	}
 
 	// Transfer the liquidity and validator fees
-	err = k.subaccountsKeeper.TransferLiquidityFee(ctx, liquidityFeeQuoteQuantums, perpetualId)
+	err = k.subaccountsKeeper.TransferLiquidityFee(ctx, liquidityFeeQuoteQuantums, perpetualId, perpetual.Params.QuoteAssetId)
 	if err != nil {
 		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
 	}
 
-	err = k.subaccountsKeeper.TransferValidatorFee(ctx, validatorFeeQuoteQuantums, perpetualId)
+	err = k.subaccountsKeeper.TransferValidatorFee(ctx, validatorFeeQuoteQuantums, perpetualId, perpetual.Params.QuoteAssetId)
 	if err != nil {
 		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
 	}
@@ -350,7 +366,7 @@ func (k Keeper) persistMatchedOrders(
 	bigTotalFeeQuoteQuantums := new(big.Int).Add(bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums)
 	if err := k.subaccountsKeeper.TransferFeesToFeeCollectorModule(
 		ctx,
-		assettypes.AssetTDai.Id,
+		perpetual.Params.QuoteAssetId,
 		bigTotalFeeQuoteQuantums,
 		perpetualId,
 	); err != nil {

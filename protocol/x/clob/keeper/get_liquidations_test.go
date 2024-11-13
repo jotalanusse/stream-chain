@@ -138,6 +138,7 @@ func TestChangePriceVE_CauseNegativeTNC(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = tc.liquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
+						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -229,16 +230,6 @@ func TestGetSubaccountCollateralizationInfo(t *testing.T) {
 				"0: Perpetual does not exist",
 			),
 		},
-		"Non TDai asset in subaccount returns error": {
-			subaccount: constants.Carl_Num0_1BTC_short_50000_non_TDai,
-			perpetuals: []perptypes.Perpetual{
-				constants.BtcUsd_NoMarginRequirement,
-			},
-			feeParams: constants.PerpetualFeeParams,
-			expectedError: errors.New(
-				"Not Implemented: Multi-Collateral",
-			),
-		},
 	}
 
 	for name, tc := range tests {
@@ -256,6 +247,7 @@ func TestGetSubaccountCollateralizationInfo(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
+			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.
@@ -286,7 +278,8 @@ func TestGetSubaccountCollateralizationInfo(t *testing.T) {
 					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-					"0/1",
+					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.QuoteAssetId,
 				)
 				require.NoError(t, err)
 			}

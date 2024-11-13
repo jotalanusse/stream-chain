@@ -20,7 +20,7 @@ import {
   testMocks,
 } from '@klyraprotocol-indexer/postgres';
 import { updateBlockCache } from '../../../src/caches/block-cache';
-import { defaultDeleveragingEvent, defaultPreviousHeight, defaultZeroPerpYieldIndex } from '../../helpers/constants';
+import { defaultDeleveragingEvent, defaultPreviousHeight } from '../../helpers/constants';
 import { clearCandlesMap } from '../../../src/caches/candle-cache';
 import { createPostgresFunctions } from '../../../src/helpers/postgres/postgres-functions';
 import { redisClient } from '../../../src/helpers/redis/redis-controller';
@@ -124,7 +124,6 @@ describe('DeleveragingHandler', () => {
     openEventId: testConstants.defaultTendermintEventId,
     lastEventId: testConstants.defaultTendermintEventId,
     settledFunding: '200000',
-    perpYieldIndex: defaultZeroPerpYieldIndex,
   };
   const deleveragedPerpetualPosition: PerpetualPositionCreateObject = {
     ...offsettingPerpetualPosition,

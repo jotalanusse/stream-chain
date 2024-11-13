@@ -1071,6 +1071,8 @@ func updateResultToOrderStatus(updateResult satypes.UpdateResult) types.OrderSta
 		return types.InternalError
 	case satypes.ViolatesIsolatedSubaccountConstraints:
 		return types.ViolatesIsolatedSubaccountConstraints
+	case satypes.ViolatesMultiCollateralConstraints:
+		return types.ViolatesMultiCollateralConstraints
 	default:
 		return types.Undercollateralized
 	}

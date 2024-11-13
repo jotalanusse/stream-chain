@@ -2336,8 +2336,6 @@ type UpdatePerpetualEventV1 struct {
 	DangerIndexPpm uint32 `protobuf:"varint,6,opt,name=danger_index_ppm,json=dangerIndexPpm,proto3" json:"danger_index_ppm,omitempty"`
 	// The maximum cumulative insurance fund delta per block for isolated markets.
 	IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock string `protobuf:"bytes,7,opt,name=isolated_market_max_cumulative_insurance_fund_delta_per_block,json=isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"isolated_market_max_cumulative_insurance_fund_delta_per_block,omitempty"`
-	// The perp yield index of this perpetual market
-	PerpYieldIndex string `protobuf:"bytes,8,opt,name=perp_yield_index,json=perpYieldIndex,proto3" json:"perp_yield_index,omitempty"`
 }
 
 func (m *UpdatePerpetualEventV1) Reset()         { *m = UpdatePerpetualEventV1{} }
@@ -2418,13 +2416,6 @@ func (m *UpdatePerpetualEventV1) GetDangerIndexPpm() uint32 {
 func (m *UpdatePerpetualEventV1) GetIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock() string {
 	if m != nil {
 		return m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
-	}
-	return ""
-}
-
-func (m *UpdatePerpetualEventV1) GetPerpYieldIndex() string {
-	if m != nil {
-		return m.PerpYieldIndex
 	}
 	return ""
 }
@@ -4265,13 +4256,6 @@ func (m *UpdatePerpetualEventV1) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	_ = i
 	var l int
 	_ = l
-	if len(m.PerpYieldIndex) > 0 {
-		i -= len(m.PerpYieldIndex)
-		copy(dAtA[i:], m.PerpYieldIndex)
-		i = encodeVarintEvents(dAtA, i, uint64(len(m.PerpYieldIndex)))
-		i--
-		dAtA[i] = 0x42
-	}
 	if len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock) > 0 {
 		i -= len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
 		copy(dAtA[i:], m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
@@ -5099,10 +5083,6 @@ func (m *UpdatePerpetualEventV1) Size() (n int) {
 		n += 1 + sovEvents(uint64(m.DangerIndexPpm))
 	}
 	l = len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
-	if l > 0 {
-		n += 1 + l + sovEvents(uint64(l))
-	}
-	l = len(m.PerpYieldIndex)
 	if l > 0 {
 		n += 1 + l + sovEvents(uint64(l))
 	}
@@ -9386,38 +9366,6 @@ func (m *UpdatePerpetualEventV1) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 8:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PerpYieldIndex", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowEvents
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthEvents
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthEvents
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.PerpYieldIndex = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

@@ -5,7 +5,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	assetstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/heap"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -96,7 +96,12 @@ func (k Keeper) GetSubaccountCollateralizationInfo(
 		return false, false, nil, err
 	}
 
-	err = updateCollateralizationInfoGivenAssets(settledSubaccount, bigTotalNetCollateral)
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolution(ctx, settledSubaccount, perpetuals)
+	if err != nil {
+		return false, false, nil, err
+	}
+
+	err = k.UpdateCollateralizationInfoGivenAssets(ctx, settledSubaccount, bigTotalNetCollateral, quoteCurrencyAtomicResolution)
 	if err != nil {
 		return false, false, nil, err
 	}
@@ -106,10 +111,25 @@ func (k Keeper) GetSubaccountCollateralizationInfo(
 		if err != nil {
 			return false, false, nil, err
 		}
-		updateCollateralizationInfoGivenPerp(perpetual, price, liquidityTier, perpetualPosition.GetBigQuantums(), bigTotalNetCollateral, bigWeightedMaintenanceMargin, bigTotalMaintenanceMargin)
+		updateCollateralizationInfoGivenPerp(perpetual, price, liquidityTier, perpetualPosition.GetBigQuantums(), bigTotalNetCollateral, bigWeightedMaintenanceMargin, bigTotalMaintenanceMargin, quoteCurrencyAtomicResolution)
 	}
 
 	return finalizeCollateralizationInfo(bigTotalNetCollateral, bigTotalMaintenanceMargin, bigWeightedMaintenanceMargin)
+}
+
+func (k Keeper) GetQuoteCurrencyAtomicResolution(ctx sdk.Context, subaccount satypes.Subaccount, perpetuals map[uint32]perptypes.Perpetual) (int32, error) {
+	if len(subaccount.PerpetualPositions) == 0 {
+		return assettypes.AssetTDai.AtomicResolution, nil
+	}
+
+	perpetual := perpetuals[subaccount.PerpetualPositions[0].PerpetualId]
+
+	quoteAssetId := perpetual.Params.QuoteAssetId
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, quoteAssetId)
+	if !exists {
+		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual %+v", perpetual)
+	}
+	return quoteAsset.AtomicResolution, nil
 }
 
 func getPerpetualLiquidityTierAndPrice(
@@ -153,20 +173,19 @@ func getPerpetualLiquidityTierAndPrice(
 	return perpetual, price, liquidityTier, nil
 }
 
-func updateCollateralizationInfoGivenAssets(
+func (k Keeper) UpdateCollateralizationInfoGivenAssets(
+	ctx sdk.Context,
 	settledSubaccount satypes.Subaccount,
 	bigTotalNetCollateral *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) error {
-	// Note that we only expect TDai before multi-collateral support is added.
+	// Note that we only expect QuoteAsset before multi-collateral support is added.
 	for _, assetPosition := range settledSubaccount.AssetPositions {
-		if assetPosition.AssetId != assetstypes.AssetTDai.Id {
-			return errorsmod.Wrapf(
-				assetstypes.ErrNotImplementedMulticollateral,
-				"Asset %d is not supported",
-				assetPosition.AssetId,
-			)
+		bigNetCollateralQuoteQuantums, err := k.assetsKeeper.GetNetCollateral(ctx, assetPosition.AssetId, assetPosition.GetBigQuantums(), quoteCurrencyAtomicResolution)
+		if err != nil {
+			return err
 		}
-		bigTotalNetCollateral.Add(bigTotalNetCollateral, assetPosition.GetBigQuantums())
+		bigTotalNetCollateral.Add(bigTotalNetCollateral, bigNetCollateralQuoteQuantums)
 	}
 	return nil
 }
@@ -179,10 +198,11 @@ func updateCollateralizationInfoGivenPerp(
 	bigTotalNetCollateral *big.Int,
 	bigWeightedMaintenanceMargin *big.Int,
 	bigTotalMaintenanceMargin *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) {
-	updateNetCollateral(perpetual, price, bigPositionQuantums, bigTotalNetCollateral)
-	updateWeightedMaintenanceMargin(perpetual, price, bigPositionQuantums, bigWeightedMaintenanceMargin)
-	updateTotalMaintenanceMargin(perpetual, price, liquidityTier, bigPositionQuantums, bigTotalMaintenanceMargin)
+	updateNetCollateral(perpetual, price, bigPositionQuantums, bigTotalNetCollateral, quoteCurrencyAtomicResolution)
+	updateWeightedMaintenanceMargin(perpetual, price, bigPositionQuantums, bigWeightedMaintenanceMargin, quoteCurrencyAtomicResolution)
+	updateTotalMaintenanceMargin(perpetual, price, liquidityTier, bigPositionQuantums, bigTotalMaintenanceMargin, quoteCurrencyAtomicResolution)
 }
 
 func updateNetCollateral(
@@ -190,8 +210,9 @@ func updateNetCollateral(
 	price pricestypes.MarketPrice,
 	bigPositionQuantums *big.Int,
 	bigTotalNetCollateral *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) {
-	bigPositionQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, bigPositionQuantums)
+	bigPositionQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, bigPositionQuantums, quoteCurrencyAtomicResolution)
 	bigTotalNetCollateral.Add(bigTotalNetCollateral, bigPositionQuoteQuantums)
 }
 
@@ -200,8 +221,9 @@ func updateWeightedMaintenanceMargin(
 	price pricestypes.MarketPrice,
 	bigPositionQuantums *big.Int,
 	bigWeightedMaintenanceMargin *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) {
-	bigPositionQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, bigPositionQuantums)
+	bigPositionQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, bigPositionQuantums, quoteCurrencyAtomicResolution)
 	weightedPositionQuoteQuantums := new(big.Int).Mul(bigPositionQuoteQuantums.Abs(bigPositionQuoteQuantums), new(big.Int).SetUint64(uint64(perpetual.Params.DangerIndexPpm)))
 	bigWeightedMaintenanceMargin.Add(bigWeightedMaintenanceMargin, weightedPositionQuoteQuantums)
 }
@@ -212,8 +234,9 @@ func updateTotalMaintenanceMargin(
 	liquidityTier perptypes.LiquidityTier,
 	bigPositionQuantums *big.Int,
 	bigTotalMaintenanceMargin *big.Int,
+	quoteCurrencyAtomicResolution int32,
 ) {
-	_, bigMaintenanceMarginQuoteQuantums := perpkeeper.GetMarginRequirementsInQuoteQuantums(perpetual, price, liquidityTier, bigPositionQuantums)
+	_, bigMaintenanceMarginQuoteQuantums := perpkeeper.GetMarginRequirementsInQuoteQuantums(perpetual, price, liquidityTier, bigPositionQuantums, quoteCurrencyAtomicResolution)
 	bigTotalMaintenanceMargin.Add(bigTotalMaintenanceMargin, bigMaintenanceMarginQuoteQuantums)
 }
 

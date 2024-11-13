@@ -339,6 +339,7 @@ func TestHydrationInPreBlocker(t *testing.T) {
 				genesisState.Perpetuals = []perptypes.Perpetual{
 					constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 				}
+				genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 			},
 		)
 		testapp.UpdateGenesisDocWithAppStateForModule(
@@ -417,6 +418,7 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 				genesisState.Perpetuals = []perptypes.Perpetual{
 					constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 				}
+				genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 			},
 		)
 		testapp.UpdateGenesisDocWithAppStateForModule(
@@ -557,7 +559,6 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(100_000_000),
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -577,7 +578,6 @@ func TestHydrationWithMatchPreBlocker(t *testing.T) {
 				PerpetualId:  0,
 				Quantums:     dtypes.NewInt(-100_000_000),
 				FundingIndex: dtypes.NewInt(0),
-				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		},
 		AssetYieldIndex: big.NewRat(1, 1).String(),

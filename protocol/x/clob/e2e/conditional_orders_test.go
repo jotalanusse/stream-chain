@@ -594,7 +594,6 @@ func TestConditionalOrder(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(25_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -671,7 +670,6 @@ func TestConditionalOrder(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-50_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -716,7 +714,6 @@ func TestConditionalOrder(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(50_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -801,7 +798,6 @@ func TestConditionalOrder(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(25_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -982,6 +978,7 @@ func TestConditionalOrder(t *testing.T) {
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 							constants.IsoUsd_IsolatedMarket,
 						}
+						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -1909,7 +1906,6 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(25_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1984,7 +1980,6 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(-50_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -2028,7 +2023,6 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(50_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -2111,7 +2105,6 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 							PerpetualId:  0,
 							Quantums:     dtypes.NewInt(25_000_000),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -2197,6 +2190,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(

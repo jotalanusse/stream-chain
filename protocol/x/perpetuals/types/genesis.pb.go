@@ -25,9 +25,10 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the perpetuals module's genesis state.
 type GenesisState struct {
-	Perpetuals     []Perpetual     `protobuf:"bytes,1,rep,name=perpetuals,proto3" json:"perpetuals"`
-	LiquidityTiers []LiquidityTier `protobuf:"bytes,2,rep,name=liquidity_tiers,json=liquidityTiers,proto3" json:"liquidity_tiers"`
-	Params         Params          `protobuf:"bytes,3,opt,name=params,proto3" json:"params"`
+	Perpetuals            []Perpetual                `protobuf:"bytes,1,rep,name=perpetuals,proto3" json:"perpetuals"`
+	LiquidityTiers        []LiquidityTier            `protobuf:"bytes,2,rep,name=liquidity_tiers,json=liquidityTiers,proto3" json:"liquidity_tiers"`
+	Params                Params                     `protobuf:"bytes,3,opt,name=params,proto3" json:"params"`
+	MultiCollateralAssets MultiCollateralAssetsArray `protobuf:"bytes,4,opt,name=multi_collateral_assets,json=multiCollateralAssets,proto3" json:"multi_collateral_assets"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -84,6 +85,13 @@ func (m *GenesisState) GetParams() Params {
 	return Params{}
 }
 
+func (m *GenesisState) GetMultiCollateralAssets() MultiCollateralAssetsArray {
+	if m != nil {
+		return m.MultiCollateralAssets
+	}
+	return MultiCollateralAssetsArray{}
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "klyraprotocol.perpetuals.GenesisState")
 }
@@ -135,6 +143,16 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	{
+		size, err := m.MultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintGenesis(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x22
 	{
 		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -206,6 +224,8 @@ func (m *GenesisState) Size() (n int) {
 		}
 	}
 	l = m.Params.Size()
+	n += 1 + l + sovGenesis(uint64(l))
+	l = m.MultiCollateralAssets.Size()
 	n += 1 + l + sovGenesis(uint64(l))
 	return n
 }
@@ -343,6 +363,39 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MultiCollateralAssets", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

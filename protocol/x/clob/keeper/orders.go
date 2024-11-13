@@ -390,6 +390,9 @@ func (k Keeper) PlaceStatefulOrder(
 			if updateResult.IsIsolatedSubaccountError() {
 				err = types.ErrWouldViolateIsolatedSubaccountConstraints
 			}
+			if updateResult.IsMultiCollateralError() {
+				err = types.ErrWouldViolateMultiCollateralConstraints
+			}
 			return errorsmod.Wrapf(
 				err,
 				"PlaceStatefulOrder: order (%+v), result (%s)",
@@ -1038,6 +1041,11 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 
 	// Retrieve the associated `PerpetualId` for the `ClobPair`.
 	perpetualId := clobPair.MustGetPerpetualId()
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		panic(fmt.Sprintf("AddOrderToOrderbookSubaccountUpdatesCheck: failed to get perpetual %v", err))
+	}
+	quoteAssetId := perpetual.Params.QuoteAssetId
 
 	iterateOverOpenOrdersStart := time.Now()
 	for subaccountId, openOrders := range subaccountOpenOrders {
@@ -1073,6 +1081,7 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 			pendingUpdates.AddPerpetualFill(
 				subaccountId,
 				perpetualId,
+				quoteAssetId,
 				openOrder.IsBuy,
 				makerFeePpm,
 				bigFillAmount,
@@ -1133,12 +1142,17 @@ func (k Keeper) GetOraclePriceSubticksRat(ctx sdk.Context, clobPair types.ClobPa
 		panic(errorsmod.Wrapf(err, "perpetual ID = (%d)", perpetualId))
 	}
 
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		panic(err)
+	}
+
 	// Get the oracle price for the market.
 	oraclePriceSubticksRat := types.PnlPriceToSubticks(
 		marketPrice,
 		clobPair,
 		perpetual.Params.AtomicResolution,
-		lib.QuoteCurrencyAtomicResolution,
+		quoteCurrencyAtomicResolution,
 	)
 	if oraclePriceSubticksRat.Cmp(big.NewRat(0, 1)) == 0 {
 		panic(

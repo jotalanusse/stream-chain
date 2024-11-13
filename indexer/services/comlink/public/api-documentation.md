@@ -179,7 +179,6 @@ func main() {
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         },
@@ -197,7 +196,6 @@ func main() {
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         }
@@ -405,7 +403,6 @@ func main() {
       "sumClose": "string",
       "netFunding": "string",
       "unrealizedPnl": "string",
-      "perpYieldIndex": "string",
       "closedAt": "string",
       "exitPrice": "string"
     },
@@ -423,7 +420,6 @@ func main() {
       "sumClose": "string",
       "netFunding": "string",
       "unrealizedPnl": "string",
-      "perpYieldIndex": "string",
       "closedAt": "string",
       "exitPrice": "string"
     }
@@ -635,7 +631,6 @@ func main() {
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         },
@@ -653,7 +648,6 @@ func main() {
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         }
@@ -3627,8 +3621,7 @@ func main() {
       "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
-      "baseOpenInterest": "string",
-      "perpYieldIndex": "string"
+      "baseOpenInterest": "string"
     },
     "property2": {
       "clobPairId": "string",
@@ -3654,8 +3647,7 @@ func main() {
       "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
-      "baseOpenInterest": "string",
-      "perpYieldIndex": "string"
+      "baseOpenInterest": "string"
     }
   }
 }
@@ -3851,7 +3843,6 @@ func main() {
       "sumClose": "string",
       "netFunding": "string",
       "unrealizedPnl": "string",
-      "perpYieldIndex": "string",
       "closedAt": "string",
       "exitPrice": "string"
     }
@@ -5189,7 +5180,6 @@ This operation does not require authentication
   "sumClose": "string",
   "netFunding": "string",
   "unrealizedPnl": "string",
-  "perpYieldIndex": "string",
   "closedAt": "string",
   "exitPrice": "string"
 }
@@ -5213,7 +5203,6 @@ This operation does not require authentication
 |sumClose|string|true|none|none|
 |netFunding|string|true|none|none|
 |unrealizedPnl|string|true|none|none|
-|perpYieldIndex|string|true|none|none|
 |closedAt|[IsoString](#schemaisostring)¦null|false|none|none|
 |exitPrice|string¦null|false|none|none|
 
@@ -5240,7 +5229,6 @@ This operation does not require authentication
     "sumClose": "string",
     "netFunding": "string",
     "unrealizedPnl": "string",
-    "perpYieldIndex": "string",
     "closedAt": "string",
     "exitPrice": "string"
   },
@@ -5258,7 +5246,6 @@ This operation does not require authentication
     "sumClose": "string",
     "netFunding": "string",
     "unrealizedPnl": "string",
-    "perpYieldIndex": "string",
     "closedAt": "string",
     "exitPrice": "string"
   }
@@ -5361,7 +5348,6 @@ This operation does not require authentication
       "sumClose": "string",
       "netFunding": "string",
       "unrealizedPnl": "string",
-      "perpYieldIndex": "string",
       "closedAt": "string",
       "exitPrice": "string"
     },
@@ -5379,7 +5365,6 @@ This operation does not require authentication
       "sumClose": "string",
       "netFunding": "string",
       "unrealizedPnl": "string",
-      "perpYieldIndex": "string",
       "closedAt": "string",
       "exitPrice": "string"
     }
@@ -5449,7 +5434,6 @@ This operation does not require authentication
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         },
@@ -5467,7 +5451,6 @@ This operation does not require authentication
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         }
@@ -5536,7 +5519,6 @@ This operation does not require authentication
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         },
@@ -5554,7 +5536,6 @@ This operation does not require authentication
           "sumClose": "string",
           "netFunding": "string",
           "unrealizedPnl": "string",
-          "perpYieldIndex": "string",
           "closedAt": null,
           "exitPrice": "string"
         }
@@ -6426,8 +6407,7 @@ or
   "marketType": "CROSS",
   "openInterestLowerCap": "string",
   "openInterestUpperCap": "string",
-  "baseOpenInterest": "string",
-  "perpYieldIndex": "string"
+  "baseOpenInterest": "string"
 }
 
 ```
@@ -6460,7 +6440,6 @@ or
 |openInterestLowerCap|string|false|none|none|
 |openInterestUpperCap|string|false|none|none|
 |baseOpenInterest|string|true|none|none|
-|perpYieldIndex|string|true|none|none|
 
 ## PerpetualMarketResponse
 
@@ -6496,8 +6475,7 @@ or
       "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
-      "baseOpenInterest": "string",
-      "perpYieldIndex": "string"
+      "baseOpenInterest": "string"
     },
     "property2": {
       "clobPairId": "string",
@@ -6523,8 +6501,7 @@ or
       "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
-      "baseOpenInterest": "string",
-      "perpYieldIndex": "string"
+      "baseOpenInterest": "string"
     }
   }
 }
@@ -6562,7 +6539,6 @@ or
       "sumClose": "string",
       "netFunding": "string",
       "unrealizedPnl": "string",
-      "perpYieldIndex": "string",
       "closedAt": "string",
       "exitPrice": "string"
     }

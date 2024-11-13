@@ -112,6 +112,8 @@ func TestInternalMsgSamples_Gov_Key(t *testing.T) {
 		"/klyraprotocol.perpetuals.MsgUpdateParamsResponse",
 		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParams",
 		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParamsResponse",
+		"/klyraprotocol.perpetuals.MsgSetMultiCollateralAssets",
+		"/klyraprotocol.perpetuals.MsgSetMultiCollateralAssetsResponse",
 
 		// prices
 		"/klyraprotocol.prices.MsgCreateOracleMarket",
