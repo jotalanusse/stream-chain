@@ -98,10 +98,9 @@ func (k Keeper) MaybeDeleverageSubaccount(
 		labels...,
 	)
 
-	quoteCurrencyAtomicResolution := assettypes.AssetTDai.AtomicResolution
-	potentialQuoteAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
-	if err == nil {
-		quoteCurrencyAtomicResolution = potentialQuoteAtomicResolution
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return new(big.Int), err
 	}
 
 	if quoteQuantums, err := k.perpetualsKeeper.GetNetNotional(

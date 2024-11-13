@@ -1142,12 +1142,17 @@ func (k Keeper) GetOraclePriceSubticksRat(ctx sdk.Context, clobPair types.ClobPa
 		panic(errorsmod.Wrapf(err, "perpetual ID = (%d)", perpetualId))
 	}
 
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		panic(err)
+	}
+
 	// Get the oracle price for the market.
 	oraclePriceSubticksRat := types.PnlPriceToSubticks(
 		marketPrice,
 		clobPair,
 		perpetual.Params.AtomicResolution,
-		lib.TDAIAtomicResolution,
+		quoteCurrencyAtomicResolution,
 	)
 	if oraclePriceSubticksRat.Cmp(big.NewRat(0, 1)) == 0 {
 		panic(

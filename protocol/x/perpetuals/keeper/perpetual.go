@@ -550,6 +550,12 @@ func (k Keeper) sampleAllPerpetuals(ctx sdk.Context) (
 		if !exists {
 			panic(types.ErrLiquidityTierDoesNotExist)
 		}
+
+		quoteCurrencyAtomicResolution, err := k.clobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perp.Params.Id)
+		if err != nil {
+			panic(err)
+		}
+
 		premiumPpm, err := k.clobKeeper.GetPricePremiumForPerpetual(
 			ctx,
 			perp.Params.Id,
@@ -560,7 +566,7 @@ func (k Keeper) sampleAllPerpetuals(ctx sdk.Context) (
 					SpotPrice: daemonPrice.SpotPrice,
 				},
 				BaseAtomicResolution:        perp.Params.AtomicResolution,
-				QuoteAtomicResolution:       lib.TDAIAtomicResolution,
+				QuoteAtomicResolution:       quoteCurrencyAtomicResolution,
 				ImpactNotionalQuoteQuantums: bigImpactNotionalQuoteQuantums,
 				MaxAbsPremiumVotePpm:        maxAbsPremiumVotePpm,
 			},

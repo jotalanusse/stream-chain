@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"errors"
-	"fmt"
 	"math"
 	"math/big"
 	"time"
@@ -188,9 +187,6 @@ func (k Keeper) insertIntoLiquidationHeapIfUnhealthy(
 		return err
 	}
 
-	fmt.Printf("insertIntoLiquidationHeapIfUnhealthy subaccountId: %v, priority: %v\n",
-		subaccountId, priority)
-
 	if isLiquidatable {
 		subaccountIds.AddSubaccount(subaccountId, priority)
 	}
@@ -345,10 +341,9 @@ func (k Keeper) handleLiquidationMetrics(
 		labels,
 	)
 
-	quoteCurrencyAtomicResolution := assettypes.AssetTDai.AtomicResolution
-	potentialQuoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
-	if err == nil {
-		quoteCurrencyAtomicResolution = potentialQuoteCurrencyAtomicResolution
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return
 	}
 
 	// Stat the volume of liquidation orders placed.
