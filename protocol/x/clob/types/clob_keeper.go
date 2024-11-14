@@ -145,4 +145,5 @@ type ClobKeeper interface {
 		offchainUpdates *OffchainUpdates,
 		snapshot bool,
 	)
+	GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error)
 }

@@ -31,10 +31,24 @@ func createNAssets(
 	keeper *keeper.Keeper,
 	pricesKeeper *priceskeeper.Keeper,
 	n int,
-) ([]types.Asset, error) {
+) (nonTdaiAssets []types.Asset, tDaiAsset types.Asset, err error) {
 	items := make([]types.Asset, n)
 
 	keepertest.CreateNMarkets(t, ctx, pricesKeeper, n)
+
+	tDaiAsset, err = keeper.CreateAsset(
+		ctx,
+		constants.TDai.Id,
+		constants.TDai.Symbol,
+		constants.TDai.Denom,
+		constants.TDai.DenomExponent,
+		false,
+		constants.TDai.MarketId,
+		constants.TDai.AtomicResolution,
+		"1/1",
+		constants.TDai.MaxSlippagePpm,
+	)
+	require.NoError(t, err)
 
 	for i := range items {
 		hasMarket := i%2 == 0
@@ -55,13 +69,13 @@ func createNAssets(
 			uint32(0),                   // MaxSlippagePpm
 		)
 		if err != nil {
-			return items, err
+			return items, tDaiAsset, err
 		}
 
 		items[i] = asset
 	}
 
-	return items, nil
+	return items, tDaiAsset, nil
 }
 
 func TestCreateAsset_MarketNotFound(t *testing.T) {
@@ -218,7 +232,7 @@ func TestCreateAsset_AssetAlreadyExists(t *testing.T) {
 
 func TestModifyAsset_Success(t *testing.T) {
 	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
-	items, err := createNAssets(t, ctx, keeper, pricesKeeper, 10)
+	items, _, err := createNAssets(t, ctx, keeper, pricesKeeper, 10)
 	require.NoError(t, err)
 
 	numMarkets := keepertest.GetNumMarkets(t, ctx, pricesKeeper)
@@ -273,7 +287,7 @@ func TestModifyAsset_NotFound(t *testing.T) {
 	require.ErrorIs(t, err, types.ErrAssetDoesNotExist)
 
 	// Actually create the asset
-	_, err = createNAssets(t, ctx, keeper, pricesKeeper, 1)
+	_, _, err = createNAssets(t, ctx, keeper, pricesKeeper, 1)
 	require.NoError(t, err)
 
 	// Expect no issue with modifying the asset now
@@ -288,7 +302,7 @@ func TestModifyAsset_NotFound(t *testing.T) {
 
 func TestModifyAsset_MarketNotFound(t *testing.T) {
 	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
-	_, err := createNAssets(t, ctx, keeper, pricesKeeper, 1)
+	_, _, err := createNAssets(t, ctx, keeper, pricesKeeper, 1)
 	require.NoError(t, err)
 
 	_, err = keeper.ModifyAsset(
@@ -302,7 +316,7 @@ func TestModifyAsset_MarketNotFound(t *testing.T) {
 
 func TestGetAsset_Success(t *testing.T) {
 	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
-	items, err := createNAssets(t, ctx, keeper, pricesKeeper, 10)
+	items, _, err := createNAssets(t, ctx, keeper, pricesKeeper, 10)
 	require.NoError(t, err)
 
 	for _, item := range items {
@@ -327,41 +341,42 @@ func TestGetAsset_NotFound(t *testing.T) {
 
 func TestGetAllAssets_Success(t *testing.T) {
 	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
-	items, err := createNAssets(t, ctx, keeper, pricesKeeper, 10)
+	items, tdai, err := createNAssets(t, ctx, keeper, pricesKeeper, 10)
 	require.NoError(t, err)
 
 	require.ElementsMatch(t,
-		nullify.Fill(items),                    //nolint:staticcheck
-		nullify.Fill(keeper.GetAllAssets(ctx)), //nolint:staticcheck
+		nullify.Fill(append([]types.Asset{tdai}, items...)), //nolint:staticcheck
+		nullify.Fill(keeper.GetAllAssets(ctx)),              //nolint:staticcheck
 	)
 }
 
 func TestGetNetCollateral(t *testing.T) {
 	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
-	_, err := createNAssets(t, ctx, keeper, pricesKeeper, 2)
+	_, _, err := createNAssets(t, ctx, keeper, pricesKeeper, 2)
 	require.NoError(t, err)
 
 	netCollateral, err := keeper.GetNetCollateral(
 		ctx,
 		types.AssetTDai.Id,
 		new(big.Int).SetInt64(100),
-		types.AssetTDai.DenomExponent,
+		types.AssetTDai.AtomicResolution,
 	)
 	require.NoError(t, err)
 	require.Equal(t, new(big.Int).SetInt64(100), netCollateral)
 
-	_, err = keeper.GetNetCollateral(
+	netCollateral, err = keeper.GetNetCollateral(
 		ctx,
-		uint32(1),
+		types.AssetTDai.Id,
 		new(big.Int).SetInt64(-100),
-		types.AssetTDai.DenomExponent,
+		types.AssetTDai.AtomicResolution,
 	)
-	require.EqualError(t, types.ErrNotImplementedMargin, err.Error())
+	require.NoError(t, err)
+	require.Equal(t, new(big.Int).SetInt64(-100), netCollateral)
 }
 
 func TestGetMarginRequirements(t *testing.T) {
 	ctx, keeper, pricesKeeper, _, _, _ := keepertest.AssetsKeepers(t, true)
-	_, err := createNAssets(t, ctx, keeper, pricesKeeper, 2)
+	_, _, err := createNAssets(t, ctx, keeper, pricesKeeper, 2)
 	require.NoError(t, err)
 
 	initial, maintenance, err := keeper.GetMarginRequirements(
@@ -807,7 +822,7 @@ func TestGetNetCollateralWithSlippage(t *testing.T) {
 				MaxSlippagePpm:   uint32(10_000), // 1%
 			},
 			bigQuantums:    big.NewInt(1_000_000),
-			expectedResult: big.NewInt(1_000_000),
+			expectedResult: big.NewInt(990_099),
 		},
 		"success - BTC with no slippage": {
 			asset: types.Asset{

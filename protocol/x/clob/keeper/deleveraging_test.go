@@ -94,7 +94,7 @@ func TestGetInsuranceFundBalanceInQuoteQuantums(t *testing.T) {
 		"panics when asset not found in state": {
 			assets:        []assettypes.Asset{},
 			perpetualId:   0,
-			expectedError: errors.New("GetInsuranceFundBalanceInQuoteQuantums: TDai asset not found in state"),
+			expectedError: errors.New("GetInsuranceFundBalanceInQuoteQuantums: quote asset not found in state"),
 		},
 	}
 

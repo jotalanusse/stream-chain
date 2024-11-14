@@ -59,7 +59,7 @@ func TestUpdateLiquidationsConfig(t *testing.T) {
 			prices.InitGenesis(ks.Ctx, *ks.PricesKeeper, constants.Prices_DefaultGenesisState)
 			perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
-			msgServer := keeper.NewMsgServerImpl(ks.ClobKeeper)
+			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 			_, err := msgServer.UpdateLiquidationsConfig(ks.Ctx, tc.msg)
 
 			if tc.expectedError != nil {

@@ -68,6 +68,20 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			expectedErr: "multi collateral asset does not contain quote asset",
 		},
 		{
+			desc: "Invalid Isolated market collateral assets",
+			params: types.PerpetualParams{
+				Ticker:            "test",
+				DefaultFundingPpm: 1_000_000,
+				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
+				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(100),
+				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{0},
+				},
+				QuoteAssetId: 1,
+			},
+			expectedErr: "multi collateral asset does not contain quote asset",
+		},
+		{
 			desc: "Valid Isolated market",
 			params: types.PerpetualParams{
 				Ticker:            "test",

@@ -963,7 +963,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 							Quantums: dtypes.NewInt(int64(
 								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5_RouterFee.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{
@@ -990,7 +989,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 							Quantums: dtypes.NewInt(-int64(
 								LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy1_Price50000_GTBT5_RouterFee.Order.GetQuantums())),
 							FundingIndex: dtypes.NewInt(0),
-							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: []*satypes.AssetPosition{

@@ -122,19 +122,12 @@ func (k Keeper) ProcessSingleMatch(
 
 	// Update subaccount total quantums liquidated and total insurance fund lost for liquidation orders.
 	if matchWithOrders.TakerOrder.IsLiquidation() {
-		if err := k.updateLiquidationMetricsAndCummalativeInsuranceFundDelta(ctx, matchWithOrders, perpetualId, fillAmount, takerInsuranceFundDelta); err != nil {
 		quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 		if err != nil {
 			return false, takerUpdateResult, makerUpdateResult, nil, err
 		}
 
-		notionalLiquidatedQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(
-			ctx,
-			perpetualId,
-			fillAmount.ToBigInt(),
-			quoteCurrencyAtomicResolution,
-		)
-		if err != nil {
+		if err := k.updateLiquidationMetricsAndCummalativeInsuranceFundDelta(ctx, matchWithOrders, perpetualId, fillAmount, takerInsuranceFundDelta, quoteCurrencyAtomicResolution); err != nil {
 			return false, takerUpdateResult, makerUpdateResult, nil, err
 		}
 	}
@@ -190,10 +183,6 @@ func (k Keeper) persistMatchedOrders(
 	// Taker fees and maker fees/rebates are rounded towards positive infinity.
 	bigTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
 	bigMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
-
-	fmt.Println("Big fill quote quantums: ", bigFillQuoteQuantums)
-	fmt.Println("routerTakerFeePpm: ", routerTakerFeePpm)
-	fmt.Println("routerMakerFeePpm: ", routerMakerFeePpm)
 
 	bigRouterTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerTakerFeePpm, true)
 	bigRouterMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerMakerFeePpm, true)
@@ -288,11 +277,10 @@ func (k Keeper) persistMatchedOrders(
 
 	if !isTakerLiquidation {
 		if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
-			fmt.Printf("bigRouterTakerFeeQuoteQuantums: %v\n", bigRouterTakerFeeQuoteQuantums)
 			updates = append(updates, satypes.Update{
 				AssetUpdates: []satypes.AssetUpdate{
 					{
-						AssetId:          assettypes.AssetTDai.Id,
+						AssetId:          perpetual.Params.QuoteAssetId,
 						BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
 					},
 				},
@@ -300,11 +288,10 @@ func (k Keeper) persistMatchedOrders(
 			})
 		}
 		if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
-			fmt.Printf("bigRouterMakerFeeQuoteQuantums: %v\n", bigRouterMakerFeeQuoteQuantums)
 			updates = append(updates, satypes.Update{
 				AssetUpdates: []satypes.AssetUpdate{
 					{
-						AssetId:          assettypes.AssetTDai.Id,
+						AssetId:          perpetual.Params.QuoteAssetId,
 						BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
 					},
 				},
@@ -628,8 +615,8 @@ func (k Keeper) calculateMakerFillAmounts(ctx sdk.Context, matchWithOrders *type
 	return newMakerTotalFillAmount, curMakerPruneableBlockHeight, nil
 }
 
-func (k Keeper) updateLiquidationMetricsAndCummalativeInsuranceFundDelta(ctx sdk.Context, matchWithOrders *types.MatchWithOrders, perpetualId uint32, fillAmount satypes.BaseQuantums, takerInsuranceFundDelta *big.Int) error {
-	notionalLiquidatedQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(ctx, perpetualId, fillAmount.ToBigInt())
+func (k Keeper) updateLiquidationMetricsAndCummalativeInsuranceFundDelta(ctx sdk.Context, matchWithOrders *types.MatchWithOrders, perpetualId uint32, fillAmount satypes.BaseQuantums, takerInsuranceFundDelta *big.Int, quoteCurrencyAtomicResolution int32) error {
+	notionalLiquidatedQuoteQuantums, err := k.perpetualsKeeper.GetNetNotional(ctx, perpetualId, fillAmount.ToBigInt(), quoteCurrencyAtomicResolution)
 	if err != nil {
 		return err
 	}

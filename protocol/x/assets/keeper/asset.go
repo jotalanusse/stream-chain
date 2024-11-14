@@ -210,19 +210,11 @@ func (k Keeper) GetNetCollateral(
 	}
 
 	// Balance is zero.
-	if bigQuantums.BitLen() == 0 {
+	if bigQuantums.Sign() == 0 {
 		return big.NewInt(0), nil
 	}
 
-	// Balance is positive.
-	// TODO(DEC-581): add multi-collateral support.
-	if bigQuantums.Sign() == 1 {
-		return k.GetSlippageAdjustedQuoteQuantums(ctx, asset, bigQuantums, quoteCurrencyAtomicResolution)
-	}
-
-	// Balance is negative.
-	// TODO(DEC-582): add margin-trading support.
-	return big.NewInt(0), types.ErrNotImplementedMargin
+	return k.GetSlippageAdjustedQuoteQuantums(ctx, asset, bigQuantums, quoteCurrencyAtomicResolution)
 }
 
 func (k Keeper) GetSlippageAdjustedQuoteQuantums(
@@ -231,17 +223,24 @@ func (k Keeper) GetSlippageAdjustedQuoteQuantums(
 	bigQuantums *big.Int,
 	quoteCurrencyAtomicResolution int32,
 ) (*big.Int, error) {
-	marketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, asset.MarketId)
-	if err != nil {
-		return big.NewInt(0), err
+	exponent := int32(0)
+	price := uint64(1)
+
+	if asset.HasMarket {
+		marketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, asset.MarketId)
+		if err != nil {
+			return big.NewInt(0), err
+		}
+		exponent = marketPrice.Exponent
+		price = marketPrice.SpotPrice
 	}
 
 	bigQuoteQuantums := lib.BaseToQuoteQuantums(
 		bigQuantums,
 		asset.AtomicResolution,
 		quoteCurrencyAtomicResolution,
-		marketPrice.SpotPrice,
-		marketPrice.Exponent,
+		price,
+		exponent,
 	)
 
 	slippageNormalizer := new(big.Rat).SetFrac(

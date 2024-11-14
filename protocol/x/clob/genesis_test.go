@@ -418,16 +418,16 @@ func TestGenesis(t *testing.T) {
 						tc.expectedErrType,
 						tc.expectedErr,
 					).Error(),
-					func() { clob.InitGenesis(ctx, ks.ClobKeeper, tc.genesis) },
+					func() { clob.InitGenesis(ctx, &ks.ClobKeeper, tc.genesis) },
 				)
 				return
 			}
 
 			// Initialize the CLOB genesis state.
-			clob.InitGenesis(ctx, ks.ClobKeeper, tc.genesis)
+			clob.InitGenesis(ctx, &ks.ClobKeeper, tc.genesis)
 
 			// Export the CLOB genesis state and verify expectations.
-			got := clob.ExportGenesis(ctx, *ks.ClobKeeper)
+			got := clob.ExportGenesis(ctx, ks.ClobKeeper)
 			require.NotNil(t, got)
 			require.Equal(t, tc.genesis.ClobPairs, got.ClobPairs)
 			require.Equal(t, tc.genesis.LiquidationsConfig, got.LiquidationsConfig)

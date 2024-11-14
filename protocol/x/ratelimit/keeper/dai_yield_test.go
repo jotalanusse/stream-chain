@@ -382,7 +382,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 		initialTDaiSupply       *big.Int
 		sDaiConversionRate      *big.Int
 		initialAssetYieldIndex  string
-		initialPerpYieldIndexes []string
 		expectedTDAISupply      *big.Int
 		expectedAssetYieldIndex string
 		expErr                  bool
@@ -394,7 +393,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       big.NewInt(1),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("2" + strings.Repeat("0", 27)),
 			initialAssetYieldIndex:  "1/1",
-			initialPerpYieldIndexes: []string{"0/1", "0/1"},
 			expectedTDAISupply:      big.NewInt(2),
 			expectedAssetYieldIndex: "2/1",
 			expErr:                  false,
@@ -406,7 +404,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       big.NewInt(1),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("10" + strings.Repeat("0", 27)),
 			initialAssetYieldIndex:  "1/1",
-			initialPerpYieldIndexes: []string{"0/1", "0/1"},
 			expectedTDAISupply:      big.NewInt(10),
 			expectedAssetYieldIndex: "10/1",
 			expErr:                  false,
@@ -418,7 +415,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       big.NewInt(10000),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1000100000000000000000000000"),
 			initialAssetYieldIndex:  "1/1",
-			initialPerpYieldIndexes: []string{"0/1", "0/1"},
 			expectedTDAISupply:      big.NewInt(10001),
 			expectedAssetYieldIndex: "10001/10000",
 			expErr:                  false,
@@ -430,7 +426,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
 			initialAssetYieldIndex:  "1/1",
-			initialPerpYieldIndexes: []string{"0/1", "0/1"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("15241578780673"),
 			expectedAssetYieldIndex: "15241578780673/9876543210",
 			expErr:                  false,
@@ -442,7 +437,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("997630627509663"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1010101010101010101010101010"),
 			initialAssetYieldIndex:  "1/1",
-			initialPerpYieldIndexes: []string{"0/1", "0/1"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("997630627509664"),
 			expectedAssetYieldIndex: "997630627509664/997630627509663",
 			expErr:                  false,
@@ -454,7 +448,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("9876543210"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("123456789123456789123456789"),
 			initialAssetYieldIndex:  "876/543",
-			initialPerpYieldIndexes: []string{"123456/123457", "98765/198765"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("15241578780673"),
 			expectedAssetYieldIndex: "2225270501978258/893827160505",
 			expErr:                  false,
@@ -466,7 +459,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("997630627509663"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1010101010101010101010101010"),
 			initialAssetYieldIndex:  "345/678",
-			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("997630627509664"),
 			expectedAssetYieldIndex: "57363761081805680/112732260908591919",
 			expErr:                  false,
@@ -478,7 +470,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139000"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
 			initialAssetYieldIndex:  "345/678",
-			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
 			expectedAssetYieldIndex: "207602199060021/407983452065690",
 			expErr:                  false,
@@ -490,7 +481,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("0"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
 			initialAssetYieldIndex:  "1/1",
-			initialPerpYieldIndexes: []string{"0/1", "0/1"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("0"),
 			expectedAssetYieldIndex: "1/1",
 			expErr:                  false,
@@ -502,7 +492,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
 			initialAssetYieldIndex:  "345/678",
-			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
 			expectedAssetYieldIndex: "345/678",
 			expErr:                  true,
@@ -514,7 +503,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139250"), // supply after mint: 1083141908139240
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
 			initialAssetYieldIndex:  "345/678",
-			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139250"),
 			expectedAssetYieldIndex: "345/678",
 			expErr:                  true,
@@ -526,7 +514,6 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			initialTDaiSupply:       keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139000"),
 			sDaiConversionRate:      keeper.ConvertStringToBigIntWithPanicOnErr("1096681181716810314385961731"),
 			initialAssetYieldIndex:  "345/678",
-			initialPerpYieldIndexes: []string{"9876/5432", "123456789/12345678"},
 			expectedTDAISupply:      keeper.ConvertStringToBigIntWithPanicOnErr("1083141908139240"),
 			expectedAssetYieldIndex: "9026182567827/9026182567825",
 			expErr:                  false,

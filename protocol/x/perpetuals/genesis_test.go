@@ -7,6 +7,7 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/nullify"
@@ -14,6 +15,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +23,12 @@ func TestGenesis(t *testing.T) {
 	pricesGenesisState := constants.Prices_DefaultGenesisState
 	genesisState := constants.Perpetuals_DefaultGenesisState
 
-	pc := keepertest.PerpetualsKeepers(t)
+	memClob := &mocks.MemClob{}
+	memClob.On("SetClobKeeper", mock.Anything).Return()
+
+	mockIndexerEventManager := &mocks.IndexerEventManager{}
+
+	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 	prices.InitGenesis(pc.Ctx, *pc.PricesKeeper, pricesGenesisState)
 	perpetuals.InitGenesis(pc.Ctx, *pc.PerpetualsKeeper, genesisState)
 	assertLiquidityTierUpsertEventsInIndexerBlock(t, pc.PerpetualsKeeper, pc.Ctx, genesisState.LiquidityTiers)
@@ -119,7 +126,12 @@ func TestGenesis_Failure(t *testing.T) {
 	}
 
 	// Test setup.
-	pc := keepertest.PerpetualsKeepers(t)
+	memClob := &mocks.MemClob{}
+	memClob.On("SetClobKeeper", mock.Anything).Return()
+
+	mockIndexerEventManager := &mocks.IndexerEventManager{}
+
+	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 
 	pricesGenesisState := constants.Prices_DefaultGenesisState
 	prices.InitGenesis(pc.Ctx, *pc.PricesKeeper, pricesGenesisState)

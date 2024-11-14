@@ -872,6 +872,46 @@ const GenesisStateNoVeIBC2 = `{
           "initial_margin_ppm": 50000,
           "maintenance_fraction_ppm": 600000,
           "name": "Large-Cap"
+        },
+        {
+          "base_position_notional": 250000000000,
+          "id": 1,
+          "impact_notional": 5000000000,
+          "initial_margin_ppm": 100000,
+          "maintenance_fraction_ppm": 500000,
+          "name": "Mid-Cap"
+        },
+        {
+          "base_position_notional": 100000000000,
+          "id": 2,
+          "impact_notional": 2500000000,
+          "initial_margin_ppm": 200000,
+          "maintenance_fraction_ppm": 500000,
+          "name": "Long-Tail"
+        },
+        {
+          "base_position_notional": 1000000000,
+          "id": 3,
+          "impact_notional": 2500000000,
+          "initial_margin_ppm": 1000000,
+          "maintenance_fraction_ppm": 200000,
+          "name": "Safety"
+        },
+        {
+          "base_position_notional": 1000000000039,
+          "id": 4,
+          "impact_notional": 50000000000,
+          "initial_margin_ppm": 10007,
+          "maintenance_fraction_ppm": 500009,
+          "name": "test-usd-100x-liq-tier-linear"
+        },
+        {
+          "base_position_notional": 100000007,
+          "id": 5,
+          "impact_notional": 50000000000,
+          "initial_margin_ppm": 10007,
+          "maintenance_fraction_ppm": 500009,
+          "name": "test-usd-100x-liq-tier-nonlinear"
         }
       ],
       "params": {
@@ -889,8 +929,7 @@ const GenesisStateNoVeIBC2 = `{
             "market_id": 0,
             "ticker": "BTC-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         },
         {
           "params": {
@@ -901,8 +940,7 @@ const GenesisStateNoVeIBC2 = `{
             "market_id": 1,
             "ticker": "ETH-USD",
             "market_type": 0
-          },
-          "yield_index": "0/1"
+          }
         }
       ]
     },

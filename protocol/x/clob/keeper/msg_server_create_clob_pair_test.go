@@ -95,7 +95,7 @@ func TestCreateClobPair(t *testing.T) {
 					mock.Anything,
 					mock.Anything,
 				).Return()
-				keepertest.CreateTestClobPairs(t, ks.Ctx, ks.ClobKeeper, []types.ClobPair{testClobPair1})
+				keepertest.CreateTestClobPairs(t, ks.Ctx, &ks.ClobKeeper, []types.ClobPair{testClobPair1})
 			},
 			msg: &types.MsgCreateClobPair{
 				Authority: lib.GovModuleAddress.String(),
@@ -122,7 +122,7 @@ func TestCreateClobPair(t *testing.T) {
 					mock.Anything,
 					mock.Anything,
 				).Return()
-				keepertest.CreateTestClobPairs(t, ks.Ctx, ks.ClobKeeper, []types.ClobPair{testClobPair1})
+				keepertest.CreateTestClobPairs(t, ks.Ctx, &ks.ClobKeeper, []types.ClobPair{testClobPair1})
 			},
 			msg: &types.MsgCreateClobPair{
 				Authority: lib.GovModuleAddress.String(),
@@ -160,7 +160,7 @@ func TestCreateClobPair(t *testing.T) {
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 			tc.setup(t, ks, mockIndexerEventManager)
 
-			msgServer := keeper.NewMsgServerImpl(ks.ClobKeeper)
+			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 
 			_, err := msgServer.CreateClobPair(ks.Ctx, tc.msg)
 			if tc.expectedErr != "" {

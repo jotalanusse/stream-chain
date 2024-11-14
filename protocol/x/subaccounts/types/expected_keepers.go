@@ -89,6 +89,9 @@ type PerpetualsKeeper interface {
 	ModifyOpenInterest(ctx sdk.Context, perpetualId uint32, bigQuantums *big.Int) error
 	IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error)
 	GetMultiCollateralAssets(ctx sdk.Context) (assets perptypes.MultiCollateralAssetsArray, found bool)
+}
+
+type ClobKeeper interface {
 	GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error)
 }
 

@@ -216,6 +216,95 @@ func (m *MsgSetLiquidityTierResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSetLiquidityTierResponse proto.InternalMessageInfo
 
+type MsgSetMultiCollateralAssets struct {
+	// The address that controls the module.
+	Authority             string                     `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	MultiCollateralAssets MultiCollateralAssetsArray `protobuf:"bytes,2,opt,name=multi_collateral_assets,json=multiCollateralAssets,proto3" json:"multi_collateral_assets"`
+}
+
+func (m *MsgSetMultiCollateralAssets) Reset()         { *m = MsgSetMultiCollateralAssets{} }
+func (m *MsgSetMultiCollateralAssets) String() string { return proto.CompactTextString(m) }
+func (*MsgSetMultiCollateralAssets) ProtoMessage()    {}
+func (*MsgSetMultiCollateralAssets) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8443b245a3c0a9fb, []int{4}
+}
+func (m *MsgSetMultiCollateralAssets) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetMultiCollateralAssets) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetMultiCollateralAssets.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetMultiCollateralAssets) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetMultiCollateralAssets.Merge(m, src)
+}
+func (m *MsgSetMultiCollateralAssets) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetMultiCollateralAssets) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetMultiCollateralAssets.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetMultiCollateralAssets proto.InternalMessageInfo
+
+func (m *MsgSetMultiCollateralAssets) GetAuthority() string {
+	if m != nil {
+		return m.Authority
+	}
+	return ""
+}
+
+func (m *MsgSetMultiCollateralAssets) GetMultiCollateralAssets() MultiCollateralAssetsArray {
+	if m != nil {
+		return m.MultiCollateralAssets
+	}
+	return MultiCollateralAssetsArray{}
+}
+
+type MsgSetMultiCollateralAssetsResponse struct {
+}
+
+func (m *MsgSetMultiCollateralAssetsResponse) Reset()         { *m = MsgSetMultiCollateralAssetsResponse{} }
+func (m *MsgSetMultiCollateralAssetsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetMultiCollateralAssetsResponse) ProtoMessage()    {}
+func (*MsgSetMultiCollateralAssetsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8443b245a3c0a9fb, []int{5}
+}
+func (m *MsgSetMultiCollateralAssetsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetMultiCollateralAssetsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetMultiCollateralAssetsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetMultiCollateralAssetsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetMultiCollateralAssetsResponse.Merge(m, src)
+}
+func (m *MsgSetMultiCollateralAssetsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetMultiCollateralAssetsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetMultiCollateralAssetsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetMultiCollateralAssetsResponse proto.InternalMessageInfo
+
 // MsgUpdatePerpetualParams is a message used by x/gov to update the parameters
 // of a perpetual.
 type MsgUpdatePerpetualParams struct {
@@ -228,7 +317,7 @@ func (m *MsgUpdatePerpetualParams) Reset()         { *m = MsgUpdatePerpetualPara
 func (m *MsgUpdatePerpetualParams) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdatePerpetualParams) ProtoMessage()    {}
 func (*MsgUpdatePerpetualParams) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{4}
+	return fileDescriptor_8443b245a3c0a9fb, []int{6}
 }
 func (m *MsgUpdatePerpetualParams) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -280,7 +369,7 @@ func (m *MsgUpdatePerpetualParamsResponse) Reset()         { *m = MsgUpdatePerpe
 func (m *MsgUpdatePerpetualParamsResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdatePerpetualParamsResponse) ProtoMessage()    {}
 func (*MsgUpdatePerpetualParamsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{5}
+	return fileDescriptor_8443b245a3c0a9fb, []int{7}
 }
 func (m *MsgUpdatePerpetualParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -322,7 +411,7 @@ func (m *FundingPremium) Reset()         { *m = FundingPremium{} }
 func (m *FundingPremium) String() string { return proto.CompactTextString(m) }
 func (*FundingPremium) ProtoMessage()    {}
 func (*FundingPremium) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{6}
+	return fileDescriptor_8443b245a3c0a9fb, []int{8}
 }
 func (m *FundingPremium) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -374,7 +463,7 @@ func (m *MsgAddPremiumVotes) Reset()         { *m = MsgAddPremiumVotes{} }
 func (m *MsgAddPremiumVotes) String() string { return proto.CompactTextString(m) }
 func (*MsgAddPremiumVotes) ProtoMessage()    {}
 func (*MsgAddPremiumVotes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{7}
+	return fileDescriptor_8443b245a3c0a9fb, []int{9}
 }
 func (m *MsgAddPremiumVotes) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -419,7 +508,7 @@ func (m *MsgAddPremiumVotesResponse) Reset()         { *m = MsgAddPremiumVotesRe
 func (m *MsgAddPremiumVotesResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgAddPremiumVotesResponse) ProtoMessage()    {}
 func (*MsgAddPremiumVotesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{8}
+	return fileDescriptor_8443b245a3c0a9fb, []int{10}
 }
 func (m *MsgAddPremiumVotesResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -460,7 +549,7 @@ func (m *MsgUpdateParams) Reset()         { *m = MsgUpdateParams{} }
 func (m *MsgUpdateParams) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateParams) ProtoMessage()    {}
 func (*MsgUpdateParams) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{9}
+	return fileDescriptor_8443b245a3c0a9fb, []int{11}
 }
 func (m *MsgUpdateParams) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -511,7 +600,7 @@ func (m *MsgUpdateParamsResponse) Reset()         { *m = MsgUpdateParamsResponse
 func (m *MsgUpdateParamsResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateParamsResponse) ProtoMessage()    {}
 func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8443b245a3c0a9fb, []int{10}
+	return fileDescriptor_8443b245a3c0a9fb, []int{12}
 }
 func (m *MsgUpdateParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -545,6 +634,8 @@ func init() {
 	proto.RegisterType((*MsgCreatePerpetualResponse)(nil), "klyraprotocol.perpetuals.MsgCreatePerpetualResponse")
 	proto.RegisterType((*MsgSetLiquidityTier)(nil), "klyraprotocol.perpetuals.MsgSetLiquidityTier")
 	proto.RegisterType((*MsgSetLiquidityTierResponse)(nil), "klyraprotocol.perpetuals.MsgSetLiquidityTierResponse")
+	proto.RegisterType((*MsgSetMultiCollateralAssets)(nil), "klyraprotocol.perpetuals.MsgSetMultiCollateralAssets")
+	proto.RegisterType((*MsgSetMultiCollateralAssetsResponse)(nil), "klyraprotocol.perpetuals.MsgSetMultiCollateralAssetsResponse")
 	proto.RegisterType((*MsgUpdatePerpetualParams)(nil), "klyraprotocol.perpetuals.MsgUpdatePerpetualParams")
 	proto.RegisterType((*MsgUpdatePerpetualParamsResponse)(nil), "klyraprotocol.perpetuals.MsgUpdatePerpetualParamsResponse")
 	proto.RegisterType((*FundingPremium)(nil), "klyraprotocol.perpetuals.FundingPremium")
@@ -557,47 +648,52 @@ func init() {
 func init() { proto.RegisterFile("klyraprotocol/perpetuals/tx.proto", fileDescriptor_8443b245a3c0a9fb) }
 
 var fileDescriptor_8443b245a3c0a9fb = []byte{
-	// 640 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xbb, 0x6f, 0xd3, 0x40,
-	0x18, 0xcf, 0xd1, 0x87, 0xd4, 0x4b, 0x5f, 0x32, 0x45, 0x75, 0x0d, 0xb8, 0x69, 0x24, 0x44, 0x5a,
-	0x91, 0x58, 0x0d, 0x8f, 0xa1, 0x03, 0x52, 0x03, 0x2a, 0x02, 0x11, 0x29, 0x4a, 0x02, 0x43, 0x96,
-	0xc8, 0x8d, 0x4f, 0xce, 0x09, 0x3f, 0x8e, 0xbb, 0x73, 0x95, 0x6c, 0x88, 0x85, 0x95, 0x95, 0x3f,
-	0x80, 0xbd, 0x12, 0xcc, 0xcc, 0x1d, 0x2b, 0x26, 0x26, 0x84, 0x92, 0xa1, 0x0b, 0x7f, 0x04, 0x8a,
-	0x5f, 0xa9, 0x9d, 0x38, 0x24, 0xed, 0xe4, 0xf3, 0x77, 0xbf, 0xef, 0xfb, 0xfd, 0x7e, 0xdf, 0xbd,
-	0xe0, 0xce, 0x3b, 0xa3, 0x4b, 0x55, 0x42, 0x6d, 0x6e, 0xb7, 0x6c, 0x43, 0x21, 0x88, 0x12, 0xc4,
-	0x1d, 0xd5, 0x60, 0x0a, 0xef, 0x14, 0xdc, 0xb0, 0x20, 0x46, 0x20, 0x85, 0x21, 0x44, 0xda, 0x6a,
-	0xd9, 0xcc, 0xb4, 0x59, 0xd3, 0x9d, 0x53, 0xbc, 0x1f, 0x2f, 0x49, 0xda, 0xf4, 0xfe, 0x14, 0x93,
-	0xe9, 0xca, 0xc9, 0xfe, 0xe0, 0xe3, 0x4f, 0x6c, 0xe8, 0xb6, 0x6e, 0x7b, 0x09, 0x83, 0x91, 0x1f,
-	0xbd, 0x97, 0x28, 0x83, 0xa8, 0x54, 0x35, 0x83, 0xaa, 0xb9, 0x64, 0x58, 0x30, 0xf4, 0x90, 0xd9,
-	0xaf, 0x00, 0x0a, 0x65, 0xa6, 0x3f, 0xa3, 0x48, 0xe5, 0xa8, 0x12, 0x4c, 0x0a, 0x4f, 0xe0, 0x92,
-	0xea, 0xf0, 0xb6, 0x4d, 0x31, 0xef, 0x8a, 0x20, 0x03, 0x72, 0x4b, 0x25, 0xf1, 0xe7, 0xf7, 0xfc,
-	0x86, 0xaf, 0xfd, 0x50, 0xd3, 0x28, 0x62, 0xac, 0xc6, 0x29, 0xb6, 0xf4, 0xea, 0x10, 0x2a, 0xbc,
-	0x80, 0x8b, 0x9e, 0x10, 0xf1, 0x46, 0x06, 0xe4, 0xd2, 0xc5, 0xdd, 0x42, 0x52, 0x53, 0x0a, 0x21,
-	0x59, 0xc5, 0x4d, 0x28, 0xcd, 0x9f, 0xfd, 0xde, 0x4e, 0x55, 0xfd, 0xf4, 0x83, 0xd5, 0x8f, 0x17,
-	0xa7, 0x7b, 0xc3, 0xc2, 0xd9, 0x3b, 0x50, 0x1a, 0x95, 0x59, 0x45, 0x8c, 0xd8, 0x16, 0x43, 0xd9,
-	0x6f, 0x00, 0xde, 0x2c, 0x33, 0xbd, 0x86, 0xf8, 0x6b, 0xfc, 0xde, 0xc1, 0x1a, 0xe6, 0xdd, 0x3a,
-	0x46, 0xf4, 0xca, 0x36, 0xea, 0x70, 0xd5, 0x08, 0x0a, 0x35, 0x39, 0x46, 0xd4, 0xb7, 0x73, 0x3f,
-	0xd9, 0x4e, 0x84, 0xd8, 0x37, 0xb3, 0x62, 0x5c, 0x0e, 0x8e, 0x78, 0xba, 0x0b, 0x6f, 0x8f, 0x11,
-	0x1d, 0x9a, 0xfa, 0x01, 0xa0, 0x58, 0x66, 0xfa, 0x1b, 0xa2, 0x5d, 0xf6, 0xec, 0x75, 0xeb, 0xca,
-	0xce, 0x1a, 0x70, 0x3d, 0x14, 0xdd, 0xbc, 0xde, 0x52, 0xad, 0x91, 0x68, 0x78, 0xc4, 0x5f, 0x16,
-	0x66, 0x92, 0xf4, 0x87, 0x26, 0xeb, 0x70, 0xf5, 0xc8, 0xb1, 0x34, 0x6c, 0xe9, 0x15, 0x8a, 0x4c,
-	0xec, 0x98, 0xc2, 0x0e, 0x5c, 0x1e, 0x2a, 0xc4, 0x9a, 0x6b, 0x6e, 0xa5, 0x9a, 0x0e, 0x63, 0x2f,
-	0x35, 0x61, 0x1b, 0xa6, 0x89, 0x87, 0x6e, 0x12, 0x62, 0xba, 0xfa, 0x17, 0xaa, 0xd0, 0x0f, 0x55,
-	0x88, 0x99, 0x6d, 0xb8, 0x9b, 0xfa, 0x50, 0xd3, 0xfc, 0xa2, 0x6f, 0x6d, 0x8e, 0x98, 0xf0, 0x1c,
-	0x2e, 0x9c, 0x0c, 0x06, 0x22, 0xc8, 0xcc, 0xe5, 0xd2, 0xc5, 0x5c, 0xb2, 0xe1, 0xa8, 0x24, 0xdf,
-	0xaf, 0x97, 0xec, 0xef, 0xc4, 0x58, 0xed, 0xd0, 0xcf, 0x17, 0x00, 0xd7, 0x86, 0xa6, 0xaf, 0xb7,
-	0x56, 0x4f, 0x63, 0x87, 0x29, 0x33, 0x61, 0x85, 0xa6, 0x39, 0x43, 0x5b, 0x70, 0x33, 0x26, 0x2d,
-	0x90, 0x5d, 0xfc, 0x3b, 0x0f, 0xe7, 0xca, 0x4c, 0x17, 0x1c, 0xb8, 0x16, 0xef, 0xda, 0x83, 0x64,
-	0xd6, 0xd1, 0x3e, 0x48, 0x8f, 0x66, 0x41, 0x07, 0xf4, 0x03, 0xda, 0xf8, 0x0d, 0x34, 0x99, 0x36,
-	0x86, 0xfe, 0x0f, 0x6d, 0xc2, 0xb5, 0x21, 0x74, 0xe0, 0xfa, 0xc8, 0x95, 0x91, 0x9f, 0x58, 0x29,
-	0x0e, 0x97, 0x1e, 0xcf, 0x04, 0x0f, 0x99, 0x3f, 0x01, 0x78, 0x6b, 0xfc, 0xc1, 0x2e, 0x4e, 0x2c,
-	0x38, 0x36, 0x47, 0x3a, 0x98, 0x3d, 0x27, 0x54, 0x62, 0xc0, 0xe5, 0xc8, 0x66, 0xdd, 0x9d, 0xa6,
-	0x96, 0x47, 0xbb, 0x3f, 0x35, 0x34, 0x60, 0x93, 0x16, 0x3e, 0x5c, 0x9c, 0xee, 0x81, 0x92, 0x76,
-	0xd6, 0x93, 0xc1, 0x79, 0x4f, 0x06, 0x7f, 0x7a, 0x32, 0xf8, 0xdc, 0x97, 0x53, 0xe7, 0x7d, 0x39,
-	0xf5, 0xab, 0x2f, 0xa7, 0x1a, 0xaf, 0x74, 0xcc, 0xdb, 0xce, 0x71, 0xa1, 0x65, 0x9b, 0x4a, 0x8d,
-	0x53, 0xa4, 0x9a, 0x47, 0xd8, 0x52, 0xad, 0x16, 0xca, 0x57, 0x82, 0xd7, 0x8c, 0xb9, 0xe1, 0x7c,
-	0xab, 0xad, 0x62, 0x4b, 0x09, 0xdf, 0xb8, 0x4e, 0xe4, 0x4d, 0xee, 0x12, 0xc4, 0x8e, 0x17, 0xdd,
-	0xc9, 0x87, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0xef, 0x13, 0x43, 0x62, 0xbc, 0x07, 0x00, 0x00,
+	// 720 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xcf, 0x4f, 0x13, 0x4d,
+	0x18, 0xee, 0x7c, 0x7c, 0x25, 0xe1, 0x2d, 0xbf, 0xb2, 0x1f, 0x84, 0x65, 0x3f, 0x2d, 0xa5, 0x86,
+	0x58, 0x88, 0xed, 0x86, 0x8a, 0x1e, 0x48, 0x34, 0x29, 0x18, 0x8c, 0xc6, 0x26, 0x4d, 0x41, 0x0f,
+	0x5c, 0x9a, 0xa1, 0x3b, 0x59, 0x26, 0xee, 0x2f, 0x67, 0x66, 0x09, 0xbd, 0x19, 0x2f, 0x5e, 0xb9,
+	0xfa, 0x07, 0x78, 0x27, 0xd1, 0xb3, 0x67, 0x8e, 0xc4, 0x93, 0x5e, 0x8c, 0x81, 0x03, 0x7f, 0x86,
+	0xa6, 0xfb, 0xab, 0x74, 0xdb, 0x2d, 0x50, 0x4e, 0x9d, 0xbe, 0xef, 0xf3, 0x3e, 0xef, 0xf3, 0xcc,
+	0xec, 0xbc, 0x19, 0x58, 0x7c, 0x6b, 0xb4, 0x18, 0x76, 0x98, 0x2d, 0xec, 0xa6, 0x6d, 0xa8, 0x0e,
+	0x61, 0x0e, 0x11, 0x2e, 0x36, 0xb8, 0x2a, 0x0e, 0x4b, 0x5e, 0x58, 0x92, 0xbb, 0x20, 0xa5, 0x0e,
+	0x44, 0x99, 0x6f, 0xda, 0xdc, 0xb4, 0x79, 0xc3, 0xcb, 0xa9, 0xfe, 0x1f, 0xbf, 0x48, 0x99, 0xf3,
+	0xff, 0xa9, 0x26, 0xd7, 0xd5, 0x83, 0xd5, 0xf6, 0x4f, 0x90, 0x98, 0xd1, 0x6d, 0xdd, 0xf6, 0x0b,
+	0xda, 0xab, 0x20, 0xba, 0x94, 0x28, 0xc3, 0xc1, 0x0c, 0x9b, 0x21, 0x6b, 0x21, 0x19, 0x16, 0x2e,
+	0x7d, 0x64, 0xfe, 0x33, 0x02, 0xa9, 0xca, 0xf5, 0x4d, 0x46, 0xb0, 0x20, 0xb5, 0x30, 0x29, 0x3d,
+	0x86, 0x31, 0xec, 0x8a, 0x7d, 0x9b, 0x51, 0xd1, 0x92, 0x51, 0x0e, 0x15, 0xc6, 0x36, 0xe4, 0xef,
+	0x5f, 0x8b, 0x33, 0x81, 0xf6, 0x8a, 0xa6, 0x31, 0xc2, 0xf9, 0xb6, 0x60, 0xd4, 0xd2, 0xeb, 0x1d,
+	0xa8, 0xf4, 0x1c, 0x46, 0x7d, 0x21, 0xf2, 0x3f, 0x39, 0x54, 0xc8, 0x94, 0x97, 0x4b, 0x49, 0x9b,
+	0x52, 0x8a, 0x9a, 0xd5, 0xbc, 0x82, 0x8d, 0x7f, 0x4f, 0x7e, 0x2d, 0xa4, 0xea, 0x41, 0xf9, 0xfa,
+	0xe4, 0x87, 0x8b, 0xe3, 0x95, 0x0e, 0x71, 0xfe, 0x0e, 0x28, 0xbd, 0x32, 0xeb, 0x84, 0x3b, 0xb6,
+	0xc5, 0x49, 0xfe, 0x0b, 0x82, 0xff, 0xaa, 0x5c, 0xdf, 0x26, 0xe2, 0x15, 0x7d, 0xe7, 0x52, 0x8d,
+	0x8a, 0xd6, 0x0e, 0x25, 0x6c, 0x68, 0x1b, 0x3b, 0x30, 0x69, 0x84, 0x44, 0x0d, 0x41, 0x09, 0x0b,
+	0xec, 0xdc, 0x4f, 0xb6, 0xd3, 0xd5, 0x38, 0x30, 0x33, 0x61, 0x5c, 0x0e, 0xf6, 0x78, 0xba, 0x0b,
+	0xff, 0xf7, 0x11, 0x1d, 0x99, 0xfa, 0x89, 0xc2, 0x7c, 0xd5, 0x35, 0x04, 0xdd, 0xb4, 0x0d, 0x03,
+	0x0b, 0xc2, 0xb0, 0x51, 0xe1, 0x9c, 0x08, 0x3e, 0xb4, 0x39, 0x06, 0x73, 0x66, 0x9b, 0xb0, 0xd1,
+	0x8c, 0x18, 0x1b, 0xd8, 0xa3, 0x0c, 0x5c, 0xae, 0x25, 0xbb, 0xec, 0xab, 0xa4, 0xc2, 0x18, 0x6e,
+	0x05, 0x96, 0x67, 0xcd, 0x7e, 0x88, 0x1e, 0xeb, 0x4b, 0x70, 0x6f, 0x80, 0xb5, 0x68, 0x0b, 0xbe,
+	0x21, 0x90, 0xab, 0x5c, 0x7f, 0xed, 0x68, 0x97, 0x8f, 0xdd, 0xff, 0x60, 0x86, 0xf6, 0xbf, 0x0b,
+	0xd3, 0x91, 0xa3, 0xc6, 0xed, 0xbe, 0xd6, 0x29, 0xa7, 0x3b, 0xdc, 0xe3, 0x33, 0x0f, 0xb9, 0x24,
+	0xfd, 0x91, 0xc9, 0x1d, 0x98, 0xdc, 0x72, 0x2d, 0x8d, 0x5a, 0x7a, 0x8d, 0x11, 0x93, 0xba, 0xa6,
+	0xb4, 0x08, 0xe3, 0x1d, 0x85, 0x54, 0xf3, 0xcc, 0x4d, 0xd4, 0x33, 0x51, 0xec, 0x85, 0x26, 0x2d,
+	0x40, 0xc6, 0xf1, 0xd1, 0x0d, 0xc7, 0x31, 0x3d, 0xfd, 0xe9, 0x3a, 0x04, 0xa1, 0x9a, 0x63, 0xe6,
+	0x77, 0xbd, 0x7b, 0x5d, 0xd1, 0xb4, 0x80, 0xf4, 0x8d, 0x2d, 0x08, 0x97, 0x9e, 0x41, 0xfa, 0xa0,
+	0xbd, 0x90, 0x51, 0x6e, 0xa4, 0x90, 0x29, 0x17, 0x92, 0x0d, 0x77, 0x4b, 0x0a, 0xfc, 0xfa, 0xc5,
+	0xc1, 0x65, 0x8c, 0x71, 0x47, 0x7e, 0x3e, 0x21, 0x98, 0xea, 0x98, 0xbe, 0xdd, 0x59, 0x3d, 0x8d,
+	0xcd, 0x93, 0xdc, 0x80, 0x13, 0xba, 0xce, 0x18, 0x99, 0x87, 0xb9, 0x98, 0xb4, 0x50, 0x76, 0xf9,
+	0x4f, 0x1a, 0x46, 0xaa, 0x5c, 0x97, 0x5c, 0x98, 0x8a, 0xef, 0xda, 0x83, 0x01, 0x17, 0xa2, 0x67,
+	0x1f, 0x94, 0xb5, 0x9b, 0xa0, 0xc3, 0xf6, 0xed, 0xb6, 0xf1, 0x21, 0x3c, 0xb8, 0x6d, 0x0c, 0x7d,
+	0x45, 0xdb, 0x84, 0xc9, 0x29, 0x1d, 0xc2, 0x74, 0xcf, 0xd4, 0x2c, 0x0e, 0x64, 0x8a, 0xc3, 0x95,
+	0x47, 0x37, 0x82, 0x47, 0x9d, 0x8f, 0x10, 0xc8, 0x89, 0xb3, 0xed, 0x4a, 0xce, 0xbe, 0x65, 0xca,
+	0x93, 0xa1, 0xca, 0x22, 0x49, 0x1f, 0x11, 0xcc, 0xf6, 0x9f, 0x35, 0xe5, 0x81, 0xc4, 0x7d, 0x6b,
+	0x94, 0xf5, 0x9b, 0xd7, 0x44, 0x4a, 0x0c, 0x18, 0xef, 0xba, 0x3f, 0xcb, 0xd7, 0xe1, 0xf2, 0xdb,
+	0xae, 0x5e, 0x1b, 0x1a, 0x76, 0x53, 0xd2, 0xef, 0x2f, 0x8e, 0x57, 0xd0, 0x86, 0x76, 0x72, 0x96,
+	0x45, 0xa7, 0x67, 0x59, 0xf4, 0xfb, 0x2c, 0x8b, 0x8e, 0xce, 0xb3, 0xa9, 0xd3, 0xf3, 0x6c, 0xea,
+	0xc7, 0x79, 0x36, 0xb5, 0xfb, 0x52, 0xa7, 0x62, 0xdf, 0xdd, 0x2b, 0x35, 0x6d, 0x53, 0xdd, 0x16,
+	0x8c, 0x60, 0x73, 0x8b, 0x5a, 0xd8, 0x6a, 0x92, 0x62, 0x2d, 0x7c, 0x63, 0x70, 0x2f, 0x5c, 0x6c,
+	0xee, 0x63, 0x6a, 0xa9, 0xd1, 0xcb, 0xe3, 0xb0, 0xeb, 0xa5, 0xd4, 0x72, 0x08, 0xdf, 0x1b, 0xf5,
+	0x92, 0x0f, 0xff, 0x06, 0x00, 0x00, 0xff, 0xff, 0xb9, 0x03, 0x8b, 0xc9, 0x52, 0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -620,6 +716,7 @@ type MsgClient interface {
 	// SetLiquidityTier creates an liquidity tier if the ID doesn't exist, and
 	// updates the existing liquidity tier otherwise.
 	SetLiquidityTier(ctx context.Context, in *MsgSetLiquidityTier, opts ...grpc.CallOption) (*MsgSetLiquidityTierResponse, error)
+	SetMultiCollateralAssets(ctx context.Context, in *MsgSetMultiCollateralAssets, opts ...grpc.CallOption) (*MsgSetMultiCollateralAssetsResponse, error)
 	// UpdatePerpetualParams updates the parameters of a perpetual market.
 	UpdatePerpetualParams(ctx context.Context, in *MsgUpdatePerpetualParams, opts ...grpc.CallOption) (*MsgUpdatePerpetualParamsResponse, error)
 	// UpdateParams updates the parameters of perpetuals module.
@@ -661,6 +758,15 @@ func (c *msgClient) SetLiquidityTier(ctx context.Context, in *MsgSetLiquidityTie
 	return out, nil
 }
 
+func (c *msgClient) SetMultiCollateralAssets(ctx context.Context, in *MsgSetMultiCollateralAssets, opts ...grpc.CallOption) (*MsgSetMultiCollateralAssetsResponse, error) {
+	out := new(MsgSetMultiCollateralAssetsResponse)
+	err := c.cc.Invoke(ctx, "/klyraprotocol.perpetuals.Msg/SetMultiCollateralAssets", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *msgClient) UpdatePerpetualParams(ctx context.Context, in *MsgUpdatePerpetualParams, opts ...grpc.CallOption) (*MsgUpdatePerpetualParamsResponse, error) {
 	out := new(MsgUpdatePerpetualParamsResponse)
 	err := c.cc.Invoke(ctx, "/klyraprotocol.perpetuals.Msg/UpdatePerpetualParams", in, out, opts...)
@@ -689,6 +795,7 @@ type MsgServer interface {
 	// SetLiquidityTier creates an liquidity tier if the ID doesn't exist, and
 	// updates the existing liquidity tier otherwise.
 	SetLiquidityTier(context.Context, *MsgSetLiquidityTier) (*MsgSetLiquidityTierResponse, error)
+	SetMultiCollateralAssets(context.Context, *MsgSetMultiCollateralAssets) (*MsgSetMultiCollateralAssetsResponse, error)
 	// UpdatePerpetualParams updates the parameters of a perpetual market.
 	UpdatePerpetualParams(context.Context, *MsgUpdatePerpetualParams) (*MsgUpdatePerpetualParamsResponse, error)
 	// UpdateParams updates the parameters of perpetuals module.
@@ -707,6 +814,9 @@ func (*UnimplementedMsgServer) CreatePerpetual(ctx context.Context, req *MsgCrea
 }
 func (*UnimplementedMsgServer) SetLiquidityTier(ctx context.Context, req *MsgSetLiquidityTier) (*MsgSetLiquidityTierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetLiquidityTier not implemented")
+}
+func (*UnimplementedMsgServer) SetMultiCollateralAssets(ctx context.Context, req *MsgSetMultiCollateralAssets) (*MsgSetMultiCollateralAssetsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetMultiCollateralAssets not implemented")
 }
 func (*UnimplementedMsgServer) UpdatePerpetualParams(ctx context.Context, req *MsgUpdatePerpetualParams) (*MsgUpdatePerpetualParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePerpetualParams not implemented")
@@ -773,6 +883,24 @@ func _Msg_SetLiquidityTier_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SetMultiCollateralAssets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetMultiCollateralAssets)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SetMultiCollateralAssets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/klyraprotocol.perpetuals.Msg/SetMultiCollateralAssets",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SetMultiCollateralAssets(ctx, req.(*MsgSetMultiCollateralAssets))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Msg_UpdatePerpetualParams_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgUpdatePerpetualParams)
 	if err := dec(in); err != nil {
@@ -824,6 +952,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetLiquidityTier",
 			Handler:    _Msg_SetLiquidityTier_Handler,
+		},
+		{
+			MethodName: "SetMultiCollateralAssets",
+			Handler:    _Msg_SetMultiCollateralAssets_Handler,
 		},
 		{
 			MethodName: "UpdatePerpetualParams",
@@ -957,6 +1089,69 @@ func (m *MsgSetLiquidityTierResponse) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *MsgSetLiquidityTierResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSetMultiCollateralAssets) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetMultiCollateralAssets) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetMultiCollateralAssets) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.MultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	if len(m.Authority) > 0 {
+		i -= len(m.Authority)
+		copy(dAtA[i:], m.Authority)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSetMultiCollateralAssetsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetMultiCollateralAssetsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetMultiCollateralAssetsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1234,6 +1429,30 @@ func (m *MsgSetLiquidityTier) Size() (n int) {
 }
 
 func (m *MsgSetLiquidityTierResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgSetMultiCollateralAssets) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Authority)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = m.MultiCollateralAssets.Size()
+	n += 1 + l + sovTx(uint64(l))
+	return n
+}
+
+func (m *MsgSetMultiCollateralAssetsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1642,6 +1861,171 @@ func (m *MsgSetLiquidityTierResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgSetLiquidityTierResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetMultiCollateralAssets) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetMultiCollateralAssets: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetMultiCollateralAssets: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Authority = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MultiCollateralAssets", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetMultiCollateralAssetsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetMultiCollateralAssetsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetMultiCollateralAssetsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

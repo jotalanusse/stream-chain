@@ -15,6 +15,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	assetskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
+	clobkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
 	delaymsgmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/delaymsg/types"
 	epochskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
@@ -63,6 +64,7 @@ func PerpetualsKeepersWithClobHelpers(
 		stateStore storetypes.CommitMultiStore,
 		transientStoreKey storetypes.StoreKey,
 	) []GenesisInitializer {
+
 		// Define necessary keepers here for unit tests
 		pc.PricesKeeper, _, pc.DaemonPriceCache, _, pc.MockTimeProvider = createPricesKeeper(
 			stateStore,
@@ -134,9 +136,10 @@ func createPerpetualsKeeper(
 	cdc *codec.ProtoCodec,
 	pk *priceskeeper.Keeper,
 	ek *epochskeeper.Keeper,
+	clobKeeper *clobkeeper.Keeper,
 	transientStoreKey storetypes.StoreKey,
 ) (*keeper.Keeper, storetypes.StoreKey) {
-	return createPerpetualsKeeperWithClobHelpers(stateStore, db, cdc, pk, ek, nil, transientStoreKey)
+	return createPerpetualsKeeperWithClobHelpers(stateStore, db, cdc, pk, ek, clobKeeper, transientStoreKey)
 }
 
 // PopulateTestPremiumStore populates either `PremiumVotes` (`isVote` is true) or

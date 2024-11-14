@@ -96,11 +96,11 @@ func createAppModuleWithKeeper(t *testing.T) (
 
 	return clob.NewAppModule(
 		appCodec,
-		ks.ClobKeeper,
+		&ks.ClobKeeper,
 		nil,
 		nil,
 		nil,
-	), ks.ClobKeeper, ks.PricesKeeper, ks.PerpetualsKeeper, ks.Ctx, mockIndexerEventManager
+	), &ks.ClobKeeper, ks.PricesKeeper, ks.PerpetualsKeeper, ks.Ctx, mockIndexerEventManager
 }
 
 func createAppModuleBasic(t *testing.T) clob.AppModuleBasic {

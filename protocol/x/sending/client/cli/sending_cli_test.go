@@ -10,6 +10,7 @@ import (
 	appconstants "github.com/StreamFinance-Protocol/stream-chain/protocol/app/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/network"
+	assetstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	testutil "github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/client/testutil"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
@@ -165,6 +166,7 @@ func (s *SendingIntegrationTestSuite) sendTransferAndVerifyBalance(
 		senderSubaccountNumber,
 		s.validatorAddress,
 		recipientSubaccountNumber,
+		assetId,
 		amount,
 	)
 	s.Require().NoError(err)

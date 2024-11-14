@@ -108,7 +108,7 @@ func TestPlaceOrder_Error(t *testing.T) {
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
 			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
-			msgServer := keeper.NewMsgServerImpl(ks.ClobKeeper)
+			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 
 			mockLogger := &mocks.Logger{}
 			mockLogger.On("With",
@@ -302,7 +302,7 @@ func TestPlaceOrder_Success(t *testing.T) {
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
 			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
-			msgServer := keeper.NewMsgServerImpl(ks.ClobKeeper)
+			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 
 			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
 

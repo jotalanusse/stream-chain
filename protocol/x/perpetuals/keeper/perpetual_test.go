@@ -2117,13 +2117,21 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(*testing.T) {
-			pc := keepertest.PerpetualsKeepers(t)
+			memClob := &mocks.MemClob{}
+			memClob.On("SetClobKeeper", mock.Anything).Return()
+
+			mockIndexerEventManager := &mocks.IndexerEventManager{}
+
+			pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
 			ctx := pc.Ctx.WithTxBytes(constants.TestTxBytes)
 			// Create the default markets.
 			keepertest.CreateTestMarkets(t, ctx, pc.PricesKeeper)
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, pc.PerpetualsKeeper)
+
+			keepertest.CreateTDaiAsset(ctx, pc.AssetsKeeper)
 
 			// Create test perpetuals.
 			// 1BTC = $50,000.
@@ -2449,6 +2457,11 @@ func TestGetAddPremiumVotes_Success(t *testing.T) {
 				mock.Anything,
 				mock.Anything,
 			).Return(tc.samplePremiumPpm, nil)
+			mockPricePremiumGetter.On(
+				"GetQuoteCurrencyAtomicResolutionFromPerpetualId",
+				mock.Anything,
+				mock.Anything,
+			).Return(int32(-6), nil)
 
 			pc := keepertest.PerpetualsKeepersWithClobHelpers(t, &mockPricePremiumGetter)
 

@@ -135,7 +135,7 @@ func TestCreatePerpetualClobPair_FailsWithPerpetualAssociatedWithExistingClobPai
 	keepertest.CreateTestClobPairs(
 		t,
 		ks.Ctx,
-		ks.ClobKeeper,
+		&ks.ClobKeeper,
 		[]types.ClobPair{
 			*clobtest.GenerateClobPair(clobtest.WithId(0), clobtest.WithPerpetualId(0)),
 		},
@@ -564,7 +564,7 @@ func TestClobPairGet(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 	items := keepertest.CreateNClobPair(t,
-		ks.ClobKeeper,
+		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
 		ks.Ctx,
@@ -587,7 +587,7 @@ func TestClobPairRemove(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 	items := keepertest.CreateNClobPair(t,
-		ks.ClobKeeper,
+		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
 		ks.Ctx,
@@ -610,7 +610,7 @@ func TestClobPairGetAll(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 	items := keepertest.CreateNClobPair(t,
-		ks.ClobKeeper,
+		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
 		ks.Ctx,

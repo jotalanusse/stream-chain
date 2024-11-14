@@ -51,7 +51,6 @@ func TestClaimYieldForSubaccount(t *testing.T) {
 		perpetuals []perptypes.Perpetual
 		assets     []*asstypes.Asset
 		// Only set when specified. Defaults to 0/1.
-		// Set perpYieldIndex in the perpetuals state.
 		globalAssetYieldIndex *big.Rat
 		fundsInTDaiPool       *big.Int
 

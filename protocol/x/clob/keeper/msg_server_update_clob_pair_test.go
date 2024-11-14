@@ -262,7 +262,7 @@ func TestMsgServerUpdateClobPair(t *testing.T) {
 			}
 
 			k := ks.ClobKeeper
-			msgServer := keeper.NewMsgServerImpl(k)
+			msgServer := keeper.NewMsgServerImpl(&k)
 
 			resp, err := msgServer.UpdateClobPair(ks.Ctx, tc.msg)
 			require.Equal(t, tc.expectedResp, resp)

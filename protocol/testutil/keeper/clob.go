@@ -28,7 +28,9 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/rate_limit"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	delaymsgmoduletypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/delaymsg/types"
+	epochskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/keeper"
 	feetierskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/keeper"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
@@ -45,7 +47,7 @@ import (
 
 type ClobKeepersTestContext struct {
 	Ctx               sdk.Context
-	ClobKeeper        *keeper.Keeper
+	ClobKeeper        keeper.Keeper
 	PricesKeeper      *priceskeeper.Keeper
 	AssetsKeeper      *asskeeper.Keeper
 	BlockTimeKeeper   *blocktimekeeper.Keeper
@@ -54,6 +56,7 @@ type ClobKeepersTestContext struct {
 	PerpetualsKeeper  *perpkeeper.Keeper
 	StatsKeeper       *statskeeper.Keeper
 	SubaccountsKeeper *subkeeper.Keeper
+	EpochsKeeper      *epochskeeper.Keeper
 	StoreKey          storetypes.StoreKey
 	MemKey            storetypes.StoreKey
 	Cdc               *codec.ProtoCodec
@@ -93,13 +96,14 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 		ks.PricesKeeper, _, _, _, mockTimeProvider = createPricesKeeper(stateStore, db, cdc, indexerEventsTransientStoreKey)
 		// Mock time provider response for market creation.
 		mockTimeProvider.On("Now").Return(constants.TimeT)
-		epochsKeeper, _ := createEpochsKeeper(stateStore, db, cdc)
+		ks.EpochsKeeper, _ = createEpochsKeeper(stateStore, db, cdc)
 		ks.PerpetualsKeeper, _ = createPerpetualsKeeper(
 			stateStore,
 			db,
 			cdc,
 			ks.PricesKeeper,
-			epochsKeeper,
+			ks.EpochsKeeper,
+			&ks.ClobKeeper,
 			indexerEventsTransientStoreKey,
 		)
 		ks.AssetsKeeper, _ = createAssetsKeeper(
@@ -113,7 +117,7 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 		ks.BlockTimeKeeper, _ = createBlockTimeKeeper(stateStore, db, cdc)
 		ks.StatsKeeper, _ = createStatsKeeper(
 			stateStore,
-			epochsKeeper,
+			ks.EpochsKeeper,
 			db,
 			cdc,
 		)
@@ -141,6 +145,7 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 			ks.AssetsKeeper,
 			bankKeeper,
 			ks.PerpetualsKeeper,
+			&ks.ClobKeeper,
 			ks.RatelimitKeeper,
 			ks.BlockTimeKeeper,
 			indexerEventsTransientStoreKey,
@@ -183,7 +188,7 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 			vecache.NewVECache(),
 		)
 
-		ks.ClobKeeper, ks.StoreKey, ks.MemKey = createClobKeeper(
+		clobKeeper, storeKey, memKey := createClobKeeper(
 			stateStore,
 			db,
 			cdc,
@@ -199,6 +204,9 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 			indexerEventManager,
 			veApplier,
 		)
+		ks.ClobKeeper = *clobKeeper
+		ks.StoreKey = storeKey
+		ks.MemKey = memKey
 		ks.Cdc = cdc
 
 		return []GenesisInitializer{
@@ -215,6 +223,7 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 	if err := ks.ClobKeeper.InitializeEquityTierLimit(ks.Ctx, types.EquityTierLimitConfiguration{}); err != nil {
 		panic(err)
 	}
+	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_GenesisState_ParamsOnly)
 
 	return ks
 }

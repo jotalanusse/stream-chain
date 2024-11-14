@@ -109,7 +109,7 @@ func TestSetGetSubaccountLiquidationInfo(t *testing.T) {
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, &mocks.IndexerEventManager{}, nil)
 
 			if tc.setupState != nil {
-				tc.setupState(ks.Ctx, ks.ClobKeeper)
+				tc.setupState(ks.Ctx, &ks.ClobKeeper)
 			}
 
 			// Run the test and verify expectations.

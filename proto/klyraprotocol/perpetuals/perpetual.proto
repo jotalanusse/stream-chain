@@ -81,6 +81,8 @@ message PerpetualParams {
   uint64 isolated_market_max_cumulative_insurance_fund_delta_per_block = 9;
 
   MultiCollateralAssetsArray isolated_market_multi_collateral_assets = 10;
+
+  uint32 quote_asset_id = 11;
 }
 
 // MarketPremiums stores a list of premiums for a single perpetual market.

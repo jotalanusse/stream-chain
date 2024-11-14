@@ -326,7 +326,6 @@ func TestUpdateSubaccounts(t *testing.T) {
 		updateType                types.UpdateType
 		additionalTestSubaccounts []types.Subaccount
 		// Only set when specified. Defaults to 0/1.
-		// Set perpYieldIndex in the perpetuals state.
 		globalAssetYieldIndex *big.Rat
 		fundsInTDaiPool       *big.Int
 

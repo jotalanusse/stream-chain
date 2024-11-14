@@ -90,6 +90,7 @@ func GeneratePerpetual(optionalModifications ...PerpetualModifierOption) *perpty
 			MarketType:        perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			DangerIndexPpm:    0,
 			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
+			QuoteAssetId: 0,
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),

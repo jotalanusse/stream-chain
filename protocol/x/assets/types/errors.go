@@ -19,7 +19,4 @@ var (
 	ErrAssetAlreadyExists           = errorsmod.Register(ModuleName, 13, "Asset already exists")
 	ErrUnexpectedTDaiDenomExponent  = errorsmod.Register(ModuleName, 14, "TDai denom exponent is unexpected")
 	ErrInvalidMaxSlippagePpm        = errorsmod.Register(ModuleName, 15, "Invalid max slippage ppm")
-
-	// Errors for Not Implemented
-	ErrNotImplementedMargin = errorsmod.Register(ModuleName, 402, "Not Implemented: Margin-Trading of Assets")
 )

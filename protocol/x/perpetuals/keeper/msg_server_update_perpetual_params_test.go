@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
@@ -14,6 +15,7 @@ import (
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -179,7 +181,12 @@ func TestUpdatePerpetualParams(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			pc := keepertest.PerpetualsKeepers(t)
+			memClob := &mocks.MemClob{}
+			memClob.On("SetClobKeeper", mock.Anything).Return()
+
+			mockIndexerEventManager := &mocks.IndexerEventManager{}
+
+			pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 			tc.setup(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper)
 
 			msgServer := perpkeeper.NewMsgServerImpl(pc.PerpetualsKeeper)

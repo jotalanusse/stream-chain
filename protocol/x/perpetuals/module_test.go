@@ -46,7 +46,6 @@ func createAppModuleWithKeeper(t *testing.T) (
 	sdk.Context,
 ) {
 	appCodec := codec.NewProtoCodec(module.InterfaceRegistry)
-
 	pc := keeper.PerpetualsKeepers(t)
 
 	return perpetuals.NewAppModule(
@@ -310,7 +309,8 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "liquidity_tier":0,
 				 "market_type": "PERPETUAL_MARKET_TYPE_CROSS",
 				 "danger_index_ppm": 0,
-				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000
+				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000,
+				 "quote_asset_id": 0
 			  }
 		   }
 		],
@@ -354,7 +354,8 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "market_type": "PERPETUAL_MARKET_TYPE_CROSS",
 				 "danger_index_ppm": 0,
 				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": "1000000",
-				 "isolated_market_multi_collateral_assets": null
+				 "isolated_market_multi_collateral_assets": null,
+				 "quote_asset_id": 0
 			  },
 			  "funding_index":"0",
 			  "open_interest":"0",

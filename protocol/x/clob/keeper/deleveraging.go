@@ -527,7 +527,7 @@ func (k Keeper) getDeleveragingQuoteQuantumsDelta(
 	)
 }
 
-func (k Keeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error) {
+func (k *Keeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error) {
 	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
 	if err != nil {
 		return 0, err
