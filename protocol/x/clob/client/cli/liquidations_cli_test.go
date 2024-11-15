@@ -117,6 +117,7 @@ func (s *LiquidationsIntegrationTestSuite) SetupSuite() {
 	perpstate := perptypes.GenesisState{}
 	perpstate.LiquidityTiers = constants.LiquidityTiers
 	perpstate.Params = constants.PerpetualsGenesisParams
+	perpstate.MultiCollateralAssets = constants.PerpetualTdaiMultiCollateralAssets
 	perpetual := constants.BtcUsd_20PercentInitial_10PercentMaintenance
 	perpstate.Perpetuals = append(perpstate.Perpetuals, perpetual)
 

@@ -87,7 +87,7 @@ func networkWithLiquidityTierAndPerpetualObjects(
 				MarketType:     marketType,
 				DangerIndexPpm: uint32(0),
 				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
-				IsolatedMarketMultiCollateralAssets:                   types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+				IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 				QuoteAssetId:                                          uint32(0),
 			},
 			FundingIndex:    dtypes.ZeroInt(),

@@ -803,8 +803,6 @@ func TestEndBlocker_Success(t *testing.T) {
 				).Once().Return()
 			}
 
-			fmt.Println("ks.ClobKeeper.UntriggeredConditionalOrders early", ks.ClobKeeper.UntriggeredConditionalOrders)
-
 			clob.EndBlocker(
 				ctx,
 				ks.ClobKeeper,

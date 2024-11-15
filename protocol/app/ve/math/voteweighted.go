@@ -2,7 +2,6 @@ package voteweighted
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 	"sort"
 
@@ -361,7 +360,6 @@ func getValidatorPowerByAddress(
 ) (math.Int, error) {
 	address, err := sdk.ConsAddressFromBech32(validatorAddr)
 	if err != nil {
-		fmt.Println("err ConsAddressFromBech32", err)
 		return math.NewInt(0), err
 	}
 

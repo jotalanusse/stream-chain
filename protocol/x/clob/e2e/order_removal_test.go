@@ -1,7 +1,6 @@
 package clob_test
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
 
@@ -420,14 +419,6 @@ func TestConditionalOrderRemoval(t *testing.T) {
 			}
 			// Advance to the next block, persisting removals in operations queue to state.
 			ctx = tApp.AdvanceToBlock(4, testapp.AdvanceToBlockOptions{})
-
-			subaccounts := tApp.App.SubaccountsKeeper.GetAllSubaccount(ctx)
-			for _, subaccount := range subaccounts {
-				fmt.Println("subaccount", subaccount.Id)
-				for _, assetPosition := range subaccount.AssetPositions {
-					fmt.Println("asset position", assetPosition.AssetId, assetPosition.Quantums.String())
-				}
-			}
 
 			if tc.subsequentOrder != nil {
 				for _, checkTx := range testapp.MustMakeCheckTxsWithClobMsg(

@@ -18,7 +18,7 @@ func CmdCreateTransfer() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-transfer sender_owner sender_number recipient_owner recipient_number asset_id quantums",
 		Short: "Broadcast message CreateTransfer",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSenderOwner := args[0]
 			argSenderNumber, err := cast.ToUint32E(args[1])

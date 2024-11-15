@@ -65,7 +65,6 @@ func GetBalanceAfterYield(clientCtx client.Context, initialBalance *big.Int) (ba
 	if err != nil {
 		return 0, err
 	}
-	fmt.Println("SDAI: ", resp)
 
 	priceFloat, success := new(big.Float).SetString(resp.Price)
 	if !success {
@@ -150,6 +149,7 @@ func (s *CancelOrderIntegrationTestSuite) SetupTest() {
 	perpstate := perptypes.GenesisState{}
 	perpstate.LiquidityTiers = constants.LiquidityTiers
 	perpstate.Params = constants.PerpetualsGenesisParams
+	perpstate.MultiCollateralAssets = constants.PerpetualTdaiMultiCollateralAssets
 	perpetual := constants.BtcUsd_50PercentInitial_40PercentMaintenance
 	perpstate.Perpetuals = append(perpstate.Perpetuals, perpetual)
 
