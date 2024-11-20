@@ -2,12 +2,12 @@
   "exchanges": [
     {
       "exchangeName": "Binance",
-      "ticker": "MATICUSDT",
+      "ticker": "POLUSDT",
       "adjustByMarket": "USDT-USD"
     },
     {
       "exchangeName": "Bybit",
-      "ticker": "MATICUSDT",
+      "ticker": "POLUSDT",
       "adjustByMarket": "USDT-USD"
     },
     {
@@ -16,31 +16,31 @@
     },
     {
       "exchangeName": "Gate",
-      "ticker": "MATIC_USDT",
+      "ticker": "POL_USDT",
       "adjustByMarket": "USDT-USD"
     },
     {
       "exchangeName": "Huobi",
-      "ticker": "maticusdt",
+      "ticker": "polusdt",
       "adjustByMarket": "USDT-USD"
     },
     {
       "exchangeName": "Kraken",
-      "ticker": "MATICUSD"
+      "ticker": "POLUSD"
     },
     {
       "exchangeName": "Kucoin",
-      "ticker": "MATIC-USDT",
+      "ticker": "POL-USDT",
       "adjustByMarket": "USDT-USD"
     },
     {
       "exchangeName": "Mexc",
-      "ticker": "MATIC_USDT",
+      "ticker": "POL_USDT",
       "adjustByMarket": "USDT-USD"
     },
     {
       "exchangeName": "Okx",
-      "ticker": "MATIC-USDT",
+      "ticker": "POL-USDT",
       "adjustByMarket": "USDT-USD"
     }
   ]
