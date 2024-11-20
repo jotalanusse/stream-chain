@@ -128,10 +128,6 @@ var PerpetualsGenesisParams = perptypes.Params{
 	MinNumVotesPerSample:      TestMinNumVotesPerSample,
 }
 
-var PerpetualTdaiMultiCollateralAssets = perptypes.MultiCollateralAssetsArray{
-	MultiCollateralAssets: []uint32{0},
-}
-
 var Perpetuals_GenesisState_ParamsOnly = perptypes.GenesisState{
 	Params: PerpetualsGenesisParams,
 }

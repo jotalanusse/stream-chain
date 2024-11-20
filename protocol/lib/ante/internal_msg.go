@@ -86,7 +86,6 @@ func IsInternalMsg(msg sdk.Msg) bool {
 		// perpetuals
 		*perpetuals.MsgCreatePerpetual,
 		*perpetuals.MsgSetLiquidityTier,
-		*perpetuals.MsgSetMultiCollateralAssets,
 		*perpetuals.MsgUpdateParams,
 		*perpetuals.MsgUpdatePerpetualParams,
 

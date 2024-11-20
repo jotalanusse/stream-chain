@@ -29,8 +29,6 @@ const (
 	// LiquidityTierKeyPrefix is the prefix to retrieve all `LiquidityTier`s.
 	LiquidityTierKeyPrefix = "LiqTier:"
 
-	MultiCollateralAssetsKeyPrefix = "MultiCollat:"
-
 	// ParamsKey is the key to retrieve all params for the module.
 	ParamsKey = "Params"
 

@@ -355,7 +355,6 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, mockIndexerEventManager, nil)
 
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 			require.NoError(t, err)
@@ -811,7 +810,6 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",
@@ -1335,7 +1333,6 @@ func TestProcessDeleveraging(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",
@@ -1576,7 +1573,6 @@ func TestProcessDeleveragingAtOraclePrice(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",
@@ -1754,7 +1750,6 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",

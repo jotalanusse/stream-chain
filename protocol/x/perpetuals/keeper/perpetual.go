@@ -1614,23 +1614,6 @@ func (k Keeper) setLiquidityTier(
 	liquidityTierStore.Set(lib.Uint32ToKey(liquidityTier.Id), b)
 }
 
-func (k Keeper) SetMultiCollateralAssets(ctx sdk.Context, assets perptypes.MultiCollateralAssetsArray) {
-	store := ctx.KVStore(k.storeKey)
-	bz := k.cdc.MustMarshal(&assets)
-	store.Set([]byte(types.MultiCollateralAssetsKeyPrefix), bz)
-}
-
-func (k Keeper) GetMultiCollateralAssets(ctx sdk.Context) (assets perptypes.MultiCollateralAssetsArray, found bool) {
-	store := ctx.KVStore(k.storeKey)
-	bz := store.Get([]byte(types.MultiCollateralAssetsKeyPrefix))
-	if bz == nil {
-		return perptypes.MultiCollateralAssetsArray{}, false
-	}
-	assets = perptypes.MultiCollateralAssetsArray{}
-	k.cdc.MustUnmarshal(bz, &assets)
-	return assets, true
-}
-
 /* === PARAMETERS FUNCTIONS === */
 // `GetParams` returns perpetuals module parameters as a `Params` object from store.
 func (k Keeper) GetParams(

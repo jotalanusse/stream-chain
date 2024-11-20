@@ -325,9 +325,6 @@
   "perpetuals": {
 
     "perpetuals": [],
-    "multi_collateral_assets": {
-      "multi_collateral_assets": [0]
-    },
     "liquidity_tiers": [],
     "params": {
       "funding_rate_clamp_factor_ppm": 6000000,

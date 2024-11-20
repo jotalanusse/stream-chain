@@ -54,9 +54,6 @@ func TestMsgCreateTransfer(t *testing.T) {
 		// Asset to transfer.
 		asset assetstypes.Asset
 
-		// Multi-collateral asset to transfer.
-		multiCollateralAsset perptypes.MultiCollateralAssetsArray
-
 		// Amount to transfer.
 		amount uint64
 
@@ -76,14 +73,12 @@ func TestMsgCreateTransfer(t *testing.T) {
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.TDai,
 			amount:                500_000_000,
-			multiCollateralAsset:  perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 		},
 		"Success: transfer from Bob subaccount to Carl subaccount": {
 			senderInitialBalance:  10_000_000,
 			senderSubaccountId:    constants.Bob_Num0,
 			recipientSubaccountId: constants.Carl_Num0,
 			asset:                 *constants.TDai,
-			multiCollateralAsset:  perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			amount:                7_654_321,
 		},
 		// Transfer to a non-existent subaccount will create that subaccount and succeed.
@@ -95,16 +90,14 @@ func TestMsgCreateTransfer(t *testing.T) {
 				Owner:  constants.BobAccAddress.String(),
 				Number: 104,
 			},
-			asset:                *constants.TDai,
-			multiCollateralAsset: perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			amount:               3_000_000,
+			asset:  *constants.TDai,
+			amount: 3_000_000,
 		},
 		"Failure: transfer more than balance": {
 			senderInitialBalance:  600_000_000,
 			senderSubaccountId:    constants.Alice_Num0,
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.TDai,
-			multiCollateralAsset:  perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			amount:                600_000_001,
 			deliverTxFails:        true,
 		},
@@ -113,7 +106,6 @@ func TestMsgCreateTransfer(t *testing.T) {
 			senderSubaccountId:    constants.Carl_BTC,
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.BtcUsd, // non-TDai asset
-			multiCollateralAsset:  perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			amount:                7_000_000,
 			deliverTxFails:        true,
 		},
@@ -122,14 +114,12 @@ func TestMsgCreateTransfer(t *testing.T) {
 			senderSubaccountId:    constants.Carl_BTC,
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.BtcUsd, // non-TDai asset
-			multiCollateralAsset:  perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0, 1}},
 			amount:                7_000_000,
 		},
 		"Failure: transfer zero amount": {
 			senderSubaccountId:      constants.Alice_Num0,
 			recipientSubaccountId:   constants.Alice_Num1,
 			asset:                   *constants.TDai,
-			multiCollateralAsset:    perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			amount:                  0,
 			checkTxResponseContains: "Invalid transfer amount",
 			checkTxFails:            true,
@@ -138,7 +128,6 @@ func TestMsgCreateTransfer(t *testing.T) {
 			senderSubaccountId:      constants.Bob_Num0,
 			recipientSubaccountId:   constants.Bob_Num0,
 			asset:                   *constants.TDai,
-			multiCollateralAsset:    perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			amount:                  123_456,
 			checkTxResponseContains: "Sender is the same as recipient",
 			checkTxFails:            true,
@@ -154,12 +143,6 @@ func TestMsgCreateTransfer(t *testing.T) {
 			}
 			tApp := testapp.NewTestAppBuilder(t).WithGenesisDocFn(func() (genesis types.GenesisDoc) {
 				genesis = testapp.DefaultGenesis()
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
-					func(genesisState *perptypes.GenesisState) {
-						genesisState.MultiCollateralAssets = tc.multiCollateralAsset
-					},
-				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
 					&genesis,
 					func(genesisState *satypes.GenesisState) {
@@ -400,8 +383,6 @@ func TestMsgDepositToSubaccount(t *testing.T) {
 		// Asset to transfer.
 		asset assetstypes.Asset
 
-		multiCollateralAssets perptypes.MultiCollateralAssetsArray
-
 		/* Expectations */
 		// A string that CheckTx response should contain, if any.
 		checkTxResponseContains string
@@ -416,18 +397,12 @@ func TestMsgDepositToSubaccount(t *testing.T) {
 			subaccountId:      constants.Alice_Num0,
 			quantums:          big.NewInt(500_000_000),
 			asset:             *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{
-				MultiCollateralAssets: []uint32{0},
-			},
 		},
 		"Deposit from Bob account to Carl subaccount": {
 			accountAccAddress: constants.BobAccAddress,
 			subaccountId:      constants.Carl_Num0,
 			quantums:          big.NewInt(7_000_000),
 			asset:             *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{
-				MultiCollateralAssets: []uint32{0},
-			},
 		},
 		// Deposit to a non-existent subaccount will create that subaccount and succeed.
 		"Deposit from Bob account to non-existent subaccount": {
@@ -438,37 +413,25 @@ func TestMsgDepositToSubaccount(t *testing.T) {
 			},
 			quantums: big.NewInt(7_000_000),
 			asset:    *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{
-				MultiCollateralAssets: []uint32{0},
-			},
 		},
 		"Deposit a non-TDai asset": {
 			accountAccAddress: constants.CarlAccAddress,
 			subaccountId:      constants.Carl_BTC,
 			quantums:          big.NewInt(7_000_000),
 			asset:             *constants.BtcUsd, // non-TDai asset
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{
-				MultiCollateralAssets: []uint32{0, 1},
-			},
 		},
 		"Deposit a non-TDai asset and fail because of multi-collateral constraints": {
 			accountAccAddress: constants.CarlAccAddress,
 			subaccountId:      constants.Carl_BTC,
 			quantums:          big.NewInt(7_000_000),
 			asset:             *constants.BtcUsd, // non-TDai asset
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{
-				MultiCollateralAssets: []uint32{0},
-			},
-			deliverTxFails: true,
+			deliverTxFails:    true,
 		},
 		"Deposit zero amount": {
-			accountAccAddress: constants.AliceAccAddress,
-			subaccountId:      constants.Carl_Num0,
-			quantums:          big.NewInt(0), // 0 quantums
-			asset:             *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{
-				MultiCollateralAssets: []uint32{0},
-			},
+			accountAccAddress:       constants.AliceAccAddress,
+			subaccountId:            constants.Carl_Num0,
+			quantums:                big.NewInt(0), // 0 quantums
+			asset:                   *constants.TDai,
 			checkTxResponseContains: "Invalid transfer amount",
 			checkTxIsError:          true,
 		},
@@ -483,12 +446,6 @@ func TestMsgDepositToSubaccount(t *testing.T) {
 			}
 			tApp := testapp.NewTestAppBuilder(t).WithAppOptions(appOpts).WithGenesisDocFn(func() (genesis types.GenesisDoc) {
 				genesis = testapp.DefaultGenesis()
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
-					func(genesisState *perptypes.GenesisState) {
-						genesisState.MultiCollateralAssets = tc.multiCollateralAssets
-					},
-				)
 				return genesis
 			}).WithNonDeterminismChecksEnabled(false).Build()
 
@@ -676,8 +633,6 @@ func TestMsgWithdrawFromSubaccount(t *testing.T) {
 		// Asset to transfer.
 		asset assetstypes.Asset
 
-		multiCollateralAssets perptypes.MultiCollateralAssetsArray
-
 		/* Expectations */
 		// A string that CheckTx response should contain, if any.
 		checkTxResponseContains string
@@ -689,48 +644,42 @@ func TestMsgWithdrawFromSubaccount(t *testing.T) {
 		deliverTxFails bool
 	}{
 		"Withdraw from Alice subaccount to Alice account": {
-			accountAccAddress:     constants.AliceAccAddress,
-			subaccountId:          constants.Alice_Num0,
-			quantums:              big.NewInt(500_000_000),
-			asset:                 *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			accountAccAddress: constants.AliceAccAddress,
+			subaccountId:      constants.Alice_Num0,
+			quantums:          big.NewInt(500_000_000),
+			asset:             *constants.TDai,
 		},
 		"Withdraw from Bob subaccount to Alice account": {
-			accountAccAddress:     constants.AliceAccAddress,
-			subaccountId:          constants.Bob_Num0,
-			quantums:              big.NewInt(7_000_000),
-			asset:                 *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			accountAccAddress: constants.AliceAccAddress,
+			subaccountId:      constants.Bob_Num0,
+			quantums:          big.NewInt(7_000_000),
+			asset:             *constants.TDai,
 		},
 		// Withdrawing to a non-existent account will create that account and succeed.
 		"Withdraw from Bob subaccount to non-existent account": {
-			accountAccAddress:     sdktypes.MustAccAddressFromBech32(sample_testutil.AccAddress()), // a newly generated account
-			subaccountId:          constants.Bob_Num0,
-			quantums:              big.NewInt(7_000_000),
-			asset:                 *constants.TDai,
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			accountAccAddress: sdktypes.MustAccAddressFromBech32(sample_testutil.AccAddress()), // a newly generated account
+			subaccountId:      constants.Bob_Num0,
+			quantums:          big.NewInt(7_000_000),
+			asset:             *constants.TDai,
 		},
 		"Withdraw a non-TDai asset": {
-			accountAccAddress:     constants.AliceAccAddress,
-			subaccountId:          constants.Carl_BTC,
-			quantums:              big.NewInt(7_000_000),
-			asset:                 *constants.BtcUsd, // non-TDai asset
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0, 1}},
+			accountAccAddress: constants.AliceAccAddress,
+			subaccountId:      constants.Carl_BTC,
+			quantums:          big.NewInt(7_000_000),
+			asset:             *constants.BtcUsd, // non-TDai asset
 		},
 		"Withdraw a non-TDai asset and multi collateral not supported": {
-			accountAccAddress:     constants.AliceAccAddress,
-			subaccountId:          constants.Carl_BTC,
-			quantums:              big.NewInt(7_000_000),
-			asset:                 *constants.BtcUsd, // non-TDai asset
-			multiCollateralAssets: perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			deliverTxFails:        true,
+			accountAccAddress: constants.AliceAccAddress,
+			subaccountId:      constants.Carl_BTC,
+			quantums:          big.NewInt(7_000_000),
+			asset:             *constants.BtcUsd, // non-TDai asset
+			deliverTxFails:    true,
 		},
 		"Withdraw zero amount": {
 			accountAccAddress:       constants.AliceAccAddress,
 			subaccountId:            constants.Carl_Num0,
 			quantums:                big.NewInt(0), // 0 quantums
 			asset:                   *constants.TDai,
-			multiCollateralAssets:   perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			checkTxResponseContains: "Invalid transfer amount",
 			checkTxIsError:          true,
 		},
@@ -747,12 +696,6 @@ func TestMsgWithdrawFromSubaccount(t *testing.T) {
 
 			tApp := testapp.NewTestAppBuilder(t).WithAppOptions(appOpts).WithGenesisDocFn(func() (genesis types.GenesisDoc) {
 				genesis = testapp.DefaultGenesis()
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
-					func(genesisState *perptypes.GenesisState) {
-						genesisState.MultiCollateralAssets = tc.multiCollateralAssets
-					},
-				)
 				return genesis
 			}).Build()
 
@@ -1064,7 +1007,6 @@ func TestWithdrawalGating_ChainOutage(t *testing.T) {
 					func(genesisState *perptypes.GenesisState) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = constants.LiquidityTiers
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(

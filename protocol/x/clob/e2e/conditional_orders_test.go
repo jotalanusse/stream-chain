@@ -978,7 +978,6 @@ func TestConditionalOrder(t *testing.T) {
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 							constants.IsoUsd_IsolatedMarket,
 						}
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -2190,7 +2189,6 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(

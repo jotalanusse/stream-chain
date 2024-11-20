@@ -138,7 +138,6 @@ func TestChangePriceVE_CauseNegativeTNC(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = tc.liquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -247,7 +246,6 @@ func TestGetSubaccountCollateralizationInfo(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.

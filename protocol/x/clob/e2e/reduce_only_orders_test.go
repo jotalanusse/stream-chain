@@ -537,7 +537,6 @@ func TestReduceOnlyOrders(t *testing.T) {
 								constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 								constants.EthUsd_20PercentInitial_10PercentMaintenance,
 							}
-							genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 						},
 					)
 					return genesis
@@ -756,12 +755,6 @@ func TestReduceOnlyOrderFailure(t *testing.T) {
 						},
 					)
 				}
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
-					func(genesisState *perptypes.GenesisState) {
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
-					},
-				)
 				return genesis
 			}).Build()
 
@@ -1069,12 +1062,6 @@ func TestReduceOnlyOrderReplacement(t *testing.T) {
 							},
 						)
 					}
-					testapp.UpdateGenesisDocWithAppStateForModule(
-						&genesis,
-						func(genesisState *perptypes.GenesisState) {
-							genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
-						},
-					)
 					return genesis
 				}).
 				WithCrashingAppCheckTxNonDeterminismChecksEnabled(false).

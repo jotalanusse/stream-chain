@@ -4,7 +4,6 @@ import (
 	"math/big"
 	"testing"
 
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/cometbft/cometbft/crypto/tmhash"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cometbft/cometbft/types"
@@ -893,12 +892,6 @@ func TestBatchCancelOffchainUpdates(t *testing.T) {
 					&genesis,
 					func(genesisState *clobtypes.GenesisState) {
 						genesisState.EquityTierLimitConfig = clobtypes.EquityTierLimitConfiguration{}
-					},
-				)
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
-					func(genesisState *perptypes.GenesisState) {
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				return genesis

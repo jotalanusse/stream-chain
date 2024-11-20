@@ -862,7 +862,6 @@ func TestRecordMevMetrics(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
 			// Create the default markets.
@@ -1269,7 +1268,6 @@ func TestGetMidPrices(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memclob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
 			// Create the default markets.

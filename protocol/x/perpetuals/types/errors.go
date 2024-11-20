@@ -167,11 +167,6 @@ var (
 		34,
 		"isolated market collateral asssets is empty",
 	)
-	ErrMultiCollateralAssetsUninitialized = errorsmod.Register(
-		ModuleName,
-		35,
-		"multi collateral asssets is uninitialized",
-	)
 	ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset = errorsmod.Register(
 		ModuleName,
 		36,

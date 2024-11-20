@@ -20,7 +20,6 @@ import (
 	blocktimetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/blocktime/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	ratelimittypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -106,7 +105,6 @@ func TestPlaceOrder_Error(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, indexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 
@@ -300,7 +298,6 @@ func TestPlaceOrder_Success(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, indexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 

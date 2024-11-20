@@ -14,7 +14,6 @@ import (
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	sendingtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/sending/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	abcitypes "github.com/cometbft/cometbft/abci/types"
@@ -83,12 +82,6 @@ func TestParallelAnteHandler_ClobAndOther(t *testing.T) {
 						)),
 					})
 				}
-			},
-		)
-		testapp.UpdateGenesisDocWithAppStateForModule(
-			&genesis,
-			func(genesisState *perptypes.GenesisState) {
-				genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 			},
 		)
 		return genesis

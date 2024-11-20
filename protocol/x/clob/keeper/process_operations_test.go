@@ -2342,7 +2342,6 @@ func setupProcessProposerOperationsTestCase(
 	)
 
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-	ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	// set DeliverTx mode.
 	ctx = ks.Ctx.WithIsCheckTx(false)

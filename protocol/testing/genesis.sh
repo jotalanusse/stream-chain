@@ -108,11 +108,6 @@ function edit_genesis() {
 	dasel put -t bool -f "$GENESIS" '.app_state.ibc.client_genesis.create_localhost' -v "false"
 	dasel put -t json -f "$GENESIS" '.app_state.ibc.client_genesis.params.allowed_clients' -v "[]"
 	dasel put -t string -f "$GENESIS" '.app_state.ibc.client_genesis.params.allowed_clients.[]' -v "07-tendermint"
-
-	# Update perpetuals module.
-	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.multi_collateral_assets' -v "{}"
-	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.multi_collateral_assets.multi_collateral_assets' -v "[]"
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.multi_collateral_assets.multi_collateral_assets.[]' -v "0"
 	
 	# Liquidity Tiers.
 	# TODO(OTE-208): Finalize default values for open interest caps.

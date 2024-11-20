@@ -108,8 +108,6 @@ func TestInternalMsgSamples_Gov_Key(t *testing.T) {
 		"/klyraprotocol.perpetuals.MsgCreatePerpetualResponse",
 		"/klyraprotocol.perpetuals.MsgSetLiquidityTier",
 		"/klyraprotocol.perpetuals.MsgSetLiquidityTierResponse",
-		"/klyraprotocol.perpetuals.MsgSetMultiCollateralAssets",
-		"/klyraprotocol.perpetuals.MsgSetMultiCollateralAssetsResponse",
 		"/klyraprotocol.perpetuals.MsgUpdateParams",
 		"/klyraprotocol.perpetuals.MsgUpdateParamsResponse",
 		"/klyraprotocol.perpetuals.MsgUpdatePerpetualParams",

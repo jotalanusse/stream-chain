@@ -200,7 +200,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
-			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -444,7 +443,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
-			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -721,7 +719,6 @@ func TestTransferFundsFromSubaccountToSubaccount_Success(t *testing.T) {
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
-			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})
@@ -1051,7 +1048,6 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
-			perpetualsKeeper.SetMultiCollateralAssets(ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})

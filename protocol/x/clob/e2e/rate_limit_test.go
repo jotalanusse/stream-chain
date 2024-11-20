@@ -6,7 +6,6 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/ve"
 	sdaiservertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/server/types/sdaioracle"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 
@@ -414,19 +413,15 @@ func TestCancellationAndMatchInTheSameBlock_Regression(t *testing.T) {
 	require.NoError(t, conversionErr)
 	tApp.App.RatelimitKeeper.SetSDAIPrice(tApp.App.NewUncachedContext(false, tmproto.Header{}), rate)
 	tApp.App.RatelimitKeeper.SetAssetYieldIndex(tApp.App.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-	tApp.App.PerpetualsKeeper.SetMultiCollateralAssets(tApp.App.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	tApp.ParallelApp.RatelimitKeeper.SetSDAIPrice(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), rate)
 	tApp.ParallelApp.RatelimitKeeper.SetAssetYieldIndex(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-	tApp.ParallelApp.PerpetualsKeeper.SetMultiCollateralAssets(tApp.ParallelApp.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	tApp.NoCheckTxApp.RatelimitKeeper.SetSDAIPrice(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), rate)
 	tApp.NoCheckTxApp.RatelimitKeeper.SetAssetYieldIndex(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-	tApp.NoCheckTxApp.PerpetualsKeeper.SetMultiCollateralAssets(tApp.NoCheckTxApp.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	tApp.CrashingApp.RatelimitKeeper.SetSDAIPrice(tApp.CrashingApp.NewUncachedContext(false, tmproto.Header{}), rate)
 	tApp.CrashingApp.RatelimitKeeper.SetAssetYieldIndex(tApp.CrashingApp.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-	tApp.CrashingApp.PerpetualsKeeper.SetMultiCollateralAssets(tApp.CrashingApp.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	LPlaceOrder_Alice_Num0_Id0_Clob0_Buy5_Price10_GTBT20 := *clobtypes.NewMsgPlaceOrder(testapp.MustScaleOrder(
 		clobtypes.Order{
@@ -764,12 +759,6 @@ func TestRateLimitingOrders_StatefulOrdersDuringDeliverTxAreNotRateLimited(t *te
 						},
 					},
 				}
-			},
-		)
-		testapp.UpdateGenesisDocWithAppStateForModule(
-			&genesis,
-			func(genesisState *perptypes.GenesisState) {
-				genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 			},
 		)
 		return genesis

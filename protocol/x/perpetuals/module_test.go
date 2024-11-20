@@ -103,7 +103,7 @@ func TestAppModuleBasic_DefaultGenesis(t *testing.T) {
 	require.Equal(
 		t,
 		`{"perpetuals":[],"liquidity_tiers":[],"params":{"funding_rate_clamp_factor_ppm":6000000,`+
-			`"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15},"multi_collateral_assets":{"multi_collateral_assets":[0]}}`,
+			`"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15}}`,
 		string(json),
 	)
 }
@@ -136,9 +136,6 @@ func TestAppModuleBasic_ValidateGenesisErrBadState(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
-		},
-		"multi_collateral_assets": {
-			"multi_collateral_assets": [0]
 		}
 	 }`)
 
@@ -188,9 +185,6 @@ func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
-		},
-		"multi_collateral_assets": {
-			"multi_collateral_assets": [0]
 		}
 	 }`)
 
@@ -298,9 +292,6 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	}
 
 	msg := `{
-		"multi_collateral_assets": {
-			"multi_collateral_assets": [0]
-		},
 		"perpetuals":[
 		   {
 			  "params": {
@@ -378,9 +369,6 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
-		},
-		"multi_collateral_assets": {
-			"multi_collateral_assets": [0]
 		}
 	 }`
 	require.Equal(t,

@@ -733,7 +733,6 @@ func TestPlaceShortTermOrder(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
 			// Create the default markets.
@@ -993,7 +992,6 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
 			// Create the default markets.
@@ -1890,7 +1888,6 @@ func TestPerformStatefulOrderValidation(t *testing.T) {
 
 			tApp.App.RatelimitKeeper.SetSDAIPrice(tApp.App.NewUncachedContext(false, tmproto.Header{}), rate)
 			tApp.App.RatelimitKeeper.SetAssetYieldIndex(tApp.App.NewUncachedContext(false, tmproto.Header{}), big.NewRat(1, 1))
-			tApp.App.PerpetualsKeeper.SetMultiCollateralAssets(tApp.App.NewUncachedContext(false, tmproto.Header{}), perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := tApp.AdvanceToBlock(
 				// Stateful validation happens at blockHeight+1 for short term order placements.
@@ -1978,7 +1975,6 @@ func TestGetStatePosition_Success(t *testing.T) {
 			indexerEventManager := &mocks.IndexerEventManager{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, indexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			prices.InitGenesis(ks.Ctx, *ks.PricesKeeper, constants.Prices_DefaultGenesisState)
 			perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)

@@ -10,7 +10,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	feetiertypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	prices "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -246,12 +245,6 @@ func TestDeliverTxMatchValidation(t *testing.T) {
 					&genesis,
 					func(genesisState *prices.GenesisState) {
 						*genesisState = constants.TestPricesGenesisState
-					},
-				)
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
-					func(genesisState *perptypes.GenesisState) {
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				return genesis

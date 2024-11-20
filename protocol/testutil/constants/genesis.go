@@ -884,9 +884,6 @@ const GenesisState = `{
       }
     },
     "perpetuals": {
-      "multi_collateral_assets": {
-        "multi_collateral_assets": [0]
-      },
       "liquidity_tiers": [
         {
           "base_position_notional": 1000000000000,

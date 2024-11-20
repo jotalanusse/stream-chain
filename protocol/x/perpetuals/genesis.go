@@ -11,8 +11,6 @@ import (
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	k.InitializeForGenesis(ctx)
 
-	k.SetMultiCollateralAssets(ctx, genState.MultiCollateralAssets)
-
 	// Set parameters in state.
 	err := k.SetParams(ctx, genState.Params)
 	if err != nil {

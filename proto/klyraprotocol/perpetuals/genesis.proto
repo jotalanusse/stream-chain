@@ -12,5 +12,4 @@ message GenesisState {
   repeated Perpetual perpetuals = 1 [ (gogoproto.nullable) = false ];
   repeated LiquidityTier liquidity_tiers = 2 [ (gogoproto.nullable) = false ];
   Params params = 3 [ (gogoproto.nullable) = false ];
-  MultiCollateralAssetsArray multi_collateral_assets = 4 [ (gogoproto.nullable) = false ];
 }

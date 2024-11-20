@@ -315,7 +315,6 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.
@@ -441,7 +440,6 @@ func TestPlacePerpetualLiquidation_validateLiquidationAgainstClobPairStatus(t *t
 			mockBankKeeper := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
 			// Create the default markets.
@@ -1115,7 +1113,6 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			mockIndexerEventManager.On("Enabled").Return(false)
 			ks := keepertest.NewClobKeepersTestContext(t, memclob, bankKeeper, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
@@ -1700,7 +1697,6 @@ func TestGetFillablePrice(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, &mocks.IndexerEventManager{}, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Initialize the liquidations config.
 			if tc.liquidationConfig != nil {
@@ -2563,7 +2559,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 			mockIndexerEventManager.On("Enabled").Return(false)
 			ks := keepertest.NewClobKeepersTestContext(t, memclob, bankKeeper, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
@@ -2763,7 +2758,6 @@ func TestPlacePerpetualLiquidation_SendOffchainMessages(t *testing.T) {
 
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, indexerEventManager, nil)
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-	ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 	ctx := ks.Ctx.WithTxBytes(constants.TestTxBytes)
 	// CheckTx mode set correctly
@@ -2904,7 +2898,6 @@ func TestIsLiquidatable(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, &mocks.IndexerEventManager{}, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",
@@ -3340,7 +3333,6 @@ func TestGetBankruptcyPriceInQuoteQuantums(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, &mocks.IndexerEventManager{}, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",
@@ -3828,7 +3820,6 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, mockIndexerEventManager, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			bankMock.On(
 				"GetBalance",
@@ -4221,7 +4212,6 @@ func TestGetBestPerpetualPositionToLiquidate(t *testing.T) {
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			// Create the default markets.
 			keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
@@ -4468,7 +4458,6 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 			)
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
 			// Create the default markets.
@@ -4648,7 +4637,6 @@ func TestGetNextSubaccountToLiquidate(t *testing.T) {
 			memClob := memclob.NewMemClobPriceTimePriority(false)
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, &mocks.IndexerEventManager{}, nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			subaccountIds := heap.NewLiquidationPriorityHeap()
 			for _, priority := range tc.subaccountIds {
@@ -5485,7 +5473,6 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.
@@ -5670,7 +5657,6 @@ func TestGetBestPerpetualPositionToLiquidateMultiplePositions(t *testing.T) {
 
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.
@@ -6020,7 +6006,6 @@ func TestIsIsolatedPerpetualError_InLiquidateSubaccountsAgainstOrderbookInternal
 			mockBankKeeper := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, mockBankKeeper, indexer_manager.NewIndexerEventManagerNoop(), nil)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
-			ks.PerpetualsKeeper.SetMultiCollateralAssets(ks.Ctx, perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}})
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.

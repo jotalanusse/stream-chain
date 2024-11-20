@@ -109,8 +109,6 @@ type PerpetualsKeeper interface {
 		liquidityTier LiquidityTier,
 		err error,
 	)
-	SetMultiCollateralAssets(ctx sdk.Context, assets MultiCollateralAssetsArray)
-	GetMultiCollateralAssets(ctx sdk.Context) (assets MultiCollateralAssetsArray, found bool)
 	SetParams(
 		ctx sdk.Context,
 		params Params,

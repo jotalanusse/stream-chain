@@ -229,7 +229,6 @@ func TestLiquidationConfig(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = tc.liquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -875,7 +874,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = tc.liquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
-						genesisState.MultiCollateralAssets = perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
