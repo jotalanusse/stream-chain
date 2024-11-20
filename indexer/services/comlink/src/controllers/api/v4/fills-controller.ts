@@ -82,7 +82,7 @@ class FillsController extends Controller {
     const clobPairIdToPerpetualMarket: Record<
       string,
       PerpetualMarketFromDatabase> = perpetualMarketRefresher.getClobPairIdToPerpetualMarket();
-    const clobPairIdToMarket: MarketAndTypeByClobPairId = _.mapValues(
+    const clobPairIdToMarket: MarketByClobPairId = _.mapValues(
       clobPairIdToPerpetualMarket,
       (perpetualMarket: PerpetualMarketFromDatabase) => {
         return {
@@ -144,7 +144,7 @@ class FillsController extends Controller {
     const clobPairIdToPerpetualMarket: Record<
         string,
         PerpetualMarketFromDatabase> = perpetualMarketRefresher.getClobPairIdToPerpetualMarket();
-    const clobPairIdToMarket: MarketAndTypeByClobPairId = _.mapValues(
+    const clobPairIdToMarket: MarketByClobPairId = _.mapValues(
       clobPairIdToPerpetualMarket,
       (perpetualMarket: PerpetualMarketFromDatabase) => {
         return {
