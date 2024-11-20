@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"fmt"
 )
 
 // RequestHandlerImpl is the struct that implements the `RequestHandler` interface.
