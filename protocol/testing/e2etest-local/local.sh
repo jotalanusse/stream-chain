@@ -100,8 +100,7 @@ create_validators() {
 		# Using "@" as a subscript results in separate args: "klyra1..." "klyra1..." "klyra1..."
 		# Note: `edit_genesis` must be called before `add-genesis-account`.
 		edit_genesis "$VAL_CONFIG_DIR" "${TEST_ACCOUNTS[*]}" "${FAUCET_ACCOUNTS[*]}" "" "" "" ""
-		update_genesis_use_test_volatile_market "$VAL_CONFIG_DIR"
-		update_all_markets_with_fixed_price_exchange "$VAL_CONFIG_DIR"
+		#update_all_markets_with_fixed_price_exchange "$VAL_CONFIG_DIR"
 
 		echo "${MNEMONICS[$i]}" | klyraprotocold keys add "${MONIKERS[$i]}" --recover --keyring-backend=test --home "$VAL_HOME_DIR"
 

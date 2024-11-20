@@ -204,8 +204,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[2].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[2].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[2].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[2].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[2].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: MATIC-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -215,8 +215,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[3].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[3].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[3].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[3].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[3].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: CRV-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -226,8 +226,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[4].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[4].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[4].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[4].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[4].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: SOL-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -237,8 +237,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[5].params.atomic_resolution' -v '-7'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[5].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[5].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[5].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[5].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: ADA-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -248,8 +248,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[6].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[6].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[6].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[6].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[6].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: AVAX-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -259,8 +259,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[7].params.atomic_resolution' -v '-7'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[7].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[7].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[7].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[7].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: FIL-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -270,8 +270,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[8].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[8].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[8].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[8].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[8].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: LTC-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -281,8 +281,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[9].params.atomic_resolution' -v '-7'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[9].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[9].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[9].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[9].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: DOGE-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -292,8 +292,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[10].params.atomic_resolution' -v '-4'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[10].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[10].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[10].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[10].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: ATOM-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -303,8 +303,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[11].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[11].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[11].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[11].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[11].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: DOT-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -314,8 +314,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[12].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[12].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[12].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[12].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[12].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: UNI-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -325,8 +325,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[13].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[13].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[13].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[13].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[13].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: BCH-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -336,8 +336,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[14].params.atomic_resolution' -v '-8'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[14].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[14].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[14].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[14].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: TRX-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -347,8 +347,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[15].params.atomic_resolution' -v '-4'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[15].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[15].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[15].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[15].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: NEAR-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -358,8 +358,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[16].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[16].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[16].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[16].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[16].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: MKR-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -369,8 +369,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[17].params.atomic_resolution' -v '-9'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[17].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[17].params.liquidity_tier' -v '2'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[17].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[17].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: XLM-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -380,8 +380,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[18].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[18].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[18].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[18].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[18].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: ETC-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -391,8 +391,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[19].params.atomic_resolution' -v '-7'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[19].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[19].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[19].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[19].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: COMP-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -402,8 +402,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[20].params.atomic_resolution' -v '-7'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[20].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[20].params.liquidity_tier' -v '2'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[20].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[20].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: WLD-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -413,8 +413,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[21].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[21].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[21].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[21].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[21].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: APE-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -424,8 +424,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[22].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[22].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[22].params.liquidity_tier' -v '2'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[22].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[22].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: APT-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -435,8 +435,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[23].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[23].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[23].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[23].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[23].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: ARB-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -446,8 +446,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[24].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[24].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[24].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[24].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[24].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: BLUR-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -457,8 +457,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[25].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[25].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[25].params.liquidity_tier' -v '2'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[25].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[25].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: LDO-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -468,8 +468,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[26].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[26].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[26].params.liquidity_tier' -v '2'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[26].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[26].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: OP-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -479,8 +479,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[27].params.atomic_resolution' -v '-6'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[27].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[27].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[27].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[27].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: PEPE-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -490,8 +490,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[28].params.atomic_resolution' -v '1'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[28].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[28].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[28].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[28].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: SEI-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -501,8 +501,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[29].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[29].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[29].params.liquidity_tier' -v '2'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[29].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[29].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: SHIB-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -512,8 +512,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[30].params.atomic_resolution' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[30].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[30].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[30].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[30].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: SUI-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -523,8 +523,8 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[31].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[31].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[31].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[31].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[31].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Perpetual: XRP-USD
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
@@ -534,8 +534,41 @@ function edit_genesis() {
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[32].params.atomic_resolution' -v '-5'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[32].params.default_funding_ppm' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[32].params.liquidity_tier' -v '1'
-	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[32].yield_index' -v '0/1'
-	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[32].params.market_type' -v '0'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
+
+	# Perpetual: AAPL-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[33].params.ticker' -v 'AAPL-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[33].params.id' -v '33'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[33].params.market_id' -v '33'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[33].params.atomic_resolution' -v '-6'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[33].params.default_funding_ppm' -v '0'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[33].params.liquidity_tier' -v '1'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
+
+	# Perpetual: NVDA-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[34].params.ticker' -v 'NVDA-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[34].params.id' -v '34'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[34].params.market_id' -v '34'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[34].params.atomic_resolution' -v '-6'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[34].params.default_funding_ppm' -v '0'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[34].params.liquidity_tier' -v '1'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
+
+	# Perpetual: TSLA-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.perpetuals.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[35].params.ticker' -v 'TSLA-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[35].params.id' -v '35'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[35].params.market_id' -v '35'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[35].params.atomic_resolution' -v '-6'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[35].params.default_funding_ppm' -v '0'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[35].params.liquidity_tier' -v '1'
+	dasel put -t string -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].yield_index' -v '0/1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.perpetuals.[0].params.market_type' -v '0'
 
 	# Update prices module.
 	# Market: BTC-USD
@@ -761,8 +794,8 @@ function edit_genesis() {
 	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
 	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[13].id' -v '13'
 	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[13].exponent' -v '-9'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[13].spot_price' -v '5852293335'          # $5.852 = 1 UNI.
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[13].pnl_price' -v '5852293335'          # $5.852 = 1 UNI.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[13].spot_price' -v '5852293356'          # $5.852 = 1 UNI.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[13].pnl_price' -v '5852293356'          # $5.852 = 1 UNI.
 	# UNI Exchange Config
 	uni_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/uni_exchange_config.json" | jq -c '.')
 	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[13].exchange_config_json' -v "$uni_exchange_config_json"
@@ -1071,21 +1104,231 @@ function edit_genesis() {
 	xrp_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/xrp_exchange_config.json" | jq -c '.')
 	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[32].exchange_config_json' -v "$xrp_exchange_config_json"
 
+	# Market: AAPL-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[33].pair' -v 'AAPL-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].id' -v '33'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].id' -v '33'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].spot_price' -v '2000000000000000'          # $200 = 1 AAPL.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].pnl_price' -v '2000000000000000'          # $200 = 1 AAPL.
+	aapl_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/aapl_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[33].exchange_config_json' -v "$aapl_exchange_config_json"
+
+	# Market: NVDA-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[34].pair' -v 'NVDA-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[34].id' -v '34'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[34].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[34].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[34].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[34].id' -v '34'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[34].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[34].spot_price' -v '1100000000000000'          # $110 = 1 NVDA.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[34].pnl_price' -v '1100000000000000'          # $110 = 1 NVDA.
+	nvda_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/nvda_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[34].exchange_config_json' -v "$nvda_exchange_config_json"
+
+	# Market: GOOG-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[35].pair' -v 'GOOG-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[35].id' -v '35'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[35].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[35].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[35].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[35].id' -v '35'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[35].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[35].spot_price' -v '1500000000000000'          # $150 = 1 GOOG.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[35].pnl_price' -v '1500000000000000'          # $150 = 1 GOOG.
+	goog_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/goog_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[35].exchange_config_json' -v "$goog_exchange_config_json"
+
+	# Market: TSLA-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[36].pair' -v 'TSLA-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[36].id' -v '36'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[36].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[36].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[36].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[36].id' -v '36'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[36].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[36].spot_price' -v '2200000000000000'          # $220 = 1 TSLA.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[36].pnl_price' -v '2200000000000000'          # $220 = 1 TSLA.
+	tsla_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/tsla_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[36].exchange_config_json' -v "$tsla_exchange_config_json"
+
+	# Market: MSFT-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[37].pair' -v 'MSFT-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[37].id' -v '37'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[37].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[37].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[37].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[37].id' -v '37'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[37].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[37].spot_price' -v '4200000000000000'          # $420 = 1 MSFT.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[37].pnl_price' -v '4200000000000000'          # $420 = 1 MSFT.
+	msft_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/msft_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[37].exchange_config_json' -v "$msft_exchange_config_json"
+
+	# Market: AMZN-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[38].pair' -v 'AMZN-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[38].id' -v '38'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[38].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[38].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[38].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[38].id' -v '38'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[38].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[38].spot_price' -v '1800000000000000'          # $180 = 1 AMZN.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[38].pnl_price' -v '1800000000000000'          # $180 = 1 AMZN.
+	amzn_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/amzn_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[38].exchange_config_json' -v "$amzn_exchange_config_json"
+
+	# Market: GME-USD
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[39].pair' -v 'GME-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[39].id' -v '39'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[39].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[39].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[39].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[39].id' -v '39'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[39].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[39].spot_price' -v '20000000000'          # $20 = 1 GME.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[39].pnl_price' -v '20000000000'          # $20 = 1 GME.
+	gme_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/gme_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[39].exchange_config_json' -v "$gme_exchange_config_json"
+
+	# Market: AAPL-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[40].pair' -v 'AAPL-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[40].id' -v '40'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[40].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[40].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[40].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[40].id' -v '40'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[40].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[40].spot_price' -v '3800000'          # 0.0038 BTC = 1 AAPL.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[40].pnl_price' -v '3800000'          # 0.0038 BTC = 1 AAPL.
+	aaplbtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/aapl_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[40].exchange_config_json' -v "$aaplbtc_exchange_config_json"
+
+	# Market: NVDA-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[41].pair' -v 'NVDA-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[41].id' -v '41'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[41].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[41].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[41].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[41].id' -v '41'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[41].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[41].spot_price' -v '1800000'          # 0.0018 BTC = 1 NVDA.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[41].pnl_price' -v '1800000'          # 0.0018 BTC = 1 NVDA.
+	nvdabtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/nvda_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[41].exchange_config_json' -v "$nvdabtc_exchange_config_json"
+
+	# Market: GOOG-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[42].pair' -v 'GOOG-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[42].id' -v '42'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[42].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[42].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[42].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[42].id' -v '42'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[42].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[42].spot_price' -v '2600000'          # 0.0026 BTC = 1 GOOG.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[42].pnl_price' -v '2600000'          # 0.0026 BTC = 1 GOOG.
+	googbtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/goog_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[42].exchange_config_json' -v "$googbtc_exchange_config_json"
+
+	# Market: TSLA-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[43].pair' -v 'TSLA-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[43].id' -v '43'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[43].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[43].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[43].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[43].id' -v '43'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[43].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[43].spot_price' -v '3900000'          # 0.0039 BTC = 1 TSLA.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[43].pnl_price' -v '3900000'          # 0.0039 BTC = 1 TSLA.
+	tslabtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/tsla_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[43].exchange_config_json' -v "$tslabtc_exchange_config_json"
+
+	# Market: MSFT-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[44].pair' -v 'MSFT-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[44].id' -v '44'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[44].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[44].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[44].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[44].id' -v '44'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[44].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[44].spot_price' -v '7100000'          # $0.0071 BTC = 1 MSFT.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[44].pnl_price' -v '7100000'          # $0.0071 BTC = 1 MSFT.
+	msftbtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/msft_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[44].exchange_config_json' -v "$msftbtc_exchange_config_json"
+
+	# Market: AMZN-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[45].pair' -v 'AMZN-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[45].id' -v '45'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[45].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[45].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[45].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[45].id' -v '45'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[45].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[45].spot_price' -v '3100000'          # 0.0031 BTC = 1 AMZN.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[45].pnl_price' -v '3100000'          # 0.0031 BTC = 1 AMZN.
+	amznbtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/amzn_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[45].exchange_config_json' -v "$amznbtc_exchange_config_json"
+
+	# Market: GME-BTC
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[46].pair' -v 'GME-BTC'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[46].id' -v '46'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[46].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[46].min_exchanges' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[46].min_price_change_ppm' -v '2500'  # 0.25%
+	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[46].id' -v '46'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[46].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[46].spot_price' -v '360000'          # 0.00036 = 1 GME.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[46].pnl_price' -v '360000'          # 0.00036 = 1 GME.
+	gmebtc_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/gme_exchange_config.json" | jq -c '.')
+	dasel put -t string -f  "$GENESIS" '.app_state.prices.market_params.[46].exchange_config_json' -v "$gmebtc_exchange_config_json"
+
 	# Market: USDT-USD
 	dasel put -t json -f "$GENESIS" '.app_state.prices.market_params.[]' -v "{}"
-	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[33].pair' -v 'USDT-USD'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].id' -v '1000000'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].exponent' -v '-9'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].min_exchanges' -v '3'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[33].min_price_change_ppm' -v '1000'  # 0.100%
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[47].pair' -v 'USDT-USD'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[47].id' -v '47'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[47].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[47].min_exchanges' -v '3'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_params.[47].min_price_change_ppm' -v '1000'  # 0.100%
 	dasel put -t json -f "$GENESIS" '.app_state.prices.market_prices.[]' -v "{}"
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].id' -v '1000000'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].exponent' -v '-9'
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].spot_price' -v '1000000000'          # $1 = 1 USDT.
-	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[33].pnl_price' -v '1000000000'          # $1 = 1 USDT.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[47].id' -v '47'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[47].exponent' -v '-9'
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[47].spot_price' -v '1000000000'          # $1 = 1 USDT.
+	dasel put -t int -f "$GENESIS" '.app_state.prices.market_prices.[47].pnl_price' -v '1000000000'          # $1 = 1 USDT.
 	# USDT Exchange Config
 	usdt_exchange_config_json=$(cat "$EXCHANGE_CONFIG_JSON_DIR/usdt_exchange_config.json" | jq -c '.')
-	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[33].exchange_config_json' -v "$usdt_exchange_config_json"
+	dasel put -t string -f "$GENESIS" '.app_state.prices.market_params.[47].exchange_config_json' -v "$usdt_exchange_config_json"
 
 	total_accounts_quote_balance=0
 	acct_idx=0

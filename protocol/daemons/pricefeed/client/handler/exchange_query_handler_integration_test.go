@@ -13,6 +13,7 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client/price_function/binance"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client/price_function/bitfinex"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/daemons/pricefeed/client/price_function/rost"
 	"github.com/stretchr/testify/require"
 )
 
@@ -29,6 +30,9 @@ func TestQueryingActualExchanges(t *testing.T) {
 		},
 		"Kraken": {
 			url: CreateRequestUrl(kraken.KrakenDetails.Url, []string{"XXBTZUSD", "XETHZUSD", "LINKUSD"}),
+		},
+		"Rost": {
+			url: CreateRequestUrl(rost.RostDetails.Url, []string{"AMZN"}),
 		},
 	}
 
