@@ -1,8 +1,6 @@
 package types
 
 import (
-	"fmt"
-
 	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/pkg/errors"
@@ -14,14 +12,7 @@ func (p *Perpetual) GetId() uint32 {
 
 // Stateless validation on Perpetual params.
 func (p *PerpetualParams) Validate() error {
-	// Check if market type is valid
-	if p.MarketType != PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS &&
-		p.MarketType != PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-		return errorsmod.Wrap(
-			ErrInvalidMarketType,
-			fmt.Sprintf("market type %v", p.MarketType),
-		)
-	}
+
 	// Validate `ticker`.
 	if len(p.Ticker) == 0 {
 		return errors.WithStack(ErrTickerEmptyString)
@@ -35,35 +26,32 @@ func (p *PerpetualParams) Validate() error {
 			lib.IntToString(p.DefaultFundingPpm))
 	}
 
-	if p.MarketType == PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED &&
-		p.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock == 0 {
+	if p.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock == 0 {
 		return errorsmod.Wrap(
 			ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
 			lib.UintToString(p.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 		)
 	}
 
-	if p.MarketType == PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-		if len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+	if len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+		return errorsmod.Wrap(
+			ErrIsolatedMarketMultiCollateralAssetsEmpty,
+			"In validate perpetual params",
+		)
+	} else {
+		// Check that MultiCollateralAssets contains the quote asset
+		containsQuoteAsset := false
+		for _, asset := range p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+			if asset == p.QuoteAssetId {
+				containsQuoteAsset = true
+				break
+			}
+		}
+		if !containsQuoteAsset {
 			return errorsmod.Wrap(
-				ErrIsolatedMarketMultiCollateralAssetsEmpty,
-				"In validate perpetual params",
+				ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+				"MultiCollateralAssets does not contain quote asset",
 			)
-		} else {
-			// Check that MultiCollateralAssets contains the quote asset
-			containsQuoteAsset := false
-			for _, asset := range p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
-				if asset == p.QuoteAssetId {
-					containsQuoteAsset = true
-					break
-				}
-			}
-			if !containsQuoteAsset {
-				return errorsmod.Wrap(
-					ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
-					"MultiCollateralAssets does not contain quote asset",
-				)
-			}
 		}
 	}
 

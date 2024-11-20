@@ -28,7 +28,6 @@ import {
   OrderRemovalReason,
   PerpetualMarketCreateEventV1,
   PerpetualMarketCreateEventV2,
-  PerpetualMarketType,
   StatefulOrderEventV1,
   SubaccountMessage,
   SubaccountUpdateEventV1,
@@ -158,7 +157,6 @@ export const defaultPerpetualMarketCreateEventV2: PerpetualMarketCreateEventV2 =
   subticksPerTick: 100,
   stepBaseQuantums: Long.fromValue(10, true),
   liquidityTier: 0,
-  marketType: PerpetualMarketType.PERPETUAL_MARKET_TYPE_ISOLATED,
   dangerIndexPpm: 1000000,
   isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: '1000000',
 };

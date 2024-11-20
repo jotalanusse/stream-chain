@@ -71,7 +71,6 @@ type PerpetualsKeeper interface {
 		atomicResolution int32,
 		defaultFundingPpm int32,
 		liquidityTier uint32,
-		marketType PerpetualMarketType,
 		dangerIndexPpm uint32,
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,

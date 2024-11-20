@@ -39,7 +39,7 @@ import {
   CandleResponseObject,
   FillResponseObject,
   HistoricalFundingResponseObject,
-  MarketAndTypeByClobPairId,
+  MarketByClobPairId,
   OrderbookResponseObject,
   ParentSubaccountTransferResponseObject,
   OrderbookResponsePriceLevel,
@@ -136,7 +136,7 @@ export function assetPositionToResponseObject(
  */
 export function fillToResponseObject(
   fill: FillFromDatabase,
-  marketsByClobPairId: MarketAndTypeByClobPairId,
+  marketsByClobPairId: MarketByClobPairId,
   subaccountNumber: number,
 ): FillResponseObject {
   return {
@@ -145,7 +145,6 @@ export function fillToResponseObject(
     liquidity: fill.liquidity,
     type: fill.type,
     market: marketsByClobPairId[fill.clobPairId].market,
-    marketType: marketsByClobPairId[fill.clobPairId].marketType,
     price: fill.price,
     size: fill.size,
     fee: fill.fee,
@@ -361,7 +360,6 @@ export function perpetualMarketToResponseObject(
     stepSize: protocolTranslations.getStepSize(perpetualMarket),
     stepBaseQuantums: perpetualMarket.stepBaseQuantums,
     subticksPerTick: perpetualMarket.subticksPerTick,
-    marketType: perpetualMarket.marketType,
     openInterestLowerCap: liquidityTier.openInterestLowerCap,
     openInterestUpperCap: liquidityTier.openInterestUpperCap,
     baseOpenInterest: perpetualMarket.baseOpenInterest,

@@ -209,7 +209,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 		atomicResolution                                      int32
 		defaultFundingPpm                                     int32
 		liquidityTier                                         uint32
-		marketType                                            types.PerpetualMarketType
 		dangerIndexPpm                                        uint32
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
 		IsolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
@@ -224,7 +223,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			atomicResolution:  -10,
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
-			marketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
 			expectedError: errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
@@ -237,7 +235,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			atomicResolution:  -10,
 			defaultFundingPpm: int32(lib.OneMillion + 1),
 			liquidityTier:     0,
-			marketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
@@ -253,7 +250,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			atomicResolution:  -10,
 			defaultFundingPpm: 0 - int32(lib.OneMillion) - 1,
 			liquidityTier:     0,
-			marketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
@@ -269,7 +265,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			atomicResolution:  -10,
 			defaultFundingPpm: math.MinInt32,
 			liquidityTier:     0,
-			marketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
@@ -282,27 +277,10 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			atomicResolution:  -10,
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
-			marketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
 			expectedError: types.ErrTickerEmptyString,
-		},
-		"Invalid market type": {
-			id:                0,
-			ticker:            "",
-			marketId:          0,
-			atomicResolution:  -10,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			marketType:        3,
-			yieldIndex:        "0/1",
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: errorsmod.Wrap(
-				types.ErrInvalidMarketType,
-				fmt.Sprintf("market type %v", 3),
-			),
 		},
 	}
 
@@ -322,7 +300,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 				tc.atomicResolution,
 				tc.defaultFundingPpm,
 				tc.liquidityTier,
-				tc.marketType,
 				tc.dangerIndexPpm,
 				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.IsolatedMarketMultiCollateralAssets,
@@ -495,7 +472,6 @@ func TestHasPerpetual(t *testing.T) {
 			perps[perp].Params.AtomicResolution,
 			perps[perp].Params.DefaultFundingPpm,
 			perps[perp].Params.LiquidityTier,
-			perps[perp].Params.MarketType,
 			perps[perp].Params.DangerIndexPpm,
 			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
@@ -578,7 +554,6 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 			perps[perp].Params.AtomicResolution,
 			perps[perp].Params.DefaultFundingPpm,
 			perps[perp].Params.LiquidityTier,
-			perps[perp].Params.MarketType,
 			perps[perp].Params.DangerIndexPpm,
 			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
@@ -1006,7 +981,6 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 				tc.baseCurrencyAtomicResolution, // AtomicResolution
 				int32(0),                        // DefaultFundingPpm
 				0,                               // LiquidityTier
-				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
 				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
@@ -1225,7 +1199,6 @@ func TestGetNetNotional_Success(t *testing.T) {
 				tc.baseCurrencyAtomicResolution, // AtomicResolution
 				int32(0),                        // DefaultFundingPpm
 				0,                               // LiquidityTier
-				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
 				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
@@ -1396,7 +1369,6 @@ func TestGetNetCollateral_Success(t *testing.T) {
 				tc.baseCurrencyAtomicResolution, // AtomicResolution
 				int32(0),                        // DefaultFundingPpm
 				0,
-				types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 				0,
 				0,
 				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
@@ -2145,7 +2117,6 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 					p.Params.AtomicResolution,
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
-					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
@@ -3505,7 +3476,6 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 	}{
 		"Isolated Perpetual": {
 			perp: *perptest.GeneratePerpetual(
-				perptest.WithMarketType(types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED),
 				perptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000_000),
 				perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 				perptest.WithQuoteAssetId(0),
@@ -3513,9 +3483,7 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 			expected: true,
 		},
 		"Cross Perpetual": {
-			perp: *perptest.GeneratePerpetual(
-				perptest.WithMarketType(types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS),
-			),
+			perp:     *perptest.GeneratePerpetual(),
 			expected: false,
 		},
 	}

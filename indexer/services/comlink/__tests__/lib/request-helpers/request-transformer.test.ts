@@ -93,7 +93,6 @@ describe('request-transformer', () => {
           stepSize: Big(10).pow(-9).toFixed(), // 10 * 1e-10 = 1e-9
           stepBaseQuantums: perpetualMarket.stepBaseQuantums,
           subticksPerTick: perpetualMarket.subticksPerTick,
-          marketType: perpetualMarket.marketType,
           openInterestLowerCap: liquidityTier.openInterestLowerCap,
           openInterestUpperCap: liquidityTier.openInterestUpperCap,
           baseOpenInterest: perpetualMarket.baseOpenInterest,

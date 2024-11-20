@@ -186,7 +186,6 @@ func TestGetPricePremiumForPerpetual(t *testing.T) {
 						tc.args.clobPair.SubticksPerTick,
 						tc.args.clobPair.StepBaseQuantums,
 						perpetual.Params.LiquidityTier,
-						perpetual.Params.MarketType,
 						perpetual.Params.DangerIndexPpm,
 						fmt.Sprintf("%d", perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),

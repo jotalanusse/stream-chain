@@ -1,7 +1,6 @@
 import { IndexerSubaccountId, IndexerSubaccountIdSDKType, IndexerPerpetualPosition, IndexerPerpetualPositionSDKType, IndexerAssetPosition, IndexerAssetPositionSDKType } from "../protocol/v1/subaccount";
 import { IndexerOrder, IndexerOrderSDKType, IndexerOrderId, IndexerOrderIdSDKType, ClobPairStatus, ClobPairStatusSDKType } from "../protocol/v1/clob";
 import { OrderRemovalReason, OrderRemovalReasonSDKType } from "../shared/removal_reason";
-import { PerpetualMarketType, PerpetualMarketTypeSDKType } from "../protocol/v1/perpetual";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Long } from "../../../helpers";
 /** Type is the type for funding values. */

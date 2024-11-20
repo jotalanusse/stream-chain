@@ -54,9 +54,6 @@ import {
   DeleveragingEventV1,
   protoTimestampToDate,
 } from '@klyraprotocol-indexer/v4-protos';
-import {
-  PerpetualMarketType,
-} from '@klyraprotocol-indexer/v4-protos/build/codegen/klyraprotocol/indexer/protocol/v1/perpetual';
 import { IHeaders, Message, ProducerRecord } from 'kafkajs';
 import _ from 'lodash';
 import Long from 'long';
@@ -928,7 +925,6 @@ export function expectPerpetualMarketV1(
     subticksPerTick: perpetual.subticksPerTick,
     stepBaseQuantums: Number(perpetual.stepBaseQuantums),
     liquidityTierId: perpetual.liquidityTier,
-    marketType: 'CROSS',
   }));
 }
 
@@ -952,21 +948,5 @@ export function expectPerpetualMarketV2(
     subticksPerTick: perpetual.subticksPerTick,
     stepBaseQuantums: Number(perpetual.stepBaseQuantums),
     liquidityTierId: perpetual.liquidityTier,
-    marketType: eventPerpetualMarketTypeToIndexerPerpetualMarketType(
-      perpetual.marketType,
-    ),
   }));
-}
-
-function eventPerpetualMarketTypeToIndexerPerpetualMarketType(
-  perpetualMarketType: PerpetualMarketType,
-): string {
-  switch (perpetualMarketType) {
-    case PerpetualMarketType.PERPETUAL_MARKET_TYPE_CROSS:
-      return 'CROSS';
-    case PerpetualMarketType.PERPETUAL_MARKET_TYPE_ISOLATED:
-      return 'ISOLATED';
-    default:
-      throw new Error(`Unknown perpetual market type: ${perpetualMarketType}`);
-  }
 }

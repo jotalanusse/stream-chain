@@ -5,7 +5,7 @@ import {
   OrderStatus,
   OrderType,
 } from './order-types';
-import { PerpetualMarketStatus, PerpetualMarketType } from './perpetual-market-types';
+import { PerpetualMarketStatus } from './perpetual-market-types';
 import { PerpetualPositionStatus } from './perpetual-position-types';
 import { PositionSide } from './position-types';
 import { TradeType } from './trade-types';
@@ -210,7 +210,6 @@ export interface TradingPerpetualMarketMessage {
   isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock?: string;
   subticksPerTick?: number;
   stepBaseQuantums?: number;
-  marketType?: PerpetualMarketType;
   openInterestLowerCap?: string;
   openInterestUpperCap?: string;
   baseOpenInterest?: string;

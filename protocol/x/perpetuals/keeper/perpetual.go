@@ -32,15 +32,6 @@ import (
 	gometrics "github.com/hashicorp/go-metrics"
 )
 
-func (k Keeper) IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error) {
-	perpetual, err := k.GetPerpetual(ctx, perpetualId)
-	if err != nil {
-		return false, err
-	}
-
-	return perpetual.Params.MarketType == types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED, nil
-}
-
 // GetInsuranceFundName returns the name of the insurance fund account for a given perpetual.
 // For isolated markets, the name is "insurance-fund:<perpetualId>".
 // For cross markets, the name is "insurance-fund".
@@ -79,7 +70,6 @@ func (k Keeper) CreatePerpetual(
 	atomicResolution int32,
 	defaultFundingPpm int32,
 	liquidityTier uint32,
-	marketType types.PerpetualMarketType,
 	dangerIndexPpm uint32,
 	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
@@ -102,7 +92,6 @@ func (k Keeper) CreatePerpetual(
 			AtomicResolution:  atomicResolution,
 			DefaultFundingPpm: defaultFundingPpm,
 			LiquidityTier:     liquidityTier,
-			MarketType:        marketType,
 			DangerIndexPpm:    dangerIndexPpm,
 			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			IsolatedMarketMultiCollateralAssets:                   isolatedMarketMultiCollateralAssets,

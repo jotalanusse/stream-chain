@@ -28,7 +28,6 @@ BEGIN
     perpetual_market_record."subticksPerTick" = (event_data->'subticksPerTick')::integer;
     perpetual_market_record."stepBaseQuantums" = klyra_from_jsonlib_long(event_data->'stepBaseQuantums');
     perpetual_market_record."liquidityTierId" = (event_data->'liquidityTier')::integer;
-    perpetual_market_record."marketType" = 'CROSS';
     perpetual_market_record."baseOpenInterest" = 0;
 
 

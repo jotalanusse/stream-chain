@@ -107,11 +107,6 @@ var (
 		22,
 		"MinNumVotesPerSample is zero",
 	)
-	ErrInvalidMarketType = errorsmod.Register(
-		ModuleName,
-		23,
-		"Market type is invalid",
-	)
 	ErrOpenInterestLowerCapLargerThanUpperCap = errorsmod.Register(
 		ModuleName,
 		24,

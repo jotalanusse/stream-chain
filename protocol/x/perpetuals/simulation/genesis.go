@@ -189,7 +189,6 @@ func RandomizedGenState(simState *module.SimulationState) {
 	for i := 0; i < numPerpetuals; i++ {
 		marketId := marketsForPerp[i]
 
-		marketType := types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS
 		// TODO: add isolated markets when order placements for isolated markets are supported
 
 		perpetuals[i] = types.Perpetual{
@@ -200,7 +199,6 @@ func RandomizedGenState(simState *module.SimulationState) {
 				AtomicResolution:  genAtomicResolution(r, isReasonableGenesis),
 				DefaultFundingPpm: genDefaultFundingPpm(r),
 				LiquidityTier:     uint32(simtypes.RandIntBetween(r, 0, numLiquidityTiers)),
-				MarketType:        marketType,
 				DangerIndexPpm:    0,
 			},
 			FundingIndex: dtypes.ZeroInt(),

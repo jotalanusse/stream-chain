@@ -273,7 +273,6 @@ func TestGetSubaccountCollateralizationInfo(t *testing.T) {
 					p.Params.AtomicResolution,
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
-					p.Params.MarketType,
 					p.Params.DangerIndexPpm,
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,

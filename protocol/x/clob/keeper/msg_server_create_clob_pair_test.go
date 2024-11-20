@@ -64,7 +64,6 @@ func TestCreateClobPair(t *testing.T) {
 							testClobPair1.SubticksPerTick,
 							testClobPair1.StepBaseQuantums,
 							testPerp1.Params.LiquidityTier,
-							testPerp1.Params.MarketType,
 							testPerp1.Params.DangerIndexPpm,
 							fmt.Sprintf("%d", testPerp1.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 						),

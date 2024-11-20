@@ -13,7 +13,6 @@ import {
   OrderStatus,
   OrderType,
   PerpetualMarketStatus,
-  PerpetualMarketType,
   PerpetualPositionFromDatabase,
   PerpetualPositionStatus,
   PositionSide,
@@ -128,7 +127,6 @@ export interface FillResponseObject {
   liquidity: Liquidity,
   type: FillType,
   market: string,
-  marketType: MarketType,
   price: string,
   size: string,
   fee: string,
@@ -229,17 +227,7 @@ export interface HeightResponse {
 
 export type AssetById = {[assetId: string]: AssetFromDatabase};
 
-export interface MarketAndType {
-  marketType: MarketType,
-  market: string,
-}
-
-export type MarketAndTypeByClobPairId = {[clobPairId: string]: MarketAndType};
-
-export enum MarketType {
-  PERPETUAL = 'PERPETUAL',
-  SPOT = 'SPOT',
-}
+export type MarketByClobPairId = {[clobPairId: string]: { market: string }};
 
 export interface PerpetualMarketResponse {
   markets: {
@@ -268,7 +256,6 @@ export interface PerpetualMarketResponseObject {
   stepSize: string;
   stepBaseQuantums: number;
   subticksPerTick: number;
-  marketType: PerpetualMarketType;
   openInterestLowerCap?: string;
   openInterestUpperCap?: string;
   baseOpenInterest: string;
@@ -407,13 +394,11 @@ export interface ParentSubaccountTransferRequest
 
 export interface FillRequest extends SubaccountRequest, LimitAndCreatedBeforeRequest {
   market: string,
-  marketType: MarketType,
 }
 
 export interface ParentSubaccountFillRequest
   extends ParentSubaccountRequest, LimitAndCreatedBeforeRequest {
   market: string,
-  marketType: MarketType,
 }
 
 export interface TradeRequest extends LimitAndCreatedBeforeRequest {

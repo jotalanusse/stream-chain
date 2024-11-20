@@ -410,15 +410,12 @@ message PerpetualMarketCreateEventV2 {
   // Defined in perpetuals.perpetual
   uint32 liquidity_tier = 10;
 
-  // Market type of the perpetual.
-  klyraprotocol.indexer.protocol.v1.PerpetualMarketType market_type = 11;
-
   // The danger index is used to prioritze certain accounts and positions in
   // liquidations
-  uint32 danger_index_ppm = 12;
+  uint32 danger_index_ppm = 11;
 
   // The maximum cumulative insurance fund delta per block for isolated markets.
-  string isolated_market_max_cumulative_insurance_fund_delta_per_block = 13;
+  string isolated_market_max_cumulative_insurance_fund_delta_per_block = 12;
 }
 
 // LiquidityTierUpsertEventV1 message contains all the information to

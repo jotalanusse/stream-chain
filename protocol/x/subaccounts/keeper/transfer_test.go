@@ -1506,7 +1506,6 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.AtomicResolution,
 				tc.perpetual.Params.DefaultFundingPpm,
 				tc.perpetual.Params.LiquidityTier,
-				tc.perpetual.Params.MarketType,
 				tc.perpetual.Params.DangerIndexPpm,
 				tc.perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.perpetual.Params.IsolatedMarketMultiCollateralAssets,

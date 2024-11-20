@@ -365,13 +365,6 @@
         ],
         "type": "string"
       },
-      "MarketType": {
-        "enum": [
-          "PERPETUAL",
-          "SPOT"
-        ],
-        "type": "string"
-      },
       "FillResponseObject": {
         "properties": {
           "id": {
@@ -388,9 +381,6 @@
           },
           "market": {
             "type": "string"
-          },
-          "marketType": {
-            "$ref": "#/components/schemas/MarketType"
           },
           "price": {
             "type": "string"
@@ -424,7 +414,6 @@
           "liquidity",
           "type",
           "market",
-          "marketType",
           "price",
           "size",
           "fee",
@@ -767,13 +756,6 @@
         ],
         "type": "string"
       },
-      "PerpetualMarketType": {
-        "enum": [
-          "CROSS",
-          "ISOLATED"
-        ],
-        "type": "string"
-      },
       "PerpetualMarketResponseObject": {
         "properties": {
           "clobPairId": {
@@ -842,9 +824,6 @@
             "type": "number",
             "format": "double"
           },
-          "marketType": {
-            "$ref": "#/components/schemas/PerpetualMarketType"
-          },
           "openInterestLowerCap": {
             "type": "string"
           },
@@ -876,7 +855,6 @@
           "stepSize",
           "stepBaseQuantums",
           "subticksPerTick",
-          "marketType",
           "baseOpenInterest"
         ],
         "type": "object",
@@ -1475,14 +1453,6 @@
           },
           {
             "in": "query",
-            "name": "marketType",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/MarketType"
-            }
-          },
-          {
-            "in": "query",
             "name": "limit",
             "required": false,
             "schema": {
@@ -1550,14 +1520,6 @@
             "required": false,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "marketType",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/MarketType"
             }
           },
           {

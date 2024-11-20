@@ -181,7 +181,6 @@ func CreateTestPerpetuals(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			p.Params.AtomicResolution,
 			p.Params.DefaultFundingPpm,
 			p.Params.LiquidityTier,
-			p.Params.MarketType,
 			p.Params.DangerIndexPpm,
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			p.Params.IsolatedMarketMultiCollateralAssets,
@@ -272,12 +271,10 @@ func CreateNPerpetuals(
 		CreateNMarkets(t, ctx, pricesKeeper, n)
 
 		var defaultFundingPpm int32
-		marketType := types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS
 		maxInsuranceFundDelta := uint64(0)
 
 		if i%3 == 0 {
 			defaultFundingPpm = 1
-			marketType = types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED
 			maxInsuranceFundDelta = uint64(1_000_000)
 		} else if i%3 == 1 {
 			defaultFundingPpm = -1
@@ -293,7 +290,6 @@ func CreateNPerpetuals(
 			int32(i),             // AtomicResolution
 			defaultFundingPpm,    // DefaultFundingPpm
 			allLiquidityTiers[i%len(allLiquidityTiers)].Id, // LiquidityTier
-			marketType,
 			0,
 			maxInsuranceFundDelta,
 			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
@@ -347,7 +343,6 @@ func CreateTestPricesAndPerpetualMarkets(
 			perp.Params.AtomicResolution,
 			perp.Params.DefaultFundingPpm,
 			perp.Params.LiquidityTier,
-			perp.Params.MarketType,
 			perp.Params.DangerIndexPpm,
 			perp.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perp.Params.IsolatedMarketMultiCollateralAssets,

@@ -213,7 +213,6 @@ func TestUpdatePerpetualParams(t *testing.T) {
 					tc.msg.PerpetualParams.AtomicResolution,
 					updatedPerpetualInState.Params.AtomicResolution,
 				)
-				require.Equal(t, testPerp.Params.MarketType, updatedPerpetualInState.Params.MarketType)
 			}
 		})
 	}

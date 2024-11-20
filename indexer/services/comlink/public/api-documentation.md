@@ -1544,17 +1544,9 @@ func main() {
 |address|query|string|true|none|
 |subaccountNumber|query|number(double)|true|none|
 |market|query|string|false|none|
-|marketType|query|[MarketType](#schemamarkettype)|false|none|
 |limit|query|number(double)|false|none|
 |createdBeforeOrAtHeight|query|number(double)|false|none|
 |createdBeforeOrAt|query|[IsoString](#schemaisostring)|false|none|
-
-#### Enumerated Values
-
-|Parameter|Value|
-|---|---|
-|marketType|PERPETUAL|
-|marketType|SPOT|
 
 > Example responses
 
@@ -1569,7 +1561,6 @@ func main() {
       "liquidity": "TAKER",
       "type": "LIMIT",
       "market": "string",
-      "marketType": "PERPETUAL",
       "price": "string",
       "size": "string",
       "fee": "string",
@@ -1740,17 +1731,9 @@ func main() {
 |address|query|string|true|none|
 |parentSubaccountNumber|query|number(double)|true|none|
 |market|query|string|false|none|
-|marketType|query|[MarketType](#schemamarkettype)|false|none|
 |limit|query|number(double)|false|none|
 |createdBeforeOrAtHeight|query|number(double)|false|none|
 |createdBeforeOrAt|query|[IsoString](#schemaisostring)|false|none|
-
-#### Enumerated Values
-
-|Parameter|Value|
-|---|---|
-|marketType|PERPETUAL|
-|marketType|SPOT|
 
 > Example responses
 
@@ -1765,7 +1748,6 @@ func main() {
       "liquidity": "TAKER",
       "type": "LIMIT",
       "market": "string",
-      "marketType": "PERPETUAL",
       "price": "string",
       "size": "string",
       "fee": "string",
@@ -3618,7 +3600,6 @@ func main() {
       "stepSize": "string",
       "stepBaseQuantums": 0.1,
       "subticksPerTick": 0.1,
-      "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
       "baseOpenInterest": "string"
@@ -3644,7 +3625,6 @@ func main() {
       "stepSize": "string",
       "stepBaseQuantums": 0.1,
       "subticksPerTick": 0.1,
-      "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
       "baseOpenInterest": "string"
@@ -5809,13 +5789,6 @@ This operation does not require authentication
 |*anonymous*|DELEVERAGED|
 |*anonymous*|OFFSETTING|
 
-## MarketType
-
-<a id="schemamarkettype"></a>
-<a id="schema_MarketType"></a>
-<a id="tocSmarkettype"></a>
-<a id="tocsmarkettype"></a>
-
 ```json
 "PERPETUAL"
 
@@ -5848,7 +5821,6 @@ This operation does not require authentication
   "liquidity": "TAKER",
   "type": "LIMIT",
   "market": "string",
-  "marketType": "PERPETUAL",
   "price": "string",
   "size": "string",
   "fee": "string",
@@ -5870,7 +5842,6 @@ This operation does not require authentication
 |liquidity|[Liquidity](#schemaliquidity)|true|none|none|
 |type|[FillType](#schemafilltype)|true|none|none|
 |market|string|true|none|none|
-|marketType|[MarketType](#schemamarkettype)|true|none|none|
 |price|string|true|none|none|
 |size|string|true|none|none|
 |fee|string|true|none|none|
@@ -5896,7 +5867,6 @@ This operation does not require authentication
       "liquidity": "TAKER",
       "type": "LIMIT",
       "market": "string",
-      "marketType": "PERPETUAL",
       "price": "string",
       "size": "string",
       "fee": "string",
@@ -6350,18 +6320,6 @@ or
 |*anonymous*|INITIALIZING|
 |*anonymous*|FINAL_SETTLEMENT|
 
-## PerpetualMarketType
-
-<a id="schemaperpetualmarkettype"></a>
-<a id="schema_PerpetualMarketType"></a>
-<a id="tocSperpetualmarkettype"></a>
-<a id="tocsperpetualmarkettype"></a>
-
-```json
-"CROSS"
-
-```
-
 ### Properties
 
 |Name|Type|Required|Restrictions|Description|
@@ -6404,7 +6362,6 @@ or
   "stepSize": "string",
   "stepBaseQuantums": 0.1,
   "subticksPerTick": 0.1,
-  "marketType": "CROSS",
   "openInterestLowerCap": "string",
   "openInterestUpperCap": "string",
   "baseOpenInterest": "string"
@@ -6436,7 +6393,6 @@ or
 |stepSize|string|true|none|none|
 |stepBaseQuantums|number(double)|true|none|none|
 |subticksPerTick|number(double)|true|none|none|
-|marketType|[PerpetualMarketType](#schemaperpetualmarkettype)|true|none|none|
 |openInterestLowerCap|string|false|none|none|
 |openInterestUpperCap|string|false|none|none|
 |baseOpenInterest|string|true|none|none|
@@ -6472,7 +6428,6 @@ or
       "stepSize": "string",
       "stepBaseQuantums": 0.1,
       "subticksPerTick": 0.1,
-      "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
       "baseOpenInterest": "string"
@@ -6498,7 +6453,6 @@ or
       "stepSize": "string",
       "stepBaseQuantums": 0.1,
       "subticksPerTick": 0.1,
-      "marketType": "CROSS",
       "openInterestLowerCap": "string",
       "openInterestUpperCap": "string",
       "baseOpenInterest": "string"

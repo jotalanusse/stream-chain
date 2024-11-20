@@ -401,7 +401,6 @@ func TestGenesis(t *testing.T) {
 								clobPair.SubticksPerTick,
 								clobPair.StepBaseQuantums,
 								perpetual.Params.LiquidityTier,
-								perpetual.Params.MarketType,
 								perpetual.Params.DangerIndexPpm,
 								fmt.Sprintf("%d", perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 							),

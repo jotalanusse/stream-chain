@@ -68,17 +68,15 @@ func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
 		if err != nil {
 			return false, err
 		}
-		if perpetual.Params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-			found := false
-			for _, asset := range perpetual.Params.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
-				if asset == assettypes.AssetTDai.Id {
-					found = true
-					break
-				}
+		found := false
+		for _, asset := range perpetual.Params.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+			if asset == assettypes.AssetTDai.Id {
+				found = true
+				break
 			}
-			if !found {
-				return false, nil
-			}
+		}
+		if !found {
+			return false, nil
 		}
 	}
 

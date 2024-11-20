@@ -3,7 +3,6 @@ package events
 import (
 	v1 "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/protocol/v1"
 	clobtypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 )
 
 // NewPerpetualMarketCreateEvent creates a PerpetualMarketCreateEvent
@@ -19,7 +18,6 @@ func NewPerpetualMarketCreateEvent(
 	subticksPerTick uint32,
 	stepBaseQuantums uint64,
 	liquidityTier uint32,
-	marketType perptypes.PerpetualMarketType,
 	dangerIndexPpm uint32,
 	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock string,
 ) *PerpetualMarketCreateEventV2 {
@@ -34,7 +32,6 @@ func NewPerpetualMarketCreateEvent(
 		SubticksPerTick:           subticksPerTick,
 		StepBaseQuantums:          stepBaseQuantums,
 		LiquidityTier:             liquidityTier,
-		MarketType:                v1.ConvertToPerpetualMarketType(marketType),
 		DangerIndexPpm:            dangerIndexPpm,
 		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 	}

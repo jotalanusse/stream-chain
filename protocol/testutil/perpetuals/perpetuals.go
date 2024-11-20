@@ -44,12 +44,6 @@ func WithLiquidityTier(liquidityTier uint32) PerpetualModifierOption {
 	}
 }
 
-func WithMarketType(marketType perptypes.PerpetualMarketType) PerpetualModifierOption {
-	return func(cp *perptypes.Perpetual) {
-		cp.Params.MarketType = marketType
-	}
-}
-
 func WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(delta uint64) PerpetualModifierOption {
 	return func(cp *perptypes.Perpetual) {
 		cp.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = delta
@@ -87,7 +81,6 @@ func GeneratePerpetual(optionalModifications ...PerpetualModifierOption) *perpty
 			AtomicResolution:  -8,
 			DefaultFundingPpm: 0,
 			LiquidityTier:     0,
-			MarketType:        perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			DangerIndexPpm:    0,
 			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
 			QuoteAssetId: 0,

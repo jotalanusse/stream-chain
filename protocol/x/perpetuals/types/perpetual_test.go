@@ -18,7 +18,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			},
 			expectedErr: "",
 		},
@@ -27,7 +26,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "",
 				DefaultFundingPpm: 1_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			},
 			expectedErr: "Ticker must be non-empty string",
 		},
@@ -36,7 +34,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 100_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS,
 			},
 			expectedErr: "DefaultFundingPpm magnitude exceeds maximum value",
 		},
@@ -45,7 +42,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
 				},
@@ -58,7 +54,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
 				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(100),
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
@@ -72,7 +67,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
 				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(100),
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
@@ -86,7 +80,6 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				MarketType:        types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED,
 				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(100),
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},

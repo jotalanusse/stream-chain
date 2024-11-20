@@ -87,7 +87,6 @@ const HELPER_SCRIPTS: string[] = [
   'klyra_uuid_from_transaction_parts.sql',
   'klyra_uuid_from_transfer_parts.sql',
   'klyra_uuid_from_yield_params_parts.sql',
-  'klyra_protocol_market_type_to_perpetual_market_type.sql',
 ];
 
 const MAIN_SCRIPTS: string[] = [

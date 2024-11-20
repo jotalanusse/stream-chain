@@ -32,7 +32,6 @@ func (k msgServer) CreatePerpetual(
 		msg.Params.AtomicResolution,
 		msg.Params.DefaultFundingPpm,
 		msg.Params.LiquidityTier,
-		msg.Params.MarketType,
 		msg.Params.DangerIndexPpm,
 		msg.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 		msg.Params.IsolatedMarketMultiCollateralAssets,

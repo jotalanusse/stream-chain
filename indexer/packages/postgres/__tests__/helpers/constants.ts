@@ -36,7 +36,6 @@ import {
   OrderType,
   PerpetualMarketCreateObject,
   PerpetualMarketStatus,
-  PerpetualMarketType,
   PerpetualPositionCreateObject,
   PerpetualPositionStatus,
   PnlTicksCreateObject,
@@ -200,7 +199,6 @@ export const defaultPerpetualMarket: PerpetualMarketCreateObject = {
   subticksPerTick: 100,
   stepBaseQuantums: 10,
   liquidityTierId: 0,
-  marketType: PerpetualMarketType.CROSS,
   baseOpenInterest: '100000',
 };
 export const defaultPerpetualMarket2: PerpetualMarketCreateObject = {
@@ -221,7 +219,6 @@ export const defaultPerpetualMarket2: PerpetualMarketCreateObject = {
   subticksPerTick: 10,
   stepBaseQuantums: 1,
   liquidityTierId: 0,
-  marketType: PerpetualMarketType.CROSS,
   baseOpenInterest: '100000',
 };
 export const defaultPerpetualMarket3: PerpetualMarketCreateObject = {
@@ -242,7 +239,6 @@ export const defaultPerpetualMarket3: PerpetualMarketCreateObject = {
   subticksPerTick: 10,
   stepBaseQuantums: 1,
   liquidityTierId: 0,
-  marketType: PerpetualMarketType.CROSS,
   baseOpenInterest: '100000',
 };
 
@@ -264,7 +260,6 @@ export const isolatedPerpetualMarket: PerpetualMarketCreateObject = {
   subticksPerTick: 10,
   stepBaseQuantums: 1,
   liquidityTierId: 0,
-  marketType: PerpetualMarketType.ISOLATED,
   baseOpenInterest: '100000',
 };
 
@@ -286,7 +281,6 @@ export const isolatedPerpetualMarket2: PerpetualMarketCreateObject = {
   subticksPerTick: 10,
   stepBaseQuantums: 1,
   liquidityTierId: 0,
-  marketType: PerpetualMarketType.ISOLATED,
   baseOpenInterest: '100000',
 };
 
