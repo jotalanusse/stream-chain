@@ -84,6 +84,7 @@ func networkWithLiquidityTierAndPerpetualObjects(
 				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
 				IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 				QuoteAssetId:                                          uint32(0),
+				CollateralPoolId:                                      uint32(0),
 			},
 			FundingIndex:    dtypes.ZeroInt(),
 			OpenInterest:    dtypes.ZeroInt(),

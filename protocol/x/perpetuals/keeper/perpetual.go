@@ -74,6 +74,7 @@ func (k Keeper) CreatePerpetual(
 	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
+	collateralPoolId uint32,
 ) (types.Perpetual, error) {
 	// Check if perpetual exists.
 	if k.HasPerpetual(ctx, id) {
@@ -96,6 +97,7 @@ func (k Keeper) CreatePerpetual(
 			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			IsolatedMarketMultiCollateralAssets:                   isolatedMarketMultiCollateralAssets,
 			QuoteAssetId:                                          quoteAssetId,
+			CollateralPoolId:                                      collateralPoolId,
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),
@@ -141,6 +143,7 @@ func (k Keeper) ModifyPerpetual(
 	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
+	collateralPoolId uint32,
 ) (types.Perpetual, error) {
 	// Get perpetual.
 	perpetual, err := k.GetPerpetual(ctx, id)
@@ -157,7 +160,7 @@ func (k Keeper) ModifyPerpetual(
 	perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
 	perpetual.Params.IsolatedMarketMultiCollateralAssets = isolatedMarketMultiCollateralAssets
 	perpetual.Params.QuoteAssetId = quoteAssetId
-
+	perpetual.Params.CollateralPoolId = collateralPoolId
 	// Store the modified perpetual.
 	if err := k.ValidateAndSetPerpetual(ctx, perpetual); err != nil {
 		return types.Perpetual{}, err

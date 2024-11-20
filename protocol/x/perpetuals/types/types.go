@@ -75,6 +75,7 @@ type PerpetualsKeeper interface {
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,
 		quoteAssetId uint32,
+		collateralPoolId uint32,
 	) (Perpetual, error)
 	ModifyPerpetual(
 		ctx sdk.Context,
@@ -87,6 +88,7 @@ type PerpetualsKeeper interface {
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,
 		quoteAssetId uint32,
+		collateralPoolId uint32,
 	) (Perpetual, error)
 	ModifyOpenInterest(
 		ctx sdk.Context,

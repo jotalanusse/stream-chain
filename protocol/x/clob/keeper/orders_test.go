@@ -761,6 +761,7 @@ func TestPlaceShortTermOrder(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -1019,6 +1020,7 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}

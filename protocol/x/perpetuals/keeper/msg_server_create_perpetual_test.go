@@ -34,6 +34,7 @@ func TestCreatePerpetual(t *testing.T) {
 		perptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000_000),
 		perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 		perptest.WithQuoteAssetId(0),
+		perptest.WithCollateralPoolId(0),
 	)
 	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
 	testMarket2 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(2))

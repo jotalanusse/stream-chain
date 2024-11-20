@@ -58,7 +58,8 @@ func TestPerpetualParams_Validate(t *testing.T) {
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
 				},
-				QuoteAssetId: 0,
+				QuoteAssetId:     0,
+				CollateralPoolId: 0,
 			},
 			expectedErr: "multi collateral asset does not contain quote asset",
 		},
@@ -71,7 +72,8 @@ func TestPerpetualParams_Validate(t *testing.T) {
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},
-				QuoteAssetId: 1,
+				QuoteAssetId:     1,
+				CollateralPoolId: 0,
 			},
 			expectedErr: "multi collateral asset does not contain quote asset",
 		},
@@ -84,7 +86,8 @@ func TestPerpetualParams_Validate(t *testing.T) {
 				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},
-				QuoteAssetId: 0,
+				QuoteAssetId:     0,
+				CollateralPoolId: 0,
 			},
 			expectedErr: "",
 		},

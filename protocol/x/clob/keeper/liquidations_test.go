@@ -343,6 +343,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -466,6 +467,7 @@ func TestPlacePerpetualLiquidation_validateLiquidationAgainstClobPairStatus(t *t
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -1142,6 +1144,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					perpetual.Params.IsolatedMarketMultiCollateralAssets,
 					perpetual.Params.QuoteAssetId,
+					perpetual.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -1728,6 +1731,7 @@ func TestGetFillablePrice(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -2584,6 +2588,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					perpetual.Params.IsolatedMarketMultiCollateralAssets,
 					perpetual.Params.QuoteAssetId,
+					perpetual.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -2921,6 +2926,7 @@ func TestIsLiquidatable(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -3353,6 +3359,7 @@ func TestGetBankruptcyPriceInQuoteQuantums(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -3841,6 +3848,7 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -4220,6 +4228,7 @@ func TestGetBestPerpetualPositionToLiquidate(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -4470,6 +4479,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -5485,6 +5495,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -5666,6 +5677,7 @@ func TestGetBestPerpetualPositionToLiquidateMultiplePositions(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -5775,6 +5787,7 @@ func TestEnsurePerpetualNotAlreadyLiquidated(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -5919,6 +5932,7 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -6009,6 +6023,7 @@ func TestIsIsolatedPerpetualError_InLiquidateSubaccountsAgainstOrderbookInternal
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -6104,6 +6119,7 @@ func TestPlacePerpetualLiquidation_InLiquidateSubaccountsAgainstOrderbookInterna
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}
@@ -6258,6 +6274,7 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 			}

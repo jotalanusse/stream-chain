@@ -139,6 +139,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			p.Params.IsolatedMarketMultiCollateralAssets,
 			p.Params.QuoteAssetId,
+			p.Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
 	}
@@ -272,6 +273,7 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			p.Params.IsolatedMarketMultiCollateralAssets,
 			p.Params.QuoteAssetId,
+			p.Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
 	}

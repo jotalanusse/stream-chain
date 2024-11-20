@@ -1510,6 +1510,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.perpetual.Params.IsolatedMarketMultiCollateralAssets,
 				tc.perpetual.Params.QuoteAssetId,
+				tc.perpetual.Params.CollateralPoolId,
 			)
 			require.NoError(t, err)
 

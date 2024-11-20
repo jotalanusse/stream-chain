@@ -185,6 +185,7 @@ func CreateTestPerpetuals(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			p.Params.IsolatedMarketMultiCollateralAssets,
 			p.Params.QuoteAssetId,
+			p.Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
 	}
@@ -347,6 +348,7 @@ func CreateTestPricesAndPerpetualMarkets(
 			perp.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perp.Params.IsolatedMarketMultiCollateralAssets,
 			perp.Params.QuoteAssetId,
+			perp.Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
 	}

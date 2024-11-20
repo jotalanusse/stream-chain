@@ -171,6 +171,11 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			uint32(0),
 			newItem.Params.QuoteAssetId,
 		)
+		require.Equal(
+			t,
+			uint32(0),
+			newItem.Params.CollateralPoolId,
+		)
 	}
 
 	// Verify that expected indexer events were emitted.
@@ -213,6 +218,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
 		IsolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
 		quoteAssetId                                          uint32
+		collateralPoolId                                      uint32
 		expectedError                                         error
 		yieldIndex                                            string
 	}{
@@ -304,6 +310,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.IsolatedMarketMultiCollateralAssets,
 				tc.quoteAssetId,
+				tc.collateralPoolId,
 			)
 
 			require.Error(t, err)
@@ -323,6 +330,7 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
 		isolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
 		quoteAssetId                                          uint32
+		collateralPoolId                                      uint32
 		expectedError                                         error
 	}{
 		"Perpetual doesn't exist": {
@@ -406,6 +414,7 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.isolatedMarketMultiCollateralAssets,
 				tc.quoteAssetId,
+				tc.collateralPoolId,
 			)
 
 			require.Error(t, err)
@@ -476,6 +485,7 @@ func TestHasPerpetual(t *testing.T) {
 			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
 			perps[perp].Params.QuoteAssetId,
+			perps[perp].Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
 	}
@@ -558,6 +568,7 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
 			perps[perp].Params.QuoteAssetId,
+			perps[perp].Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
 	}
@@ -2121,6 +2132,7 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
+					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
 				oldPerps[i] = perp
@@ -3479,6 +3491,7 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 				perptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000_000),
 				perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 				perptest.WithQuoteAssetId(0),
+				perptest.WithCollateralPoolId(0),
 			),
 			expected: true,
 		},

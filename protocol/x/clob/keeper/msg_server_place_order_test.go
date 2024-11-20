@@ -152,6 +152,7 @@ func TestPlaceOrder_Error(t *testing.T) {
 				perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				perpetual.Params.IsolatedMarketMultiCollateralAssets,
 				perpetual.Params.QuoteAssetId,
+				perpetual.Params.CollateralPoolId,
 			)
 			require.NoError(t, err)
 
@@ -330,6 +331,7 @@ func TestPlaceOrder_Success(t *testing.T) {
 				perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				perpetual.Params.IsolatedMarketMultiCollateralAssets,
 				perpetual.Params.QuoteAssetId,
+				perpetual.Params.CollateralPoolId,
 			)
 			require.NoError(t, err)
 
