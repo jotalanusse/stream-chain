@@ -68,8 +68,13 @@ func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
 		if err != nil {
 			return false, err
 		}
+		collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+		if err != nil {
+			return false, err
+		}
+
 		found := false
-		for _, asset := range perpetual.Params.MarketMultiCollateralAssets.MultiCollateralAssets {
+		for _, asset := range collateralPool.MultiCollateralAssets.MultiCollateralAssets {
 			if asset == assettypes.AssetTDai.Id {
 				found = true
 				break

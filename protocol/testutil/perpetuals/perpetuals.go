@@ -50,12 +50,6 @@ func WithCollateralPoolId(collateralPoolId uint32) PerpetualModifierOption {
 	}
 }
 
-func WithMarketMultiCollateralAssets(assets perptypes.MultiCollateralAssetsArray) PerpetualModifierOption {
-	return func(cp *perptypes.Perpetual) {
-		cp.Params.MarketMultiCollateralAssets = &assets
-	}
-}
-
 func WithQuoteAssetId(quoteAssetId uint32) PerpetualModifierOption {
 	return func(cp *perptypes.Perpetual) {
 		cp.Params.QuoteAssetId = quoteAssetId

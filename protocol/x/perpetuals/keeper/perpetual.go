@@ -25,7 +25,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -71,7 +70,6 @@ func (k Keeper) CreatePerpetual(
 	defaultFundingPpm int32,
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
-	marketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 	collateralPoolId uint32,
 ) (types.Perpetual, error) {
@@ -86,16 +84,15 @@ func (k Keeper) CreatePerpetual(
 	// Create the perpetual.
 	perpetual := types.Perpetual{
 		Params: types.PerpetualParams{
-			Id:                          id,
-			Ticker:                      ticker,
-			MarketId:                    marketId,
-			AtomicResolution:            atomicResolution,
-			DefaultFundingPpm:           defaultFundingPpm,
-			LiquidityTier:               liquidityTier,
-			DangerIndexPpm:              dangerIndexPpm,
-			MarketMultiCollateralAssets: marketMultiCollateralAssets,
-			QuoteAssetId:                quoteAssetId,
-			CollateralPoolId:            collateralPoolId,
+			Id:                id,
+			Ticker:            ticker,
+			MarketId:          marketId,
+			AtomicResolution:  atomicResolution,
+			DefaultFundingPpm: defaultFundingPpm,
+			LiquidityTier:     liquidityTier,
+			DangerIndexPpm:    dangerIndexPpm,
+			QuoteAssetId:      quoteAssetId,
+			CollateralPoolId:  collateralPoolId,
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),
@@ -138,7 +135,6 @@ func (k Keeper) ModifyPerpetual(
 	defaultFundingPpm int32,
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
-	marketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 	collateralPoolId uint32,
 ) (types.Perpetual, error) {
@@ -154,7 +150,6 @@ func (k Keeper) ModifyPerpetual(
 	perpetual.Params.DefaultFundingPpm = defaultFundingPpm
 	perpetual.Params.LiquidityTier = liquidityTier
 	perpetual.Params.DangerIndexPpm = dangerIndexPpm
-	perpetual.Params.MarketMultiCollateralAssets = marketMultiCollateralAssets
 	perpetual.Params.QuoteAssetId = quoteAssetId
 	perpetual.Params.CollateralPoolId = collateralPoolId
 	// Store the modified perpetual.
@@ -1623,7 +1618,7 @@ func (k Keeper) SetCollateralPool(
 	ctx sdk.Context,
 	collateralPoolId uint32,
 	maxCumulativeInsuranceFundDeltaPerBlock uint64,
-	marketMultiCollateralAssets *types.MultiCollateralAssetsArray,
+	multiCollateralAssets *types.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 ) (
 	collateralPool types.CollateralPool,
@@ -1633,7 +1628,7 @@ func (k Keeper) SetCollateralPool(
 	collateralPool = types.CollateralPool{
 		CollateralPoolId:                        collateralPoolId,
 		MaxCumulativeInsuranceFundDeltaPerBlock: maxCumulativeInsuranceFundDeltaPerBlock,
-		MarketMultiCollateralAssets:             marketMultiCollateralAssets,
+		MultiCollateralAssets:                   multiCollateralAssets,
 		QuoteAssetId:                            quoteAssetId,
 	}
 
@@ -1642,11 +1637,11 @@ func (k Keeper) SetCollateralPool(
 		return collateralPool, err
 	}
 
-	if !k.EnsureMultiCollateralAssetsExists(ctx, marketMultiCollateralAssets) {
+	if !k.EnsureMultiCollateralAssetsExists(ctx, multiCollateralAssets) {
 		return collateralPool, errorsmod.Wrap(types.ErrIsolatedMarketMultiCollateralAssetDoesNotExist, lib.UintToString(quoteAssetId))
 	}
 
-	if err := k.HandleExistingCollateralPool(ctx, collateralPoolId, marketMultiCollateralAssets, quoteAssetId); err != nil {
+	if err := k.HandleExistingCollateralPool(ctx, collateralPoolId, multiCollateralAssets, quoteAssetId); err != nil {
 		return collateralPool, err
 	}
 
@@ -1659,7 +1654,7 @@ func (k Keeper) SetCollateralPool(
 func (k Keeper) HandleExistingCollateralPool(
 	ctx sdk.Context,
 	collateralPoolId uint32,
-	marketMultiCollateralAssets *types.MultiCollateralAssetsArray,
+	multiCollateralAssets *types.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 
 ) (err error) {
@@ -1677,13 +1672,13 @@ func (k Keeper) HandleExistingCollateralPool(
 	}
 
 	// Create a map of new assets for O(1) lookups
-	newAssetsMap := make(map[uint32]struct{}, len(marketMultiCollateralAssets.MultiCollateralAssets))
-	for _, newAsset := range marketMultiCollateralAssets.MultiCollateralAssets {
+	newAssetsMap := make(map[uint32]struct{}, len(multiCollateralAssets.MultiCollateralAssets))
+	for _, newAsset := range multiCollateralAssets.MultiCollateralAssets {
 		newAssetsMap[newAsset] = struct{}{}
 	}
 
 	// Check that all existing assets are present in the new set
-	for _, existingAsset := range collateralPool.MarketMultiCollateralAssets.MultiCollateralAssets {
+	for _, existingAsset := range collateralPool.MultiCollateralAssets.MultiCollateralAssets {
 		if _, exists := newAssetsMap[existingAsset]; !exists {
 			return types.ErrCannotRemoveMultiCollateralAssetFromCollateralPool
 		}

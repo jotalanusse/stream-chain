@@ -33,7 +33,6 @@ func (k msgServer) CreatePerpetual(
 		msg.Params.DefaultFundingPpm,
 		msg.Params.LiquidityTier,
 		msg.Params.DangerIndexPpm,
-		msg.Params.MarketMultiCollateralAssets,
 		msg.Params.QuoteAssetId,
 		msg.Params.CollateralPoolId,
 	)

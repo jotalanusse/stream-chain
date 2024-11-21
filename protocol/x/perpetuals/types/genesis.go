@@ -94,9 +94,15 @@ func (gs GenesisState) Validate() error {
 
 	// Validate collateral pools.
 	// 1. keys are unique.
-	// 2. IDs are sequential.
-	// 3. isolated market max cumulative insurance fund delta per block is not zero.
-	// 4. isolated market multi collateral assets is not empty and does not contain quote asset.
+	// 2. At least one collateral pool
+	// 3. IDs are sequential and start from 0.
+	// 4. isolated market max cumulative insurance fund delta per block is not zero.
+	// 5. isolated market multi collateral assets is not empty and does not contain quote asset.
+
+	if len(gs.CollateralPools) == 0 {
+		return fmt.Errorf("at least one collateral pool is required")
+	}
+
 	collateralPoolKeyMap := make(map[uint32]struct{})
 	expectedCollateralPoolId := uint32(0)
 	for _, collateralPool := range gs.CollateralPools {

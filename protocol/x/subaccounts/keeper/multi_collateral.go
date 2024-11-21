@@ -46,11 +46,7 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		return types.Success, nil
 	}
 
-	// Subaccouunt is isolated if it has an existing isolated position or if it has an isolated perpetual update
-	supportedMultiCollateralAssets, found := k.perpetualsKeeper.GetMultiCollateralAssets(ctx)
-	if !found {
-		return types.UpdateCausedError, errorsmod.Wrap(perptypes.ErrMultiCollateralAssetsUninitialized, "in isValidMultiCollateralUpdate")
-	}
+	collateralPoolId := uint32(0)
 
 	if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {
 		params, exists := perpIdToParams[settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId]
@@ -60,9 +56,7 @@ func (k Keeper) isValidMultiCollateralUpdate(
 			)
 		}
 
-		if params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-			supportedMultiCollateralAssets = *params.MarketMultiCollateralAssets
-		}
+		collateralPoolId = params.CollateralPoolId
 	} else if len(settledUpdate.PerpetualUpdates) > 0 {
 		params, exists := perpIdToParams[settledUpdate.PerpetualUpdates[0].PerpetualId]
 		if !exists {
@@ -71,12 +65,14 @@ func (k Keeper) isValidMultiCollateralUpdate(
 			)
 		}
 
-		if params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-			supportedMultiCollateralAssets = *params.MarketMultiCollateralAssets
-		}
+		collateralPoolId = params.CollateralPoolId
 	}
 
-	supportedAssetIds := getValidAssetIdMap(supportedMultiCollateralAssets.MultiCollateralAssets)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, collateralPoolId)
+	if err != nil {
+		return types.UpdateCausedError, err
+	}
+	supportedAssetIds := getValidAssetIdMap(collateralPool.MultiCollateralAssets.MultiCollateralAssets)
 	for _, assetUpdate := range settledUpdate.AssetUpdates {
 		_, ok := supportedAssetIds[assetUpdate.AssetId]
 		if !ok {

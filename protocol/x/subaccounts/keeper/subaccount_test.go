@@ -181,7 +181,6 @@ func TestGetCollateralPool(t *testing.T) {
 						p.Params.DefaultFundingPpm,
 						p.Params.LiquidityTier,
 						p.Params.DangerIndexPpm,
-						p.Params.MarketMultiCollateralAssets,
 						p.Params.QuoteAssetId,
 						p.Params.CollateralPoolId,
 					)
@@ -5954,7 +5953,6 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -7094,7 +7092,6 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -7524,7 +7521,6 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)

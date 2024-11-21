@@ -72,7 +72,6 @@ type PerpetualsKeeper interface {
 		defaultFundingPpm int32,
 		liquidityTier uint32,
 		dangerIndexPpm uint32,
-		marketMultiCollateralAssets *MultiCollateralAssetsArray,
 		quoteAssetId uint32,
 		collateralPoolId uint32,
 	) (Perpetual, error)
@@ -84,7 +83,6 @@ type PerpetualsKeeper interface {
 		defaultFundingPpm int32,
 		liquidityTier uint32,
 		dangerIndexPpm uint32,
-		marketMultiCollateralAssets *MultiCollateralAssetsArray,
 		quoteAssetId uint32,
 		collateralPoolId uint32,
 	) (Perpetual, error)
@@ -112,7 +110,7 @@ type PerpetualsKeeper interface {
 		ctx sdk.Context,
 		collateralPoolId uint32,
 		maxCumulativeInsuranceFundDeltaPerBlock uint64,
-		marketMultiCollateralAssets *MultiCollateralAssetsArray,
+		multiCollateralAssets *MultiCollateralAssetsArray,
 		quoteAssetId uint32,
 	) (
 		collateralPool CollateralPool,

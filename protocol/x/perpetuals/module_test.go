@@ -372,7 +372,6 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "default_funding_ppm":0,
 				 "liquidity_tier":0,
 				 "danger_index_ppm": 0,
-				 "multi_collateral_assets": null,
 				 "quote_asset_id": 0,
 				 "collateral_pool_id": 0
 			  },

@@ -29,7 +29,7 @@ type CollateralPool struct {
 	// The maximum insurance fund delta per block for isolated perpetual markets.
 	MaxCumulativeInsuranceFundDeltaPerBlock uint64 `protobuf:"varint,2,opt,name=max_cumulative_insurance_fund_delta_per_block,json=maxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"max_cumulative_insurance_fund_delta_per_block,omitempty"`
 	// The multi collateral assets for the collateral pool.
-	MarketMultiCollateralAssets *MultiCollateralAssetsArray `protobuf:"bytes,3,opt,name=multi_collateral_assets,json=marketMultiCollateralAssets,proto3" json:"multi_collateral_assets,omitempty"`
+	MultiCollateralAssets *MultiCollateralAssetsArray `protobuf:"bytes,3,opt,name=multi_collateral_assets,json=multiCollateralAssets,proto3" json:"multi_collateral_assets,omitempty"`
 	// The id of the quote asset.
 	QuoteAssetId uint32 `protobuf:"varint,4,opt,name=quote_asset_id,json=quoteAssetId,proto3" json:"quote_asset_id,omitempty"`
 }
@@ -81,9 +81,9 @@ func (m *CollateralPool) GetMaxCumulativeInsuranceFundDeltaPerBlock() uint64 {
 	return 0
 }
 
-func (m *CollateralPool) GetMarketMultiCollateralAssets() *MultiCollateralAssetsArray {
+func (m *CollateralPool) GetMultiCollateralAssets() *MultiCollateralAssetsArray {
 	if m != nil {
-		return m.MarketMultiCollateralAssets
+		return m.MultiCollateralAssets
 	}
 	return nil
 }
@@ -155,9 +155,9 @@ func (m *CollateralPool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x20
 	}
-	if m.MarketMultiCollateralAssets != nil {
+	if m.MultiCollateralAssets != nil {
 		{
-			size, err := m.MarketMultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.MultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -203,8 +203,8 @@ func (m *CollateralPool) Size() (n int) {
 	if m.MaxCumulativeInsuranceFundDeltaPerBlock != 0 {
 		n += 1 + sovCollateral(uint64(m.MaxCumulativeInsuranceFundDeltaPerBlock))
 	}
-	if m.MarketMultiCollateralAssets != nil {
-		l = m.MarketMultiCollateralAssets.Size()
+	if m.MultiCollateralAssets != nil {
+		l = m.MultiCollateralAssets.Size()
 		n += 1 + l + sovCollateral(uint64(l))
 	}
 	if m.QuoteAssetId != 0 {
@@ -288,7 +288,7 @@ func (m *CollateralPool) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MarketMultiCollateralAssets", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MultiCollateralAssets", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -315,10 +315,10 @@ func (m *CollateralPool) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.MarketMultiCollateralAssets == nil {
-				m.MarketMultiCollateralAssets = &MultiCollateralAssetsArray{}
+			if m.MultiCollateralAssets == nil {
+				m.MultiCollateralAssets = &MultiCollateralAssetsArray{}
 			}
-			if err := m.MarketMultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.MultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

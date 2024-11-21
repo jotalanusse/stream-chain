@@ -759,7 +759,6 @@ func TestPlaceShortTermOrder(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -1018,7 +1017,6 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)

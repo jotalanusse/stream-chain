@@ -21,7 +21,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -187,7 +186,6 @@ func CreateTestPerpetuals(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			p.Params.DefaultFundingPpm,
 			p.Params.LiquidityTier,
 			p.Params.DangerIndexPpm,
-			p.Params.MarketMultiCollateralAssets,
 			p.Params.QuoteAssetId,
 			p.Params.CollateralPoolId,
 		)
@@ -217,7 +215,7 @@ func CreateTestCollateralPools(t *testing.T, ctx sdk.Context, k *keeper.Keeper) 
 		_, err := k.SetCollateralPool(ctx,
 			cp.CollateralPoolId,
 			cp.MaxCumulativeInsuranceFundDeltaPerBlock,
-			cp.MarketMultiCollateralAssets,
+			cp.MultiCollateralAssets,
 			cp.QuoteAssetId,
 		)
 		require.NoError(t, err)
@@ -308,8 +306,6 @@ func CreateNPerpetuals(
 			defaultFundingPpm,    // DefaultFundingPpm
 			allLiquidityTiers[i%len(allLiquidityTiers)].Id, // LiquidityTier
 			0,
-			maxInsuranceFundDelta,
-			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			0,
 			0,
 		)
@@ -365,7 +361,6 @@ func CreateTestPricesAndPerpetualMarkets(
 			perp.Params.DefaultFundingPpm,
 			perp.Params.LiquidityTier,
 			perp.Params.DangerIndexPpm,
-			perp.Params.MarketMultiCollateralAssets,
 			perp.Params.QuoteAssetId,
 			perp.Params.CollateralPoolId,
 		)
