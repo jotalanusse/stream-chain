@@ -96,8 +96,8 @@ func (gs GenesisState) Validate() error {
 	// 1. keys are unique.
 	// 2. At least one collateral pool
 	// 3. IDs are sequential and start from 0.
-	// 4. isolated market max cumulative insurance fund delta per block is not zero.
-	// 5. isolated market multi collateral assets is not empty and does not contain quote asset.
+	// 4. max cumulative insurance fund delta per block is not zero.
+	// 5. multi collateral assets is not empty and does not contain quote asset.
 
 	if len(gs.CollateralPools) == 0 {
 		return fmt.Errorf("at least one collateral pool is required")

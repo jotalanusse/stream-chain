@@ -464,50 +464,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			expectedError: errors.New("Impact notional is zero"),
 		},
-		"invalid: multi collateral assets is empty": {
-			genState: &types.GenesisState{
-				CollateralPools: []types.CollateralPool{
-					{
-						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                            0,
-					},
-					{
-						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                            1,
-					},
-				},
-				Perpetuals: []types.Perpetual{
-					{
-						Params: types.PerpetualParams{
-							Id:            0,
-							Ticker:        "EXAM-USD",
-							LiquidityTier: 0,
-						},
-						FundingIndex: dtypes.ZeroInt(),
-					},
-				},
-				LiquidityTiers: []types.LiquidityTier{
-					{
-						Id:                     0,
-						Name:                   "Large-Cap",
-						InitialMarginPpm:       200_000,
-						MaintenanceFractionPpm: 1_000_000,
-						ImpactNotional:         0,
-					},
-				},
-				Params: types.Params{
-					FundingRateClampFactorPpm: 6_000_000,
-					PremiumVoteClampFactorPpm: 60_000_000,
-					MinNumVotesPerSample:      15,
-				},
-			},
-			expectedError: errors.New("no supported multi collateral assets"),
-		},
-		"invalid: isolated market max cumulative insurance fund delta per block is zero": {
+		"invalid: max cumulative insurance fund delta per block is zero": {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
@@ -542,9 +499,9 @@ func TestGenesisState_Validate(t *testing.T) {
 					MinNumVotesPerSample:      15,
 				},
 			},
-			expectedError: errors.New("isolated market max cumulative insurance fund delta per block is zero"),
+			expectedError: errors.New("max cumulative insurance fund delta per block is zero"),
 		},
-		"invalid: isolated market multi collateral assets is empty": {
+		"invalid: multi collateral assets is empty": {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
@@ -579,9 +536,9 @@ func TestGenesisState_Validate(t *testing.T) {
 					MinNumVotesPerSample:      15,
 				},
 			},
-			expectedError: errors.New("isolated market multi collateral is empty"),
+			expectedError: errors.New("multi collateral is empty"),
 		},
-		"invalid: isolated market multi collateral does not contain quote asset": {
+		"invalid: multi collateral does not contain quote asset": {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
@@ -616,7 +573,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					MinNumVotesPerSample:      15,
 				},
 			},
-			expectedError: errors.New("isolated market multi collateral does not contain quote asset"),
+			expectedError: errors.New("multi collateral does not contain quote asset"),
 		},
 	}
 

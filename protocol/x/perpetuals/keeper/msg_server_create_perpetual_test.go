@@ -27,7 +27,7 @@ func TestCreatePerpetual(t *testing.T) {
 		perptest.WithId(2),
 		perptest.WithMarketId(1),
 	)
-	testPerpIsolated := *perptest.GeneratePerpetual(
+	testPerp3 := *perptest.GeneratePerpetual(
 		perptest.WithId(3),
 		perptest.WithMarketId(2),
 		perptest.WithQuoteAssetId(0),
@@ -75,7 +75,7 @@ func TestCreatePerpetual(t *testing.T) {
 			},
 			expectedPerpetuals: []types.Perpetual{testPerp1, testPerp2},
 		},
-		"Succeeds: create new isolated market perpetual": {
+		"Succeeds: create new perpetual": {
 			setup: func(
 				t *testing.T,
 				ctx sdk.Context,
@@ -93,9 +93,9 @@ func TestCreatePerpetual(t *testing.T) {
 			},
 			msg: &types.MsgCreatePerpetual{
 				Authority: lib.GovModuleAddress.String(),
-				Params:    testPerpIsolated.Params,
+				Params:    testPerp3.Params,
 			},
-			expectedPerpetuals: []types.Perpetual{testPerpIsolated},
+			expectedPerpetuals: []types.Perpetual{testPerp3},
 		},
 		"Failure: new perpetual id already exists in state": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {

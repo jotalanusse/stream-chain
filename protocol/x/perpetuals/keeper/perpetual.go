@@ -1638,7 +1638,7 @@ func (k Keeper) SetCollateralPool(
 	}
 
 	if !k.EnsureMultiCollateralAssetsExists(ctx, multiCollateralAssets) {
-		return collateralPool, errorsmod.Wrap(types.ErrIsolatedMarketMultiCollateralAssetDoesNotExist, lib.UintToString(quoteAssetId))
+		return collateralPool, errorsmod.Wrap(types.ErrMultiCollateralAssetDoesNotExist, lib.UintToString(quoteAssetId))
 	}
 
 	if err := k.HandleExistingCollateralPool(ctx, collateralPoolId, multiCollateralAssets, quoteAssetId); err != nil {

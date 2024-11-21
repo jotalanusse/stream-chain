@@ -3437,7 +3437,7 @@ func TestSetCollateralPool_New_Failure(t *testing.T) {
 		quoteAssetId                            uint32
 		expectedError                           error
 	}{
-		"Isolated market max cumulative insurance fund delta per block is zero": {
+		"Max cumulative insurance fund delta per block is zero": {
 			collateralPoolId:                        0,
 			maxCumulativeInsuranceFundDeltaPerBlock: 0,
 			multiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},

@@ -29,7 +29,7 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 			},
 			expectedErr: "Authority is invalid",
 		},
-		"Failure: Isolated Market Max Cumulative Insurance Fund Delta Per Block is zero": {
+		"Failure: Max Cumulative Insurance Fund Delta Per Block is zero": {
 			msg: types.MsgSetCollateralPool{
 				Authority: validAuthority,
 				CollateralPool: types.CollateralPool{
@@ -39,9 +39,9 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 					QuoteAssetId:                            2,
 				},
 			},
-			expectedErr: "Isolated Market Max Cumulative Insurance Fund Delta Per Block is zero",
+			expectedErr: types.ErrMaxCumulativeInsuranceFundDeltaPerBlockZero.Error(),
 		},
-		"Failure: Isolated Market Multi Collateral Assets is empty": {
+		"Failure: Multi Collateral Assets is empty": {
 			msg: types.MsgSetCollateralPool{
 				Authority: validAuthority,
 				CollateralPool: types.CollateralPool{
@@ -51,9 +51,9 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 					QuoteAssetId:                            2,
 				},
 			},
-			expectedErr: "Isolated Market Multi Collateral Assets is empty",
+			expectedErr: types.ErrMultiCollateralAssetsEmpty.Error(),
 		},
-		"Failure: Isolated Market Multi Collateral Asset Does Not Contain Quote Asset": {
+		"Failure: Multi Collateral Asset Does Not Contain Quote Asset": {
 			msg: types.MsgSetCollateralPool{
 				Authority: validAuthority,
 				CollateralPool: types.CollateralPool{
@@ -63,7 +63,7 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 					QuoteAssetId:                            4,
 				},
 			},
-			expectedErr: "Isolated Market Multi Collateral Asset Does Not Contain Quote Asset",
+			expectedErr: types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset.Error(),
 		},
 	}
 

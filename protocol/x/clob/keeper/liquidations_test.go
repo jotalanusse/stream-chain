@@ -6208,7 +6208,7 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 			expectedInsuranceFundDeltaBlockLimit: big.NewInt(0),
 			expectedError:                        errors.New("Perpetual does not exist"),
 		},
-		"isolated perpetual returns isolated market max cummalitive insurance fund delta per block": {
+		"perpetual returns max cummalitive insurance fund delta per block": {
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_SmallMarginRequirement_Isolated,
 			},

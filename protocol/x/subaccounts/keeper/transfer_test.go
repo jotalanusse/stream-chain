@@ -353,21 +353,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			collateralPoolAddr:         types.ModuleAddress,
 			expectedErr:                sdkerrors.ErrInsufficientFunds,
 		},
-		"WithdrawFundsFromSubaccountToAccount: isolated market subaccounts module account does not have enough balance": {
-			testTransferFundToAccount:  true,
-			asset:                      *constants.TDai,
-			subaccountModuleAccBalance: big.NewInt(400),
-			accAddressBalance:          big.NewInt(5000),
-			quantums:                   big.NewInt(500),
-			assetPositions:             keepertest.CreateTDaiAssetPosition(big.NewInt(500)),
-			perpetualPositions: []*types.PerpetualPosition{
-				&constants.PerpetualPosition_OneISOLong,
-			},
-			collateralPoolAddr: authtypes.NewModuleAddress(
-				types.ModuleName + ":" + lib.UintToString(constants.PerpetualPosition_OneISOLong.PerpetualId),
-			),
-			expectedErr: sdkerrors.ErrInsufficientFunds,
-		},
 		"WithdrawFundsFromSubaccountToAccount: transfer quantums is zero": {
 			testTransferFundToAccount:  true,
 			asset:                      *constants.TDai,
@@ -1191,18 +1176,6 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 			expectedSubaccountsModuleAccBalance: big.NewInt(100),  // 600 - 500
 			expectedFeeModuleAccBalance:         big.NewInt(3000), // 500 + 2500
 		},
-		"success - send to fee-collector module account from isolated market account": {
-			asset:                      *constants.TDai,
-			feeModuleAccBalance:        big.NewInt(2500),
-			subaccountModuleAccBalance: big.NewInt(600),
-			quantums:                   big.NewInt(500),
-			perpetualId:                3, // Isolated market perpetual ID
-			collateralPoolAddr: authtypes.NewModuleAddress(
-				types.ModuleName + ":" + lib.IntToString(3),
-			),
-			expectedSubaccountsModuleAccBalance: big.NewInt(100),  // 600 - 500
-			expectedFeeModuleAccBalance:         big.NewInt(3000), // 500 + 2500
-		},
 		"success - quantums is zero": {
 			asset:                               *constants.TDai,
 			feeModuleAccBalance:                 big.NewInt(2500),
@@ -1218,19 +1191,6 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 			subaccountModuleAccBalance:          big.NewInt(300),
 			quantums:                            big.NewInt(500),
 			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: big.NewInt(300),
-			expectedFeeModuleAccBalance:         big.NewInt(2500),
-			expectedErr:                         sdkerrors.ErrInsufficientFunds,
-		},
-		"failure - isolated markets subaccounts module does not have sufficient funds": {
-			asset:                      *constants.TDai,
-			feeModuleAccBalance:        big.NewInt(2500),
-			subaccountModuleAccBalance: big.NewInt(300),
-			quantums:                   big.NewInt(500),
-			perpetualId:                3, // Isolated market perpetual ID
-			collateralPoolAddr: authtypes.NewModuleAddress(
-				types.ModuleName + ":" + lib.IntToString(3),
-			),
 			expectedSubaccountsModuleAccBalance: big.NewInt(300),
 			expectedFeeModuleAccBalance:         big.NewInt(2500),
 			expectedErr:                         sdkerrors.ErrInsufficientFunds,
@@ -1449,16 +1409,6 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 		},
 		"failure - insurance fund does not have sufficient funds": {
 			perpetual:                           constants.BtcUsd_SmallMarginRequirement,
-			insuranceFundBalance:                300,
-			subaccountModuleAccBalance:          2500,
-			quantums:                            big.NewInt(-500),
-			collateralPoolAddr:                  types.ModuleAddress,
-			expectedSubaccountsModuleAccBalance: 2500,
-			expectedInsuranceFundBalance:        300,
-			expectedErr:                         sdkerrors.ErrInsufficientFunds,
-		},
-		"failure - isolated market insurance fund does not have sufficient funds": {
-			perpetual:                           constants.IsoUsd_IsolatedMarket,
 			insuranceFundBalance:                300,
 			subaccountModuleAccBalance:          2500,
 			quantums:                            big.NewInt(-500),

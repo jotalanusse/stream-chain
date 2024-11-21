@@ -155,22 +155,22 @@ var (
 	ErrMaxCumulativeInsuranceFundDeltaPerBlockZero = errorsmod.Register(
 		ModuleName,
 		33,
-		"isolated market max cumulative insurance fund delta per block is zero",
+		"max cumulative insurance fund delta per block is zero",
 	)
 	ErrMultiCollateralAssetsEmpty = errorsmod.Register(
 		ModuleName,
 		34,
-		"isolated market collateral asssets is empty",
+		"collateral asssets is empty",
 	)
 	ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset = errorsmod.Register(
 		ModuleName,
 		36,
 		"multi collateral asset does not contain quote asset",
 	)
-	ErrIsolatedMarketMultiCollateralAssetDoesNotExist = errorsmod.Register(
+	ErrMultiCollateralAssetDoesNotExist = errorsmod.Register(
 		ModuleName,
 		37,
-		"isolated market multi collateral asset does not exist",
+		"multi collateral asset does not exist",
 	)
 	ErrCollateralPoolDoesNotExist = errorsmod.Register(
 		ModuleName,
