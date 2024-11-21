@@ -19,7 +19,6 @@ func NewPerpetualMarketCreateEvent(
 	stepBaseQuantums uint64,
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
-	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock string,
 ) *PerpetualMarketCreateEventV2 {
 	return &PerpetualMarketCreateEventV2{
 		Id:                        id,
@@ -33,6 +32,5 @@ func NewPerpetualMarketCreateEvent(
 		StepBaseQuantums:          stepBaseQuantums,
 		LiquidityTier:             liquidityTier,
 		DangerIndexPpm:            dangerIndexPpm,
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 	}
 }

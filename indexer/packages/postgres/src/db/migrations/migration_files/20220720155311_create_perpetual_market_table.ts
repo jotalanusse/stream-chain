@@ -34,7 +34,6 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('quantumConversionExponent').notNullable();
       table.integer('atomicResolution').notNullable();
       table.integer('dangerIndexPpm').notNullable();
-      table.bigInteger('isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock');
       table.integer('subticksPerTick').notNullable();
       table.integer('minOrderBaseQuantums').notNullable();
       table.integer('stepBaseQuantums').notNullable();

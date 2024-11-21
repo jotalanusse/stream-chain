@@ -2,7 +2,6 @@ package keeper_test
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
 	"testing"
 
@@ -187,7 +186,6 @@ func TestGetPricePremiumForPerpetual(t *testing.T) {
 						tc.args.clobPair.StepBaseQuantums,
 						perpetual.Params.LiquidityTier,
 						perpetual.Params.DangerIndexPpm,
-						fmt.Sprintf("%d", perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),
 				),
 			).Return()

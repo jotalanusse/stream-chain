@@ -315,7 +315,6 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "market_id":0,
 				 "liquidity_tier":0,
 				 "danger_index_ppm": 0,
-				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000,
 				 "quote_asset_id": 0,
 				 "collateral_pool_id": 0
 			  }
@@ -373,7 +372,6 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 				 "default_funding_ppm":0,
 				 "liquidity_tier":0,
 				 "danger_index_ppm": 0,
-				 "isolated_market_max_cumulative_insurance_fund_delta_per_block": "1000000",
 				 "isolated_market_multi_collateral_assets": null,
 				 "quote_asset_id": 0,
 				 "collateral_pool_id": 0

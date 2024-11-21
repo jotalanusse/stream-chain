@@ -1261,17 +1261,18 @@ func (k Keeper) GetMaxQuantumsInsuranceDelta(
 }
 
 func (k Keeper) GetInsuranceFundDeltaBlockLimit(ctx sdk.Context, perpetualId uint32) (*big.Int, error) {
-	isIsolated, err := k.perpetualsKeeper.IsIsolatedPerpetual(ctx, perpetualId)
+
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
 	if err != nil {
 		return big.NewInt(0), err
 	}
 
-	if isIsolated {
-		perpetual, _ := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
-		return new(big.Int).SetUint64(perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock), nil
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return big.NewInt(0), err
 	}
 
-	return new(big.Int).SetUint64(k.GetLiquidationsConfig(ctx).MaxCumulativeInsuranceFundDelta), nil
+	return new(big.Int).SetUint64(collateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock), nil
 }
 
 // ConvertLiquidationPriceToSubticks converts the liquidation price of a liquidation order to subticks.

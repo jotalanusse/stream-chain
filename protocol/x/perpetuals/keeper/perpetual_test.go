@@ -69,7 +69,6 @@ func assertPerpetualtUpdateEventsInIndexerBlock(
 			perp.Params.GetAtomicResolution(),
 			perp.Params.GetLiquidityTier(),
 			perp.Params.GetDangerIndexPpm(),
-			lib.UintToString(perp.Params.GetIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock()),
 		)
 
 		for _, event := range perpetualEvents {
@@ -117,7 +116,6 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			AtomicResolution: item.Params.AtomicResolution,
 			LiquidityTier:    liquidityTier,
 			DangerIndexPpm:   uint32(0),
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: "1000000",
 		}
 
 		// Verify updatedp perpetual in store.
@@ -157,11 +155,6 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			t,
 			uint32(0),
 			newItem.Params.DangerIndexPpm,
-		)
-		require.Equal(
-			t,
-			uint64(1000000),
-			newItem.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 		)
 		require.Equal(
 			t,
@@ -210,19 +203,18 @@ func getUpdatePerpetualEventsFromIndexerBlock(
 
 func TestCreatePerpetual_Failure(t *testing.T) {
 	tests := map[string]struct {
-		id                                                    uint32
-		ticker                                                string
-		marketId                                              uint32
-		atomicResolution                                      int32
-		defaultFundingPpm                                     int32
-		liquidityTier                                         uint32
-		dangerIndexPpm                                        uint32
-		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
-		IsolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
-		quoteAssetId                                          uint32
-		collateralPoolId                                      uint32
-		expectedError                                         error
-		yieldIndex                                            string
+		id                                  uint32
+		ticker                              string
+		marketId                            uint32
+		atomicResolution                    int32
+		defaultFundingPpm                   int32
+		liquidityTier                       uint32
+		dangerIndexPpm                      uint32
+		IsolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray
+		quoteAssetId                        uint32
+		collateralPoolId                    uint32
+		expectedError                       error
+		yieldIndex                          string
 	}{
 		"Price doesn't exist": {
 			id:                0,
@@ -232,9 +224,8 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
-			yieldIndex:    "0/1",
+			expectedError:     errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
+			yieldIndex:        "0/1",
 		},
 		"Positive default funding magnitude exceeds maximum": {
 			id:                0,
@@ -245,7 +236,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
 			expectedError: errorsmod.Wrap(
 				types.ErrDefaultFundingPpmMagnitudeExceedsMax,
 				fmt.Sprint(int32(lib.OneMillion+1)),
@@ -260,7 +250,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
 			expectedError: errorsmod.Wrap(
 				types.ErrDefaultFundingPpmMagnitudeExceedsMax,
 				fmt.Sprint(0-int32(lib.OneMillion)-1),
@@ -275,8 +264,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: errorsmod.Wrap(types.ErrDefaultFundingPpmMagnitudeExceedsMax, fmt.Sprint(math.MinInt32)),
+			expectedError:     errorsmod.Wrap(types.ErrDefaultFundingPpmMagnitudeExceedsMax, fmt.Sprint(math.MinInt32)),
 		},
 		"Ticker is an empty string": {
 			id:                0,
@@ -287,8 +275,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			expectedError: types.ErrTickerEmptyString,
+			expectedError:     types.ErrTickerEmptyString,
 		},
 		"Collateral pool doesn't exist": {
 			id:                0,
@@ -299,9 +286,8 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			liquidityTier:     0,
 			yieldIndex:        "0/1",
 			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			collateralPoolId: 9999,
-			expectedError:    errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
+			collateralPoolId:  9999,
+			expectedError:     errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
 		},
 	}
 
@@ -323,7 +309,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 				tc.defaultFundingPpm,
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
-				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.IsolatedMarketMultiCollateralAssets,
 				tc.quoteAssetId,
 				tc.collateralPoolId,
@@ -337,90 +322,72 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 
 func TestModifyPerpetual_Failure(t *testing.T) {
 	tests := map[string]struct {
-		id                                                    uint32
-		ticker                                                string
-		marketId                                              uint32
-		defaultFundingPpm                                     int32
-		liquidityTier                                         uint32
-		dangerIndexPpm                                        uint32
-		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
-		isolatedMarketMultiCollateralAssets                   *perptypes.MultiCollateralAssetsArray
-		quoteAssetId                                          uint32
-		collateralPoolId                                      uint32
-		expectedError                                         error
+		id                                  uint32
+		ticker                              string
+		marketId                            uint32
+		defaultFundingPpm                   int32
+		liquidityTier                       uint32
+		dangerIndexPpm                      uint32
+		isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray
+		quoteAssetId                        uint32
+		collateralPoolId                    uint32
+		expectedError                       error
 	}{
 		"Perpetual doesn't exist": {
-			id:                999,
-			ticker:            "ticker",
-			marketId:          0,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          uint32(0),
-			expectedError:                                         errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(999)),
-		},
-		"Isolated market requires non zero max delta": {
-			id:                0,
-			ticker:            "ticker",
-			marketId:          999,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          uint32(0),
-			expectedError:                                         errorsmod.Wrap(types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero, fmt.Sprint(0)),
+			id:                                  999,
+			ticker:                              "ticker",
+			marketId:                            0,
+			defaultFundingPpm:                   0,
+			liquidityTier:                       0,
+			dangerIndexPpm:                      0,
+			isolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                        uint32(0),
+			expectedError:                       errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(999)),
 		},
 		"Price doesn't exist": {
-			id:                0,
-			ticker:            "ticker",
-			marketId:          999,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(1_000_000),
-			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          uint32(0),
-			expectedError:                                         errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
+			id:                                  0,
+			ticker:                              "ticker",
+			marketId:                            999,
+			defaultFundingPpm:                   0,
+			liquidityTier:                       0,
+			dangerIndexPpm:                      0,
+			isolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                        uint32(0),
+			expectedError:                       errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
 		},
 		"Ticker is an empty string": {
-			id:                0,
-			ticker:            "",
-			marketId:          0,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
-			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          uint32(0),
-			expectedError:                                         types.ErrTickerEmptyString,
+			id:                                  0,
+			ticker:                              "",
+			marketId:                            0,
+			defaultFundingPpm:                   0,
+			liquidityTier:                       0,
+			dangerIndexPpm:                      0,
+			isolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                        uint32(0),
+			expectedError:                       types.ErrTickerEmptyString,
 		},
 		"Modified to empty liquidity tier": {
-			id:                0,
-			ticker:            "ticker",
-			marketId:          0,
-			defaultFundingPpm: 0,
-			liquidityTier:     999,
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(1_000_000),
-			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          uint32(0),
-			expectedError:                                         errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
+			id:                                  0,
+			ticker:                              "ticker",
+			marketId:                            0,
+			defaultFundingPpm:                   0,
+			liquidityTier:                       999,
+			dangerIndexPpm:                      0,
+			isolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                        uint32(0),
+			expectedError:                       errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
 		},
 		"Collateral pool doesn't exist": {
-			id:                0,
-			ticker:            "ticker",
-			marketId:          0,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(1_000_000),
-			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          uint32(0),
-			collateralPoolId:                                      9999,
-			expectedError:                                         errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
+			id:                                  0,
+			ticker:                              "ticker",
+			marketId:                            0,
+			defaultFundingPpm:                   0,
+			liquidityTier:                       0,
+			dangerIndexPpm:                      0,
+			isolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                        uint32(0),
+			collateralPoolId:                    9999,
+			expectedError:                       errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
 		},
 	}
 
@@ -440,7 +407,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 				tc.defaultFundingPpm,
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
-				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				tc.isolatedMarketMultiCollateralAssets,
 				tc.quoteAssetId,
 				tc.collateralPoolId,
@@ -512,7 +478,6 @@ func TestHasPerpetual(t *testing.T) {
 			perps[perp].Params.DefaultFundingPpm,
 			perps[perp].Params.LiquidityTier,
 			perps[perp].Params.DangerIndexPpm,
-			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
 			perps[perp].Params.QuoteAssetId,
 			perps[perp].Params.CollateralPoolId,
@@ -596,7 +561,6 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 			perps[perp].Params.DefaultFundingPpm,
 			perps[perp].Params.LiquidityTier,
 			perps[perp].Params.DangerIndexPpm,
-			perps[perp].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			perps[perp].Params.IsolatedMarketMultiCollateralAssets,
 			perps[perp].Params.QuoteAssetId,
 			perps[perp].Params.CollateralPoolId,
@@ -2169,7 +2133,6 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
@@ -3785,7 +3748,6 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 	}{
 		"Isolated Perpetual": {
 			perp: *perptest.GeneratePerpetual(
-				perptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000_000),
 				perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 				perptest.WithQuoteAssetId(0),
 				perptest.WithCollateralPoolId(0),

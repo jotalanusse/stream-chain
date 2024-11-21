@@ -319,8 +319,6 @@ export function generatePerpetualMarketMessage(
         quantumConversionExponent: perpetualMarket.quantumConversionExponent,
         atomicResolution: perpetualMarket.atomicResolution,
         dangerIndexPpm: perpetualMarket.dangerIndexPpm,
-        isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock:
-          perpetualMarket.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
         subticksPerTick: perpetualMarket.subticksPerTick,
         stepBaseQuantums: perpetualMarket.stepBaseQuantums,
         initialMarginFraction: helpers.ppmToString(Number(liquidityTier.initialMarginPpm)),

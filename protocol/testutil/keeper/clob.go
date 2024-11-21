@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"testing"
 
 	"cosmossdk.io/log"
@@ -346,7 +345,6 @@ func CreateNClobPair(
 					items[i].StepBaseQuantums,
 					perps[i].Params.LiquidityTier,
 					perps[i].Params.DangerIndexPpm,
-					fmt.Sprintf("%d", perps[i].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 				),
 			),
 		).Return()

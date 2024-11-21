@@ -3594,7 +3594,6 @@ func main() {
       "openInterest": "string",
       "atomicResolution": 0.1,
       "dangerIndexPpm": 0.1,
-      "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock": "string",
       "quantumConversionExponent": 0.1,
       "tickSize": "string",
       "stepSize": "string",
@@ -3619,7 +3618,6 @@ func main() {
       "openInterest": "string",
       "atomicResolution": 0.1,
       "dangerIndexPpm": 0.1,
-      "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock": "string",
       "quantumConversionExponent": 0.1,
       "tickSize": "string",
       "stepSize": "string",
@@ -6356,7 +6354,6 @@ or
   "openInterest": "string",
   "atomicResolution": 0.1,
   "dangerIndexPpm": 0.1,
-  "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock": "string",
   "quantumConversionExponent": 0.1,
   "tickSize": "string",
   "stepSize": "string",
@@ -6387,7 +6384,6 @@ or
 |openInterest|string|true|none|none|
 |atomicResolution|number(double)|true|none|none|
 |dangerIndexPpm|number(double)|true|none|none|
-|isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock|string|true|none|none|
 |quantumConversionExponent|number(double)|true|none|none|
 |tickSize|string|true|none|none|
 |stepSize|string|true|none|none|
@@ -6422,7 +6418,6 @@ or
       "openInterest": "string",
       "atomicResolution": 0.1,
       "dangerIndexPpm": 0.1,
-      "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock": "string",
       "quantumConversionExponent": 0.1,
       "tickSize": "string",
       "stepSize": "string",
@@ -6447,7 +6442,6 @@ or
       "openInterest": "string",
       "atomicResolution": 0.1,
       "dangerIndexPpm": 0.1,
-      "isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock": "string",
       "quantumConversionExponent": 0.1,
       "tickSize": "string",
       "stepSize": "string",

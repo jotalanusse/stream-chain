@@ -106,7 +106,6 @@ func (k Keeper) CreatePerpetualClobPair(
 				stepSizeBaseQuantums.ToUint64(),
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
-				fmt.Sprintf("%d", perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 			),
 		),
 	)

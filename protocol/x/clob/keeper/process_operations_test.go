@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
 	"time"
@@ -2388,7 +2387,6 @@ func setupProcessProposerOperationsTestCase(
 			p.Params.DefaultFundingPpm,
 			p.Params.LiquidityTier,
 			p.Params.DangerIndexPpm,
-			p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 			p.Params.IsolatedMarketMultiCollateralAssets,
 			p.Params.QuoteAssetId,
 			p.Params.CollateralPoolId,
@@ -2431,7 +2429,6 @@ func setupProcessProposerOperationsTestCase(
 						clobPair.StepBaseQuantums,
 						tc.perpetuals[perpetualId].Params.LiquidityTier,
 						tc.perpetuals[perpetualId].Params.DangerIndexPpm,
-						fmt.Sprintf("%d", tc.perpetuals[perpetualId].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),
 				),
 			).Once().Return()

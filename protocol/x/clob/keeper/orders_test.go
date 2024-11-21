@@ -759,7 +759,6 @@ func TestPlaceShortTermOrder(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
@@ -1019,7 +1018,6 @@ func TestAddPreexistingStatefulOrder(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 					p.Params.IsolatedMarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
@@ -1175,7 +1173,6 @@ func TestPlaceOrder_SendOffchainMessages(t *testing.T) {
 				constants.ClobPair_Btc.StepBaseQuantums,
 				constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.LiquidityTier,
 				constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.DangerIndexPpm,
-				fmt.Sprintf("%d", constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 			),
 		),
 	).Once().Return()
@@ -1240,7 +1237,6 @@ func TestPerformStatefulOrderValidation_PreExistingStatefulOrder(t *testing.T) {
 				constants.ClobPair_Btc.StepBaseQuantums,
 				constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.LiquidityTier,
 				constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.DangerIndexPpm,
-				fmt.Sprintf("%d", constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 			),
 		),
 	).Once().Return()
@@ -2005,7 +2001,6 @@ func TestGetStatePosition_Success(t *testing.T) {
 							cp.StepBaseQuantums,
 							constants.Perpetuals_DefaultGenesisState.Perpetuals[i].Params.LiquidityTier,
 							constants.Perpetuals_DefaultGenesisState.Perpetuals[i].Params.DangerIndexPpm,
-							fmt.Sprintf("%d", constants.Perpetuals_DefaultGenesisState.Perpetuals[i].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 						),
 					),
 				).Once().Return()
@@ -2220,7 +2215,6 @@ func TestInitStatefulOrders(t *testing.T) {
 						constants.ClobPair_Btc.StepBaseQuantums,
 						constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.LiquidityTier,
 						constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.DangerIndexPpm,
-						fmt.Sprintf("%d", constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),
 				),
 			).Once().Return()
@@ -2353,7 +2347,6 @@ func TestHydrateUntriggeredConditionalOrdersInMemClob(t *testing.T) {
 						constants.ClobPair_Btc.StepBaseQuantums,
 						constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.LiquidityTier,
 						constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.DangerIndexPpm,
-						fmt.Sprintf("%d", constants.Perpetuals_DefaultGenesisState.Perpetuals[0].Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),
 				),
 			).Once().Return()

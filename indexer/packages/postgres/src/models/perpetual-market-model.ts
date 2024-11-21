@@ -64,7 +64,6 @@ export default class PerpetualMarketModel extends Model {
         'quantumConversionExponent',
         'atomicResolution',
         'dangerIndexPpm',
-        'isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock',
         'subticksPerTick',
         'stepBaseQuantums',
         'liquidityTierId',
@@ -83,7 +82,6 @@ export default class PerpetualMarketModel extends Model {
         quantumConversionExponent: { type: 'integer' },
         atomicResolution: { type: 'integer' },
         dangerIndexPpm: { type: 'integer' },
-        isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: { type: 'string', pattern: IntegerPattern },
         subticksPerTick: { type: 'integer' },
         stepBaseQuantums: { type: 'integer' },
         liquidityTierId: { type: 'integer' },
@@ -113,7 +111,6 @@ export default class PerpetualMarketModel extends Model {
       quantumConversionExponent: 'integer',
       atomicResolution: 'integer',
       dangerIndexPpm: 'integer',
-      isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 'string',
       subticksPerTick: 'integer',
       stepBaseQuantums: 'integer',
       liquidityTierId: 'integer',
@@ -146,8 +143,6 @@ export default class PerpetualMarketModel extends Model {
   atomicResolution!: number;
 
   dangerIndexPpm!: number;
-
-  isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock!: string;
 
   subticksPerTick!: number;
 

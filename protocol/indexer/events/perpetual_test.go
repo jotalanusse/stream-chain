@@ -23,7 +23,6 @@ func TestNewUpdatePerpetualEventV1_Success(t *testing.T) {
 		AtomicResolution: -8,
 		LiquidityTier:    2,
 		DangerIndexPpm:   1000000,
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: "0",
 	}
 	require.Equal(t, expectedUpdatePerpetualEventV1Proto, updatePerpetualEventV1)
 }

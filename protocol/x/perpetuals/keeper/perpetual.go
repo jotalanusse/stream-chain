@@ -71,7 +71,6 @@ func (k Keeper) CreatePerpetual(
 	defaultFundingPpm int32,
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
-	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 	collateralPoolId uint32,
@@ -87,17 +86,16 @@ func (k Keeper) CreatePerpetual(
 	// Create the perpetual.
 	perpetual := types.Perpetual{
 		Params: types.PerpetualParams{
-			Id:                id,
-			Ticker:            ticker,
-			MarketId:          marketId,
-			AtomicResolution:  atomicResolution,
-			DefaultFundingPpm: defaultFundingPpm,
-			LiquidityTier:     liquidityTier,
-			DangerIndexPpm:    dangerIndexPpm,
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-			IsolatedMarketMultiCollateralAssets:                   isolatedMarketMultiCollateralAssets,
-			QuoteAssetId:                                          quoteAssetId,
-			CollateralPoolId:                                      collateralPoolId,
+			Id:                                  id,
+			Ticker:                              ticker,
+			MarketId:                            marketId,
+			AtomicResolution:                    atomicResolution,
+			DefaultFundingPpm:                   defaultFundingPpm,
+			LiquidityTier:                       liquidityTier,
+			DangerIndexPpm:                      dangerIndexPpm,
+			IsolatedMarketMultiCollateralAssets: isolatedMarketMultiCollateralAssets,
+			QuoteAssetId:                        quoteAssetId,
+			CollateralPoolId:                    collateralPoolId,
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),
@@ -140,7 +138,6 @@ func (k Keeper) ModifyPerpetual(
 	defaultFundingPpm int32,
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
-	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
 	isolatedMarketMultiCollateralAssets *perptypes.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 	collateralPoolId uint32,
@@ -157,7 +154,6 @@ func (k Keeper) ModifyPerpetual(
 	perpetual.Params.DefaultFundingPpm = defaultFundingPpm
 	perpetual.Params.LiquidityTier = liquidityTier
 	perpetual.Params.DangerIndexPpm = dangerIndexPpm
-	perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
 	perpetual.Params.IsolatedMarketMultiCollateralAssets = isolatedMarketMultiCollateralAssets
 	perpetual.Params.QuoteAssetId = quoteAssetId
 	perpetual.Params.CollateralPoolId = collateralPoolId
@@ -179,7 +175,6 @@ func (k Keeper) ModifyPerpetual(
 				perpetual.Params.AtomicResolution,
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
-				lib.UintToString(perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 			),
 		),
 	)

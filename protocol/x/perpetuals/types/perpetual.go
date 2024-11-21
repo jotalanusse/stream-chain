@@ -26,13 +26,6 @@ func (p *PerpetualParams) Validate() error {
 			lib.IntToString(p.DefaultFundingPpm))
 	}
 
-	if p.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock == 0 {
-		return errorsmod.Wrap(
-			ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
-			lib.UintToString(p.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
-		)
-	}
-
 	if len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
 		return errorsmod.Wrap(
 			ErrIsolatedMarketMultiCollateralAssetsEmpty,

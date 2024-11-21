@@ -158,7 +158,6 @@ export const defaultPerpetualMarketCreateEventV2: PerpetualMarketCreateEventV2 =
   stepBaseQuantums: Long.fromValue(10, true),
   liquidityTier: 0,
   dangerIndexPpm: 1000000,
-  isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: '1000000',
 };
 
 export const defaultLiquidityTierUpsertEventV2: LiquidityTierUpsertEventV2 = {
@@ -200,7 +199,6 @@ export const defaultUpdatePerpetualEvent: UpdatePerpetualEventV1 = {
   atomicResolution: -8,
   liquidityTier: 1,
   dangerIndexPpm: 1000000,
-  isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: '0',
 };
 
 export const defaultUpdateClobPairEvent: UpdateClobPairEventV1 = {

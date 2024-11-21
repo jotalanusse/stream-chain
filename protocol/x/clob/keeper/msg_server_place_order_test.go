@@ -3,7 +3,6 @@ package keeper_test
 import (
 	"context"
 	"errors"
-	"fmt"
 	"math/big"
 	"testing"
 	"time"
@@ -150,7 +149,6 @@ func TestPlaceOrder_Error(t *testing.T) {
 				perpetual.Params.DefaultFundingPpm,
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
-				perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				perpetual.Params.IsolatedMarketMultiCollateralAssets,
 				perpetual.Params.QuoteAssetId,
 				perpetual.Params.CollateralPoolId,
@@ -200,7 +198,6 @@ func TestPlaceOrder_Error(t *testing.T) {
 						clobPair.StepBaseQuantums,
 						perpetual.Params.LiquidityTier,
 						perpetual.Params.DangerIndexPpm,
-						fmt.Sprintf("%d", perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),
 				),
 			).Once().Return()
@@ -330,7 +327,6 @@ func TestPlaceOrder_Success(t *testing.T) {
 				perpetual.Params.DefaultFundingPpm,
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
-				perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
 				perpetual.Params.IsolatedMarketMultiCollateralAssets,
 				perpetual.Params.QuoteAssetId,
 				perpetual.Params.CollateralPoolId,
@@ -361,7 +357,6 @@ func TestPlaceOrder_Success(t *testing.T) {
 						clobPair.StepBaseQuantums,
 						perpetual.Params.LiquidityTier,
 						perpetual.Params.DangerIndexPpm,
-						fmt.Sprintf("%d", perpetual.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock),
 					),
 				),
 			).Once().Return()

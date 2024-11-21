@@ -44,12 +44,6 @@ func WithLiquidityTier(liquidityTier uint32) PerpetualModifierOption {
 	}
 }
 
-func WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(delta uint64) PerpetualModifierOption {
-	return func(cp *perptypes.Perpetual) {
-		cp.Params.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = delta
-	}
-}
-
 func WithCollateralPoolId(collateralPoolId uint32) PerpetualModifierOption {
 	return func(cp *perptypes.Perpetual) {
 		cp.Params.CollateralPoolId = collateralPoolId
@@ -88,9 +82,8 @@ func GeneratePerpetual(optionalModifications ...PerpetualModifierOption) *perpty
 			DefaultFundingPpm: 0,
 			LiquidityTier:     0,
 			DangerIndexPpm:    0,
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
-			QuoteAssetId:     0,
-			CollateralPoolId: 0,
+			QuoteAssetId:      0,
+			CollateralPoolId:  0,
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),

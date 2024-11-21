@@ -36,7 +36,6 @@ func TestNewPerpetualMarketCreateEvent_Success(t *testing.T) {
 		StepBaseQuantums:          5,
 		LiquidityTier:             0,
 		DangerIndexPpm:            1000000,
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: "0",
 	}
 	require.Equal(t, expectedPerpetualMarketCreateEventProto, perpetualMarketCreateEvent)
 }
