@@ -868,13 +868,17 @@ const GenesisStateNoVeIBC3 = `{
         {
           "collateral_pool_id": 0,
           "max_cumulative_insurance_fund_delta_per_block": 1000000,
-          "multi_collateral_assets": [0],
+          "multi_collateral_assets": {
+            "multi_collateral_assets": [0]
+          },
           "quote_asset_id": 0
         },
         {
           "collateral_pool_id": 1,
           "max_cumulative_insurance_fund_delta_per_block": 1000000,
-          "multi_collateral_assets": [1],
+          "multi_collateral_assets": {
+            "multi_collateral_assets": [1]
+          },
           "quote_asset_id": 1
         }
       ],
@@ -941,8 +945,7 @@ const GenesisStateNoVeIBC3 = `{
             "id": 0,
             "liquidity_tier": 0,
             "market_id": 0,
-            "ticker": "BTC-USD",
-            "market_type": 0
+            "ticker": "BTC-USD"
           }
         },
         {
@@ -952,8 +955,7 @@ const GenesisStateNoVeIBC3 = `{
             "id": 1,
             "liquidity_tier": 0,
             "market_id": 1,
-            "ticker": "ETH-USD",
-            "market_type": 0
+            "ticker": "ETH-USD"
           }
         }
       ]

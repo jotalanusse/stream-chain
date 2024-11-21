@@ -33,9 +33,9 @@ func (_m *PerpetualsKeeper) AddPremiumVotes(ctx types.Context, votes []perpetual
 	return r0
 }
 
-// CreatePerpetual provides a mock function with given fields: ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId
-func (_m *PerpetualsKeeper) CreatePerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, atomicResolution int32, defaultFundingPpm int32, liquidityTier uint32, marketType perpetualstypes.PerpetualMarketType, dangerIndexPpm uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, multiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.Perpetual, error) {
-	ret := _m.Called(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+// CreatePerpetual provides a mock function with given fields: ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId
+func (_m *PerpetualsKeeper) CreatePerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, atomicResolution int32, defaultFundingPpm int32, liquidityTier uint32, dangerIndexPpm uint32, collateralPoolId uint32) (perpetualstypes.Perpetual, error) {
+	ret := _m.Called(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreatePerpetual")
@@ -43,17 +43,17 @@ func (_m *PerpetualsKeeper) CreatePerpetual(ctx types.Context, id uint32, ticker
 
 	var r0 perpetualstypes.Perpetual
 	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, int32, uint32, perpetualstypes.PerpetualMarketType, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.Perpetual, error)); ok {
-		return rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, int32, uint32, uint32, uint32) (perpetualstypes.Perpetual, error)); ok {
+		return rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, int32, uint32, perpetualstypes.PerpetualMarketType, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.Perpetual); ok {
-		r0 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, int32, uint32, uint32, uint32) perpetualstypes.Perpetual); ok {
+		r0 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 	} else {
 		r0 = ret.Get(0).(perpetualstypes.Perpetual)
 	}
 
-	if rf, ok := ret.Get(1).(func(types.Context, uint32, string, uint32, int32, int32, uint32, perpetualstypes.PerpetualMarketType, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
-		r1 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	if rf, ok := ret.Get(1).(func(types.Context, uint32, string, uint32, int32, int32, uint32, uint32, uint32) error); ok {
+		r1 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -75,6 +75,26 @@ func (_m *PerpetualsKeeper) GetAddPremiumVotes(ctx types.Context) *perpetualstyp
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*perpetualstypes.MsgAddPremiumVotes)
+		}
+	}
+
+	return r0
+}
+
+// GetAllCollateralPools provides a mock function with given fields: ctx
+func (_m *PerpetualsKeeper) GetAllCollateralPools(ctx types.Context) []perpetualstypes.CollateralPool {
+	ret := _m.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetAllCollateralPools")
+	}
+
+	var r0 []perpetualstypes.CollateralPool
+	if rf, ok := ret.Get(0).(func(types.Context) []perpetualstypes.CollateralPool); ok {
+		r0 = rf(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]perpetualstypes.CollateralPool)
 		}
 	}
 
@@ -121,6 +141,34 @@ func (_m *PerpetualsKeeper) GetAllPerpetuals(ctx types.Context) []perpetualstype
 	return r0
 }
 
+// GetCollateralPool provides a mock function with given fields: ctx, id
+func (_m *PerpetualsKeeper) GetCollateralPool(ctx types.Context, id uint32) (perpetualstypes.CollateralPool, error) {
+	ret := _m.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetCollateralPool")
+	}
+
+	var r0 perpetualstypes.CollateralPool
+	var r1 error
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) (perpetualstypes.CollateralPool, error)); ok {
+		return rf(ctx, id)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) perpetualstypes.CollateralPool); ok {
+		r0 = rf(ctx, id)
+	} else {
+		r0 = ret.Get(0).(perpetualstypes.CollateralPool)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, uint32) error); ok {
+		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetMarginRequirements provides a mock function with given fields: ctx, id, bigQuantums, quoteCurrencyAtomicResolution
 func (_m *PerpetualsKeeper) GetMarginRequirements(ctx types.Context, id uint32, bigQuantums *big.Int, quoteCurrencyAtomicResolution int32) (*big.Int, *big.Int, error) {
 	ret := _m.Called(ctx, id, bigQuantums, quoteCurrencyAtomicResolution)
@@ -158,34 +206,6 @@ func (_m *PerpetualsKeeper) GetMarginRequirements(ctx types.Context, id uint32, 
 	}
 
 	return r0, r1, r2
-}
-
-// GetMultiCollateralAssets provides a mock function with given fields: ctx
-func (_m *PerpetualsKeeper) GetMultiCollateralAssets(ctx types.Context) (perpetualstypes.MultiCollateralAssetsArray, bool) {
-	ret := _m.Called(ctx)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GetMultiCollateralAssets")
-	}
-
-	var r0 perpetualstypes.MultiCollateralAssetsArray
-	var r1 bool
-	if rf, ok := ret.Get(0).(func(types.Context) (perpetualstypes.MultiCollateralAssetsArray, bool)); ok {
-		return rf(ctx)
-	}
-	if rf, ok := ret.Get(0).(func(types.Context) perpetualstypes.MultiCollateralAssetsArray); ok {
-		r0 = rf(ctx)
-	} else {
-		r0 = ret.Get(0).(perpetualstypes.MultiCollateralAssetsArray)
-	}
-
-	if rf, ok := ret.Get(1).(func(types.Context) bool); ok {
-		r1 = rf(ctx)
-	} else {
-		r1 = ret.Get(1).(bool)
-	}
-
-	return r0, r1
 }
 
 // GetNetCollateral provides a mock function with given fields: ctx, id, bigQuantums, quoteCurrencyAtomicResolution
@@ -266,6 +286,52 @@ func (_m *PerpetualsKeeper) HasAuthority(authority string) bool {
 	return r0
 }
 
+// HasCollateralPool provides a mock function with given fields: ctx, id
+func (_m *PerpetualsKeeper) HasCollateralPool(ctx types.Context, id uint32) bool {
+	ret := _m.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for HasCollateralPool")
+	}
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) bool); ok {
+		r0 = rf(ctx, id)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
+}
+
+// IsMainCollateralPool provides a mock function with given fields: ctx, perpetualId
+func (_m *PerpetualsKeeper) IsMainCollateralPool(ctx types.Context, perpetualId uint32) (bool, error) {
+	ret := _m.Called(ctx, perpetualId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for IsMainCollateralPool")
+	}
+
+	var r0 bool
+	var r1 error
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) (bool, error)); ok {
+		return rf(ctx, perpetualId)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, uint32) bool); ok {
+		r0 = rf(ctx, perpetualId)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, uint32) error); ok {
+		r1 = rf(ctx, perpetualId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // MaybeProcessNewFundingSampleEpoch provides a mock function with given fields: ctx
 func (_m *PerpetualsKeeper) MaybeProcessNewFundingSampleEpoch(ctx types.Context) {
 	_m.Called(ctx)
@@ -294,9 +360,9 @@ func (_m *PerpetualsKeeper) ModifyOpenInterest(ctx types.Context, perpetualId ui
 	return r0
 }
 
-// ModifyPerpetual provides a mock function with given fields: ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId
-func (_m *PerpetualsKeeper) ModifyPerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, defaultFundingPpm int32, liquidityTier uint32, dangerIndexPpm uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, multiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.Perpetual, error) {
-	ret := _m.Called(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+// ModifyPerpetual provides a mock function with given fields: ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId
+func (_m *PerpetualsKeeper) ModifyPerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, defaultFundingPpm int32, liquidityTier uint32, dangerIndexPpm uint32, collateralPoolId uint32) (perpetualstypes.Perpetual, error) {
+	ret := _m.Called(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ModifyPerpetual")
@@ -304,17 +370,17 @@ func (_m *PerpetualsKeeper) ModifyPerpetual(ctx types.Context, id uint32, ticker
 
 	var r0 perpetualstypes.Perpetual
 	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.Perpetual, error)); ok {
-		return rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint32) (perpetualstypes.Perpetual, error)); ok {
+		return rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 	}
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.Perpetual); ok {
-		r0 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint32) perpetualstypes.Perpetual); ok {
+		r0 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 	} else {
 		r0 = ret.Get(0).(perpetualstypes.Perpetual)
 	}
 
-	if rf, ok := ret.Get(1).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
-		r1 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	if rf, ok := ret.Get(1).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint32) error); ok {
+		r1 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, collateralPoolId)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -345,6 +411,34 @@ func (_m *PerpetualsKeeper) SendOIUpdatesToIndexer(ctx types.Context) {
 	_m.Called(ctx)
 }
 
+// SetCollateralPool provides a mock function with given fields: ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId
+func (_m *PerpetualsKeeper) SetCollateralPool(ctx types.Context, collateralPoolId uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, multiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.CollateralPool, error) {
+	ret := _m.Called(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SetCollateralPool")
+	}
+
+	var r0 perpetualstypes.CollateralPool
+	var r1 error
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.CollateralPool, error)); ok {
+		return rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.CollateralPool); ok {
+		r0 = rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	} else {
+		r0 = ret.Get(0).(perpetualstypes.CollateralPool)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
+		r1 = rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SetLiquidityTier provides a mock function with given fields: ctx, id, name, initialMarginPpm, maintenanceFractionPpm, impactNotional, openInterestLowerCap, openInterestUpperCap
 func (_m *PerpetualsKeeper) SetLiquidityTier(ctx types.Context, id uint32, name string, initialMarginPpm uint32, maintenanceFractionPpm uint32, impactNotional uint64, openInterestLowerCap uint64, openInterestUpperCap uint64) (perpetualstypes.LiquidityTier, error) {
 	ret := _m.Called(ctx, id, name, initialMarginPpm, maintenanceFractionPpm, impactNotional, openInterestLowerCap, openInterestUpperCap)
@@ -371,11 +465,6 @@ func (_m *PerpetualsKeeper) SetLiquidityTier(ctx types.Context, id uint32, name 
 	}
 
 	return r0, r1
-}
-
-// SetMultiCollateralAssets provides a mock function with given fields: ctx, assets
-func (_m *PerpetualsKeeper) SetMultiCollateralAssets(ctx types.Context, assets perpetualstypes.MultiCollateralAssetsArray) {
-	_m.Called(ctx, assets)
 }
 
 // SetParams provides a mock function with given fields: ctx, params

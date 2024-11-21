@@ -285,11 +285,9 @@ func CreateNPerpetuals(
 		CreateNMarkets(t, ctx, pricesKeeper, n)
 
 		var defaultFundingPpm int32
-		maxInsuranceFundDelta := uint64(0)
 
 		if i%3 == 0 {
 			defaultFundingPpm = 1
-			maxInsuranceFundDelta = uint64(1_000_000)
 		} else if i%3 == 1 {
 			defaultFundingPpm = -1
 		} else {
@@ -304,7 +302,6 @@ func CreateNPerpetuals(
 			int32(i),             // AtomicResolution
 			defaultFundingPpm,    // DefaultFundingPpm
 			allLiquidityTiers[i%len(allLiquidityTiers)].Id, // LiquidityTier
-			0,
 			0,
 			0,
 		)
