@@ -126,6 +126,7 @@ type PerpetualsKeeper interface {
 		err error,
 	)
 	GetAllCollateralPools(ctx sdk.Context) (list []CollateralPool)
+	IsMainCollateralPool(ctx sdk.Context, perpetualId uint32) (bool, error)
 	SetParams(
 		ctx sdk.Context,
 		params Params,

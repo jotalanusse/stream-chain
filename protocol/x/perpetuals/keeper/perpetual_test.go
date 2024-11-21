@@ -99,7 +99,6 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			marketId,
 			defaultFundingPpm,
 			liquidityTier,
-			uint32(0),
 			0,
 			1,
 		)
@@ -956,7 +955,6 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 				0,                               // LiquidityTier
 				0,
 				0,
-				0,
 			)
 			require.NoError(t, err)
 
@@ -1174,7 +1172,6 @@ func TestGetNetNotional_Success(t *testing.T) {
 				0,                               // LiquidityTier
 				0,
 				0,
-				0,
 			)
 			require.NoError(t, err)
 
@@ -1341,7 +1338,6 @@ func TestGetNetCollateral_Success(t *testing.T) {
 				marketId,                        // MarketId
 				tc.baseCurrencyAtomicResolution, // AtomicResolution
 				int32(0),                        // DefaultFundingPpm
-				0,
 				0,
 				0,
 				0,
@@ -3698,19 +3694,21 @@ func TestIsPositionUpdatable(t *testing.T) {
 	}
 }
 
-func TestIsIsolatedPerpetual(t *testing.T) {
+func TestIsMainCollateralPool(t *testing.T) {
 	testCases := map[string]struct {
 		perp     types.Perpetual
 		expected bool
 	}{
-		"Isolated Perpetual": {
+		"Main Collateral Pool": {
 			perp: *perptest.GeneratePerpetual(
 				perptest.WithCollateralPoolId(0),
 			),
 			expected: true,
 		},
-		"Cross Perpetual": {
-			perp:     *perptest.GeneratePerpetual(),
+		"Other Collateral Pool": {
+			perp: *perptest.GeneratePerpetual(
+				perptest.WithCollateralPoolId(1),
+			),
 			expected: false,
 		},
 	}
@@ -3729,9 +3727,9 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 
 				err := perpetualsKeeper.ValidateAndSetPerpetual(ctx, tc.perp)
 				require.NoError(t, err)
-				isIsolated, err := perpetualsKeeper.IsIsolatedPerpetual(ctx, tc.perp.Params.Id)
+				isMainCollateralPool, err := perpetualsKeeper.IsMainCollateralPool(ctx, tc.perp.Params.Id)
 				require.NoError(t, err)
-				require.Equal(t, tc.expected, isIsolated)
+				require.Equal(t, tc.expected, isMainCollateralPool)
 			},
 		)
 	}

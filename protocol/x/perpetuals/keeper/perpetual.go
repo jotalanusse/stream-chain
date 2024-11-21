@@ -1736,6 +1736,14 @@ func (k Keeper) setCollateralPool(
 	collateralPoolStore.Set(lib.Uint32ToKey(collateralPool.CollateralPoolId), b)
 }
 
+func (k Keeper) IsMainCollateralPool(ctx sdk.Context, perpetualId uint32) (bool, error) {
+	perpetual, err := k.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		return false, err
+	}
+	return perpetual.Params.CollateralPoolId == 0, nil
+}
+
 /* === PARAMETERS FUNCTIONS === */
 // `GetParams` returns perpetuals module parameters as a `Params` object from store.
 func (k Keeper) GetParams(

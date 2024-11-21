@@ -23,7 +23,7 @@ func TestGetSetNegativeTncSubaccountSeenAtBlock(t *testing.T) {
 	testsuffixes := []string{
 		lib.UintToString(constants.IsoUsd_IsolatedMarket.Params.Id),
 		lib.UintToString(constants.Iso2Usd_IsolatedMarket.Params.Id),
-		types.CrossCollateralSuffix,
+		types.NegativeTncSuffix,
 	}
 	tests := map[string]struct {
 		// Setup.

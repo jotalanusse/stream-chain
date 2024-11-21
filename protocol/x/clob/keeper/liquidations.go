@@ -88,11 +88,12 @@ func (k Keeper) LiquidateSubaccountsAgainstOrderbookInternal(
 		}
 
 		// will always have at least one perpetual position
-		isIsolated, err := k.perpetualsKeeper.IsIsolatedPerpetual(ctx, subaccount.PerpetualPositions[0].PerpetualId)
+		// TODO: generalize this to have configurable limits for different collateral pools
+		isMainCollateralPool, err := k.perpetualsKeeper.IsMainCollateralPool(ctx, subaccount.PerpetualPositions[0].PerpetualId)
 		if err != nil {
 			return nil, err
 		}
-		if isIsolated {
+		if !isMainCollateralPool {
 			if numIsolatedLiquidations < int(k.Flags.MaxIsolatedLiquidationAttemptsPerBlock) {
 				numIsolatedLiquidations++
 			} else {

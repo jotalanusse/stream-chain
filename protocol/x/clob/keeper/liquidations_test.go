@@ -5931,7 +5931,7 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 	}
 }
 
-func TestIsIsolatedPerpetualError_InLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
+func TestIsMainCollateralPoolError_InLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 	tests := map[string]struct {
 		perpetuals                             []perptypes.Perpetual
 		subaccounts                            []satypes.Subaccount

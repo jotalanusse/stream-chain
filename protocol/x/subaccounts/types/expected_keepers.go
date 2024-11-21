@@ -87,7 +87,6 @@ type PerpetualsKeeper interface {
 	GetInsuranceFundName(ctx sdk.Context, perpetualId uint32) (string, error)
 	GetInsuranceFundModuleAddress(ctx sdk.Context, perpetualId uint32) (sdk.AccAddress, error)
 	ModifyOpenInterest(ctx sdk.Context, perpetualId uint32, bigQuantums *big.Int) error
-	IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error)
 	GetCollateralPool(ctx sdk.Context, id uint32) (
 		collateralPool perptypes.CollateralPool,
 		err error,

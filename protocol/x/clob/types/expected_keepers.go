@@ -157,7 +157,7 @@ type PerpetualsKeeper interface {
 		collateralPool perpetualsmoduletypes.CollateralPool,
 		err error,
 	)
-	IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error)
+	IsMainCollateralPool(ctx sdk.Context, perpetualId uint32) (bool, error)
 	GetPerpetualAndMarketPrice(
 		ctx sdk.Context,
 		perpetualId uint32,
