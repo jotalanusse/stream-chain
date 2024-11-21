@@ -26,6 +26,7 @@ import (
 	"cosmossdk.io/store/prefix"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	big_testutil "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/big"
+	cptest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/collateral_pool"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	lttest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/liquidity_tier"
@@ -83,7 +84,7 @@ func TestModifyPerpetual_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	numLiquidityTiers := 4
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 	numMarkets := keepertest.GetNumMarkets(t, pc.Ctx, pc.PricesKeeper)
 	expectedIndexerEvents := make([]*indexerevents.UpdatePerpetualEventV1, len(perps))
 	for i, item := range perps {
@@ -104,6 +105,7 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			uint64(1000000),
 			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			0,
+			1,
 		)
 		require.NoError(t, err)
 
@@ -288,6 +290,19 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
 			expectedError: types.ErrTickerEmptyString,
 		},
+		"Collateral pool doesn't exist": {
+			id:                0,
+			ticker:            "ticker",
+			marketId:          0,
+			atomicResolution:  -10,
+			defaultFundingPpm: 0,
+			liquidityTier:     0,
+			yieldIndex:        "0/1",
+			dangerIndexPpm:    0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(0),
+			collateralPoolId: 9999,
+			expectedError:    errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
+		},
 	}
 
 	// Test setup.
@@ -295,6 +310,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 	keepertest.CreateNMarkets(t, pc.Ctx, pc.PricesKeeper, 1)
 	// Create Liquidity Tiers
 	keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 	// Run tests.
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -393,12 +409,25 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			quoteAssetId:                                          uint32(0),
 			expectedError:                                         errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
 		},
+		"Collateral pool doesn't exist": {
+			id:                0,
+			ticker:            "ticker",
+			marketId:          0,
+			defaultFundingPpm: 0,
+			liquidityTier:     0,
+			dangerIndexPpm:    0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: uint64(1_000_000),
+			isolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                                          uint32(0),
+			collateralPoolId:                                      9999,
+			expectedError:                                         errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
+		},
 	}
 
 	// Test setup.
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	_ = keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+	_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 
 	// Run tests.
 	for name, tc := range tests {
@@ -426,7 +455,7 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 func TestGetPerpetual_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 10)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 10)
 
 	for _, perp := range perps {
 		rst, err := pc.PerpetualsKeeper.GetPerpetual(pc.Ctx,
@@ -446,6 +475,7 @@ func TestHasPerpetual(t *testing.T) {
 
 	// Create liquidity tiers and perpetuals
 	keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 	perps := []types.Perpetual{
 		*perptest.GeneratePerpetual(perptest.WithId(0)),
 		*perptest.GeneratePerpetual(perptest.WithId(5)),
@@ -514,7 +544,7 @@ func TestGetPerpetual_NotFound(t *testing.T) {
 func TestGetPerpetuals_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 10)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 10)
 
 	require.ElementsMatch(t,
 		nullify.Fill(perps), //nolint:staticcheck
@@ -528,6 +558,7 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 
 	// Create liquidity tiers and perpetuals
 	keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 	perps := []types.Perpetual{
 		*perptest.GeneratePerpetual(perptest.WithId(999)),
 		*perptest.GeneratePerpetual(perptest.WithId(5)),
@@ -611,7 +642,7 @@ func TestModifyOpenInterest_Failure(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
-			perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+			perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 
 			// Set up initial open interest
 			require.NoError(t, pc.PerpetualsKeeper.ModifyOpenInterest(
@@ -633,7 +664,7 @@ func TestModifyOpenInterest_Failure(t *testing.T) {
 func TestModifyOpenInterest_Mixed(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 
 	for _, perp := range perps {
 		openInterestDeltaBaseQuantums := big.NewInt(2_000_000_000*(int64(perp.Params.Id)%2) - 1)
@@ -983,6 +1014,8 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 			)
 			require.NoError(t, err)
 
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
+
 			// Create `Perpetual` struct with baseAssetAtomicResolution and marketId.
 			perpetual, err := pc.PerpetualsKeeper.CreatePerpetual(
 				pc.Ctx,
@@ -995,6 +1028,7 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 				0,
 				0,
 				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+				0,
 				0,
 			)
 			require.NoError(t, err)
@@ -1053,7 +1087,7 @@ func TestGetMarginRequirements_MarketNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
 	// Store the perpetual with a bad MarketId.
@@ -1085,7 +1119,7 @@ func TestGetMarginRequirements_LiquidityTierNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
 	// Store the perpetual with a bad LiquidityTier.
@@ -1180,6 +1214,7 @@ func TestGetNetNotional_Success(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 			// Create a new market param and price.
 			marketId := uint32(0)
 			_, err := pc.PricesKeeper.CreateMarket(
@@ -1213,6 +1248,7 @@ func TestGetNetNotional_Success(t *testing.T) {
 				0,
 				0,
 				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+				0,
 				0,
 			)
 			require.NoError(t, err)
@@ -1255,7 +1291,7 @@ func TestGetNetNotional_MarketNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
 	// Store the perpetual with a bad MarketId.
@@ -1350,6 +1386,7 @@ func TestGetNetCollateral_Success(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper) // Test setup.
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 			// Create a new market.
 			marketId := keepertest.GetNumMarkets(t, pc.Ctx, pc.PricesKeeper)
 			_, err := pc.PricesKeeper.CreateMarket(
@@ -1383,6 +1420,7 @@ func TestGetNetCollateral_Success(t *testing.T) {
 				0,
 				0,
 				&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+				0,
 				0,
 			)
 			require.NoError(t, err)
@@ -1425,7 +1463,7 @@ func TestGetNetCollateral_MarketNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
 	// Store the perpetual with a bad MarketId.
@@ -1516,6 +1554,7 @@ func TestGetSettlementPpm_Success(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 			perps, err := keepertest.CreateNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 			require.NoError(t, err)
 
@@ -1563,7 +1602,7 @@ func TestGetSettlementPpm_PerpetualNotFound(t *testing.T) {
 func TestModifyFundingIndex_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 
 	for _, perp := range perps {
 		testFundingIndexDelta := big.NewInt(2*(int64(perp.Params.Id)%2) - 1)
@@ -1623,7 +1662,7 @@ func TestModifyFundingIndex_IntegerOverflowUnderflow(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers and perpetuals,
-			_ = keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 
 			// Set up intitial funding index, should succeed.
 			err := pc.PerpetualsKeeper.ModifyFundingIndex(
@@ -1660,7 +1699,7 @@ func TestModifyLastFundingRate_Success(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers and perpetuals,
-			_ = keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
+			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 			err := pc.PerpetualsKeeper.ModifyLastFundingRate(pc.Ctx, tc.perpetualId, tc.lastFundingRateDelta)
 			require.NoError(t, err)
 			perpetual, err := pc.PerpetualsKeeper.GetPerpetual(pc.Ctx, tc.perpetualId)
@@ -2113,6 +2152,7 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, pc.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, pc.PerpetualsKeeper)
 
 			keepertest.CreateTDaiAsset(ctx, pc.AssetsKeeper)
 
@@ -2318,7 +2358,7 @@ func TestMaybeProcessNewFundingTickEpoch_NoNewEpoch(t *testing.T) {
 
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 
 	err := pc.EpochsKeeper.CreateEpochInfo(
 		pc.Ctx,
@@ -2458,7 +2498,7 @@ func TestGetAddPremiumVotes_Success(t *testing.T) {
 			)
 
 			// Create liquidity tiers and perpetuals,
-			_ = keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, tc.numPerpetuals)
+			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, tc.numPerpetuals)
 
 			err := pc.EpochsKeeper.CreateEpochInfo(
 				pc.Ctx,
@@ -2588,7 +2628,7 @@ func TestAddPremiums_Success(t *testing.T) {
 
 		// Create liquidity tiers and perpetuals,
 		numPerpetuals := 10
-		perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, numPerpetuals)
+		perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, numPerpetuals)
 
 		// Insert one round of premiums for all perps.
 		firstPremiums := make([]types.FundingPremium, numPerpetuals)
@@ -2718,7 +2758,7 @@ func TestAddPremiums_NonExistingPerpetuals(t *testing.T) {
 		}
 
 		// Create liquidity tiers and perpetuals,
-		_ = keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 3)
+		_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 3)
 
 		err := tc.addPremiumFunc(pc.PerpetualsKeeper, pc.Ctx, newPremiums)
 		require.ErrorIs(t, err, types.ErrPerpetualDoesNotExist)
@@ -2982,7 +3022,7 @@ func TestMaybeProcessNewFundingSampleEpoch(t *testing.T) {
 			require.NoError(t, err)
 
 			// Create liquidity tiers and perpetuals,
-			_ = keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 4)
+			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 4)
 			require.NoError(t, err)
 
 			params := pc.PerpetualsKeeper.GetParams(pc.Ctx)
@@ -3355,6 +3395,263 @@ func TestSetLiquidityTier_Existing_Failure(t *testing.T) {
 	}
 }
 
+func TestGetAllCollateralPools_Sorted(t *testing.T) {
+	// Setup context and keepers
+	pc := keepertest.PerpetualsKeepers(t)
+
+	// Create liquidity tiers and perpetuals
+	// keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
+	pools := []types.CollateralPool{
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(0)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(100)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(5)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(72)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(16)),
+	}
+
+	for _, pool := range pools {
+		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+			pc.Ctx,
+			pool.CollateralPoolId,
+			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.IsolatedMarketMultiCollateralAssets,
+			pool.QuoteAssetId,
+		)
+		require.NoError(t, err)
+	}
+
+	got := pc.PerpetualsKeeper.GetAllCollateralPools(pc.Ctx)
+	require.Equal(
+		t,
+		[]types.CollateralPool{
+			*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(0)),
+			*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(5)),
+			*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(16)),
+			*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(72)),
+			*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(100)),
+		},
+		got,
+	)
+}
+
+func TestHasCollateralPool(t *testing.T) {
+	// Setup context and keepers
+	pc := keepertest.PerpetualsKeepers(t)
+
+	pools := []types.CollateralPool{
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(0)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(5)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(16)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(72)),
+		*cptest.GenerateCollateralPool(cptest.WithCollateralPoolId(100)),
+	}
+
+	for _, pool := range pools {
+		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+			pc.Ctx,
+			pool.CollateralPoolId,
+			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.IsolatedMarketMultiCollateralAssets,
+			pool.QuoteAssetId,
+		)
+		require.NoError(t, err)
+	}
+
+	for _, pool := range pools {
+		// Test if HasCollateralPool correctly identifies an existing collateral pool.
+		require.True(t, pc.PerpetualsKeeper.HasCollateralPool(pc.Ctx, pool.CollateralPoolId))
+	}
+
+	found := pc.PerpetualsKeeper.HasCollateralPool(pc.Ctx, 9999)
+	require.False(t, found, "Expected not to find collateral pool with id 9999, but it was found")
+}
+
+func TestCreateCollateralPool_Success(t *testing.T) {
+	pc := keepertest.PerpetualsKeepers(t)
+	for _, pool := range constants.CollateralPools {
+		// Create CollateralPool without error.
+		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+			pc.Ctx,
+			pool.CollateralPoolId,
+			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.IsolatedMarketMultiCollateralAssets,
+			pool.QuoteAssetId,
+		)
+		require.NoError(t, err)
+
+		// Validate liquidity tier exists in store.
+		require.True(t, pc.PerpetualsKeeper.HasCollateralPool(pc.Ctx, pool.CollateralPoolId))
+
+		// Validate fields of CollateralPool object in store.
+		collateralPool, err := pc.PerpetualsKeeper.GetCollateralPool(pc.Ctx, pool.CollateralPoolId)
+		require.NoError(t, err)
+		require.Equal(t, pool.CollateralPoolId, collateralPool.CollateralPoolId)
+		require.Equal(t, pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, collateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
+		require.Equal(t, pool.IsolatedMarketMultiCollateralAssets, collateralPool.IsolatedMarketMultiCollateralAssets)
+		require.Equal(t, pool.QuoteAssetId, collateralPool.QuoteAssetId)
+	}
+}
+
+func TestSetCollateralPool_New_Failure(t *testing.T) {
+	tests := map[string]struct {
+		collateralPoolId                                      uint32
+		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
+		isolatedMarketMultiCollateralAssets                   *types.MultiCollateralAssetsArray
+		quoteAssetId                                          uint32
+		expectedError                                         error
+	}{
+		"Isolated market max cumulative insurance fund delta per block is zero": {
+			collateralPoolId: 0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
+			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                                          0,
+			expectedError:                                         types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
+		},
+		"Supported assets is empty": {
+			collateralPoolId: 0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+			quoteAssetId:                                          0,
+			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
+		},
+		"Supported assets does not contain quote asset": {
+			collateralPoolId: 0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                                          1,
+			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+		},
+	}
+
+	// Test setup.
+	pc := keepertest.PerpetualsKeepers(t)
+
+	// Run tests.
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			_, err := pc.PerpetualsKeeper.SetCollateralPool(
+				pc.Ctx,
+				tc.collateralPoolId,
+				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.isolatedMarketMultiCollateralAssets,
+				tc.quoteAssetId,
+			)
+
+			require.Error(t, err)
+			require.EqualError(t, err, tc.expectedError.Error())
+		})
+	}
+}
+
+func TestModifyCollateralPool_Success(t *testing.T) {
+	pc := keepertest.PerpetualsKeepers(t)
+	for _, pool := range constants.CollateralPools {
+		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+			pc.Ctx,
+			pool.CollateralPoolId,
+			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.IsolatedMarketMultiCollateralAssets,
+			pool.QuoteAssetId,
+		)
+		require.NoError(t, err)
+	}
+
+	for i, pool := range constants.CollateralPools {
+		// Modify each field arbitrarily and
+		// verify the fields are modified in state.
+		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock := uint64(i * 1000000)
+		isolatedMarketMultiCollateralAssets := &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
+		quoteAssetId := uint32(i)
+		modifiedPool, err := pc.PerpetualsKeeper.SetCollateralPool(
+			pc.Ctx,
+			pool.CollateralPoolId,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			isolatedMarketMultiCollateralAssets,
+			quoteAssetId,
+		)
+		require.NoError(t, err)
+		obtainedPool, err := pc.PerpetualsKeeper.GetCollateralPool(pc.Ctx, pool.CollateralPoolId)
+		require.NoError(t, err)
+		require.Equal(
+			t,
+			modifiedPool,
+			obtainedPool,
+		)
+		require.Equal(
+			t,
+			pool.CollateralPoolId,
+			obtainedPool.CollateralPoolId,
+		)
+		require.Equal(
+			t,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			obtainedPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+		)
+		require.Equal(
+			t,
+			isolatedMarketMultiCollateralAssets,
+			obtainedPool.IsolatedMarketMultiCollateralAssets,
+		)
+		require.Equal(
+			t,
+			quoteAssetId,
+			obtainedPool.QuoteAssetId,
+		)
+	}
+}
+
+func TestSetCollateralPool_Existing_Failure(t *testing.T) {
+	tests := map[string]struct {
+		collateralPoolId                                      uint32
+		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
+		isolatedMarketMultiCollateralAssets                   *types.MultiCollateralAssetsArray
+		quoteAssetId                                          uint32
+		expectedError                                         error
+	}{
+		"Insurance fund delta per block is zero": {
+			collateralPoolId: 0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
+			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                                          0,
+			expectedError:                                         types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
+		},
+		"Supported assets is empty": {
+			collateralPoolId: 1,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+			quoteAssetId:                                          0,
+			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
+		},
+		"Supported assets does not contain quote asset": {
+			collateralPoolId: 1,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                                          1,
+			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+		},
+	}
+
+	// Test setup.
+	pc := keepertest.PerpetualsKeepers(t)
+	// Create collateral pools.
+	keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
+	// Run tests.
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			_, err := pc.PerpetualsKeeper.SetCollateralPool(
+				pc.Ctx,
+				tc.collateralPoolId,
+				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.isolatedMarketMultiCollateralAssets,
+				tc.quoteAssetId,
+			)
+
+			require.Error(t, err)
+			require.EqualError(t, err, tc.expectedError.Error())
+		})
+	}
+}
+
 func TestSetParams(t *testing.T) {
 	tests := map[string]struct {
 		params      types.Params
@@ -3511,6 +3808,7 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 				ctx = ctx.WithTxBytes(constants.TestTxBytes)
 				keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+				keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 				err := perpetualsKeeper.ValidateAndSetPerpetual(ctx, tc.perp)
 				require.NoError(t, err)
@@ -3524,7 +3822,7 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 
 func TestModifyOpenInterest_store(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
-	perps := keepertest.CreateLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
+	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 	pc.Ctx = pc.Ctx.WithExecMode(sdk.ExecModeFinalize)
 	for _, perp := range perps {
 		openInterestDeltaBaseQuantums := big.NewInt(2_000_000 * (int64(perp.Params.Id)))

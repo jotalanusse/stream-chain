@@ -1007,6 +1007,7 @@ func TestWithdrawalGating_ChainOutage(t *testing.T) {
 					func(genesisState *perptypes.GenesisState) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = constants.LiquidityTiers
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(

@@ -111,6 +111,7 @@ func TestGetInsuranceFundBalanceInQuoteQuantums(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			keepertest.CreateTestPerpetuals(t, ctx, ks.PerpetualsKeeper)
 
@@ -237,6 +238,7 @@ func TestIsValidInsuranceFundDelta(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			keepertest.CreateTestPerpetuals(t, ctx, ks.PerpetualsKeeper)
 
@@ -383,6 +385,7 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			// Update the prices on the test markets.
 			for marketId, oraclePrice := range tc.marketIdToOraclePriceOverride {
@@ -822,6 +825,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 			require.NoError(t, err)
@@ -1344,6 +1348,7 @@ func TestProcessDeleveraging(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 			require.NoError(t, err)
@@ -1584,6 +1589,7 @@ func TestProcessDeleveragingAtOraclePrice(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 			require.NoError(t, err)
@@ -1769,6 +1775,7 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 			require.NoError(t, err)

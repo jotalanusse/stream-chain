@@ -101,6 +101,26 @@ var LiquidityTiers = []perptypes.LiquidityTier{
 	},
 }
 
+// Collateral Pool objects.
+var CollateralPools = []perptypes.CollateralPool{
+	{
+		CollateralPoolId: 0,
+		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		IsolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
+			MultiCollateralAssets: []uint32{0},
+		},
+		QuoteAssetId: 0,
+	},
+	{
+		CollateralPoolId: 1,
+		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		IsolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
+			MultiCollateralAssets: []uint32{1},
+		},
+		QuoteAssetId: 1,
+	},
+}
+
 // Perpetual OI setup in tests
 var (
 	BtcUsd_OpenInterest1_AtomicRes8 = perptypes.OpenInterestDelta{
@@ -143,6 +163,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(0),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -156,6 +177,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(2),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -168,6 +190,7 @@ var (
 			AtomicResolution:  int32(-6),
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(2),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -181,6 +204,7 @@ var (
 			DefaultFundingPpm: int32(-1_000),
 			LiquidityTier:     uint32(1),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -194,6 +218,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(1),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -207,6 +232,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(6),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -220,6 +246,7 @@ var (
 			DefaultFundingPpm: int32(1000), // 0.001%
 			LiquidityTier:     uint32(1),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -234,6 +261,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(8),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -247,6 +275,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(8),
 			DangerIndexPpm:    uint32(1),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -277,6 +306,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(0),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -290,6 +320,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(4),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -303,6 +334,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -316,6 +348,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.NewInt(100_000_000),
@@ -329,6 +362,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.NewInt(200_000_000),
@@ -342,6 +376,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(9),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -355,6 +390,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(7),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -367,6 +403,7 @@ var (
 			AtomicResolution:  int32(-6),
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(5),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -380,6 +417,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(5),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -393,6 +431,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(7),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -406,6 +445,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -419,6 +459,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(1),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -449,6 +490,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(0),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -462,6 +504,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
@@ -512,6 +555,7 @@ var TestMarketPerpetuals = []perptypes.Perpetual{
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(0),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 	},
@@ -524,6 +568,7 @@ var TestMarketPerpetuals = []perptypes.Perpetual{
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(0),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 	},
@@ -536,6 +581,7 @@ var TestMarketPerpetuals = []perptypes.Perpetual{
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
+			CollateralPoolId:  uint32(0),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 	},
@@ -574,6 +620,20 @@ var (
 	InvalidMsgAddPremiumVotesTxBytes []byte
 
 	Perpetuals_DefaultGenesisState = perptypes.GenesisState{
+		CollateralPools: []perptypes.CollateralPool{
+			{
+				CollateralPoolId: 0,
+				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				IsolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+				QuoteAssetId:                                          0,
+			},
+			{
+				CollateralPoolId: 1,
+				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				IsolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+				QuoteAssetId:                                          1,
+			},
+		},
 		LiquidityTiers: []perptypes.LiquidityTier{
 			{
 				Id:                     uint32(0),
@@ -607,10 +667,11 @@ var (
 		Perpetuals: []perptypes.Perpetual{
 			{
 				Params: perptypes.PerpetualParams{
-					Id:             uint32(0),
-					Ticker:         "genesis_test_ticker_0",
-					LiquidityTier:  0,
-					DangerIndexPpm: uint32(0),
+					Id:               uint32(0),
+					Ticker:           "genesis_test_ticker_0",
+					LiquidityTier:    0,
+					DangerIndexPpm:   uint32(0),
+					CollateralPoolId: 0,
 				},
 				FundingIndex:    dtypes.ZeroInt(),
 				OpenInterest:    dtypes.ZeroInt(),
@@ -618,10 +679,11 @@ var (
 			},
 			{
 				Params: perptypes.PerpetualParams{
-					Id:             uint32(1),
-					Ticker:         "genesis_test_ticker_1",
-					LiquidityTier:  1,
-					DangerIndexPpm: uint32(0),
+					Id:               uint32(1),
+					Ticker:           "genesis_test_ticker_1",
+					LiquidityTier:    1,
+					DangerIndexPpm:   uint32(0),
+					CollateralPoolId: 0,
 				},
 				FundingIndex:    dtypes.ZeroInt(),
 				OpenInterest:    dtypes.ZeroInt(),

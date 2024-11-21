@@ -537,6 +537,7 @@ func TestReduceOnlyOrders(t *testing.T) {
 								constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 								constants.EthUsd_20PercentInitial_10PercentMaintenance,
 							}
+							genesisState.CollateralPools = constants.CollateralPools
 						},
 					)
 					return genesis

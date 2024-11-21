@@ -260,6 +260,7 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			// Set up TDai asset in assets module.
 			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)

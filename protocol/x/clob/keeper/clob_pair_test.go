@@ -920,7 +920,7 @@ func TestGetAllClobPairs_Sorted(t *testing.T) {
 	memClob := memclob.NewMemClobPriceTimePriority(false)
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
-	keepertest.CreateLiquidityTiersAndNPerpetuals(t,
+	keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t,
 		ks.Ctx,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,

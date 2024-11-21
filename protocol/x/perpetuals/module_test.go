@@ -102,8 +102,10 @@ func TestAppModuleBasic_DefaultGenesis(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(
 		t,
-		`{"perpetuals":[],"liquidity_tiers":[],"params":{"funding_rate_clamp_factor_ppm":6000000,`+
-			`"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15}}`,
+		`{"collateral_pools":[{"collateral_pool_id":0,"isolated_market_max_cumulative_insurance_fund_delta_per_block":1000000,"isolated_market_multi_collateral_assets":[0],"quote_asset_id":0},`+
+			`{"collateral_pool_id":1,"isolated_market_max_cumulative_insurance_fund_delta_per_block":1000000,"isolated_market_multi_collateral_assets":[1],"quote_asset_id":1}],`+
+			`"perpetuals":[],"liquidity_tiers":[],"params":{"funding_rate_clamp_factor_ppm":6000000,"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15}}`,
+		`"premium_vote_clamp_factor_ppm":60000000,"min_num_votes_per_sample":15}}`,
 		string(json),
 	)
 }
@@ -292,6 +294,20 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	}
 
 	msg := `{
+	    "collateral_pools": [
+			{
+			"collateral_pool_id": 0,
+			"isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000,
+			"isolated_market_multi_collateral_assets": [0],
+			"quote_asset_id": 0
+			},
+			{
+			"collateral_pool_id": 1,
+			"isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000,
+			"isolated_market_multi_collateral_assets": [1],
+			"quote_asset_id": 1
+			}
+		],
 		"perpetuals":[
 		   {
 			  "params": {
@@ -333,6 +349,20 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 
 	genesisJson := am.ExportGenesis(ctx, cdc)
 	expected := `{
+	    "collateral_pools": [
+			{
+			"collateral_pool_id": 0,
+			"isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000,
+			"isolated_market_multi_collateral_assets": [0],
+			"quote_asset_id": 0
+			},
+			{
+			"collateral_pool_id": 1,
+			"isolated_market_max_cumulative_insurance_fund_delta_per_block": 1000000,
+			"isolated_market_multi_collateral_assets": [1],
+			"quote_asset_id": 1
+			}
+		],
 		"perpetuals":[
 		   {
 			  "params":{

@@ -228,6 +228,7 @@ func TestGetSetNegativeTncSubaccountSeenAtBlock(t *testing.T) {
 			ctx, subaccountsKeeper, pricesKeeper, perpetualsKeeper, _, _, _, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			// Set the tracer on the multistore to verify the performed writes are correct.
@@ -251,6 +252,7 @@ func TestGetSetNegativeTncSubaccountSeenAtBlock_PanicsOnDecreasingBlock(t *testi
 	ctx, subaccountsKeeper, pricesKeeper, perpetualsKeeper, _, _, _, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 	keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 	keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 	keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 	err := subaccountsKeeper.SetNegativeTncSubaccountSeenAtBlock(ctx, uint32(0), 2)
 	require.NoError(t, err)

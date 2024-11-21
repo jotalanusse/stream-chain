@@ -314,6 +314,7 @@ func TestConditionalOrderRemoval(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -739,6 +740,7 @@ func TestOrderRemoval_Invalid(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -1000,6 +1002,7 @@ func TestOrderRemoval(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -1125,6 +1128,7 @@ func TestOrderRemoval_MultipleReplayOperationsDuringPrepareCheckState(t *testing
 				genesisState.Perpetuals = []perptypes.Perpetual{
 					constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 				}
+				genesisState.CollateralPools = constants.CollateralPools
 			},
 		)
 		testapp.UpdateGenesisDocWithAppStateForModule(

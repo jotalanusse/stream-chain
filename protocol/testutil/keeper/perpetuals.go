@@ -73,12 +73,14 @@ func PerpetualsKeepersWithClobHelpers(
 			transientStoreKey,
 		)
 		pc.EpochsKeeper, _ = createEpochsKeeper(stateStore, db, cdc)
+		pc.AssetsKeeper, _ = createAssetsKeeper(stateStore, db, cdc, pc.PricesKeeper, pc.StoreKey, true)
 		pc.PerpetualsKeeper, pc.StoreKey = createPerpetualsKeeperWithClobHelpers(
 			stateStore,
 			db,
 			cdc,
 			pc.PricesKeeper,
 			pc.EpochsKeeper,
+			pc.AssetsKeeper,
 			clobKeeper,
 			transientStoreKey,
 		)
@@ -101,6 +103,7 @@ func createPerpetualsKeeperWithClobHelpers(
 	cdc *codec.ProtoCodec,
 	pk *priceskeeper.Keeper,
 	ek *epochskeeper.Keeper,
+	ak *assetskeeper.Keeper,
 	pck types.PerpetualsClobKeeper,
 	transientStoreKey storetypes.StoreKey,
 ) (*keeper.Keeper, storetypes.StoreKey) {
@@ -117,6 +120,7 @@ func createPerpetualsKeeperWithClobHelpers(
 		storeKey,
 		pk,
 		ek,
+		ak,
 		mockIndexerEventsManager,
 		[]string{
 			lib.GovModuleAddress.String(),
@@ -136,10 +140,11 @@ func createPerpetualsKeeper(
 	cdc *codec.ProtoCodec,
 	pk *priceskeeper.Keeper,
 	ek *epochskeeper.Keeper,
+	ak *assetskeeper.Keeper,
 	clobKeeper *clobkeeper.Keeper,
 	transientStoreKey storetypes.StoreKey,
 ) (*keeper.Keeper, storetypes.StoreKey) {
-	return createPerpetualsKeeperWithClobHelpers(stateStore, db, cdc, pk, ek, clobKeeper, transientStoreKey)
+	return createPerpetualsKeeperWithClobHelpers(stateStore, db, cdc, pk, ek, ak, clobKeeper, transientStoreKey)
 }
 
 // PopulateTestPremiumStore populates either `PremiumVotes` (`isVote` is true) or
@@ -204,6 +209,18 @@ func CreateTestLiquidityTiers(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			l.OpenInterestUpperCap,
 		)
 
+		require.NoError(t, err)
+	}
+}
+
+func CreateTestCollateralPools(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
+	for _, cp := range constants.CollateralPools {
+		_, err := k.SetCollateralPool(ctx,
+			cp.CollateralPoolId,
+			cp.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			cp.IsolatedMarketMultiCollateralAssets,
+			cp.QuoteAssetId,
+		)
 		require.NoError(t, err)
 	}
 }
@@ -295,6 +312,7 @@ func CreateNPerpetuals(
 			maxInsuranceFundDelta,
 			&perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			0,
+			0,
 		)
 		if err != nil {
 			return items, err
@@ -305,13 +323,15 @@ func CreateNPerpetuals(
 	return items, nil
 }
 
-func CreateLiquidityTiersAndNPerpetuals(
+func CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(
 	t *testing.T,
 	ctx sdk.Context,
 	keeper *keeper.Keeper,
 	pricesKeeper *priceskeeper.Keeper,
 	n int,
 ) []types.Perpetual {
+	// Create collateral pools.
+	CreateTestCollateralPools(t, ctx, keeper)
 	// Create liquidity tiers.
 	CreateTestLiquidityTiers(t, ctx, keeper)
 	// Create perpetuals.
@@ -331,6 +351,7 @@ func CreateTestPricesAndPerpetualMarkets(
 	markets []pricestypes.MarketParamPrice,
 ) {
 	// Create liquidity tiers.
+	CreateTestCollateralPools(t, ctx, perpKeeper)
 	CreateTestLiquidityTiers(t, ctx, perpKeeper)
 
 	CreateTestPriceMarkets(t, ctx, pricesKeeper, markets)

@@ -118,6 +118,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	ks.Ctx = ks.Ctx.WithBlockHeight(5)
 	keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
 	keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
 
@@ -252,6 +253,7 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 	ks.Ctx = ks.Ctx.WithBlockHeight(5)
 	keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
 	keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 	ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
 

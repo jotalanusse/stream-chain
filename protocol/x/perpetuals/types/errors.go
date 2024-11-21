@@ -167,6 +167,26 @@ var (
 		36,
 		"multi collateral asset does not contain quote asset",
 	)
+	ErrIsolatedMarketMultiCollateralAssetDoesNotExist = errorsmod.Register(
+		ModuleName,
+		37,
+		"isolated market multi collateral asset does not exist",
+	)
+	ErrCollateralPoolDoesNotExist = errorsmod.Register(
+		ModuleName,
+		38,
+		"collateral pool does not exist",
+	)
+	ErrCannotModifyCollateralPoolQuoteAsset = errorsmod.Register(
+		ModuleName,
+		39,
+		"cannot modify collateral pool quote asset",
+	)
+	ErrCannotRemoveMultiCollateralAssetFromCollateralPool = errorsmod.Register(
+		ModuleName,
+		40,
+		"cannot remove multi collateral asset from collateral pool",
+	)
 
 	// Miscallaneous errors
 	ErrNotImplementedFunding = errorsmod.Register(ModuleName, 1001, "Not Implemented: Perpetuals Funding")

@@ -978,6 +978,7 @@ func TestConditionalOrder(t *testing.T) {
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 							constants.IsoUsd_IsolatedMarket,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -2189,6 +2190,7 @@ func TestConditionalOrder_TriggeringUsingMatchedPrice(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -2401,6 +2403,7 @@ func TestConditionalOrderCancellation(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -2732,6 +2735,7 @@ func TestConditionalOrderExpiration(t *testing.T) {
 						genesisState.Perpetuals = []perptypes.Perpetual{
 							constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 						}
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(

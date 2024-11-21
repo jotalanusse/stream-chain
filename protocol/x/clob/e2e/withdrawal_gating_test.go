@@ -220,6 +220,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = tc.liquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(

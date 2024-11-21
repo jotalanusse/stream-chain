@@ -1395,6 +1395,11 @@ func (k Keeper) validatePerpetual(
 		return errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, lib.UintToString(perpetual.Params.LiquidityTier))
 	}
 
+	// Validate `collateralPool` exists.
+	if !k.HasCollateralPool(ctx, perpetual.Params.CollateralPoolId) {
+		return errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, lib.UintToString(perpetual.Params.CollateralPoolId))
+	}
+
 	return nil
 }
 
@@ -1604,6 +1609,151 @@ func (k Keeper) setLiquidityTier(
 	b := k.cdc.MustMarshal(&liquidityTier)
 	liquidityTierStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.LiquidityTierKeyPrefix))
 	liquidityTierStore.Set(lib.Uint32ToKey(liquidityTier.Id), b)
+}
+
+/* === COLLATERAL POOL FUNCTIONS === */
+
+// HasCollateralPool checks if a collateral pool exists in the store.
+func (k Keeper) HasCollateralPool(
+	ctx sdk.Context,
+	id uint32,
+) (found bool) {
+	cpStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.CollateralPoolKeyPrefix))
+	return cpStore.Has(lib.Uint32ToKey(id))
+}
+
+// `SetCollateralPool` sets a collateral pool in the store (i.e. updates if `id` exists and creates otherwise).
+// Returns an error if any of its fields fails validation.
+func (k Keeper) SetCollateralPool(
+	ctx sdk.Context,
+	collateralPoolId uint32,
+	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+	isolatedMarketMultiCollateralAssets *types.MultiCollateralAssetsArray,
+	quoteAssetId uint32,
+) (
+	collateralPool types.CollateralPool,
+	err error,
+) {
+	// Construct collateral pool.
+	collateralPool = types.CollateralPool{
+		CollateralPoolId: collateralPoolId,
+		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+		IsolatedMarketMultiCollateralAssets:                   isolatedMarketMultiCollateralAssets,
+		QuoteAssetId:                                          quoteAssetId,
+	}
+
+	// Validate collateral pool's fields.
+	if err := collateralPool.Validate(); err != nil {
+		return collateralPool, err
+	}
+
+	if !k.EnsureMultiCollateralAssetsExists(ctx, isolatedMarketMultiCollateralAssets) {
+		return collateralPool, errorsmod.Wrap(types.ErrIsolatedMarketMultiCollateralAssetDoesNotExist, lib.UintToString(quoteAssetId))
+	}
+
+	if err := k.HandleExistingCollateralPool(ctx, collateralPoolId, isolatedMarketMultiCollateralAssets, quoteAssetId); err != nil {
+		return collateralPool, err
+	}
+
+	// Set collateral pool in store.
+	k.setCollateralPool(ctx, collateralPool)
+
+	return collateralPool, nil
+}
+
+func (k Keeper) HandleExistingCollateralPool(
+	ctx sdk.Context,
+	collateralPoolId uint32,
+	isolatedMarketMultiCollateralAssets *types.MultiCollateralAssetsArray,
+	quoteAssetId uint32,
+
+) (err error) {
+	if !k.HasCollateralPool(ctx, collateralPoolId) {
+		return nil
+	}
+
+	collateralPool, err := k.GetCollateralPool(ctx, collateralPoolId)
+	if err != nil {
+		return err
+	}
+
+	if collateralPool.QuoteAssetId != quoteAssetId {
+		return types.ErrCannotModifyCollateralPoolQuoteAsset
+	}
+
+	// Create a map of new assets for O(1) lookups
+	newAssetsMap := make(map[uint32]struct{}, len(isolatedMarketMultiCollateralAssets.MultiCollateralAssets))
+	for _, newAsset := range isolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+		newAssetsMap[newAsset] = struct{}{}
+	}
+
+	// Check that all existing assets are present in the new set
+	for _, existingAsset := range collateralPool.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+		if _, exists := newAssetsMap[existingAsset]; !exists {
+			return types.ErrCannotRemoveMultiCollateralAssetFromCollateralPool
+		}
+	}
+
+	return nil
+}
+
+func (k Keeper) EnsureMultiCollateralAssetsExists(
+	ctx sdk.Context,
+	multiCollateralAssets *types.MultiCollateralAssetsArray,
+) (exists bool) {
+	for _, assetId := range multiCollateralAssets.MultiCollateralAssets {
+		_, exists = k.assetsKeeper.GetAsset(ctx, assetId)
+		if !exists {
+			return false
+		}
+	}
+	return true
+}
+
+// `GetCollateralPool` gets a collateral pool given its id.
+func (k Keeper) GetCollateralPool(ctx sdk.Context, id uint32) (
+	collateralPool types.CollateralPool,
+	err error,
+) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.CollateralPoolKeyPrefix))
+
+	b := store.Get(lib.Uint32ToKey(id))
+	if b == nil {
+		return collateralPool, errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, lib.UintToString(id))
+	}
+
+	k.cdc.MustUnmarshal(b, &collateralPool)
+	return collateralPool, nil
+}
+
+// `GetAllCollateralPools` returns all collateral pools, sorted by id.
+func (k Keeper) GetAllCollateralPools(ctx sdk.Context) (list []types.CollateralPool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.CollateralPoolKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.CollateralPool
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	sort.Slice(list, func(i, j int) bool {
+		return list[i].CollateralPoolId < list[j].CollateralPoolId
+	})
+
+	return list
+}
+
+// `setCollateralPool` sets a collateral pool in store.
+func (k Keeper) setCollateralPool(
+	ctx sdk.Context,
+	collateralPool types.CollateralPool,
+) {
+	b := k.cdc.MustMarshal(&collateralPool)
+	collateralPoolStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.CollateralPoolKeyPrefix))
+	collateralPoolStore.Set(lib.Uint32ToKey(collateralPool.CollateralPoolId), b)
 }
 
 /* === PARAMETERS FUNCTIONS === */

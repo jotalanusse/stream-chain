@@ -5,7 +5,6 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "klyraprotocol/indexer/shared/removal_reason.proto";
 import "klyraprotocol/indexer/protocol/v1/clob.proto";
-import "klyraprotocol/indexer/protocol/v1/perpetual.proto";
 import "klyraprotocol/indexer/protocol/v1/subaccount.proto";
 
 option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events";

@@ -667,6 +667,7 @@ func TestEndBlocker_Success(t *testing.T) {
 
 			// Create liquidity tiers on perpetuals keeper.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			// Set up clob keeper perpetuals and clob pairs.
 			for _, p := range []perptypes.Perpetual{
@@ -1039,6 +1040,7 @@ func TestLiquidateSubaccounts(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = constants.LiquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
+						genesisState.CollateralPools = constants.CollateralPools
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -1443,6 +1445,7 @@ func TestPrepareCheckState(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParams))
 

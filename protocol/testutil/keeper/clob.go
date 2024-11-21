@@ -97,15 +97,6 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 		// Mock time provider response for market creation.
 		mockTimeProvider.On("Now").Return(constants.TimeT)
 		ks.EpochsKeeper, _ = createEpochsKeeper(stateStore, db, cdc)
-		ks.PerpetualsKeeper, _ = createPerpetualsKeeper(
-			stateStore,
-			db,
-			cdc,
-			ks.PricesKeeper,
-			ks.EpochsKeeper,
-			&ks.ClobKeeper,
-			indexerEventsTransientStoreKey,
-		)
 		ks.AssetsKeeper, _ = createAssetsKeeper(
 			stateStore,
 			db,
@@ -113,6 +104,16 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 			ks.PricesKeeper,
 			indexerEventsTransientStoreKey,
 			true,
+		)
+		ks.PerpetualsKeeper, _ = createPerpetualsKeeper(
+			stateStore,
+			db,
+			cdc,
+			ks.PricesKeeper,
+			ks.EpochsKeeper,
+			ks.AssetsKeeper,
+			&ks.ClobKeeper,
+			indexerEventsTransientStoreKey,
 		)
 		ks.BlockTimeKeeper, _ = createBlockTimeKeeper(stateStore, db, cdc)
 		ks.StatsKeeper, _ = createStatsKeeper(
@@ -312,7 +313,7 @@ func CreateNClobPair(
 	n int,
 	mockIndexerEventManager *mocks.IndexerEventManager,
 ) []types.ClobPair {
-	perps := CreateLiquidityTiersAndNPerpetuals(t, ctx, perpKeeper, pricesKeeper, n)
+	perps := CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, ctx, perpKeeper, pricesKeeper, n)
 
 	items := make([]types.ClobPair, n)
 	for i := range items {

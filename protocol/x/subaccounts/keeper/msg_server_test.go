@@ -672,6 +672,7 @@ func TestClaimYieldForSubaccount(t *testing.T) {
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			// Set up initial sdai price
 			rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate

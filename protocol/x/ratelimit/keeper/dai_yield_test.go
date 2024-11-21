@@ -319,6 +319,7 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 
 			testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			tc.customSetup(ctx, k)
@@ -560,6 +561,7 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 
 			testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			tc.customSetup(ctx, k)
@@ -610,6 +612,7 @@ func TestClaimInsuranceFundYields(t *testing.T) {
 	// Setup
 	testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
 	testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+	testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 	testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 	err := testkeeper.CreateTDaiAsset(ctx, assetsKeeper)
 	require.NoError(t, err)

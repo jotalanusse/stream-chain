@@ -196,6 +196,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
@@ -439,6 +440,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
@@ -716,6 +718,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Success(t *testing.T) {
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
@@ -1044,6 +1047,7 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
@@ -1260,6 +1264,7 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 
 			// Set up Subaccounts module account.
@@ -1481,6 +1486,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpsKeeper)
 
 			// Set up Subaccounts module account.
 			auth_testutil.CreateTestModuleAccount(ctx, accountKeeper, types.ModuleName, []string{})

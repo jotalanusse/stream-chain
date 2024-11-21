@@ -25,6 +25,7 @@ func TestUpdatePerpetualParams(t *testing.T) {
 		perptest.WithMarketId(1),
 		perptest.WithTicker("ETH-USD"),
 		perptest.WithLiquidityTier(1),
+		perptest.WithCollateralPoolId(0),
 	)
 	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
 	testMarket4 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(4))
@@ -78,6 +79,7 @@ func TestUpdatePerpetualParams(t *testing.T) {
 					AtomicResolution:  testPerp.Params.AtomicResolution,
 					DefaultFundingPpm: 2_007,
 					LiquidityTier:     101,
+					CollateralPoolId:  1,
 				},
 			},
 		},
@@ -104,6 +106,31 @@ func TestUpdatePerpetualParams(t *testing.T) {
 				},
 			},
 			expectedErr: "Perpetual does not exist",
+		},
+		"Failure: new collateral pool id is not existing": {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+				keepertest.CreateTestPricesAndPerpetualMarkets(
+					t,
+					ctx,
+					perpKeeper,
+					pricesKeeper,
+					[]types.Perpetual{testPerp},
+					[]pricestypes.MarketParamPrice{testMarket1},
+				)
+			},
+			msg: &types.MsgUpdatePerpetualParams{
+				Authority: lib.GovModuleAddress.String(),
+				PerpetualParams: types.PerpetualParams{
+					Id:                testPerp.Params.Id,
+					Ticker:            "DUMMY-USD",
+					MarketId:          testPerp.Params.MarketId,
+					AtomicResolution:  testPerp.Params.AtomicResolution,
+					DefaultFundingPpm: testPerp.Params.DefaultFundingPpm,
+					LiquidityTier:     5,
+					CollateralPoolId:  9999,
+				},
+			},
+			expectedErr: "Collateral pool does not exist",
 		},
 		"Failure: updates to non-existing market id": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
@@ -213,6 +240,7 @@ func TestUpdatePerpetualParams(t *testing.T) {
 					tc.msg.PerpetualParams.AtomicResolution,
 					updatedPerpetualInState.Params.AtomicResolution,
 				)
+				require.Equal(t, tc.msg.PerpetualParams.CollateralPoolId, updatedPerpetualInState.Params.CollateralPoolId)
 			}
 		})
 	}

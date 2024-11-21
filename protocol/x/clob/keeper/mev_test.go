@@ -879,6 +879,7 @@ func TestRecordMevMetrics(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, tc.feeParams))
 
@@ -1275,6 +1276,7 @@ func TestGetMidPrices(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParams))
 

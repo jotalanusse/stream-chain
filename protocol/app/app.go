@@ -884,6 +884,7 @@ func New(
 		keys[perpetualsmoduletypes.StoreKey],
 		app.PricesKeeper,
 		app.EpochsKeeper,
+		app.AssetsKeeper,
 		app.IndexerEventManager,
 		// gov module and delayMsg module accounts are allowed to send messages to the bridge module.
 		[]string{

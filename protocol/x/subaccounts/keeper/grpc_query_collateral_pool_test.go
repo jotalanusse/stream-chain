@@ -55,6 +55,7 @@ func TestQueryCollateralPoolAddress(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, _, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 			response, err := keeper.CollateralPoolAddress(ctx, tc.request)
 			if tc.err != nil {

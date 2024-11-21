@@ -271,6 +271,7 @@ func TestQueryWithdrawalAndTransfersBlockedInfo(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, _, _, blocktimeKeeper, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
 			err := tc.setup(ctx, *keeper, *blocktimeKeeper)
 			require.NoError(t, err)

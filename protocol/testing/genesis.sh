@@ -108,6 +108,21 @@ function edit_genesis() {
 	dasel put -t bool -f "$GENESIS" '.app_state.ibc.client_genesis.create_localhost' -v "false"
 	dasel put -t json -f "$GENESIS" '.app_state.ibc.client_genesis.params.allowed_clients' -v "[]"
 	dasel put -t string -f "$GENESIS" '.app_state.ibc.client_genesis.params.allowed_clients.[]' -v "07-tendermint"
+
+	# Collateral Pools
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools' -v "[]"
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].collateral_pool_id' -v '0'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].isolated_market_max_cumulative_insurance_fund_delta_per_block' -v '1000000'
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].isolated_market_multi_collateral_assets' -v '[0]'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].quote_asset_id' -v '0'
+
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[]' -v "{}"
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].collateral_pool_id' -v '1'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].isolated_market_max_cumulative_insurance_fund_delta_per_block' -v '1000000'
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].isolated_market_multi_collateral_assets' -v '[1]'
+	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].quote_asset_id' -v '1'
+
 	
 	# Liquidity Tiers.
 	# TODO(OTE-208): Finalize default values for open interest caps.

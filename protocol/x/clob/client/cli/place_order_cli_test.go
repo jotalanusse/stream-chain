@@ -106,6 +106,7 @@ func (s *PlaceOrderIntegrationTestSuite) SetupSuite() {
 
 	perpstate := perptypes.GenesisState{}
 	perpstate.LiquidityTiers = constants.LiquidityTiers
+	perpstate.CollateralPools = constants.CollateralPools
 	perpstate.Params = constants.PerpetualsGenesisParams
 	perpetual := constants.BtcUsd_50PercentInitial_40PercentMaintenance
 	perpstate.Perpetuals = append(perpstate.Perpetuals, perpetual)

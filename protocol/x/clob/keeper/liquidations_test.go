@@ -322,6 +322,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, tc.feeParams))
 
@@ -447,6 +448,7 @@ func TestPlacePerpetualLiquidation_validateLiquidationAgainstClobPairStatus(t *t
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 			require.NoError(t, err)
@@ -1120,6 +1122,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParams))
 
@@ -1716,6 +1719,7 @@ func TestGetFillablePrice(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			// Create all perpetuals.
 			for _, p := range tc.perpetuals {
@@ -2564,6 +2568,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParamsNoFee))
 
@@ -2907,6 +2912,7 @@ func TestIsLiquidatable(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			// Set up TDAI asset in assets module.
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
@@ -3342,6 +3348,7 @@ func TestGetBankruptcyPriceInQuoteQuantums(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
 
@@ -3829,6 +3836,7 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			// Set up TDAI asset in assets module.
 			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
@@ -4213,6 +4221,7 @@ func TestGetBestPerpetualPositionToLiquidate(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
 			// Create all perpetuals.
 			for _, p := range tc.perpetuals {
@@ -4459,6 +4468,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParams))
 
@@ -5474,6 +5484,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, tc.feeParams))
 
@@ -5658,6 +5669,7 @@ func TestGetBestPerpetualPositionToLiquidateMultiplePositions(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			// Set up TDai asset in assets module.
 			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
@@ -5768,6 +5780,7 @@ func TestEnsurePerpetualNotAlreadyLiquidated(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			// Set up TDai asset in assets module.
 			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
@@ -5913,6 +5926,7 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			// Set up TDai asset in assets module.
 			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
@@ -6098,6 +6112,7 @@ func TestPlacePerpetualLiquidation_InLiquidateSubaccountsAgainstOrderbookInterna
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, tc.feeParams))
 
@@ -6253,6 +6268,7 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, tc.feeParams))
 

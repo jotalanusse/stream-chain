@@ -110,6 +110,28 @@ type PerpetualsKeeper interface {
 		liquidityTier LiquidityTier,
 		err error,
 	)
+	SetCollateralPool(
+		ctx sdk.Context,
+		collateralPoolId uint32,
+		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,
+		quoteAssetId uint32,
+	) (
+		collateralPool CollateralPool,
+		err error,
+	)
+	HasCollateralPool(
+		ctx sdk.Context,
+		id uint32,
+	) (found bool)
+	GetCollateralPool(
+		ctx sdk.Context,
+		id uint32,
+	) (
+		collateralPool CollateralPool,
+		err error,
+	)
+	GetAllCollateralPools(ctx sdk.Context) (list []CollateralPool)
 	SetParams(
 		ctx sdk.Context,
 		params Params,

@@ -17,6 +17,20 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		panic(err)
 	}
 
+	for _, elem := range genState.CollateralPools {
+		_, err := k.SetCollateralPool(
+			ctx,
+			elem.CollateralPoolId,
+			elem.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			elem.IsolatedMarketMultiCollateralAssets,
+			elem.QuoteAssetId,
+		)
+
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	// Create all liquidity tiers.
 	for _, elem := range genState.LiquidityTiers {
 		_, err := k.SetLiquidityTier(
@@ -52,6 +66,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.Perpetuals = k.GetAllPerpetuals(ctx)
 	genesis.LiquidityTiers = k.GetAllLiquidityTiers(ctx)
+	genesis.CollateralPools = k.GetAllCollateralPools(ctx)
 	genesis.Params = k.GetParams(ctx)
 
 	return genesis

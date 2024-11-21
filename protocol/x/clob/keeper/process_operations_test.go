@@ -2369,6 +2369,7 @@ func setupProcessProposerOperationsTestCase(
 
 	// Create liquidity tiers.
 	keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+	keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 	require.NotNil(t, tc.perpetualFeeParams)
 	require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, *tc.perpetualFeeParams))

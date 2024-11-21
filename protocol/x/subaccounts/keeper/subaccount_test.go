@@ -166,6 +166,7 @@ func TestGetCollateralPool(t *testing.T) {
 
 				testutil.CreateTestMarkets(t, ctx, pricesKeeper)
 				testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+				testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 				rateLimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
 
@@ -4377,6 +4378,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			// Set up initial sdai price
 			rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate
@@ -5905,6 +5907,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			// Set up initial sdai price
 			rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate
@@ -7045,6 +7048,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, assetsKeeper, ratelimitKeeper, _, _ := testutil.SubaccountsKeepers(t, true)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			// Set up initial sdai price
 			rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate
@@ -7484,6 +7488,7 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, assetsKeeper, ratelimitKeeper, _, _ := testutil.SubaccountsKeepers(t, true)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
+			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 			// Set up initial sdai price
 			rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate

@@ -47,6 +47,7 @@ func TestCreatePerpetual(t *testing.T) {
 		"Succeeds: create new perpetual (id = 1)": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
+				keepertest.CreateTestCollateralPools(t, ctx, perpKeeper)
 				keepertest.CreateTestPriceMarkets(
 					t,
 					ctx,
@@ -85,6 +86,7 @@ func TestCreatePerpetual(t *testing.T) {
 				pricesKeeper *priceskeeper.Keeper,
 			) {
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
+				keepertest.CreateTestCollateralPools(t, ctx, perpKeeper)
 				keepertest.CreateTestPriceMarkets(
 					t,
 					ctx,
@@ -119,6 +121,7 @@ func TestCreatePerpetual(t *testing.T) {
 		"Failure: refers to non-existing market id": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
+				keepertest.CreateTestCollateralPools(t, ctx, perpKeeper)
 			},
 			msg: &types.MsgCreatePerpetual{
 				Authority: lib.GovModuleAddress.String(),

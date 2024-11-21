@@ -206,10 +206,26 @@ func RandomizedGenState(simState *module.SimulationState) {
 		}
 	}
 
+	collateralPools := []types.CollateralPool{
+		{
+			CollateralPoolId: 0,
+			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+			IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			QuoteAssetId:                                          0,
+		},
+		{
+			CollateralPoolId: 1,
+			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+			IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+			QuoteAssetId:                                          1,
+		},
+	}
+
 	perpetualsGenesis := types.GenesisState{
-		Perpetuals:     perpetuals,
-		LiquidityTiers: liquidityTiers,
-		Params:         params,
+		CollateralPools: collateralPools,
+		Perpetuals:      perpetuals,
+		LiquidityTiers:  liquidityTiers,
+		Params:          params,
 	}
 
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&perpetualsGenesis)

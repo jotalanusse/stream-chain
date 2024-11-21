@@ -153,6 +153,10 @@ type PerpetualsKeeper interface {
 	) (val perpetualsmoduletypes.Perpetual, err error)
 	GetAllPerpetuals(ctx sdk.Context) (list []perpetualsmoduletypes.Perpetual)
 	GetAllLiquidityTiers(ctx sdk.Context) (list []perpetualsmoduletypes.LiquidityTier)
+	GetCollateralPool(ctx sdk.Context, id uint32) (
+		collateralPool perpetualsmoduletypes.CollateralPool,
+		err error,
+	)
 	IsIsolatedPerpetual(ctx sdk.Context, perpetualId uint32) (bool, error)
 	GetPerpetualAndMarketPrice(
 		ctx sdk.Context,

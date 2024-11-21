@@ -44,14 +44,18 @@ func TestGenesis(t *testing.T) {
 
 func TestGenesis_Failure(t *testing.T) {
 	tests := map[string]struct {
-		marketId                  uint32
-		ticker                    string
-		initialMarginPpm          uint32
-		maintenanceFractionPpm    uint32
-		impactNotional            uint64
-		fundingRateClampFactorPpm uint32
-		premiumVoteClampFactorPpm uint32
-		minNumVotesPerSample      uint32
+		marketId                                              uint32
+		ticker                                                string
+		initialMarginPpm                                      uint32
+		maintenanceFractionPpm                                uint32
+		impactNotional                                        uint64
+		fundingRateClampFactorPpm                             uint32
+		premiumVoteClampFactorPpm                             uint32
+		minNumVotesPerSample                                  uint32
+		collateralPoolId                                      uint32
+		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
+		isolatedMarketMultiCollateralAssets                   []uint32
+		quoteAssetId                                          uint32
 	}{
 		"MarketId doesn't reference a valid Market": {
 			marketId:                  999,
@@ -62,6 +66,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 1,
 			premiumVoteClampFactorPpm: 1,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 		"Ticker is empty": {
 			marketId:                  0,
@@ -72,6 +80,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 1,
 			premiumVoteClampFactorPpm: 1,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 		"Initial Margin Ppm exceeds maximum": {
 			marketId:                  0,
@@ -82,6 +94,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 1,
 			premiumVoteClampFactorPpm: 1,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 		"Maintenance Fraction Ppm exceeds maximum": {
 			marketId:                  0,
@@ -92,6 +108,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 1,
 			premiumVoteClampFactorPpm: 1,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 		"Impact Notional is zero": {
 			marketId:                  0,
@@ -102,6 +122,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 1,
 			premiumVoteClampFactorPpm: 1,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 		"Funding Rate Clamp Factor Ppm is zero": {
 			marketId:                  0,
@@ -112,6 +136,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 0,
 			premiumVoteClampFactorPpm: 1,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 		"Premium Vote Clamp Factor Ppm is zero": {
 			marketId:                  0,
@@ -122,6 +150,10 @@ func TestGenesis_Failure(t *testing.T) {
 			fundingRateClampFactorPpm: 1,
 			premiumVoteClampFactorPpm: 0,
 			minNumVotesPerSample:      0,
+			collateralPoolId:          0,
+			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:                   []uint32{0},
+			quoteAssetId:                                          0,
 		},
 	}
 
@@ -140,6 +172,14 @@ func TestGenesis_Failure(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			genesisState := types.GenesisState{
+				CollateralPools: []types.CollateralPool{
+					{
+						CollateralPoolId: tc.collateralPoolId,
+						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: tc.isolatedMarketMultiCollateralAssets},
+						QuoteAssetId:                                          tc.quoteAssetId,
+					},
+				},
 				LiquidityTiers: []types.LiquidityTier{
 					{
 						Name:                   "",
