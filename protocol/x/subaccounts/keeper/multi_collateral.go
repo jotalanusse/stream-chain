@@ -46,6 +46,10 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		return types.Success, nil
 	}
 
+	if len(settledUpdate.PerpetualUpdates) == 0 && len(settledUpdate.SettledSubaccount.PerpetualPositions) == 0 {
+		return types.Success, nil
+	}
+
 	collateralPoolId := uint32(0)
 
 	if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {

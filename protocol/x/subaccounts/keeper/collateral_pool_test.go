@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetIsolatedPerpetualStateTransition(t *testing.T) {
+func TestGetCollateralPoolStateTransition(t *testing.T) {
 	tests := map[string]struct {
 		// parameters
 		settledUpdateWithUpdatedSubaccount keeper.SettledUpdate
@@ -321,7 +321,7 @@ func TestGetIsolatedPerpetualStateTransition(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(
 			name, func(t *testing.T) {
-				stateTransition, err := keeper.GetIsolatedPerpetualStateTransition(
+				stateTransition, err := keeper.GetCollateralPoolStateTransition(
 					tc.settledUpdateWithUpdatedSubaccount,
 					tc.perpetuals,
 				)
