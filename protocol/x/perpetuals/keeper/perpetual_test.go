@@ -156,11 +156,6 @@ func TestModifyPerpetual_Success(t *testing.T) {
 		require.Equal(
 			t,
 			uint32(0),
-			newItem.Params.QuoteAssetId,
-		)
-		require.Equal(
-			t,
-			uint32(0),
 			newItem.Params.CollateralPoolId,
 		)
 	}
@@ -202,7 +197,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 		defaultFundingPpm int32
 		liquidityTier     uint32
 		dangerIndexPpm    uint32
-		quoteAssetId      uint32
 		collateralPoolId  uint32
 		expectedError     error
 		yieldIndex        string
@@ -300,7 +294,6 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 				tc.defaultFundingPpm,
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
-				tc.quoteAssetId,
 				tc.collateralPoolId,
 			)
 
@@ -318,7 +311,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 		defaultFundingPpm int32
 		liquidityTier     uint32
 		dangerIndexPpm    uint32
-		quoteAssetId      uint32
 		collateralPoolId  uint32
 		expectedError     error
 	}{
@@ -329,7 +321,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
-			quoteAssetId:      uint32(0),
 			expectedError:     errorsmod.Wrap(types.ErrPerpetualDoesNotExist, fmt.Sprint(999)),
 		},
 		"Price doesn't exist": {
@@ -339,7 +330,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
-			quoteAssetId:      uint32(0),
 			expectedError:     errorsmod.Wrap(pricestypes.ErrMarketPriceDoesNotExist, fmt.Sprint(999)),
 		},
 		"Ticker is an empty string": {
@@ -349,7 +339,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
-			quoteAssetId:      uint32(0),
 			expectedError:     types.ErrTickerEmptyString,
 		},
 		"Modified to empty liquidity tier": {
@@ -359,7 +348,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			defaultFundingPpm: 0,
 			liquidityTier:     999,
 			dangerIndexPpm:    0,
-			quoteAssetId:      uint32(0),
 			expectedError:     errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
 		},
 		"Collateral pool doesn't exist": {
@@ -369,7 +357,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			defaultFundingPpm: 0,
 			liquidityTier:     0,
 			dangerIndexPpm:    0,
-			quoteAssetId:      uint32(0),
 			collateralPoolId:  9999,
 			expectedError:     errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
 		},
@@ -391,7 +378,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 				tc.defaultFundingPpm,
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
-				tc.quoteAssetId,
 				tc.collateralPoolId,
 			)
 
@@ -461,7 +447,6 @@ func TestHasPerpetual(t *testing.T) {
 			perps[perp].Params.DefaultFundingPpm,
 			perps[perp].Params.LiquidityTier,
 			perps[perp].Params.DangerIndexPpm,
-			perps[perp].Params.QuoteAssetId,
 			perps[perp].Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
@@ -543,7 +528,6 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 			perps[perp].Params.DefaultFundingPpm,
 			perps[perp].Params.LiquidityTier,
 			perps[perp].Params.DangerIndexPpm,
-			perps[perp].Params.QuoteAssetId,
 			perps[perp].Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
@@ -2108,7 +2092,6 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
@@ -3722,7 +3705,6 @@ func TestIsIsolatedPerpetual(t *testing.T) {
 	}{
 		"Isolated Perpetual": {
 			perp: *perptest.GeneratePerpetual(
-				perptest.WithQuoteAssetId(0),
 				perptest.WithCollateralPoolId(0),
 			),
 			expected: true,

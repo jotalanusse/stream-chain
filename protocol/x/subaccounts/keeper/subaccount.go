@@ -285,31 +285,39 @@ func (k Keeper) fetchParamsToSettleSubaccount(
 	assetYieldIndex *big.Rat,
 	availableYield *big.Int,
 	earnsTdaiYield bool,
+	quoteAssetId uint32,
 	err error,
 ) {
 
 	earnsTdaiYield, err = k.CheckIfSubaccountEarnsTdaiYield(ctx, subaccount)
 	if err != nil {
-		return nil, nil, nil, false, err
+		return nil, nil, nil, false, 0, err
 	}
 
 	assetYieldIndex, found := k.ratelimitKeeper.GetAssetYieldIndex(ctx)
 	if !found {
-		return nil, nil, nil, false, errors.New("could not find asset yield index")
+		return nil, nil, nil, false, 0, errors.New("could not find asset yield index")
 	}
 
 	perpIdToPerp, err = k.getPerpIdToPerpMapForSubaccount(ctx, subaccount)
 	if err != nil {
-		return nil, nil, nil, false, err
+		return nil, nil, nil, false, 0, err
 	}
 
 	availableYieldCoin := k.bankKeeper.GetBalance(ctx, authtypes.NewModuleAddress(ratelimittypes.TDaiPoolAccount), assettypes.AssetTDai.Denom)
 	availableYield, _, err = k.assetsKeeper.ConvertCoinToAsset(ctx, assettypes.AssetTDai.Id, availableYieldCoin)
 	if err != nil {
-		return nil, nil, nil, false, err
+		return nil, nil, nil, false, 0, err
 	}
 
-	return perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, nil
+	perpetual := perpIdToPerp[subaccount.PerpetualPositions[0].PerpetualId]
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return nil, nil, nil, false, 0, err
+	}
+	quoteAssetId = collateralPool.QuoteAssetId
+
+	return perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, quoteAssetId, nil
 }
 
 func (k Keeper) getPerpIdToPerpMapForSubaccount(
@@ -531,12 +539,12 @@ func (k Keeper) GetSettledSubaccount(
 	yieldForSubaccount *big.Int,
 	err error,
 ) {
-	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
+	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, quoteAssetId, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
 	if err != nil {
 		return types.Subaccount{}, nil, nil, err
 	}
 
-	return GetSettledSubaccountWithPerpetuals(subaccount, perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield)
+	return GetSettledSubaccountWithPerpetuals(subaccount, perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, quoteAssetId)
 }
 
 // GetSettledSubaccountWithPerpetuals returns 1. a new settled subaccount given an unsettled subaccount,
@@ -551,6 +559,7 @@ func GetSettledSubaccountWithPerpetuals(
 	assetYieldIndex *big.Rat,
 	availableYield *big.Int,
 	earnsTdaiYield bool,
+	quoteAssetId uint32,
 ) (
 	settledSubaccount types.Subaccount,
 	fundingPayments map[uint32]dtypes.SerializableInt,
@@ -613,8 +622,6 @@ func GetSettledSubaccountWithPerpetuals(
 	}
 
 	if len(subaccountWithYield.PerpetualPositions) > 0 {
-		perpetual := perpetuals[subaccountWithYield.PerpetualPositions[0].PerpetualId]
-		quoteAssetId := perpetual.Params.QuoteAssetId
 		totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
 
 		newQuoteAssetPosition := newSubaccount.GetAssetPosition(quoteAssetId)

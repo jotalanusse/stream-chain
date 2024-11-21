@@ -24,7 +24,7 @@ func (k Keeper) ClaimYieldForSubaccountFromIdAndSetNewState(
 
 	subaccount := k.GetSubaccount(ctx, *subaccountId)
 
-	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
+	perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, _, err := k.fetchParamsToSettleSubaccount(ctx, subaccount)
 	if err != nil {
 		return err
 	}

@@ -30,7 +30,6 @@ func TestCreatePerpetual(t *testing.T) {
 	testPerp3 := *perptest.GeneratePerpetual(
 		perptest.WithId(3),
 		perptest.WithMarketId(2),
-		perptest.WithQuoteAssetId(0),
 		perptest.WithCollateralPoolId(0),
 	)
 	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))

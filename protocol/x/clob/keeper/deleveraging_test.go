@@ -412,7 +412,6 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 					perpetual.Params.DefaultFundingPpm,
 					perpetual.Params.LiquidityTier,
 					perpetual.Params.DangerIndexPpm,
-					perpetual.Params.QuoteAssetId,
 					perpetual.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
@@ -840,7 +839,6 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
@@ -1360,7 +1358,6 @@ func TestProcessDeleveraging(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
@@ -1599,7 +1596,6 @@ func TestProcessDeleveragingAtOraclePrice(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)
@@ -1783,7 +1779,6 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
 				require.NoError(t, err)

@@ -238,6 +238,10 @@ func (k Keeper) persistMatchedOrders(
 	if err != nil {
 		panic(fmt.Sprintf("persistMatchedOrders: failed to get perpetual %v", err))
 	}
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		panic(fmt.Sprintf("persistMatchedOrders: failed to get collateral pool %v", err))
+	}
 
 	// Create the subaccount update.
 	updates := []satypes.Update{
@@ -245,7 +249,7 @@ func (k Keeper) persistMatchedOrders(
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          perpetual.Params.QuoteAssetId,
+					AssetId:          collateralPool.QuoteAssetId,
 					BigQuantumsDelta: bigTakerQuoteBalanceDelta,
 				},
 			},
@@ -261,7 +265,7 @@ func (k Keeper) persistMatchedOrders(
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          perpetual.Params.QuoteAssetId,
+					AssetId:          collateralPool.QuoteAssetId,
 					BigQuantumsDelta: bigMakerQuoteBalanceDelta,
 				},
 			},
@@ -280,7 +284,7 @@ func (k Keeper) persistMatchedOrders(
 			updates = append(updates, satypes.Update{
 				AssetUpdates: []satypes.AssetUpdate{
 					{
-						AssetId:          perpetual.Params.QuoteAssetId,
+						AssetId:          collateralPool.QuoteAssetId,
 						BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
 					},
 				},
@@ -291,7 +295,7 @@ func (k Keeper) persistMatchedOrders(
 			updates = append(updates, satypes.Update{
 				AssetUpdates: []satypes.AssetUpdate{
 					{
-						AssetId:          perpetual.Params.QuoteAssetId,
+						AssetId:          collateralPool.QuoteAssetId,
 						BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
 					},
 				},
@@ -334,17 +338,17 @@ func (k Keeper) persistMatchedOrders(
 		)
 	}
 
-	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId, perpetual.Params.QuoteAssetId); err != nil {
+	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId, collateralPool.QuoteAssetId); err != nil {
 		return takerUpdateResult, makerUpdateResult, err
 	}
 
 	// Transfer the liquidity and validator fees
-	err = k.subaccountsKeeper.TransferLiquidityFee(ctx, liquidityFeeQuoteQuantums, perpetualId, perpetual.Params.QuoteAssetId)
+	err = k.subaccountsKeeper.TransferLiquidityFee(ctx, liquidityFeeQuoteQuantums, perpetualId, collateralPool.QuoteAssetId)
 	if err != nil {
 		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
 	}
 
-	err = k.subaccountsKeeper.TransferValidatorFee(ctx, validatorFeeQuoteQuantums, perpetualId, perpetual.Params.QuoteAssetId)
+	err = k.subaccountsKeeper.TransferValidatorFee(ctx, validatorFeeQuoteQuantums, perpetualId, collateralPool.QuoteAssetId)
 	if err != nil {
 		return satypes.UpdateCausedError, satypes.UpdateCausedError, err
 	}
@@ -353,7 +357,7 @@ func (k Keeper) persistMatchedOrders(
 	bigTotalFeeQuoteQuantums := new(big.Int).Add(bigTakerFeeQuoteQuantums, bigMakerFeeQuoteQuantums)
 	if err := k.subaccountsKeeper.TransferFeesToFeeCollectorModule(
 		ctx,
-		perpetual.Params.QuoteAssetId,
+		collateralPool.QuoteAssetId,
 		bigTotalFeeQuoteQuantums,
 		perpetualId,
 	); err != nil {

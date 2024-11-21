@@ -1177,15 +1177,20 @@ func (k Keeper) SimulateClosePerpetualPosition(
 		return satypes.Subaccount{}, err
 	}
 
-	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, perpetual.Params.QuoteAssetId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return satypes.Subaccount{}, err
+	}
+
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, collateralPool.QuoteAssetId)
 	if !exists {
-		return satypes.Subaccount{}, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual %+v", perpetual)
+		return satypes.Subaccount{}, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for collateral pool %+v", collateralPool)
 	}
 	quoteCurrencyAtomicResolution := quoteAsset.AtomicResolution
 
 	bigNetCollateralQuoteQuantums := perpkeeper.GetNetNotionalInQuoteQuantums(perpetual, price, position.GetBigQuantums(), quoteCurrencyAtomicResolution)
 
-	UpdateQuoteAssetPosition(&subaccount, bigNetCollateralQuoteQuantums, perpetual.Params.QuoteAssetId)
+	UpdateQuoteAssetPosition(&subaccount, bigNetCollateralQuoteQuantums, collateralPool.QuoteAssetId)
 	return subaccount, nil
 }
 

@@ -98,7 +98,6 @@ func networkWithLiquidityTierAndPerpetualObjects(
 				Ticker:           fmt.Sprintf("test_query_ticker_%d", i),
 				LiquidityTier:    uint32(i % m),
 				DangerIndexPpm:   uint32(0),
-				QuoteAssetId:     uint32(0),
 				CollateralPoolId: uint32(0),
 			},
 			FundingIndex:    dtypes.ZeroInt(),

@@ -72,7 +72,6 @@ type PerpetualsKeeper interface {
 		defaultFundingPpm int32,
 		liquidityTier uint32,
 		dangerIndexPpm uint32,
-		quoteAssetId uint32,
 		collateralPoolId uint32,
 	) (Perpetual, error)
 	ModifyPerpetual(
@@ -83,7 +82,6 @@ type PerpetualsKeeper interface {
 		defaultFundingPpm int32,
 		liquidityTier uint32,
 		dangerIndexPpm uint32,
-		quoteAssetId uint32,
 		collateralPoolId uint32,
 	) (Perpetual, error)
 	ModifyOpenInterest(

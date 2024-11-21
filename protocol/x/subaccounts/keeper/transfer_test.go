@@ -1463,7 +1463,6 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.DefaultFundingPpm,
 				tc.perpetual.Params.LiquidityTier,
 				tc.perpetual.Params.DangerIndexPpm,
-				tc.perpetual.Params.QuoteAssetId,
 				tc.perpetual.Params.CollateralPoolId,
 			)
 			require.NoError(t, err)
@@ -1501,6 +1500,9 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				require.NoError(t, err)
 			}
 
+			collateralPool, err := perpsKeeper.GetCollateralPool(ctx, tc.perpetual.Params.CollateralPoolId)
+			require.NoError(t, err)
+
 			if tc.expectedErr != nil {
 				if tc.panics {
 					require.PanicsWithError(
@@ -1508,18 +1510,18 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 						tc.expectedErr.Error(),
 						func() {
 							//nolint:errcheck
-							keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId)
+							keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), collateralPool.QuoteAssetId)
 						},
 					)
 				} else {
 					require.ErrorIs(
 						t,
-						keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId),
+						keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), collateralPool.QuoteAssetId),
 						tc.expectedErr,
 					)
 				}
 			} else {
-				require.NoError(t, keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), tc.perpetual.Params.QuoteAssetId))
+				require.NoError(t, keeper.TransferInsuranceFundPayments(ctx, tc.quantums, tc.perpetual.GetId(), collateralPool.QuoteAssetId))
 			}
 
 			// Check the subaccount module balance.

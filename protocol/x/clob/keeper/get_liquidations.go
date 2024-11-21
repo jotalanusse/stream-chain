@@ -123,11 +123,14 @@ func (k Keeper) GetQuoteCurrencyAtomicResolution(ctx sdk.Context, subaccount sat
 	}
 
 	perpetual := perpetuals[subaccount.PerpetualPositions[0].PerpetualId]
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return 0, err
+	}
 
-	quoteAssetId := perpetual.Params.QuoteAssetId
-	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, quoteAssetId)
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, collateralPool.QuoteAssetId)
 	if !exists {
-		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual %+v", perpetual)
+		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for collateral pool %+v", collateralPool)
 	}
 	return quoteAsset.AtomicResolution, nil
 }

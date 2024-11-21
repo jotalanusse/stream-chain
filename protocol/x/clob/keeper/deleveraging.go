@@ -151,7 +151,12 @@ func (k Keeper) GetInsuranceFundBalanceInQuoteQuantums(
 		return nil
 	}
 
-	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, perpetual.Params.QuoteAssetId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return nil
+	}
+
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, collateralPool.QuoteAssetId)
 	if !exists {
 		panic("GetInsuranceFundBalanceInQuoteQuantums: quote asset not found in state")
 	}
@@ -533,8 +538,12 @@ func (k *Keeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context
 		return 0, err
 	}
 
-	quoteAssetId := perpetual.Params.QuoteAssetId
-	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, quoteAssetId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return 0, err
+	}
+
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, collateralPool.QuoteAssetId)
 	if !exists {
 		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual %+v", perpetual)
 	}
@@ -599,12 +608,17 @@ func (k Keeper) ProcessDeleveraging(
 		return err
 	}
 
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return err
+	}
+
 	updates := []satypes.Update{
 		// Liquidated subaccount update.
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          perpetual.Params.QuoteAssetId,
+					AssetId:          collateralPool.QuoteAssetId,
 					BigQuantumsDelta: deleveragedSubaccountQuoteBalanceDelta,
 				},
 			},
@@ -620,7 +634,7 @@ func (k Keeper) ProcessDeleveraging(
 		{
 			AssetUpdates: []satypes.AssetUpdate{
 				{
-					AssetId:          perpetual.Params.QuoteAssetId,
+					AssetId:          collateralPool.QuoteAssetId,
 					BigQuantumsDelta: offsettingSubaccountQuoteBalanceDelta,
 				},
 			},

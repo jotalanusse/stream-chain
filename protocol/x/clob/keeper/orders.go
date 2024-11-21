@@ -1045,7 +1045,11 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 	if err != nil {
 		panic(fmt.Sprintf("AddOrderToOrderbookSubaccountUpdatesCheck: failed to get perpetual %v", err))
 	}
-	quoteAssetId := perpetual.Params.QuoteAssetId
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		panic(fmt.Sprintf("AddOrderToOrderbookSubaccountUpdatesCheck: failed to get collateral pool %v", err))
+	}
+	quoteAssetId := collateralPool.QuoteAssetId
 
 	iterateOverOpenOrdersStart := time.Now()
 	for subaccountId, openOrders := range subaccountOpenOrders {

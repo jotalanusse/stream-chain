@@ -186,7 +186,6 @@ func CreateTestPerpetuals(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			p.Params.DefaultFundingPpm,
 			p.Params.LiquidityTier,
 			p.Params.DangerIndexPpm,
-			p.Params.QuoteAssetId,
 			p.Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
@@ -361,7 +360,6 @@ func CreateTestPricesAndPerpetualMarkets(
 			perp.Params.DefaultFundingPpm,
 			perp.Params.LiquidityTier,
 			perp.Params.DangerIndexPpm,
-			perp.Params.QuoteAssetId,
 			perp.Params.CollateralPoolId,
 		)
 		require.NoError(t, err)
