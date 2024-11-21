@@ -1069,8 +1069,8 @@ func updateResultToOrderStatus(updateResult satypes.UpdateResult) types.OrderSta
 	switch updateResult {
 	case satypes.UpdateCausedError:
 		return types.InternalError
-	case satypes.ViolatesIsolatedSubaccountConstraints:
-		return types.ViolatesIsolatedSubaccountConstraints
+	case satypes.ViolatesCollateralPoolConstraints:
+		return types.ViolatesCollateralPoolConstraints
 	case satypes.ViolatesMultiCollateralConstraints:
 		return types.ViolatesMultiCollateralConstraints
 	default:
@@ -1968,8 +1968,8 @@ func (m *MemClobPriceTimePriority) determineRemovalReason(
 		return types.OrderRemoval_REMOVAL_REASON_CONDITIONAL_FOK_COULD_NOT_BE_FULLY_FILLED
 	case errors.Is(err, types.ErrPostOnlyWouldCrossMakerOrder):
 		return types.OrderRemoval_REMOVAL_REASON_POST_ONLY_WOULD_CROSS_MAKER_ORDER
-	case errors.Is(err, types.ErrWouldViolateIsolatedSubaccountConstraints):
-		return types.OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS
+	case errors.Is(err, types.ErrWouldViolateCollateralPoolConstraints):
+		return types.OrderRemoval_REMOVAL_REASON_VIOLATES_COLLATERAL_POOL_CONSTRAINTS
 	default:
 		return types.OrderRemoval_REMOVAL_REASON_UNSPECIFIED
 	}
@@ -2047,7 +2047,7 @@ func (m *MemClobPriceTimePriority) determineMatchingError(
 	}
 
 	if m.doesMatchingViolateSubaccountConstraints(order, takerOrderStatus) {
-		return types.ErrWouldViolateIsolatedSubaccountConstraints
+		return types.ErrWouldViolateCollateralPoolConstraints
 	}
 
 	return nil
@@ -2075,7 +2075,7 @@ func (m *MemClobPriceTimePriority) doesMatchingViolateSubaccountConstraints(
 	order types.MatchableOrder,
 	takerOrderStatus types.TakerOrderStatus,
 ) bool {
-	return !order.IsLiquidation() && takerOrderStatus.OrderStatus == types.ViolatesIsolatedSubaccountConstraints
+	return !order.IsLiquidation() && takerOrderStatus.OrderStatus == types.ViolatesCollateralPoolConstraints
 }
 
 func (m *MemClobPriceTimePriority) isPostOnlyAndNotRewind(

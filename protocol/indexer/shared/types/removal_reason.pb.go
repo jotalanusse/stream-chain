@@ -72,7 +72,7 @@ const (
 	OrderRemovalReason_ORDER_REMOVAL_REASON_FINAL_SETTLEMENT OrderRemovalReason = 14
 	// The order has been removed since filling it would lead to the subaccount
 	// violating isolated subaccount constraints.
-	OrderRemovalReason_ORDER_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS OrderRemovalReason = 15
+	OrderRemovalReason_ORDER_REMOVAL_REASON_VIOLATES_COLLATERAL_POOL_CONSTRAINTS OrderRemovalReason = 15
 )
 
 var OrderRemovalReason_name = map[int32]string{

@@ -359,10 +359,10 @@ var (
 	)
 
 	// Stateful order errors.
-	ErrWouldViolateIsolatedSubaccountConstraints = errorsmod.Register(
+	ErrWouldViolateCollateralPoolConstraints = errorsmod.Register(
 		ModuleName,
 		2005,
-		"Order would violate isolated subaccount constraints.",
+		"Order would violate collateral pool constraints.",
 	)
 
 	ErrWouldViolateMultiCollateralConstraints = errorsmod.Register(

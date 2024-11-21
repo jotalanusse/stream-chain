@@ -277,7 +277,7 @@ func (k Keeper) PersistOrderRemovalToState(
 	// 			orderRemoval,
 	// 		)
 	// 	}
-	case types.OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS:
+	case types.OrderRemoval_REMOVAL_REASON_VIOLATES_COLLATERAL_POOL_CONSTRAINTS:
 		// TODO (CLOB-877)
 		k.statUnverifiedOrderRemoval(ctx, orderRemoval, orderToRemove)
 	case types.OrderRemoval_REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS:

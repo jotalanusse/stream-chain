@@ -62,7 +62,7 @@ const (
 	OrderRemoval_REMOVAL_REASON_FULLY_FILLED OrderRemoval_RemovalReason = 7
 	// REMOVAL_REASON_FULLY_FILLED represents a removal of an order that
 	//  would lead to the subaccount violating isolated subaccount constraints.
-	OrderRemoval_REMOVAL_REASON_VIOLATES_ISOLATED_SUBACCOUNT_CONSTRAINTS OrderRemoval_RemovalReason = 8
+	OrderRemoval_REMOVAL_REASON_VIOLATES_COLLATERAL_POOL_CONSTRAINTS OrderRemoval_RemovalReason = 8
 	OrderRemoval_REMOVAL_REASON_VIOLATES_MULTI_COLLATERAL_CONSTRAINTS    OrderRemoval_RemovalReason = 9
 )
 

@@ -23,8 +23,8 @@ func (u UpdateResult) IsSuccess() bool {
 	return u == Success
 }
 
-func (u UpdateResult) IsIsolatedSubaccountError() bool {
-	return u == ViolatesIsolatedSubaccountConstraints
+func (u UpdateResult) IsCollateralPoolError() bool {
+	return u == ViolatesCollateralPoolConstraints
 }
 
 func (u UpdateResult) IsMultiCollateralError() bool {
@@ -60,13 +60,13 @@ func GetErrorFromUpdateResults(
 }
 
 var updateResultStringMap = map[UpdateResult]string{
-	Success:                               "Success",
-	NewlyUndercollateralized:              "NewlyUndercollateralized",
-	StillUndercollateralized:              "StillUndercollateralized",
-	WithdrawalsAndTransfersBlocked:        "WithdrawalsAndTransfersBlocked",
-	UpdateCausedError:                     "UpdateCausedError",
-	ViolatesIsolatedSubaccountConstraints: "ViolatesIsolatedSubaccountConstraints",
-	ViolatesMultiCollateralConstraints:    "ViolatesMultiCollateralConstraints",
+	Success:                            "Success",
+	NewlyUndercollateralized:           "NewlyUndercollateralized",
+	StillUndercollateralized:           "StillUndercollateralized",
+	WithdrawalsAndTransfersBlocked:     "WithdrawalsAndTransfersBlocked",
+	UpdateCausedError:                  "UpdateCausedError",
+	ViolatesCollateralPoolConstraints:  "ViolatesCollateralPoolConstraints",
+	ViolatesMultiCollateralConstraints: "ViolatesMultiCollateralConstraints",
 }
 
 const (
@@ -75,7 +75,7 @@ const (
 	StillUndercollateralized
 	WithdrawalsAndTransfersBlocked
 	UpdateCausedError
-	ViolatesIsolatedSubaccountConstraints
+	ViolatesCollateralPoolConstraints
 	ViolatesMultiCollateralConstraints
 )
 

@@ -387,8 +387,8 @@ func (k Keeper) PlaceStatefulOrder(
 
 		if updateResult := successPerSubaccountUpdate[order.OrderId.SubaccountId]; !updateResult.IsSuccess() {
 			err := types.ErrStatefulOrderCollateralizationCheckFailed
-			if updateResult.IsIsolatedSubaccountError() {
-				err = types.ErrWouldViolateIsolatedSubaccountConstraints
+			if updateResult.IsCollateralPoolError() {
+				err = types.ErrWouldViolateCollateralPoolConstraints
 			}
 			if updateResult.IsMultiCollateralError() {
 				err = types.ErrWouldViolateMultiCollateralConstraints

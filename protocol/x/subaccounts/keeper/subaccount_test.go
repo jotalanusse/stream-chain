@@ -2221,7 +2221,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - has update for both an isolated perpetual and non-isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_NoMarginRequirement,
 				constants.IsoUsd_IsolatedMarket,
@@ -2252,7 +2252,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - has update for both 2 isolated perpetuals": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.IsoUsd_IsolatedMarket,
 				constants.Iso2Usd_IsolatedMarket,
@@ -2283,7 +2283,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - subaccount with isolated perpetual position has update for non-isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_NoMarginRequirement,
 				constants.IsoUsd_IsolatedMarket,
@@ -2324,7 +2324,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - subaccount with isolated perpetual position has update for another isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.IsoUsd_IsolatedMarket,
 				constants.Iso2Usd_IsolatedMarket,
@@ -2365,7 +2365,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - subaccount with non-isolated perpetual position has update for isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_NoMarginRequirement,
 				constants.IsoUsd_IsolatedMarket,
@@ -6914,7 +6914,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - has update for both an isolated perpetual and non-isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_NoMarginRequirement,
 				constants.IsoUsd_IsolatedMarket,
@@ -6937,7 +6937,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - has update for both 2 isolated perpetuals": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.IsoUsd_IsolatedMarket,
 				constants.Iso2Usd_IsolatedMarket,
@@ -6960,7 +6960,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - subaccount with isolated perpetual position has update for non-isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_NoMarginRequirement,
 				constants.IsoUsd_IsolatedMarket,
@@ -6986,7 +6986,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - subaccount with isolated perpetual position has update for another isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.IsoUsd_IsolatedMarket,
 				constants.Iso2Usd_IsolatedMarket,
@@ -7012,7 +7012,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 		"Isolated subaccounts - subaccount with non-isolated perpetual position has update for isolated perpetual": {
 			assetPositions:           testutil.CreateTDaiAssetPosition(big.NewInt(1_000_000_000_000)),
 			expectedSuccess:          false,
-			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesIsolatedSubaccountConstraints},
+			expectedSuccessPerUpdate: []types.UpdateResult{types.ViolatesCollateralPoolConstraints},
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_NoMarginRequirement,
 				constants.IsoUsd_IsolatedMarket,
