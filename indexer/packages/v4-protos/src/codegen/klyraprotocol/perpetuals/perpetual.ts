@@ -123,7 +123,7 @@ export interface PerpetualParams {
   dangerIndexPpm: number;
   /** The maximum insurance fund delta per block for isolated perpetual markets. */
 
-  isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: Long;
+  maxCumulativeInsuranceFundDeltaPerBlock: Long;
 }
 /**
  * PerpetualParams represents the parameters of a perpetual on the Klyra
@@ -171,7 +171,7 @@ export interface PerpetualParamsSDKType {
   danger_index_ppm: number;
   /** The maximum insurance fund delta per block for isolated perpetual markets. */
 
-  isolated_market_max_cumulative_insurance_fund_delta_per_block: Long;
+  max_cumulative_insurance_fund_delta_per_block: Long;
 }
 /** MarketPremiums stores a list of premiums for a single perpetual market. */
 
@@ -449,7 +449,7 @@ function createBasePerpetualParams(): PerpetualParams {
     liquidityTier: 0,
     marketType: 0,
     dangerIndexPpm: 0,
-    isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: Long.UZERO
+    maxCumulativeInsuranceFundDeltaPerBlock: Long.UZERO
   };
 }
 
@@ -487,8 +487,8 @@ export const PerpetualParams = {
       writer.uint32(64).uint32(message.dangerIndexPpm);
     }
 
-    if (!message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock.isZero()) {
-      writer.uint32(72).uint64(message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock);
+    if (!message.maxCumulativeInsuranceFundDeltaPerBlock.isZero()) {
+      writer.uint32(72).uint64(message.maxCumulativeInsuranceFundDeltaPerBlock);
     }
 
     return writer;
@@ -536,7 +536,7 @@ export const PerpetualParams = {
           break;
 
         case 9:
-          message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = (reader.uint64() as Long);
+          message.maxCumulativeInsuranceFundDeltaPerBlock = (reader.uint64() as Long);
           break;
 
         default:
@@ -558,7 +558,7 @@ export const PerpetualParams = {
     message.liquidityTier = object.liquidityTier ?? 0;
     message.marketType = object.marketType ?? 0;
     message.dangerIndexPpm = object.dangerIndexPpm ?? 0;
-    message.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = object.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock !== undefined && object.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock !== null ? Long.fromValue(object.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock) : Long.UZERO;
+    message.maxCumulativeInsuranceFundDeltaPerBlock = object.maxCumulativeInsuranceFundDeltaPerBlock !== undefined && object.maxCumulativeInsuranceFundDeltaPerBlock !== null ? Long.fromValue(object.maxCumulativeInsuranceFundDeltaPerBlock) : Long.UZERO;
     return message;
   }
 

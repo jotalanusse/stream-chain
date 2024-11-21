@@ -104,16 +104,16 @@ var LiquidityTiers = []perptypes.LiquidityTier{
 // Collateral Pool objects.
 var CollateralPools = []perptypes.CollateralPool{
 	{
-		CollateralPoolId: 0,
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		CollateralPoolId:                        0,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
 		IsolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{0},
 		},
 		QuoteAssetId: 0,
 	},
 	{
-		CollateralPoolId: 1,
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		CollateralPoolId:                        1,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
 		IsolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{1},
 		},
@@ -618,16 +618,16 @@ var (
 	Perpetuals_DefaultGenesisState = perptypes.GenesisState{
 		CollateralPools: []perptypes.CollateralPool{
 			{
-				CollateralPoolId: 0,
-				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
-				IsolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-				QuoteAssetId:                                          0,
+				CollateralPoolId:                        0,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				IsolatedMarketMultiCollateralAssets:     &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+				QuoteAssetId:                            0,
 			},
 			{
-				CollateralPoolId: 1,
-				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
-				IsolatedMarketMultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-				QuoteAssetId:                                          1,
+				CollateralPoolId:                        1,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				IsolatedMarketMultiCollateralAssets:     &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+				QuoteAssetId:                            1,
 			},
 		},
 		LiquidityTiers: []perptypes.LiquidityTier{

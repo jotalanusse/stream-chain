@@ -11,7 +11,7 @@ message CollateralPool {
     uint32 collateral_pool_id = 1;
 
     // The maximum insurance fund delta per block for isolated perpetual markets.
-    uint64 isolated_market_max_cumulative_insurance_fund_delta_per_block = 2;
+    uint64 max_cumulative_insurance_fund_delta_per_block = 2;
 
     // The multi collateral assets for the collateral pool.
     MultiCollateralAssetsArray isolated_market_multi_collateral_assets = 3;

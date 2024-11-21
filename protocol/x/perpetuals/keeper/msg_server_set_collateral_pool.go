@@ -26,7 +26,7 @@ func (k msgServer) SetCollateralPool(
 	if _, err := k.Keeper.SetCollateralPool(
 		ctx,
 		msg.CollateralPool.CollateralPoolId,
-		msg.CollateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+		msg.CollateralPool.MaxCumulativeInsuranceFundDeltaPerBlock,
 		msg.CollateralPool.IsolatedMarketMultiCollateralAssets,
 		msg.CollateralPool.QuoteAssetId,
 	); err != nil {

@@ -22,16 +22,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -65,16 +65,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -116,16 +116,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -167,16 +167,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -210,16 +210,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -253,16 +253,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -296,16 +296,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -339,16 +339,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -382,16 +382,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -425,16 +425,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -468,16 +468,16 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 					{
-						CollateralPoolId: 1,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          1,
+						CollateralPoolId:                        1,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            1,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -511,10 +511,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 0,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+						QuoteAssetId:                            0,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -548,10 +548,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+						QuoteAssetId:                            0,
 					},
 				},
 				Perpetuals: []types.Perpetual{
@@ -585,10 +585,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				CollateralPools: []types.CollateralPool{
 					{
-						CollateralPoolId: 0,
-						IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-						IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-						QuoteAssetId:                                          0,
+						CollateralPoolId:                        0,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+						QuoteAssetId:                            0,
 					},
 				},
 				Perpetuals: []types.Perpetual{

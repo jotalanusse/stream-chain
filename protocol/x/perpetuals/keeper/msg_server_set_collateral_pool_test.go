@@ -18,7 +18,7 @@ import (
 func TestSetCollateralPool(t *testing.T) {
 	testCp := *cptest.GenerateCollateralPool(
 		cptest.WithCollateralPoolId(1),
-		cptest.WithIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock(1_000),
+		cptest.WithMaxCumulativeInsuranceFundDeltaPerBlock(1_000),
 		cptest.WithIsolatedMarketMultiCollateralAssets([]uint32{0}),
 		cptest.WithQuoteAssetId(0),
 	)
@@ -31,10 +31,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: lib.GovModuleAddress.String(),
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                                          1,
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					QuoteAssetId:                            1,
 				},
 			},
 		},
@@ -42,10 +42,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: lib.GovModuleAddress.String(),
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                                          1,
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					QuoteAssetId:                            1,
 				},
 			},
 		},
@@ -53,10 +53,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: lib.GovModuleAddress.String(),
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId + 1,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                                          1,
+					CollateralPoolId:                        testCp.CollateralPoolId + 1,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					QuoteAssetId:                            1,
 				},
 			},
 		},
@@ -64,10 +64,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: lib.GovModuleAddress.String(),
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                                          0,
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					QuoteAssetId:                            0,
 				},
 			},
 			expectedErr: "supported multi collateral assets must contains quote asset",
@@ -76,10 +76,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: lib.GovModuleAddress.String(),
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
-					QuoteAssetId:                                          0,
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+					QuoteAssetId:                            0,
 				},
 			},
 			expectedErr: "supported multi collateral assets must not be empty",
@@ -88,10 +88,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: constants.BobAccAddress.String(),
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                                          1,
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					QuoteAssetId:                            1,
 				},
 			},
 			expectedErr: "invalid authority",
@@ -100,10 +100,10 @@ func TestSetCollateralPool(t *testing.T) {
 			msg: &types.MsgSetCollateralPool{
 				Authority: "",
 				CollateralPool: types.CollateralPool{
-					CollateralPoolId: testCp.CollateralPoolId,
-					IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                                          1,
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
+					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					QuoteAssetId:                            1,
 				},
 			},
 			expectedErr: "invalid authority",
@@ -121,7 +121,7 @@ func TestSetCollateralPool(t *testing.T) {
 			initialCp, err := pc.PerpetualsKeeper.SetCollateralPool(
 				pc.Ctx,
 				testCp.CollateralPoolId,
-				testCp.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				testCp.MaxCumulativeInsuranceFundDeltaPerBlock,
 				testCp.IsolatedMarketMultiCollateralAssets,
 				testCp.QuoteAssetId,
 			)

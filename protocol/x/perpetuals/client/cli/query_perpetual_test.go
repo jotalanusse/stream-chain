@@ -74,16 +74,16 @@ func networkWithLiquidityTierAndPerpetualObjects(
 
 	collateralPools := []types.CollateralPool{
 		{
-			CollateralPoolId: 0,
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
-			IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			QuoteAssetId:                                          uint32(0),
+			CollateralPoolId:                        0,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			QuoteAssetId:                            uint32(0),
 		},
 		{
-			CollateralPoolId: 1,
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 2000000,
-			IsolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-			QuoteAssetId:                                          uint32(1),
+			CollateralPoolId:                        1,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 2000000,
+			IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+			QuoteAssetId:                            uint32(1),
 		},
 	}
 	nullify.Fill(&collateralPools) //nolint:staticcheck

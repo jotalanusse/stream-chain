@@ -1272,7 +1272,7 @@ func (k Keeper) GetInsuranceFundDeltaBlockLimit(ctx sdk.Context, perpetualId uin
 		return big.NewInt(0), err
 	}
 
-	return new(big.Int).SetUint64(collateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock), nil
+	return new(big.Int).SetUint64(collateralPool.MaxCumulativeInsuranceFundDeltaPerBlock), nil
 }
 
 // ConvertLiquidationPriceToSubticks converts the liquidation price of a liquidation order to subticks.

@@ -33,9 +33,9 @@ func (_m *PerpetualsKeeper) AddPremiumVotes(ctx types.Context, votes []perpetual
 	return r0
 }
 
-// CreatePerpetual provides a mock function with given fields: ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId
-func (_m *PerpetualsKeeper) CreatePerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, atomicResolution int32, defaultFundingPpm int32, liquidityTier uint32, marketType perpetualstypes.PerpetualMarketType, dangerIndexPpm uint32, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64, isolatedMarketMultiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.Perpetual, error) {
-	ret := _m.Called(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+// CreatePerpetual provides a mock function with given fields: ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId
+func (_m *PerpetualsKeeper) CreatePerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, atomicResolution int32, defaultFundingPpm int32, liquidityTier uint32, marketType perpetualstypes.PerpetualMarketType, dangerIndexPpm uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, isolatedMarketMultiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.Perpetual, error) {
+	ret := _m.Called(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreatePerpetual")
@@ -44,16 +44,16 @@ func (_m *PerpetualsKeeper) CreatePerpetual(ctx types.Context, id uint32, ticker
 	var r0 perpetualstypes.Perpetual
 	var r1 error
 	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, int32, uint32, perpetualstypes.PerpetualMarketType, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.Perpetual, error)); ok {
-		return rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+		return rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 	}
 	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, int32, uint32, perpetualstypes.PerpetualMarketType, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.Perpetual); ok {
-		r0 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+		r0 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 	} else {
 		r0 = ret.Get(0).(perpetualstypes.Perpetual)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, uint32, string, uint32, int32, int32, uint32, perpetualstypes.PerpetualMarketType, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
-		r1 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+		r1 = rf(ctx, id, ticker, marketId, atomicResolution, defaultFundingPpm, liquidityTier, marketType, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -294,9 +294,9 @@ func (_m *PerpetualsKeeper) ModifyOpenInterest(ctx types.Context, perpetualId ui
 	return r0
 }
 
-// ModifyPerpetual provides a mock function with given fields: ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId
-func (_m *PerpetualsKeeper) ModifyPerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, defaultFundingPpm int32, liquidityTier uint32, dangerIndexPpm uint32, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64, isolatedMarketMultiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.Perpetual, error) {
-	ret := _m.Called(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+// ModifyPerpetual provides a mock function with given fields: ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId
+func (_m *PerpetualsKeeper) ModifyPerpetual(ctx types.Context, id uint32, ticker string, marketId uint32, defaultFundingPpm int32, liquidityTier uint32, dangerIndexPpm uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, isolatedMarketMultiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.Perpetual, error) {
+	ret := _m.Called(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ModifyPerpetual")
@@ -305,16 +305,16 @@ func (_m *PerpetualsKeeper) ModifyPerpetual(ctx types.Context, id uint32, ticker
 	var r0 perpetualstypes.Perpetual
 	var r1 error
 	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.Perpetual, error)); ok {
-		return rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+		return rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 	}
 	if rf, ok := ret.Get(0).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.Perpetual); ok {
-		r0 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+		r0 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 	} else {
 		r0 = ret.Get(0).(perpetualstypes.Perpetual)
 	}
 
 	if rf, ok := ret.Get(1).(func(types.Context, uint32, string, uint32, int32, uint32, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
-		r1 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
+		r1 = rf(ctx, id, ticker, marketId, defaultFundingPpm, liquidityTier, dangerIndexPpm, maxCumulativeInsuranceFundDeltaPerBlock, isolatedMarketMultiCollateralAssets, quoteAssetId)
 	} else {
 		r1 = ret.Error(1)
 	}

@@ -27,7 +27,7 @@ type CollateralPool struct {
 	// The id of the collateral pool.
 	CollateralPoolId uint32 `protobuf:"varint,1,opt,name=collateral_pool_id,json=collateralPoolId,proto3" json:"collateral_pool_id,omitempty"`
 	// The maximum insurance fund delta per block for isolated perpetual markets.
-	IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64 `protobuf:"varint,2,opt,name=isolated_market_max_cumulative_insurance_fund_delta_per_block,json=isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"isolated_market_max_cumulative_insurance_fund_delta_per_block,omitempty"`
+	MaxCumulativeInsuranceFundDeltaPerBlock uint64 `protobuf:"varint,2,opt,name=max_cumulative_insurance_fund_delta_per_block,json=maxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"max_cumulative_insurance_fund_delta_per_block,omitempty"`
 	// The multi collateral assets for the collateral pool.
 	IsolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray `protobuf:"bytes,3,opt,name=isolated_market_multi_collateral_assets,json=isolatedMarketMultiCollateralAssets,proto3" json:"isolated_market_multi_collateral_assets,omitempty"`
 	// The id of the quote asset.
@@ -74,9 +74,9 @@ func (m *CollateralPool) GetCollateralPoolId() uint32 {
 	return 0
 }
 
-func (m *CollateralPool) GetIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock() uint64 {
+func (m *CollateralPool) GetMaxCumulativeInsuranceFundDeltaPerBlock() uint64 {
 	if m != nil {
-		return m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
+		return m.MaxCumulativeInsuranceFundDeltaPerBlock
 	}
 	return 0
 }
@@ -167,8 +167,8 @@ func (m *CollateralPool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x1a
 	}
-	if m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock != 0 {
-		i = encodeVarintCollateral(dAtA, i, uint64(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock))
+	if m.MaxCumulativeInsuranceFundDeltaPerBlock != 0 {
+		i = encodeVarintCollateral(dAtA, i, uint64(m.MaxCumulativeInsuranceFundDeltaPerBlock))
 		i--
 		dAtA[i] = 0x10
 	}
@@ -200,8 +200,8 @@ func (m *CollateralPool) Size() (n int) {
 	if m.CollateralPoolId != 0 {
 		n += 1 + sovCollateral(uint64(m.CollateralPoolId))
 	}
-	if m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock != 0 {
-		n += 1 + sovCollateral(uint64(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock))
+	if m.MaxCumulativeInsuranceFundDeltaPerBlock != 0 {
+		n += 1 + sovCollateral(uint64(m.MaxCumulativeInsuranceFundDeltaPerBlock))
 	}
 	if m.IsolatedMarketMultiCollateralAssets != nil {
 		l = m.IsolatedMarketMultiCollateralAssets.Size()
@@ -269,9 +269,9 @@ func (m *CollateralPool) Unmarshal(dAtA []byte) error {
 			}
 		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxCumulativeInsuranceFundDeltaPerBlock", wireType)
 			}
-			m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = 0
+			m.MaxCumulativeInsuranceFundDeltaPerBlock = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowCollateral
@@ -281,7 +281,7 @@ func (m *CollateralPool) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock |= uint64(b&0x7F) << shift
+				m.MaxCumulativeInsuranceFundDeltaPerBlock |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

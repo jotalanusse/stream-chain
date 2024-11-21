@@ -1622,7 +1622,7 @@ func (k Keeper) HasCollateralPool(
 func (k Keeper) SetCollateralPool(
 	ctx sdk.Context,
 	collateralPoolId uint32,
-	isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+	maxCumulativeInsuranceFundDeltaPerBlock uint64,
 	isolatedMarketMultiCollateralAssets *types.MultiCollateralAssetsArray,
 	quoteAssetId uint32,
 ) (
@@ -1631,10 +1631,10 @@ func (k Keeper) SetCollateralPool(
 ) {
 	// Construct collateral pool.
 	collateralPool = types.CollateralPool{
-		CollateralPoolId: collateralPoolId,
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-		IsolatedMarketMultiCollateralAssets:                   isolatedMarketMultiCollateralAssets,
-		QuoteAssetId:                                          quoteAssetId,
+		CollateralPoolId:                        collateralPoolId,
+		MaxCumulativeInsuranceFundDeltaPerBlock: maxCumulativeInsuranceFundDeltaPerBlock,
+		IsolatedMarketMultiCollateralAssets:     isolatedMarketMultiCollateralAssets,
+		QuoteAssetId:                            quoteAssetId,
 	}
 
 	// Validate collateral pool's fields.

@@ -9,13 +9,13 @@ import (
 
 func TestCollateralPoolValidate(t *testing.T) {
 	tests := map[string]struct {
-		IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
-		multiCollateralAssets                                 *types.MultiCollateralAssetsArray
-		quoteAssetId                                          uint32
-		expectedError                                         error
+		MaxCumulativeInsuranceFundDeltaPerBlock uint64
+		multiCollateralAssets                   *types.MultiCollateralAssetsArray
+		quoteAssetId                            uint32
+		expectedError                           error
 	}{
 		"Validates successfully": {
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
 			multiCollateralAssets: &types.MultiCollateralAssetsArray{
 				MultiCollateralAssets: []uint32{1, 2, 3},
 			},
@@ -23,24 +23,24 @@ func TestCollateralPoolValidate(t *testing.T) {
 			expectedError: nil,
 		},
 		"Failure: Isolated Market Max Cumulative Insurance Fund Delta Per Block is zero": {
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 0,
 			multiCollateralAssets: &types.MultiCollateralAssetsArray{
 				MultiCollateralAssets: []uint32{1, 2, 3},
 			},
 			quoteAssetId:  2,
-			expectedError: types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
+			expectedError: types.ErrMaxCumulativeInsuranceFundDeltaPerBlockZero,
 		},
 		"Failure: Isolated Market Multi Collateral Assets is empty": {
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
-			multiCollateralAssets: &types.MultiCollateralAssetsArray{},
-			quoteAssetId:          2,
-			expectedError:         types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
+			multiCollateralAssets:                   &types.MultiCollateralAssetsArray{},
+			quoteAssetId:                            2,
+			expectedError:                           types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
 		},
 		"Failure: Isolated Market Multi Collateral Asset Does Not Contain Quote Asset": {
-			IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
-			multiCollateralAssets: &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
-			quoteAssetId:          4,
-			expectedError:         types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
+			multiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
+			quoteAssetId:                            4,
+			expectedError:                           types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
 		},
 	}
 
@@ -48,10 +48,10 @@ func TestCollateralPoolValidate(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			collateralPool := &types.CollateralPool{
-				CollateralPoolId: 1,
-				IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: tc.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-				IsolatedMarketMultiCollateralAssets:                   tc.multiCollateralAssets,
-				QuoteAssetId:                                          tc.quoteAssetId,
+				CollateralPoolId:                        1,
+				MaxCumulativeInsuranceFundDeltaPerBlock: tc.MaxCumulativeInsuranceFundDeltaPerBlock,
+				IsolatedMarketMultiCollateralAssets:     tc.multiCollateralAssets,
+				QuoteAssetId:                            tc.quoteAssetId,
 			}
 
 			err := collateralPool.Validate()

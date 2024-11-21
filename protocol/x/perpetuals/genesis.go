@@ -21,7 +21,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		_, err := k.SetCollateralPool(
 			ctx,
 			elem.CollateralPoolId,
-			elem.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			elem.MaxCumulativeInsuranceFundDeltaPerBlock,
 			elem.IsolatedMarketMultiCollateralAssets,
 			elem.QuoteAssetId,
 		)

@@ -7,8 +7,8 @@ import (
 )
 
 func (collateralPool CollateralPool) Validate() error {
-	if collateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock == 0 {
-		return errorsmod.Wrap(ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero, lib.UintToString(collateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock))
+	if collateralPool.MaxCumulativeInsuranceFundDeltaPerBlock == 0 {
+		return errorsmod.Wrap(ErrMaxCumulativeInsuranceFundDeltaPerBlockZero, lib.UintToString(collateralPool.MaxCumulativeInsuranceFundDeltaPerBlock))
 	}
 
 	if len(collateralPool.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {

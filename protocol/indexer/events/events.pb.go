@@ -1797,7 +1797,7 @@ type PerpetualMarketCreateEventV2 struct {
 	// liquidations
 	DangerIndexPpm uint32 `protobuf:"varint,11,opt,name=danger_index_ppm,json=dangerIndexPpm,proto3" json:"danger_index_ppm,omitempty"`
 	// The maximum cumulative insurance fund delta per block for isolated markets.
-	IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock string `protobuf:"bytes,12,opt,name=isolated_market_max_cumulative_insurance_fund_delta_per_block,json=isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"isolated_market_max_cumulative_insurance_fund_delta_per_block,omitempty"`
+	MaxCumulativeInsuranceFundDeltaPerBlock string `protobuf:"bytes,12,opt,name=max_cumulative_insurance_fund_delta_per_block,json=maxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"max_cumulative_insurance_fund_delta_per_block,omitempty"`
 }
 
 func (m *PerpetualMarketCreateEventV2) Reset()         { *m = PerpetualMarketCreateEventV2{} }
@@ -1910,9 +1910,9 @@ func (m *PerpetualMarketCreateEventV2) GetDangerIndexPpm() uint32 {
 	return 0
 }
 
-func (m *PerpetualMarketCreateEventV2) GetIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock() string {
+func (m *PerpetualMarketCreateEventV2) GetMaxCumulativeInsuranceFundDeltaPerBlock() string {
 	if m != nil {
-		return m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
+		return m.MaxCumulativeInsuranceFundDeltaPerBlock
 	}
 	return ""
 }
@@ -2326,7 +2326,7 @@ type UpdatePerpetualEventV1 struct {
 	// liquidations
 	DangerIndexPpm uint32 `protobuf:"varint,6,opt,name=danger_index_ppm,json=dangerIndexPpm,proto3" json:"danger_index_ppm,omitempty"`
 	// The maximum cumulative insurance fund delta per block for isolated markets.
-	IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock string `protobuf:"bytes,7,opt,name=isolated_market_max_cumulative_insurance_fund_delta_per_block,json=isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"isolated_market_max_cumulative_insurance_fund_delta_per_block,omitempty"`
+	MaxCumulativeInsuranceFundDeltaPerBlock string `protobuf:"bytes,7,opt,name=max_cumulative_insurance_fund_delta_per_block,json=maxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"max_cumulative_insurance_fund_delta_per_block,omitempty"`
 }
 
 func (m *UpdatePerpetualEventV1) Reset()         { *m = UpdatePerpetualEventV1{} }
@@ -2404,9 +2404,9 @@ func (m *UpdatePerpetualEventV1) GetDangerIndexPpm() uint32 {
 	return 0
 }
 
-func (m *UpdatePerpetualEventV1) GetIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock() string {
+func (m *UpdatePerpetualEventV1) GetMaxCumulativeInsuranceFundDeltaPerBlock() string {
 	if m != nil {
-		return m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock
+		return m.MaxCumulativeInsuranceFundDeltaPerBlock
 	}
 	return ""
 }
@@ -3919,10 +3919,10 @@ func (m *PerpetualMarketCreateEventV2) MarshalToSizedBuffer(dAtA []byte) (int, e
 	_ = i
 	var l int
 	_ = l
-	if len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock) > 0 {
-		i -= len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
-		copy(dAtA[i:], m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
-		i = encodeVarintEvents(dAtA, i, uint64(len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)))
+	if len(m.MaxCumulativeInsuranceFundDeltaPerBlock) > 0 {
+		i -= len(m.MaxCumulativeInsuranceFundDeltaPerBlock)
+		copy(dAtA[i:], m.MaxCumulativeInsuranceFundDeltaPerBlock)
+		i = encodeVarintEvents(dAtA, i, uint64(len(m.MaxCumulativeInsuranceFundDeltaPerBlock)))
 		i--
 		dAtA[i] = 0x62
 	}
@@ -4239,10 +4239,10 @@ func (m *UpdatePerpetualEventV1) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	_ = i
 	var l int
 	_ = l
-	if len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock) > 0 {
-		i -= len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
-		copy(dAtA[i:], m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
-		i = encodeVarintEvents(dAtA, i, uint64(len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)))
+	if len(m.MaxCumulativeInsuranceFundDeltaPerBlock) > 0 {
+		i -= len(m.MaxCumulativeInsuranceFundDeltaPerBlock)
+		copy(dAtA[i:], m.MaxCumulativeInsuranceFundDeltaPerBlock)
+		i = encodeVarintEvents(dAtA, i, uint64(len(m.MaxCumulativeInsuranceFundDeltaPerBlock)))
 		i--
 		dAtA[i] = 0x3a
 	}
@@ -4921,7 +4921,7 @@ func (m *PerpetualMarketCreateEventV2) Size() (n int) {
 	if m.DangerIndexPpm != 0 {
 		n += 1 + sovEvents(uint64(m.DangerIndexPpm))
 	}
-	l = len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
+	l = len(m.MaxCumulativeInsuranceFundDeltaPerBlock)
 	if l > 0 {
 		n += 1 + l + sovEvents(uint64(l))
 	}
@@ -5062,7 +5062,7 @@ func (m *UpdatePerpetualEventV1) Size() (n int) {
 	if m.DangerIndexPpm != 0 {
 		n += 1 + sovEvents(uint64(m.DangerIndexPpm))
 	}
-	l = len(m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
+	l = len(m.MaxCumulativeInsuranceFundDeltaPerBlock)
 	if l > 0 {
 		n += 1 + l + sovEvents(uint64(l))
 	}
@@ -8400,7 +8400,7 @@ func (m *PerpetualMarketCreateEventV2) Unmarshal(dAtA []byte) error {
 			}
 		case 12:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxCumulativeInsuranceFundDeltaPerBlock", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -8428,7 +8428,7 @@ func (m *PerpetualMarketCreateEventV2) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = string(dAtA[iNdEx:postIndex])
+			m.MaxCumulativeInsuranceFundDeltaPerBlock = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -9298,7 +9298,7 @@ func (m *UpdatePerpetualEventV1) Unmarshal(dAtA []byte) error {
 			}
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxCumulativeInsuranceFundDeltaPerBlock", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -9326,7 +9326,7 @@ func (m *UpdatePerpetualEventV1) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock = string(dAtA[iNdEx:postIndex])
+			m.MaxCumulativeInsuranceFundDeltaPerBlock = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

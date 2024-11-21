@@ -3376,7 +3376,7 @@ func TestGetAllCollateralPools_Sorted(t *testing.T) {
 		_, err := pc.PerpetualsKeeper.SetCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
-			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
 			pool.IsolatedMarketMultiCollateralAssets,
 			pool.QuoteAssetId,
 		)
@@ -3413,7 +3413,7 @@ func TestHasCollateralPool(t *testing.T) {
 		_, err := pc.PerpetualsKeeper.SetCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
-			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
 			pool.IsolatedMarketMultiCollateralAssets,
 			pool.QuoteAssetId,
 		)
@@ -3436,7 +3436,7 @@ func TestCreateCollateralPool_Success(t *testing.T) {
 		_, err := pc.PerpetualsKeeper.SetCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
-			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
 			pool.IsolatedMarketMultiCollateralAssets,
 			pool.QuoteAssetId,
 		)
@@ -3449,7 +3449,7 @@ func TestCreateCollateralPool_Success(t *testing.T) {
 		collateralPool, err := pc.PerpetualsKeeper.GetCollateralPool(pc.Ctx, pool.CollateralPoolId)
 		require.NoError(t, err)
 		require.Equal(t, pool.CollateralPoolId, collateralPool.CollateralPoolId)
-		require.Equal(t, pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock, collateralPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock)
+		require.Equal(t, pool.MaxCumulativeInsuranceFundDeltaPerBlock, collateralPool.MaxCumulativeInsuranceFundDeltaPerBlock)
 		require.Equal(t, pool.IsolatedMarketMultiCollateralAssets, collateralPool.IsolatedMarketMultiCollateralAssets)
 		require.Equal(t, pool.QuoteAssetId, collateralPool.QuoteAssetId)
 	}
@@ -3457,32 +3457,32 @@ func TestCreateCollateralPool_Success(t *testing.T) {
 
 func TestSetCollateralPool_New_Failure(t *testing.T) {
 	tests := map[string]struct {
-		collateralPoolId                                      uint32
-		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
-		isolatedMarketMultiCollateralAssets                   *types.MultiCollateralAssetsArray
-		quoteAssetId                                          uint32
-		expectedError                                         error
+		collateralPoolId                        uint32
+		maxCumulativeInsuranceFundDeltaPerBlock uint64
+		isolatedMarketMultiCollateralAssets     *types.MultiCollateralAssetsArray
+		quoteAssetId                            uint32
+		expectedError                           error
 	}{
 		"Isolated market max cumulative insurance fund delta per block is zero": {
-			collateralPoolId: 0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
-			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          0,
-			expectedError:                                         types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
+			collateralPoolId:                        0,
+			maxCumulativeInsuranceFundDeltaPerBlock: 0,
+			isolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                            0,
+			expectedError:                           types.ErrMaxCumulativeInsuranceFundDeltaPerBlockZero,
 		},
 		"Supported assets is empty": {
-			collateralPoolId: 0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
-			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
-			quoteAssetId:                                          0,
-			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
+			collateralPoolId:                        0,
+			maxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+			quoteAssetId:                            0,
+			expectedError:                           types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
 		},
 		"Supported assets does not contain quote asset": {
-			collateralPoolId: 0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
-			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          1,
-			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+			collateralPoolId:                        0,
+			maxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                            1,
+			expectedError:                           types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
 		},
 	}
 
@@ -3495,7 +3495,7 @@ func TestSetCollateralPool_New_Failure(t *testing.T) {
 			_, err := pc.PerpetualsKeeper.SetCollateralPool(
 				pc.Ctx,
 				tc.collateralPoolId,
-				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.maxCumulativeInsuranceFundDeltaPerBlock,
 				tc.isolatedMarketMultiCollateralAssets,
 				tc.quoteAssetId,
 			)
@@ -3512,7 +3512,7 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 		_, err := pc.PerpetualsKeeper.SetCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
-			pool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
 			pool.IsolatedMarketMultiCollateralAssets,
 			pool.QuoteAssetId,
 		)
@@ -3522,13 +3522,13 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 	for i, pool := range constants.CollateralPools {
 		// Modify each field arbitrarily and
 		// verify the fields are modified in state.
-		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock := uint64(i * 1000000)
+		maxCumulativeInsuranceFundDeltaPerBlock := uint64(i * 1000000)
 		isolatedMarketMultiCollateralAssets := &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
 		quoteAssetId := uint32(i)
 		modifiedPool, err := pc.PerpetualsKeeper.SetCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			maxCumulativeInsuranceFundDeltaPerBlock,
 			isolatedMarketMultiCollateralAssets,
 			quoteAssetId,
 		)
@@ -3547,8 +3547,8 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 		)
 		require.Equal(
 			t,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
-			obtainedPool.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			maxCumulativeInsuranceFundDeltaPerBlock,
+			obtainedPool.MaxCumulativeInsuranceFundDeltaPerBlock,
 		)
 		require.Equal(
 			t,
@@ -3565,32 +3565,32 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 
 func TestSetCollateralPool_Existing_Failure(t *testing.T) {
 	tests := map[string]struct {
-		collateralPoolId                                      uint32
-		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64
-		isolatedMarketMultiCollateralAssets                   *types.MultiCollateralAssetsArray
-		quoteAssetId                                          uint32
-		expectedError                                         error
+		collateralPoolId                        uint32
+		maxCumulativeInsuranceFundDeltaPerBlock uint64
+		isolatedMarketMultiCollateralAssets     *types.MultiCollateralAssetsArray
+		quoteAssetId                            uint32
+		expectedError                           error
 	}{
 		"Insurance fund delta per block is zero": {
-			collateralPoolId: 0,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 0,
-			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          0,
-			expectedError:                                         types.ErrIsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlockZero,
+			collateralPoolId:                        0,
+			maxCumulativeInsuranceFundDeltaPerBlock: 0,
+			isolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                            0,
+			expectedError:                           types.ErrMaxCumulativeInsuranceFundDeltaPerBlockZero,
 		},
 		"Supported assets is empty": {
-			collateralPoolId: 1,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
-			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
-			quoteAssetId:                                          0,
-			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
+			collateralPoolId:                        1,
+			maxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+			quoteAssetId:                            0,
+			expectedError:                           types.ErrIsolatedMarketMultiCollateralAssetsEmpty,
 		},
 		"Supported assets does not contain quote asset": {
-			collateralPoolId: 1,
-			isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
-			isolatedMarketMultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
-			quoteAssetId:                                          1,
-			expectedError:                                         types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
+			collateralPoolId:                        1,
+			maxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			isolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			quoteAssetId:                            1,
+			expectedError:                           types.ErrIsolatedMarketMultiCollateralAssetDoesNotContainQuoteAsset,
 		},
 	}
 
@@ -3604,7 +3604,7 @@ func TestSetCollateralPool_Existing_Failure(t *testing.T) {
 			_, err := pc.PerpetualsKeeper.SetCollateralPool(
 				pc.Ctx,
 				tc.collateralPoolId,
-				tc.isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+				tc.maxCumulativeInsuranceFundDeltaPerBlock,
 				tc.isolatedMarketMultiCollateralAssets,
 				tc.quoteAssetId,
 			)

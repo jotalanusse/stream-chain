@@ -216,7 +216,7 @@ func CreateTestCollateralPools(t *testing.T, ctx sdk.Context, k *keeper.Keeper) 
 	for _, cp := range constants.CollateralPools {
 		_, err := k.SetCollateralPool(ctx,
 			cp.CollateralPoolId,
-			cp.IsolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock,
+			cp.MaxCumulativeInsuranceFundDeltaPerBlock,
 			cp.IsolatedMarketMultiCollateralAssets,
 			cp.QuoteAssetId,
 		)

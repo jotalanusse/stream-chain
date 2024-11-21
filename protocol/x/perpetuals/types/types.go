@@ -111,7 +111,7 @@ type PerpetualsKeeper interface {
 	SetCollateralPool(
 		ctx sdk.Context,
 		collateralPoolId uint32,
-		isolatedMarketMaxCumulativeInsuranceFundDeltaPerBlock uint64,
+		maxCumulativeInsuranceFundDeltaPerBlock uint64,
 		isolatedMarketMultiCollateralAssets *MultiCollateralAssetsArray,
 		quoteAssetId uint32,
 	) (
