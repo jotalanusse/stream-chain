@@ -40,13 +40,7 @@ func (k Keeper) GetInsuranceFundName(ctx sdk.Context, perpetualId uint32) (strin
 		return "", err
 	}
 
-	if perpetual.Params.MarketType == types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-		return types.InsuranceFundName + ":" + lib.UintToString(perpetualId), nil
-	} else if perpetual.Params.MarketType == types.PerpetualMarketType_PERPETUAL_MARKET_TYPE_CROSS {
-		return types.InsuranceFundName, nil
-	}
-
-	panic(fmt.Sprintf("invalid market type %v for perpetual %d", perpetual.Params.MarketType, perpetualId))
+	return types.InsuranceFundName + ":" + lib.UintToString(perpetual.Params.CollateralPoolId), nil
 }
 
 // GetInsuranceFundModuleAddress returns the address of the insurance fund account for a given perpetual.
