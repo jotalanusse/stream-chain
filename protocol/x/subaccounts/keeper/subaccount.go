@@ -159,11 +159,7 @@ func (k Keeper) GetCollateralPoolFromPerpetualId(ctx sdk.Context, perpetualId ui
 		return nil, err
 	}
 
-	if perpetual.Params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-		return authtypes.NewModuleAddress(types.ModuleName + ":" + lib.UintToString(perpetual.GetId())), nil
-	}
-
-	return authtypes.NewModuleAddress(types.ModuleName), nil
+	return authtypes.NewModuleAddress(types.ModuleName + ":" + lib.UintToString(perpetual.Params.CollateralPoolId)), nil
 }
 
 // ForEachSubaccount performs a callback across all subaccounts.
