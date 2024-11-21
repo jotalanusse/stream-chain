@@ -14,7 +14,7 @@ message CollateralPool {
     uint64 max_cumulative_insurance_fund_delta_per_block = 2;
 
     // The multi collateral assets for the collateral pool.
-    MultiCollateralAssetsArray isolated_market_multi_collateral_assets = 3;
+    MultiCollateralAssetsArray multi_collateral_assets = 3;
 
     // The id of the quote asset.
     uint32 quote_asset_id = 4;

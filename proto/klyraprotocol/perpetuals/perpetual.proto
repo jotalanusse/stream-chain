@@ -67,7 +67,7 @@ message PerpetualParams {
   // liquidations
   uint32 danger_index_ppm = 7;
 
-  MultiCollateralAssetsArray isolated_market_multi_collateral_assets = 8;
+  MultiCollateralAssetsArray multi_collateral_assets = 8;
 
   uint32 quote_asset_id = 9;
 

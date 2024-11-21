@@ -42,7 +42,7 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+				MarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
 				},
 				QuoteAssetId:     0,
@@ -55,7 +55,7 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+				MarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},
 				QuoteAssetId:     1,
@@ -68,7 +68,7 @@ func TestPerpetualParams_Validate(t *testing.T) {
 			params: types.PerpetualParams{
 				Ticker:            "test",
 				DefaultFundingPpm: 1_000_000,
-				IsolatedMarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
+				MarketMultiCollateralAssets: &types.MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},
 				QuoteAssetId:     0,

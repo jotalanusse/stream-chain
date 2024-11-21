@@ -18,7 +18,7 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        1,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
 					QuoteAssetId:                            2,
 				},
 			},
@@ -35,7 +35,7 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        1,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 0,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
 					QuoteAssetId:                            2,
 				},
 			},
@@ -47,7 +47,7 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        1,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{},
 					QuoteAssetId:                            2,
 				},
 			},
@@ -59,7 +59,7 @@ func TestMsgSetCollateralPool_ValidateBasic(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        1,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 100_000,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1, 2, 3}},
 					QuoteAssetId:                            4,
 				},
 			},

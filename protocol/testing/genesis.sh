@@ -114,13 +114,13 @@ function edit_genesis() {
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[]' -v "{}"
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].collateral_pool_id' -v '0'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].max_cumulative_insurance_fund_delta_per_block' -v '1000000'
-	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].isolated_market_multi_collateral_assets' -v '[0]'
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].multi_collateral_assets' -v '[0]'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[0].quote_asset_id' -v '0'
 
 	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[]' -v "{}"
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].collateral_pool_id' -v '1'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].max_cumulative_insurance_fund_delta_per_block' -v '1000000'
-	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].isolated_market_multi_collateral_assets' -v '[1]'
+	dasel put -t json -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].multi_collateral_assets' -v '[1]'
 	dasel put -t int -f "$GENESIS" '.app_state.perpetuals.collateral_pools.[1].quote_asset_id' -v '1'
 
 	

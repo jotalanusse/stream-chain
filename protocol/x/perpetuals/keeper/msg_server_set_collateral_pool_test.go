@@ -19,7 +19,7 @@ func TestSetCollateralPool(t *testing.T) {
 	testCp := *cptest.GenerateCollateralPool(
 		cptest.WithCollateralPoolId(1),
 		cptest.WithMaxCumulativeInsuranceFundDeltaPerBlock(1_000),
-		cptest.WithIsolatedMarketMultiCollateralAssets([]uint32{0}),
+		cptest.WithMarketMultiCollateralAssets([]uint32{0}),
 		cptest.WithQuoteAssetId(0),
 	)
 
@@ -33,7 +33,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            1,
 				},
 			},
@@ -44,7 +44,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            1,
 				},
 			},
@@ -55,7 +55,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId + 1,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            1,
 				},
 			},
@@ -66,7 +66,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            0,
 				},
 			},
@@ -78,7 +78,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
 					QuoteAssetId:                            0,
 				},
 			},
@@ -90,7 +90,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            1,
 				},
 			},
@@ -102,7 +102,7 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+					MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            1,
 				},
 			},
@@ -122,7 +122,7 @@ func TestSetCollateralPool(t *testing.T) {
 				pc.Ctx,
 				testCp.CollateralPoolId,
 				testCp.MaxCumulativeInsuranceFundDeltaPerBlock,
-				testCp.IsolatedMarketMultiCollateralAssets,
+				testCp.MarketMultiCollateralAssets,
 				testCp.QuoteAssetId,
 			)
 			require.NoError(t, err)

@@ -149,7 +149,7 @@ func TestPlaceOrder_Error(t *testing.T) {
 				perpetual.Params.DefaultFundingPpm,
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
-				perpetual.Params.IsolatedMarketMultiCollateralAssets,
+				perpetual.Params.MarketMultiCollateralAssets,
 				perpetual.Params.QuoteAssetId,
 				perpetual.Params.CollateralPoolId,
 			)
@@ -327,7 +327,7 @@ func TestPlaceOrder_Success(t *testing.T) {
 				perpetual.Params.DefaultFundingPpm,
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
-				perpetual.Params.IsolatedMarketMultiCollateralAssets,
+				perpetual.Params.MarketMultiCollateralAssets,
 				perpetual.Params.QuoteAssetId,
 				perpetual.Params.CollateralPoolId,
 			)

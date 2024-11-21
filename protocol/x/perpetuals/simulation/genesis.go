@@ -210,13 +210,13 @@ func RandomizedGenState(simState *module.SimulationState) {
 		{
 			CollateralPoolId:                        0,
 			MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-			IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			QuoteAssetId:                            0,
 		},
 		{
 			CollateralPoolId:                        1,
 			MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
-			IsolatedMarketMultiCollateralAssets:     &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
+			MarketMultiCollateralAssets:             &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 			QuoteAssetId:                            1,
 		},
 	}

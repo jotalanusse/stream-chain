@@ -31,7 +31,7 @@ func (k msgServer) UpdatePerpetualParams(
 		msg.PerpetualParams.DefaultFundingPpm,
 		msg.PerpetualParams.LiquidityTier,
 		msg.PerpetualParams.DangerIndexPpm,
-		msg.PerpetualParams.IsolatedMarketMultiCollateralAssets,
+		msg.PerpetualParams.MarketMultiCollateralAssets,
 		msg.PerpetualParams.QuoteAssetId,
 		msg.PerpetualParams.CollateralPoolId,
 	)

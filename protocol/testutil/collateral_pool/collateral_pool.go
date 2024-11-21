@@ -18,9 +18,9 @@ func WithMaxCumulativeInsuranceFundDeltaPerBlock(maxCumulativeInsuranceFundDelta
 	}
 }
 
-func WithIsolatedMarketMultiCollateralAssets(multiCollateralAssets []uint32) CpModifierOption {
+func WithMarketMultiCollateralAssets(multiCollateralAssets []uint32) CpModifierOption {
 	return func(cp *perptypes.CollateralPool) {
-		cp.IsolatedMarketMultiCollateralAssets = &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: multiCollateralAssets}
+		cp.MarketMultiCollateralAssets = &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: multiCollateralAssets}
 	}
 }
 
@@ -43,7 +43,7 @@ func GenerateCollateralPool(optionalModifications ...CpModifierOption) *perptype
 	cp := &perptypes.CollateralPool{
 		CollateralPoolId:                        0,
 		MaxCumulativeInsuranceFundDeltaPerBlock: 0,
-		IsolatedMarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
+		MarketMultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{0},
 		},
 		QuoteAssetId: 0,

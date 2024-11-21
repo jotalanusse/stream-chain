@@ -146,7 +146,7 @@ type PerpetualParams struct {
 	DangerIndexPpm uint32 `protobuf:"varint,7,opt,name=danger_index_ppm,json=dangerIndexPpm,proto3" json:"danger_index_ppm,omitempty"`
 	// The maximum insurance fund delta per block for isolated perpetual markets.
 	MaxCumulativeInsuranceFundDeltaPerBlock uint64                      `protobuf:"varint,8,opt,name=max_cumulative_insurance_fund_delta_per_block,json=maxCumulativeInsuranceFundDeltaPerBlock,proto3" json:"max_cumulative_insurance_fund_delta_per_block,omitempty"`
-	IsolatedMarketMultiCollateralAssets                   *MultiCollateralAssetsArray `protobuf:"bytes,9,opt,name=isolated_market_multi_collateral_assets,json=isolatedMarketMultiCollateralAssets,proto3" json:"isolated_market_multi_collateral_assets,omitempty"`
+	MarketMultiCollateralAssets                   *MultiCollateralAssetsArray `protobuf:"bytes,9,opt,name=multi_collateral_assets,json=marketMultiCollateralAssets,proto3" json:"multi_collateral_assets,omitempty"`
 	QuoteAssetId                                          uint32                      `protobuf:"varint,10,opt,name=quote_asset_id,json=quoteAssetId,proto3" json:"quote_asset_id,omitempty"`
 	CollateralPoolId                                      uint32                      `protobuf:"varint,11,opt,name=collateral_pool_id,json=collateralPoolId,proto3" json:"collateral_pool_id,omitempty"`
 }
@@ -240,9 +240,9 @@ func (m *PerpetualParams) GetMaxCumulativeInsuranceFundDeltaPerBlock() uint64 {
 	return 0
 }
 
-func (m *PerpetualParams) GetIsolatedMarketMultiCollateralAssets() *MultiCollateralAssetsArray {
+func (m *PerpetualParams) GetMarketMultiCollateralAssets() *MultiCollateralAssetsArray {
 	if m != nil {
-		return m.IsolatedMarketMultiCollateralAssets
+		return m.MarketMultiCollateralAssets
 	}
 	return nil
 }
@@ -716,9 +716,9 @@ func (m *PerpetualParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x50
 	}
-	if m.IsolatedMarketMultiCollateralAssets != nil {
+	if m.MarketMultiCollateralAssets != nil {
 		{
-			size, err := m.IsolatedMarketMultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.MarketMultiCollateralAssets.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1002,8 +1002,8 @@ func (m *PerpetualParams) Size() (n int) {
 	if m.MaxCumulativeInsuranceFundDeltaPerBlock != 0 {
 		n += 1 + sovPerpetual(uint64(m.MaxCumulativeInsuranceFundDeltaPerBlock))
 	}
-	if m.IsolatedMarketMultiCollateralAssets != nil {
-		l = m.IsolatedMarketMultiCollateralAssets.Size()
+	if m.MarketMultiCollateralAssets != nil {
+		l = m.MarketMultiCollateralAssets.Size()
 		n += 1 + l + sovPerpetual(uint64(l))
 	}
 	if m.QuoteAssetId != 0 {
@@ -1600,7 +1600,7 @@ func (m *PerpetualParams) Unmarshal(dAtA []byte) error {
 			}
 		case 9:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsolatedMarketMultiCollateralAssets", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MarketMultiCollateralAssets", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1627,10 +1627,10 @@ func (m *PerpetualParams) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.IsolatedMarketMultiCollateralAssets == nil {
-				m.IsolatedMarketMultiCollateralAssets = &MultiCollateralAssetsArray{}
+			if m.MarketMultiCollateralAssets == nil {
+				m.MarketMultiCollateralAssets = &MultiCollateralAssetsArray{}
 			}
-			if err := m.IsolatedMarketMultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.MarketMultiCollateralAssets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

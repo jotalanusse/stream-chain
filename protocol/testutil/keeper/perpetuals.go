@@ -187,7 +187,7 @@ func CreateTestPerpetuals(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 			p.Params.DefaultFundingPpm,
 			p.Params.LiquidityTier,
 			p.Params.DangerIndexPpm,
-			p.Params.IsolatedMarketMultiCollateralAssets,
+			p.Params.MarketMultiCollateralAssets,
 			p.Params.QuoteAssetId,
 			p.Params.CollateralPoolId,
 		)
@@ -217,7 +217,7 @@ func CreateTestCollateralPools(t *testing.T, ctx sdk.Context, k *keeper.Keeper) 
 		_, err := k.SetCollateralPool(ctx,
 			cp.CollateralPoolId,
 			cp.MaxCumulativeInsuranceFundDeltaPerBlock,
-			cp.IsolatedMarketMultiCollateralAssets,
+			cp.MarketMultiCollateralAssets,
 			cp.QuoteAssetId,
 		)
 		require.NoError(t, err)
@@ -365,7 +365,7 @@ func CreateTestPricesAndPerpetualMarkets(
 			perp.Params.DefaultFundingPpm,
 			perp.Params.LiquidityTier,
 			perp.Params.DangerIndexPpm,
-			perp.Params.IsolatedMarketMultiCollateralAssets,
+			perp.Params.MarketMultiCollateralAssets,
 			perp.Params.QuoteAssetId,
 			perp.Params.CollateralPoolId,
 		)

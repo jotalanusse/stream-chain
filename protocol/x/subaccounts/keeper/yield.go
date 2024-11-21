@@ -69,7 +69,7 @@ func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
 			return false, err
 		}
 		found := false
-		for _, asset := range perpetual.Params.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+		for _, asset := range perpetual.Params.MarketMultiCollateralAssets.MultiCollateralAssets {
 			if asset == assettypes.AssetTDai.Id {
 				found = true
 				break

@@ -277,7 +277,7 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)

@@ -50,9 +50,9 @@ func WithCollateralPoolId(collateralPoolId uint32) PerpetualModifierOption {
 	}
 }
 
-func WithIsolatedMarketMultiCollateralAssets(assets perptypes.MultiCollateralAssetsArray) PerpetualModifierOption {
+func WithMarketMultiCollateralAssets(assets perptypes.MultiCollateralAssetsArray) PerpetualModifierOption {
 	return func(cp *perptypes.Perpetual) {
-		cp.Params.IsolatedMarketMultiCollateralAssets = &assets
+		cp.Params.MarketMultiCollateralAssets = &assets
 	}
 }
 

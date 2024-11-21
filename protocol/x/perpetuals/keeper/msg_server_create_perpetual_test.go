@@ -31,7 +31,7 @@ func TestCreatePerpetual(t *testing.T) {
 	testPerpIsolated := *perptest.GeneratePerpetual(
 		perptest.WithId(3),
 		perptest.WithMarketId(2),
-		perptest.WithIsolatedMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
+		perptest.WithMarketMultiCollateralAssets(perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}),
 		perptest.WithQuoteAssetId(0),
 		perptest.WithCollateralPoolId(0),
 	)

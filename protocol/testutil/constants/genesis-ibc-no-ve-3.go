@@ -868,13 +868,13 @@ const GenesisStateNoVeIBC3 = `{
         {
           "collateral_pool_id": 0,
           "max_cumulative_insurance_fund_delta_per_block": 1000000,
-          "isolated_market_multi_collateral_assets": [0],
+          "multi_collateral_assets": [0],
           "quote_asset_id": 0
         },
         {
           "collateral_pool_id": 1,
           "max_cumulative_insurance_fund_delta_per_block": 1000000,
-          "isolated_market_multi_collateral_assets": [1],
+          "multi_collateral_assets": [1],
           "quote_asset_id": 1
         }
       ],

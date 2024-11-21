@@ -11,12 +11,12 @@ func (collateralPool CollateralPool) Validate() error {
 		return errorsmod.Wrap(ErrMaxCumulativeInsuranceFundDeltaPerBlockZero, lib.UintToString(collateralPool.MaxCumulativeInsuranceFundDeltaPerBlock))
 	}
 
-	if len(collateralPool.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
-		return errorsmod.Wrap(ErrIsolatedMarketMultiCollateralAssetsEmpty, "")
+	if len(collateralPool.MarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+		return errorsmod.Wrap(ErrMarketMultiCollateralAssetsEmpty, "")
 	}
 
 	quoteAssetFound := false
-	for _, asset := range collateralPool.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+	for _, asset := range collateralPool.MarketMultiCollateralAssets.MultiCollateralAssets {
 		if asset == collateralPool.QuoteAssetId {
 			quoteAssetFound = true
 			break

@@ -61,7 +61,7 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		}
 
 		if params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-			supportedMultiCollateralAssets = *params.IsolatedMarketMultiCollateralAssets
+			supportedMultiCollateralAssets = *params.MarketMultiCollateralAssets
 		}
 	} else if len(settledUpdate.PerpetualUpdates) > 0 {
 		params, exists := perpIdToParams[settledUpdate.PerpetualUpdates[0].PerpetualId]
@@ -72,7 +72,7 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		}
 
 		if params.MarketType == perptypes.PerpetualMarketType_PERPETUAL_MARKET_TYPE_ISOLATED {
-			supportedMultiCollateralAssets = *params.IsolatedMarketMultiCollateralAssets
+			supportedMultiCollateralAssets = *params.MarketMultiCollateralAssets
 		}
 	}
 

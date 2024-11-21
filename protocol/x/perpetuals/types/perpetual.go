@@ -26,15 +26,15 @@ func (p *PerpetualParams) Validate() error {
 			lib.IntToString(p.DefaultFundingPpm))
 	}
 
-	if len(p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
+	if len(p.MarketMultiCollateralAssets.MultiCollateralAssets) == 0 {
 		return errorsmod.Wrap(
-			ErrIsolatedMarketMultiCollateralAssetsEmpty,
+			ErrMarketMultiCollateralAssetsEmpty,
 			"In validate perpetual params",
 		)
 	} else {
 		// Check that MultiCollateralAssets contains the quote asset
 		containsQuoteAsset := false
-		for _, asset := range p.IsolatedMarketMultiCollateralAssets.MultiCollateralAssets {
+		for _, asset := range p.MarketMultiCollateralAssets.MultiCollateralAssets {
 			if asset == p.QuoteAssetId {
 				containsQuoteAsset = true
 				break

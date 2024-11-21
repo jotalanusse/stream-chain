@@ -157,7 +157,7 @@ var (
 		33,
 		"isolated market max cumulative insurance fund delta per block is zero",
 	)
-	ErrIsolatedMarketMultiCollateralAssetsEmpty = errorsmod.Register(
+	ErrMarketMultiCollateralAssetsEmpty = errorsmod.Register(
 		ModuleName,
 		34,
 		"isolated market collateral asssets is empty",

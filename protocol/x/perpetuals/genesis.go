@@ -22,7 +22,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 			ctx,
 			elem.CollateralPoolId,
 			elem.MaxCumulativeInsuranceFundDeltaPerBlock,
-			elem.IsolatedMarketMultiCollateralAssets,
+			elem.MarketMultiCollateralAssets,
 			elem.QuoteAssetId,
 		)
 

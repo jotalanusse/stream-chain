@@ -1513,7 +1513,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				tc.perpetual.Params.DefaultFundingPpm,
 				tc.perpetual.Params.LiquidityTier,
 				tc.perpetual.Params.DangerIndexPpm,
-				tc.perpetual.Params.IsolatedMarketMultiCollateralAssets,
+				tc.perpetual.Params.MarketMultiCollateralAssets,
 				tc.perpetual.Params.QuoteAssetId,
 				tc.perpetual.Params.CollateralPoolId,
 			)

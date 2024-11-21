@@ -340,7 +340,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -464,7 +464,7 @@ func TestPlacePerpetualLiquidation_validateLiquidationAgainstClobPairStatus(t *t
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -1141,7 +1141,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					perpetual.Params.DefaultFundingPpm,
 					perpetual.Params.LiquidityTier,
 					perpetual.Params.DangerIndexPpm,
-					perpetual.Params.IsolatedMarketMultiCollateralAssets,
+					perpetual.Params.MarketMultiCollateralAssets,
 					perpetual.Params.QuoteAssetId,
 					perpetual.Params.CollateralPoolId,
 				)
@@ -1726,7 +1726,7 @@ func TestGetFillablePrice(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -2583,7 +2583,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					perpetual.Params.DefaultFundingPpm,
 					perpetual.Params.LiquidityTier,
 					perpetual.Params.DangerIndexPpm,
-					perpetual.Params.IsolatedMarketMultiCollateralAssets,
+					perpetual.Params.MarketMultiCollateralAssets,
 					perpetual.Params.QuoteAssetId,
 					perpetual.Params.CollateralPoolId,
 				)
@@ -2919,7 +2919,7 @@ func TestIsLiquidatable(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -3352,7 +3352,7 @@ func TestGetBankruptcyPriceInQuoteQuantums(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -3841,7 +3841,7 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -4220,7 +4220,7 @@ func TestGetBestPerpetualPositionToLiquidate(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -4470,7 +4470,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -5486,7 +5486,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -5668,7 +5668,7 @@ func TestGetBestPerpetualPositionToLiquidateMultiplePositions(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -5778,7 +5778,7 @@ func TestEnsurePerpetualNotAlreadyLiquidated(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -5923,7 +5923,7 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -6013,7 +6013,7 @@ func TestIsIsolatedPerpetualError_InLiquidateSubaccountsAgainstOrderbookInternal
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -6109,7 +6109,7 @@ func TestPlacePerpetualLiquidation_InLiquidateSubaccountsAgainstOrderbookInterna
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
@@ -6264,7 +6264,7 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 					p.Params.DefaultFundingPpm,
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
-					p.Params.IsolatedMarketMultiCollateralAssets,
+					p.Params.MarketMultiCollateralAssets,
 					p.Params.QuoteAssetId,
 					p.Params.CollateralPoolId,
 				)
