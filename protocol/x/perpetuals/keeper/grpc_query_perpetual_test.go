@@ -23,6 +23,8 @@ func TestPerpetualQuerySingle(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	msgs := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 2)
 	for _, tc := range []struct {
 		desc     string
@@ -81,6 +83,8 @@ func TestPerpetualQueryPaginated(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	msgs := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllPerpetualsRequest {

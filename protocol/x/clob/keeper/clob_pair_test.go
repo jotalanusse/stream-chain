@@ -559,6 +559,7 @@ func TestClobPairGet(t *testing.T) {
 		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
+		ks.AssetsKeeper,
 		ks.Ctx,
 		10,
 		mockIndexerEventManager,
@@ -582,6 +583,7 @@ func TestClobPairRemove(t *testing.T) {
 		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
+		ks.AssetsKeeper,
 		ks.Ctx,
 		10,
 		mockIndexerEventManager,
@@ -605,6 +607,7 @@ func TestClobPairGetAll(t *testing.T) {
 		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
+		ks.AssetsKeeper,
 		ks.Ctx,
 		10,
 		mockIndexerEventManager,
@@ -913,6 +916,8 @@ func TestGetAllClobPairs_Sorted(t *testing.T) {
 	memClob := memclob.NewMemClobPriceTimePriority(false)
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+	keepertest.CreateBaseAssetsAndMarkets(t, ks.Ctx, ks.PricesKeeper, ks.AssetsKeeper)
 	keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t,
 		ks.Ctx,
 		ks.PerpetualsKeeper,

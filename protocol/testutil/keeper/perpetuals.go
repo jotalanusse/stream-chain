@@ -72,7 +72,7 @@ func PerpetualsKeepersWithClobHelpers(
 			transientStoreKey,
 		)
 		pc.EpochsKeeper, _ = createEpochsKeeper(stateStore, db, cdc)
-		pc.AssetsKeeper, _ = createAssetsKeeper(stateStore, db, cdc, pc.PricesKeeper, pc.StoreKey, true)
+		pc.AssetsKeeper, _ = createAssetsKeeper(stateStore, db, cdc, pc.PricesKeeper, transientStoreKey, true)
 		pc.PerpetualsKeeper, pc.StoreKey = createPerpetualsKeeperWithClobHelpers(
 			stateStore,
 			db,
@@ -329,6 +329,19 @@ func CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(
 	perpetuals, err := CreateNPerpetuals(t, ctx, keeper, pricesKeeper, n)
 	require.NoError(t, err)
 	return perpetuals
+}
+
+func CreateBaseAssetsAndMarkets(
+	t *testing.T,
+	ctx sdk.Context,
+	pricesKeeper *priceskeeper.Keeper,
+	assetsKeeper *assetskeeper.Keeper,
+) {
+	CreateBTCMarket(t, ctx, pricesKeeper)
+	err := CreateTDaiAsset(ctx, assetsKeeper)
+	require.NoError(t, err)
+	err = CreateBTCAsset(ctx, assetsKeeper)
+	require.NoError(t, err)
 }
 
 // CreateTestPricesAndPerpetualMarkets is a test utility function that creates list of given

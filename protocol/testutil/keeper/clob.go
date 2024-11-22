@@ -308,10 +308,12 @@ func CreateNClobPair(
 	keeper *keeper.Keeper,
 	perpKeeper *perpkeeper.Keeper,
 	pricesKeeper *priceskeeper.Keeper,
+	assetsKeeper *asskeeper.Keeper,
 	ctx sdk.Context,
 	n int,
 	mockIndexerEventManager *mocks.IndexerEventManager,
 ) []types.ClobPair {
+	CreateBaseAssetsAndMarkets(t, ctx, pricesKeeper, assetsKeeper)
 	perps := CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, ctx, perpKeeper, pricesKeeper, n)
 
 	items := make([]types.ClobPair, n)
