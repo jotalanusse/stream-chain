@@ -101,7 +101,7 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			defaultFundingPpm,
 			liquidityTier,
 			0,
-			0,
+			1,
 		)
 		require.NoError(t, err)
 
