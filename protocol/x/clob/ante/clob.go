@@ -1,8 +1,6 @@
 package ante
 
 import (
-	"fmt"
-
 	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
@@ -106,12 +104,10 @@ func (cd ClobDecorator) AnteHandle(
 		)
 
 	case *types.MsgPlaceOrder:
-		fmt.Println("YOLO")
 		ctx = log.AddPersistentTagsToLogger(ctx,
 			log.Handler, log.PlaceOrder,
 		)
 		if msg.Order.OrderId.IsStatefulOrder() {
-			fmt.Println("YOLO STATEFUL")
 			err = cd.clobKeeper.PlaceStatefulOrder(ctx, msg)
 
 			log.DebugLog(ctx, "Received new stateful order",
@@ -120,7 +116,6 @@ func (cd ClobDecorator) AnteHandle(
 				log.Error, err,
 			)
 		} else {
-			fmt.Println("YOLO SHORT TERM")
 			// No need to process short term orders on `ReCheckTx`.
 			if ctx.IsReCheckTx() {
 				return next(ctx, tx, simulate)
@@ -134,10 +129,6 @@ func (cd ClobDecorator) AnteHandle(
 				ctx,
 				msg,
 			)
-
-			fmt.Println("orderSizeOptimisticallyFilledFromMatchingQuantums", orderSizeOptimisticallyFilledFromMatchingQuantums)
-			fmt.Println("status", status)
-			fmt.Println("err", err)
 
 			log.DebugLog(ctx, "Received new short term order",
 				log.Tx, cometbftlog.NewLazySprintf("%X", tmhash.Sum(ctx.TxBytes())),
