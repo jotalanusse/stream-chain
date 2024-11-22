@@ -25,9 +25,26 @@ const (
 // DefaultGenesis returns the default Perpetual genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		CollateralPools: []CollateralPool{},
-		Perpetuals:      []Perpetual{},
-		LiquidityTiers:  []LiquidityTier{},
+		CollateralPools: []CollateralPool{
+			{
+				CollateralPoolId:                        0,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+				MultiCollateralAssets: &MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{0},
+				},
+				QuoteAssetId: 0,
+			},
+			{
+				CollateralPoolId:                        1,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+				MultiCollateralAssets: &MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{1},
+				},
+				QuoteAssetId: 1,
+			},
+		},
+		Perpetuals:     []Perpetual{},
+		LiquidityTiers: []LiquidityTier{},
 		Params: Params{
 			FundingRateClampFactorPpm: DefaultFundingRateClampFactorPpm,
 			PremiumVoteClampFactorPpm: DefaultPremiumVoteClampFactorPpm,
