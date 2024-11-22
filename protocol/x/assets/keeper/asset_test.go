@@ -777,6 +777,7 @@ func TestConvertCoinToAsset_Failure(t *testing.T) {
 func TestIsPositionUpdatable(t *testing.T) {
 	ctx, keeper, _, _, _, _ := keepertest.AssetsKeepers(t, true)
 	require.NoError(t, keepertest.CreateTDaiAsset(ctx, keeper))
+	require.NoError(t, keepertest.CreateBTCAsset(ctx, keeper))
 
 	// Check TDai asset is updatable.
 	updatable, err := keeper.IsPositionUpdatable(ctx, types.AssetTDai.Id)

@@ -238,6 +238,10 @@ func TestDepositYieldToSubaccount(t *testing.T) {
 			)
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -246,8 +250,6 @@ func TestDepositYieldToSubaccount(t *testing.T) {
 			require.NoError(t, conversionErr)
 			rateLimitKeeper.SetSDAIPrice(ctx, rate)
 			rateLimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
-
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 
 			for _, p := range tc.perpetuals {
 				perpetualsKeeper.SetPerpetualForTest(
@@ -981,6 +983,11 @@ func TestAddYieldToSubaccount(t *testing.T) {
 			)
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			// Always creates TDai asset first
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -1001,8 +1008,6 @@ func TestAddYieldToSubaccount(t *testing.T) {
 				availableYield = tc.availableYield
 			}
 
-			// Always creates TDai asset first
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 			for _, a := range tc.assets {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,
@@ -1758,6 +1763,11 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 			)
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			// Always creates TDai asset first
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -1773,8 +1783,6 @@ func TestClaimYieldForSubaccountFromIdAndSetNewState(t *testing.T) {
 			}
 			rateLimitKeeper.SetAssetYieldIndex(ctx, globalAssetYieldIndex)
 
-			// Always creates TDai asset first
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 			for _, a := range tc.assets {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,

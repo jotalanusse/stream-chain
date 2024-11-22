@@ -121,6 +121,7 @@ func TestCreatePerpetualClobPair_FailsWithPerpetualAssociatedWithExistingClobPai
 		ks.Ctx,
 		ks.PerpetualsKeeper,
 		ks.PricesKeeper,
+		ks.AssetsKeeper,
 		[]perptypes.Perpetual{
 			*perptest.GeneratePerpetual(perptest.WithId(0), perptest.WithMarketId(0)),
 		},

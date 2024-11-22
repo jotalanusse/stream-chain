@@ -258,13 +258,15 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 			// Create the default markets.
 			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
 
-			// Create liquidity tiers.
-			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
-			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
-
 			// Set up TDai asset in assets module.
 			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
 			require.NoError(t, err)
+			err = keepertest.CreateBTCAsset(ctx, ks.AssetsKeeper)
+			require.NoError(t, err)
+
+			// Create liquidity tiers.
+			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
+			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			// Create perpetuals.
 			for _, p := range tc.perpetuals {

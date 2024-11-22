@@ -165,12 +165,15 @@ func TestGetCollateralPool(t *testing.T) {
 				)
 
 				testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+				// Set up tDAI asset in assets module.
+				require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+				require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 				testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 				testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
 				rateLimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
-
-				require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 				for _, p := range tc.perpetuals {
 					_, err := perpetualsKeeper.CreatePerpetual(
 						ctx,
@@ -4374,6 +4377,11 @@ func TestUpdateSubaccounts(t *testing.T) {
 			)
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			// Always creates TDai asset first
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -4398,8 +4406,6 @@ func TestUpdateSubaccounts(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			// Always creates TDai asset first
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 			for _, a := range tc.assets {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,
@@ -5903,6 +5909,11 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 			)
 			ctx = ctx.WithTxBytes(constants.TestTxBytes)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			// Always creates TDai asset first
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -5924,8 +5935,6 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			// Always creates TDai asset first
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 			for _, a := range tc.assets {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,
@@ -7041,6 +7050,10 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, assetsKeeper, ratelimitKeeper, _, _ := testutil.SubaccountsKeepers(t, true)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -7052,9 +7065,6 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 			ratelimitKeeper.SetSDAIPrice(ctx, rate)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
 
-			// ratelimitKeeper.SetCurrentDaiYieldEpochNumber(ctx, 0)
-
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 			for _, a := range tc.assets {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,
@@ -7478,6 +7488,10 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, assetsKeeper, ratelimitKeeper, _, _ := testutil.SubaccountsKeepers(t, true)
 			testutil.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
+			require.NoError(t, testutil.CreateBTCAsset(ctx, assetsKeeper))
+
 			testutil.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testutil.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -7489,9 +7503,6 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 			ratelimitKeeper.SetSDAIPrice(ctx, rate)
 			ratelimitKeeper.SetAssetYieldIndex(ctx, big.NewRat(1, 1))
 
-			// ratelimitKeeper.SetCurrentDaiYieldEpochNumber(ctx, 0)
-
-			require.NoError(t, testutil.CreateTDaiAsset(ctx, assetsKeeper))
 			for _, a := range tc.assets {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,

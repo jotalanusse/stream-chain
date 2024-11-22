@@ -10,6 +10,7 @@ import (
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	perptest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/perpetuals"
 	pricestest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/prices"
+	assetskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
@@ -27,24 +28,26 @@ func TestUpdatePerpetualParams(t *testing.T) {
 		perptest.WithLiquidityTier(1),
 		perptest.WithCollateralPoolId(0),
 	)
+	testMarket0 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(0))
 	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
 	testMarket4 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(4))
 
 	tests := map[string]struct {
-		setup             func(*testing.T, sdk.Context, *perpkeeper.Keeper, *priceskeeper.Keeper)
+		setup             func(*testing.T, sdk.Context, *perpkeeper.Keeper, *priceskeeper.Keeper, *assetskeeper.Keeper)
 		msg               *types.MsgUpdatePerpetualParams
 		expectedPerpetual types.Perpetual
 		expectedErr       string
 	}{
 		"Success: modify ticker and liquidity tier": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -60,14 +63,15 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			},
 		},
 		"Success: modify all params except atomic resolution": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1, testMarket4},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1, testMarket4},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -84,14 +88,15 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			},
 		},
 		"Failure: updates a non-existing perpetual ID": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -108,14 +113,15 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			expectedErr: "Perpetual does not exist",
 		},
 		"Failure: new collateral pool id is not existing": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -133,14 +139,15 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			expectedErr: "Collateral pool does not exist",
 		},
 		"Failure: updates to non-existing market id": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -157,14 +164,15 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			expectedErr: "Market price does not exist",
 		},
 		"Failure: updates to non-existing liquidity tier id": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1, testMarket4},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1, testMarket4},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -181,14 +189,15 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			expectedErr: "Liquidity Tier does not exist",
 		},
 		"Failure: authority is not gov module": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper) {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestPricesAndPerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
 					pricesKeeper,
+					assetsKeeper,
 					[]types.Perpetual{testPerp},
-					[]pricestypes.MarketParamPrice{testMarket1, testMarket4},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1, testMarket4},
 				)
 			},
 			msg: &types.MsgUpdatePerpetualParams{
@@ -214,7 +223,7 @@ func TestUpdatePerpetualParams(t *testing.T) {
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 			pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
-			tc.setup(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper)
+			tc.setup(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, pc.AssetsKeeper)
 
 			msgServer := perpkeeper.NewMsgServerImpl(pc.PerpetualsKeeper)
 

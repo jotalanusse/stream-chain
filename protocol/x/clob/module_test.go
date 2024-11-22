@@ -92,6 +92,8 @@ func createAppModuleWithKeeper(t *testing.T) (
 
 	err := keeper.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
 	require.NoError(t, err)
+	err = keeper.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper)
+	require.NoError(t, err)
 
 	return clob.NewAppModule(
 		appCodec,

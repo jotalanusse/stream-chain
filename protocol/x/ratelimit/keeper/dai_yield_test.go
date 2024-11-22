@@ -611,11 +611,15 @@ func TestClaimInsuranceFundYields(t *testing.T) {
 
 	// Setup
 	testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
+
+	err := testkeeper.CreateTDaiAsset(ctx, assetsKeeper)
+	require.NoError(t, err)
+	err = testkeeper.CreateBTCAsset(ctx, assetsKeeper)
+	require.NoError(t, err)
+
 	testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 	testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 	testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
-	err := testkeeper.CreateTDaiAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
 
 	// Mint initial tDAI supply
 	initialTDaiSupply := big.NewInt(1_000_000_000_000) // 1,000,000 tDAI

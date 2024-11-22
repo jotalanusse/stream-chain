@@ -30,6 +30,7 @@ func TestCreateClobPair(t *testing.T) {
 		perptest.WithId(1),
 		perptest.WithMarketId(1),
 	)
+	testMarket0 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(0))
 	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
 	testCases := map[string]struct {
 		setup             func(t *testing.T, ks keepertest.ClobKeepersTestContext, manager *mocks.IndexerEventManager)
@@ -44,8 +45,9 @@ func TestCreateClobPair(t *testing.T) {
 					ks.Ctx,
 					ks.PerpetualsKeeper,
 					ks.PricesKeeper,
+					ks.AssetsKeeper,
 					[]perptypes.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 				mockIndexerEventManager.On("AddTxnEvent",
 					ks.Ctx,
@@ -81,8 +83,9 @@ func TestCreateClobPair(t *testing.T) {
 					ks.Ctx,
 					ks.PerpetualsKeeper,
 					ks.PricesKeeper,
+					ks.AssetsKeeper,
 					[]perptypes.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 				// set up mock indexer event manager to accept anything.
 				mockIndexerEventManager.On("AddTxnEvent",
@@ -108,8 +111,9 @@ func TestCreateClobPair(t *testing.T) {
 					ks.Ctx,
 					ks.PerpetualsKeeper,
 					ks.PricesKeeper,
+					ks.AssetsKeeper,
 					[]perptypes.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket1},
+					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 				// set up mock indexer event manager to accept anything.
 				mockIndexerEventManager.On("AddTxnEvent",

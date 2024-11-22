@@ -2069,11 +2069,15 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 			// Create the default markets.
 			keepertest.CreateTestMarkets(t, ctx, pc.PricesKeeper)
 
+			// Set up tDAI asset in assets module.
+			err := keepertest.CreateTDaiAsset(ctx, pc.AssetsKeeper)
+			require.NoError(t, err)
+			err = keepertest.CreateBTCAsset(ctx, pc.AssetsKeeper)
+			require.NoError(t, err)
+
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, pc.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, pc.PerpetualsKeeper)
-
-			keepertest.CreateTDaiAsset(ctx, pc.AssetsKeeper)
 
 			// Create test perpetuals.
 			// 1BTC = $50,000.
@@ -2095,7 +2099,7 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 			}
 
 			// Create funding-tick epoch.
-			err := pc.EpochsKeeper.CreateEpochInfo(
+			err = pc.EpochsKeeper.CreateEpochInfo(
 				pc.Ctx,
 				epochstypes.EpochInfo{
 					Name:                   string(epochstypes.FundingTickEpochInfoName),
@@ -3673,14 +3677,16 @@ func TestIsPositionUpdatable(t *testing.T) {
 
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
+			testMarket0 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(0))
 			pc := keepertest.PerpetualsKeepers(t)
 			keepertest.CreateTestPricesAndPerpetualMarkets(
 				t,
 				pc.Ctx,
 				pc.PerpetualsKeeper,
 				pc.PricesKeeper,
+				pc.AssetsKeeper,
 				[]types.Perpetual{tc.perp},
-				[]pricestypes.MarketParamPrice{tc.marketParamPrice},
+				[]pricestypes.MarketParamPrice{testMarket0, tc.marketParamPrice},
 			)
 
 			updatable, err := pc.PerpetualsKeeper.IsPositionUpdatable(pc.Ctx, tc.queryPerpId)

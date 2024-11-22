@@ -665,6 +665,11 @@ func TestEndBlocker_Success(t *testing.T) {
 			// Set up prices keeper markets with default prices.
 			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
 
+			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
+			require.NoError(t, err)
+			err = keepertest.CreateBTCAsset(ctx, ks.AssetsKeeper)
+			require.NoError(t, err)
+
 			// Create liquidity tiers on perpetuals keeper.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
@@ -687,8 +692,6 @@ func TestEndBlocker_Success(t *testing.T) {
 				)
 				require.NoError(t, err)
 			}
-			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
 
 			memClob.On("CreateOrderbook", ctx, constants.ClobPair_Btc).Return()
 
@@ -1438,14 +1441,16 @@ func TestPrepareCheckState(t *testing.T) {
 			// Create the default markets.
 			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
 
+			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
+			require.NoError(t, err)
+			err = keepertest.CreateBTCAsset(ctx, ks.AssetsKeeper)
+			require.NoError(t, err)
+
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParams))
-
-			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
 
 			// Create all perpetuals.
 			for _, p := range tc.perpetuals {

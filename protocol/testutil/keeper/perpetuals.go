@@ -338,14 +338,20 @@ func CreateTestPricesAndPerpetualMarkets(
 	ctx sdk.Context,
 	perpKeeper *keeper.Keeper,
 	pricesKeeper *priceskeeper.Keeper,
+	assetsKeeper *assetskeeper.Keeper,
 	perpetuals []types.Perpetual,
 	markets []pricestypes.MarketParamPrice,
 ) {
+	CreateTestPriceMarkets(t, ctx, pricesKeeper, markets)
+
+	err := CreateTDaiAsset(ctx, assetsKeeper)
+	require.NoError(t, err)
+	err = CreateBTCAsset(ctx, assetsKeeper)
+	require.NoError(t, err)
+
 	// Create liquidity tiers.
 	CreateTestCollateralPools(t, ctx, perpKeeper)
 	CreateTestLiquidityTiers(t, ctx, perpKeeper)
-
-	CreateTestPriceMarkets(t, ctx, pricesKeeper, markets)
 
 	for _, perp := range perpetuals {
 		_, err := perpKeeper.CreatePerpetual(

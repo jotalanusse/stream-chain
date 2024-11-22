@@ -118,6 +118,13 @@ func TestSetCollateralPool(t *testing.T) {
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 			pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+			// Set up prices keeper markets with default prices.
+			keepertest.CreateTestMarkets(t, pc.Ctx, pc.PricesKeeper)
+
+			require.NoError(t, keepertest.CreateTDaiAsset(pc.Ctx, pc.AssetsKeeper))
+			require.NoError(t, keepertest.CreateBTCAsset(pc.Ctx, pc.AssetsKeeper))
+
 			initialCp, err := pc.PerpetualsKeeper.SetCollateralPool(
 				pc.Ctx,
 				testCp.CollateralPoolId,

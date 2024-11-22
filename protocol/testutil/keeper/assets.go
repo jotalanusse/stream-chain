@@ -39,7 +39,7 @@ func CreateTDaiAsset(ctx sdk.Context, assetsKeeper *keeper.Keeper) error {
 	return err
 }
 
-func CreateNonTDaiAsset(ctx sdk.Context, assetsKeeper *keeper.Keeper) error {
+func CreateBTCAsset(ctx sdk.Context, assetsKeeper *keeper.Keeper) error {
 	_, err := assetsKeeper.CreateAsset(
 		ctx,
 		constants.BtcUsd.Id,

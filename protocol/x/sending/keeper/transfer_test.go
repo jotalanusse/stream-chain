@@ -117,6 +117,13 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	ks := keepertest.SendingKeepers(t)
 	ks.Ctx = ks.Ctx.WithBlockHeight(5)
 	keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
+
+	// Set up tDAI asset in assets module.
+	err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
+	require.NoError(t, err)
+	err = keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper)
+	require.NoError(t, err)
+
 	keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 	keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
@@ -125,7 +132,6 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	perpetuals := []perptypes.Perpetual{
 		constants.BtcUsd_100PercentMarginRequirement,
 	}
-	require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
 
 	for _, p := range perpetuals {
 		_, err := ks.PerpetualsKeeper.CreatePerpetual(
@@ -153,7 +159,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 		)
 	}
 
-	err := ks.SendingKeeper.ProcessTransfer(ks.Ctx, tc.transfer)
+	err = ks.SendingKeeper.ProcessTransfer(ks.Ctx, tc.transfer)
 	for subaccountId, expectedQuoteBalance := range tc.expectedSubaccountBalance {
 		subaccount := ks.SubaccountsKeeper.GetSubaccount(ks.Ctx, subaccountId)
 		require.Equal(t, expectedQuoteBalance, subaccount.GetTDaiPosition())
@@ -249,6 +255,13 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 
 	ks.Ctx = ks.Ctx.WithBlockHeight(5)
 	keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
+
+	// Set up tDAI asset in assets module.
+	err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
+	require.NoError(t, err)
+	err = keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper)
+	require.NoError(t, err)
+
 	keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 	keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
 
@@ -257,7 +270,6 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 	perpetuals := []perptypes.Perpetual{
 		constants.BtcUsd_100PercentMarginRequirement,
 	}
-	require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
 
 	for _, p := range perpetuals {
 		_, err := ks.PerpetualsKeeper.CreatePerpetual(

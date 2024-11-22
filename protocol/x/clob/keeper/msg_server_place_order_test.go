@@ -129,6 +129,7 @@ func TestPlaceOrder_Error(t *testing.T) {
 			ks.Ctx = ks.Ctx.WithLogger(mockLogger)
 
 			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
+			require.NoError(t, keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper))
 			// Create test markets.
 			keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
 
@@ -297,6 +298,7 @@ func TestPlaceOrder_Success(t *testing.T) {
 			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 
 			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
+			require.NoError(t, keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper))
 
 			ctx := ks.Ctx.WithBlockHeight(2)
 			ctx = ctx.WithBlockTime(time.Unix(int64(2), 0))

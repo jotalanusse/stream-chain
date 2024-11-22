@@ -424,6 +424,14 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 
+			if !tc.skipSetUpTDai {
+				// Always create TDai as the first asset unless specificed to skip.
+				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
+				require.NoError(t, err)
+			}
+			err := keepertest.CreateBTCAsset(ctx, assetsKeeper)
+			require.NoError(t, err)
+
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -452,12 +460,6 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 					},
 					*bankKeeper,
 				)
-				require.NoError(t, err)
-			}
-
-			if !tc.skipSetUpTDai {
-				// Always create TDai as the first asset unless specificed to skip.
-				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
 				require.NoError(t, err)
 			}
 
@@ -1031,6 +1033,14 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 
+			if !tc.skipSetUpTDai {
+				// Always create TDai as the first asset unless specificed to skip.
+				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
+				require.NoError(t, err)
+			}
+			err := keepertest.CreateBTCAsset(ctx, assetsKeeper)
+			require.NoError(t, err)
+
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 
@@ -1048,12 +1058,6 @@ func TestTransferFundsFromSubaccountToSubaccount_Failure(t *testing.T) {
 
 			testAcc := authtypes.NewBaseAccount(testAccAddress, nil, accountKeeper.NextAccountNumber(ctx), 0)
 			accountKeeper.SetAccount(ctx, testAcc)
-
-			if !tc.skipSetUpTDai {
-				// Always create TDai as the first asset unless specificed to skip.
-				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
-				require.NoError(t, err)
-			}
 
 			if tc.asset.Denom != constants.TDai.Denom {
 				_, err := assetsKeeper.CreateAsset(
@@ -1223,6 +1227,15 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
+
+			// Always create TDai as the first asset.
+			if !tc.skipSetUpTDai {
+				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
+				require.NoError(t, err)
+			}
+			err := keepertest.CreateBTCAsset(ctx, assetsKeeper)
+			require.NoError(t, err)
+
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
@@ -1271,12 +1284,6 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			// Always create TDai as the first asset.
-			if !tc.skipSetUpTDai {
-				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
-				require.NoError(t, err)
-			}
-
 			if tc.asset.Denom != constants.TDai.Denom {
 				_, err := assetsKeeper.CreateAsset(
 					ctx,
@@ -1293,7 +1300,7 @@ func TestTransferFeesToFeeCollectorModule(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			err := keeper.TransferFeesToFeeCollectorModule(
+			err = keeper.TransferFeesToFeeCollectorModule(
 				ctx,
 				tc.asset.Id,
 				tc.quantums,
@@ -1435,6 +1442,14 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpsKeeper, accountKeeper, bankKeeper, assetsKeeper, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
 			// Create liquidity tiers.
+
+			if !tc.skipSetUpTDai {
+				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
+				require.NoError(t, err)
+			}
+			err := keepertest.CreateBTCAsset(ctx, assetsKeeper)
+			require.NoError(t, err)
+
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpsKeeper)
 
@@ -1454,7 +1469,7 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 				},
 			})
 
-			_, err := perpsKeeper.CreatePerpetual(
+			_, err = perpsKeeper.CreatePerpetual(
 				ctx,
 				tc.perpetual.GetId(),
 				tc.perpetual.Params.Ticker,
@@ -1492,11 +1507,6 @@ func TestTransferInsuranceFundPayments(t *testing.T) {
 					},
 					*bankKeeper,
 				)
-				require.NoError(t, err)
-			}
-
-			if !tc.skipSetUpTDai {
-				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
 				require.NoError(t, err)
 			}
 
