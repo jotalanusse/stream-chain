@@ -283,8 +283,7 @@ func (k Keeper) persistMatchedOrders(
 					SubaccountId: *takerRouter,
 				})
 			}
-		} 
-		else {
+		} else {
 			if takerRouter != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
 				updates = append(updates, satypes.Update{
 					AssetUpdates: []satypes.AssetUpdate{
