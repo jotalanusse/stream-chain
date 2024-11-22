@@ -57,4 +57,29 @@ var (
 		AtomicResolution: int32(-6),
 		MaxSlippagePpm:   uint32(0),
 	}
+
+	Assets_DefaultGenesisState = asstypes.GenesisState{
+		Assets: []asstypes.Asset{
+			{
+				Id:               TDai.Id,
+				Symbol:           TDai.Symbol,
+				Denom:            TDai.Denom,
+				DenomExponent:    TDai.DenomExponent,
+				HasMarket:        TDai.HasMarket,
+				MarketId:         TDai.MarketId,
+				AtomicResolution: TDai.AtomicResolution,
+				MaxSlippagePpm:   TDai.MaxSlippagePpm,
+			},
+			{
+				Id:               BtcUsd.Id,
+				Symbol:           BtcUsd.Symbol,
+				Denom:            BtcUsd.Denom,
+				DenomExponent:    BtcUsd.DenomExponent,
+				HasMarket:        BtcUsd.HasMarket,
+				MarketId:         BtcUsd.MarketId,
+				AtomicResolution: BtcUsd.AtomicResolution,
+				MaxSlippagePpm:   BtcUsd.MaxSlippagePpm,
+			},
+		},
+	}
 )
