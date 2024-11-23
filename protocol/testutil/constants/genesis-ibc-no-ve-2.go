@@ -880,6 +880,14 @@ const GenesisStateNoVeIBC2 = `{
             "multi_collateral_assets": [1]
           },
           "quote_asset_id": 1
+        },
+        {
+          "collateral_pool_id": 2,
+          "max_cumulative_insurance_fund_delta_per_block": 1000000,
+          "multi_collateral_assets": {
+            "multi_collateral_assets": [0]
+          },
+          "quote_asset_id": 0
         }
       ],
       "liquidity_tiers": [

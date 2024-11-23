@@ -219,6 +219,12 @@ func RandomizedGenState(simState *module.SimulationState) {
 			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 			QuoteAssetId:                            1,
 		},
+		{
+			CollateralPoolId:                        2,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			QuoteAssetId:                            0,
+		},
 	}
 
 	perpetualsGenesis := types.GenesisState{

@@ -42,6 +42,14 @@ func DefaultGenesis() *GenesisState {
 				},
 				QuoteAssetId: 1,
 			},
+			{
+				CollateralPoolId:                        2,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+				MultiCollateralAssets: &MultiCollateralAssetsArray{
+					MultiCollateralAssets: []uint32{0},
+				},
+				QuoteAssetId: 0,
+			},
 		},
 		Perpetuals:     []Perpetual{},
 		LiquidityTiers: []LiquidityTier{},

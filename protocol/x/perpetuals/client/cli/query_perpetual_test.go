@@ -85,6 +85,12 @@ func networkWithLiquidityTierAndPerpetualObjects(
 			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 			QuoteAssetId:                            uint32(1),
 		},
+		{
+			CollateralPoolId:                        2,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+			QuoteAssetId:                            0,
+		},
 	}
 	nullify.Fill(&collateralPools) //nolint:staticcheck
 	state.CollateralPools = append(state.CollateralPools, collateralPools...)
