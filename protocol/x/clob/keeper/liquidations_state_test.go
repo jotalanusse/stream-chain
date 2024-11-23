@@ -255,15 +255,6 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 
-			// Create the default markets.
-			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
-
-			// Set up TDai asset in assets module.
-			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
-			err = keepertest.CreateBTCAsset(ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
-
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
@@ -286,7 +277,7 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 
 			// Set initial deltas.
 			for perpId, initialDelta := range tc.initialDeltas {
-				err = ks.ClobKeeper.IncrementCumulativeInsuranceFundDelta(ctx, perpId, initialDelta)
+				err := ks.ClobKeeper.IncrementCumulativeInsuranceFundDelta(ctx, perpId, initialDelta)
 				if tc.expectError {
 					require.Error(t, err)
 					return
@@ -296,7 +287,7 @@ func TestIncrementCumulativeInsuranceFundDelta(t *testing.T) {
 
 			// Increment deltas.
 			for perpId, incrementDelta := range tc.incrementDeltas {
-				err = ks.ClobKeeper.IncrementCumulativeInsuranceFundDelta(ctx, perpId, incrementDelta)
+				err := ks.ClobKeeper.IncrementCumulativeInsuranceFundDelta(ctx, perpId, incrementDelta)
 				if tc.expectError {
 					require.Error(t, err)
 					return

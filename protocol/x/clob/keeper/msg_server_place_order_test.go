@@ -297,18 +297,12 @@ func TestPlaceOrder_Success(t *testing.T) {
 
 			msgServer := keeper.NewMsgServerImpl(&ks.ClobKeeper)
 
-			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
-			require.NoError(t, keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper))
-
 			ctx := ks.Ctx.WithBlockHeight(2)
 			ctx = ctx.WithBlockTime(time.Unix(int64(2), 0))
 			ks.BlockTimeKeeper.SetPreviousBlockInfo(ctx, &blocktimetypes.BlockInfo{
 				Height:    2,
 				Timestamp: time.Unix(int64(2), 0),
 			})
-
-			// Create test markets.
-			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)

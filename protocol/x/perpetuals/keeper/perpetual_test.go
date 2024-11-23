@@ -2080,14 +2080,6 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 			pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 
 			ctx := pc.Ctx.WithTxBytes(constants.TestTxBytes)
-			// Create the default markets.
-			keepertest.CreateTestMarkets(t, ctx, pc.PricesKeeper)
-
-			// Set up tDAI asset in assets module.
-			err := keepertest.CreateTDaiAsset(ctx, pc.AssetsKeeper)
-			require.NoError(t, err)
-			err = keepertest.CreateBTCAsset(ctx, pc.AssetsKeeper)
-			require.NoError(t, err)
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, pc.PerpetualsKeeper)
@@ -2113,7 +2105,7 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 			}
 
 			// Create funding-tick epoch.
-			err = pc.EpochsKeeper.CreateEpochInfo(
+			err := pc.EpochsKeeper.CreateEpochInfo(
 				pc.Ctx,
 				epochstypes.EpochInfo{
 					Name:                   string(epochstypes.FundingTickEpochInfoName),

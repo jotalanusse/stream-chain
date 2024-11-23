@@ -20,6 +20,7 @@ import (
 	streaming "github.com/StreamFinance-Protocol/stream-chain/protocol/streaming/grpc"
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets"
 	asskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
 	blocktimekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/blocktime/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/flags"
@@ -31,6 +32,7 @@ import (
 	feetierskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/feetiers/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	perpkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 	statskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/stats/keeper"
@@ -223,6 +225,8 @@ func NewClobKeepersTestContextWithUninitializedMemStore(
 	if err := ks.ClobKeeper.InitializeEquityTierLimit(ks.Ctx, types.EquityTierLimitConfiguration{}); err != nil {
 		panic(err)
 	}
+	prices.InitGenesis(ks.Ctx, *ks.PricesKeeper, constants.Prices_DefaultGenesisState)
+	assets.InitGenesis(ks.Ctx, *ks.AssetsKeeper, constants.Assets_DefaultGenesisState)
 	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_GenesisState_ParamsOnly)
 
 	return ks

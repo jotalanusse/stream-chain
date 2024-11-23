@@ -90,12 +90,7 @@ func createAppModuleWithKeeper(t *testing.T) (
 	)
 	ks := keeper.NewClobKeepersTestContext(t, memClob, mockBankKeeper, mockIndexerEventManager, nil)
 
-	keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
-
-	err := keeper.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
-	require.NoError(t, err)
-	err = keeper.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper)
-	require.NoError(t, err)
+	keepertest.CreateNonDefaultTestMarkets(t, ks.Ctx, ks.PricesKeeper)
 
 	return clob.NewAppModule(
 		appCodec,

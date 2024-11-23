@@ -14,13 +14,12 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {
-	pricesGenesisState := constants.Prices_DefaultGenesisState
+
 	genesisState := constants.Perpetuals_DefaultGenesisState
 
 	memClob := &mocks.MemClob{}
@@ -29,8 +28,6 @@ func TestGenesis(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
-	prices.InitGenesis(pc.Ctx, *pc.PricesKeeper, pricesGenesisState)
-	perpetuals.InitGenesis(pc.Ctx, *pc.PerpetualsKeeper, genesisState)
 	assertLiquidityTierUpsertEventsInIndexerBlock(t, pc.PerpetualsKeeper, pc.Ctx, genesisState.LiquidityTiers)
 	got := perpetuals.ExportGenesis(pc.Ctx, *pc.PerpetualsKeeper)
 	require.NotNil(t, got)
@@ -164,9 +161,6 @@ func TestGenesis_Failure(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
-
-	pricesGenesisState := constants.Prices_DefaultGenesisState
-	prices.InitGenesis(pc.Ctx, *pc.PricesKeeper, pricesGenesisState)
 
 	// Run tests.
 	for name, tc := range tests {

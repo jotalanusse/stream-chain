@@ -116,6 +116,23 @@ func CreateTestMarkets(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 	}
 }
 
+func CreateNonDefaultTestMarkets(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
+	for i, marketParam := range constants.TestMarketParams[2:] {
+		_, err := k.CreateMarket(
+			ctx,
+			marketParam,
+			constants.TestMarketPrices[i+2],
+		)
+		require.NoError(t, err)
+		err = k.UpdateSpotAndPnlMarketPrices(ctx, &types.MarketPriceUpdate{
+			MarketId:  uint32(i + 2),
+			SpotPrice: constants.TestMarketPrices[i+2].SpotPrice,
+			PnlPrice:  constants.TestMarketPrices[i+2].PnlPrice,
+		})
+		require.NoError(t, err)
+	}
+}
+
 func CreateBTCMarket(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 	marketParam := constants.TestMarketParams[0]
 	_, err := k.CreateMarket(
