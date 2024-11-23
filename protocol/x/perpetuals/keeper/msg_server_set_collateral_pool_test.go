@@ -33,8 +33,8 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                            1,
+					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+					QuoteAssetId:                            0,
 				},
 			},
 		},
@@ -44,8 +44,8 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                            1,
+					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0, 1}},
+					QuoteAssetId:                            0,
 				},
 			},
 		},
@@ -55,10 +55,22 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId + 1,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
+					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+					QuoteAssetId:                            0,
+				},
+			},
+		},
+		"Failure: cannot update quote asset id": {
+			msg: &types.MsgSetCollateralPool{
+				Authority: lib.GovModuleAddress.String(),
+				CollateralPool: types.CollateralPool{
+					CollateralPoolId:                        testCp.CollateralPoolId,
+					MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_001,
 					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 					QuoteAssetId:                            1,
 				},
 			},
+			expectedErr: "cannot modify collateral pool quote asset",
 		},
 		"Failure: supported multi collateral assets must contains quote asset": {
 			msg: &types.MsgSetCollateralPool{
@@ -70,7 +82,7 @@ func TestSetCollateralPool(t *testing.T) {
 					QuoteAssetId:                            0,
 				},
 			},
-			expectedErr: "supported multi collateral assets must contains quote asset",
+			expectedErr: ": multi collateral asset does not contain quote asset",
 		},
 		"Failure: supported multi collateral assets contains is empty": {
 			msg: &types.MsgSetCollateralPool{
@@ -82,7 +94,7 @@ func TestSetCollateralPool(t *testing.T) {
 					QuoteAssetId:                            0,
 				},
 			},
-			expectedErr: "supported multi collateral assets must not be empty",
+			expectedErr: ": collateral asssets is empty",
 		},
 		"Failure: invalid authority": {
 			msg: &types.MsgSetCollateralPool{
@@ -90,8 +102,8 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                            1,
+					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+					QuoteAssetId:                            0,
 				},
 			},
 			expectedErr: "invalid authority",
@@ -102,8 +114,8 @@ func TestSetCollateralPool(t *testing.T) {
 				CollateralPool: types.CollateralPool{
 					CollateralPoolId:                        testCp.CollateralPoolId,
 					MaxCumulativeInsuranceFundDeltaPerBlock: 123_432,
-					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
-					QuoteAssetId:                            1,
+					MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
+					QuoteAssetId:                            0,
 				},
 			},
 			expectedErr: "invalid authority",
