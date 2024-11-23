@@ -64,9 +64,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
+	genesis.CollateralPools = k.GetAllCollateralPools(ctx)
 	genesis.Perpetuals = k.GetAllPerpetuals(ctx)
 	genesis.LiquidityTiers = k.GetAllLiquidityTiers(ctx)
-	genesis.CollateralPools = k.GetAllCollateralPools(ctx)
 	genesis.Params = k.GetParams(ctx)
 
 	return genesis

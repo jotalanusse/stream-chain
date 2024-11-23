@@ -28,7 +28,6 @@ import (
 	clob_types "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	perp_keeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	prices_keeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -287,7 +286,7 @@ func TestAppModule_RegisterServices(t *testing.T) {
 }
 
 func TestAppModule_InitExportGenesis(t *testing.T) {
-	am, keeper, pricesKeeper, perpetualsKeeper, ctx, mockIndexerEventManager := createAppModuleWithKeeper(t)
+	am, keeper, _, perpetualsKeeper, ctx, mockIndexerEventManager := createAppModuleWithKeeper(t)
 	ctx = ctx.WithBlockTime(constants.TimeT)
 	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
 	gs := json.RawMessage(getValidGenesisStr())
@@ -315,7 +314,6 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 		),
 	).Once().Return()
 
-	prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
 	perpetuals.InitGenesis(ctx, *perpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 	result := am.InitGenesis(ctx, cdc, gs)
