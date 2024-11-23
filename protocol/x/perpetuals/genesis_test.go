@@ -28,6 +28,7 @@ func TestGenesis(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+	perpetuals.InitGenesis(pc.Ctx, *pc.PerpetualsKeeper, genesisState)
 	assertLiquidityTierUpsertEventsInIndexerBlock(t, pc.PerpetualsKeeper, pc.Ctx, genesisState.LiquidityTiers)
 	got := perpetuals.ExportGenesis(pc.Ctx, *pc.PerpetualsKeeper)
 	require.NotNil(t, got)
@@ -161,6 +162,7 @@ func TestGenesis_Failure(t *testing.T) {
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 
 	pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+	perpetuals.InitGenesis(pc.Ctx, *pc.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 	// Run tests.
 	for name, tc := range tests {

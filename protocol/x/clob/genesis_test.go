@@ -18,6 +18,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/memclob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	"github.com/stretchr/testify/require"
 )
 
@@ -372,6 +373,8 @@ func TestGenesis(t *testing.T) {
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 			ctx := ks.Ctx.WithBlockTime(constants.TimeT)
+
+			perpetuals.InitGenesis(ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 			// PerpetualMarketCreateEvents are emitted when initializing the genesis state, so we need to mock
 			// the indexer event manager to expect these events.

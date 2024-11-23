@@ -13,6 +13,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	indexershared "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/shared/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 
 	"cosmossdk.io/store/prefix"
@@ -41,6 +42,8 @@ func TestCreatePerpetualClobPair_MultiplePerpetual(t *testing.T) {
 	memClob := memclob.NewMemClobPriceTimePriority(false)
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 	rateString := sdaiservertypes.TestSDAIEventRequest.ConversionRate
 	rate, conversionErr := ratelimitkeeper.ConvertStringToBigInt(rateString)
@@ -75,7 +78,7 @@ func TestCreatePerpetualClobPair_MultiplePerpetual(t *testing.T) {
 			),
 		).Once().Return()
 		//nolint: errcheck
-		ks.ClobKeeper.CreatePerpetualClobPair(
+		_, err := ks.ClobKeeper.CreatePerpetualClobPair(
 			ks.Ctx,
 			clobPair.Id,
 			clobtest.MustPerpetualId(clobPair),
@@ -84,6 +87,7 @@ func TestCreatePerpetualClobPair_MultiplePerpetual(t *testing.T) {
 			clobPair.SubticksPerTick,
 			clobPair.Status,
 		)
+		require.NoError(t, err)
 	}
 
 	require.Equal(
@@ -162,6 +166,8 @@ func TestCreatePerpetualClobPair_FailsWithDuplicateClobPairId(t *testing.T) {
 		mockIndexerEventManager,
 		nil,
 	)
+
+	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 	// Read a new `ClobPair` and make sure it does not exist.
 	_, err := ks.ClobKeeper.GetClobPairIdForPerpetual(ks.Ctx, 1)
@@ -261,6 +267,8 @@ func TestCreatePerpetualClobPair(t *testing.T) {
 			memClob := memclob.NewMemClobPriceTimePriority(false)
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+			perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 			// PerpetualMarketCreateEvents are emitted when initializing the genesis state, so we need to mock
 			// the indexer event manager to expect these events.
@@ -411,6 +419,8 @@ func TestCreateMultipleClobPairs(t *testing.T) {
 			memClob := memclob.NewMemClobPriceTimePriority(false)
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+			perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 			// Perform the method under test.
 			for _, make := range tc.clobPairs {
@@ -591,6 +601,7 @@ func TestClobPairGetAll(t *testing.T) {
 	memClob := memclob.NewMemClobPriceTimePriority(false)
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 	items := keepertest.CreateNClobPair(t,
 		&ks.ClobKeeper,
 		ks.PerpetualsKeeper,
@@ -610,6 +621,7 @@ func TestUpdateClobPair_FinalSettlement(t *testing.T) {
 	memClob := memclob.NewMemClobPriceTimePriority(false)
 	mockIndexerEventManager := &mocks.IndexerEventManager{}
 	ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+	perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 	clobPair := constants.ClobPair_Btc
 	mockIndexerEventManager.On("AddTxnEvent",
@@ -867,6 +879,7 @@ func TestUpdateClobPair(t *testing.T) {
 			memClob := memclob.NewMemClobPriceTimePriority(false)
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+			perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 			tc.setup(t, ks, mockIndexerEventManager)
 			clobPair := constants.ClobPair_Btc
@@ -1046,6 +1059,8 @@ func TestIsPerpetualClobPairActive(t *testing.T) {
 			memClob := memclob.NewMemClobPriceTimePriority(false)
 			mockIndexerEventManager := &mocks.IndexerEventManager{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
+
+			perpetuals.InitGenesis(ks.Ctx, *ks.PerpetualsKeeper, constants.Perpetuals_DefaultGenesisState)
 
 			if tc.clobPair != nil {
 				// allows us to circumvent CreatePerpetualClobPair and write unsupported statuses to state to
