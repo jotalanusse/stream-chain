@@ -271,29 +271,45 @@ func (k Keeper) persistMatchedOrders(
 	}
 
 	if !isTakerLiquidation {
-		if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
-			fmt.Printf("bigRouterTakerFeeQuoteQuantums: %v\n", bigRouterTakerFeeQuoteQuantums)
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
+		takerRouter := matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId
+		makerRouter := matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId
+
+		if takerRouter != nil && makerRouter != nil && *takerRouter == *makerRouter {
+			totalRouterFee := new(big.Int).Add(bigRouterTakerFeeQuoteQuantums, bigRouterMakerFeeQuoteQuantums)
+			if totalRouterFee.Sign() != 0 {
+				updates = append(updates, satypes.Update{
+					AssetUpdates: []satypes.AssetUpdate{
+						{
+							AssetId:          assettypes.AssetTDai.Id,
+							BigQuantumsDelta: totalRouterFee,
+						},
 					},
-				},
-				SubaccountId: *matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId,
-			})
-		}
-		if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
-			fmt.Printf("bigRouterMakerFeeQuoteQuantums: %v\n", bigRouterMakerFeeQuoteQuantums)
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
+					SubaccountId: *takerRouter,
+				})
+			}
+		} else {
+			if takerRouter != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
+				updates = append(updates, satypes.Update{
+					AssetUpdates: []satypes.AssetUpdate{
+						{
+							AssetId:          assettypes.AssetTDai.Id,
+							BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
+						},
 					},
-				},
-				SubaccountId: *matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId,
-			})
+					SubaccountId: *takerRouter,
+				})
+			}
+			if makerRouter != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
+				updates = append(updates, satypes.Update{
+					AssetUpdates: []satypes.AssetUpdate{
+						{
+							AssetId:          assettypes.AssetTDai.Id,
+							BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
+						},
+					},
+					SubaccountId: *makerRouter,
+				})
+			}
 		}
 	}
 
