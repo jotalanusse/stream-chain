@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/gogoproto/proto"
@@ -417,25 +419,6 @@ func TestHasPerpetual(t *testing.T) {
 		*perptest.GeneratePerpetual(perptest.WithId(20)),
 		*perptest.GeneratePerpetual(perptest.WithId(999)),
 	}
-
-	_, err := pc.PricesKeeper.CreateMarket(
-		pc.Ctx,
-		pricestypes.MarketParam{
-			Id:                 0,
-			Pair:               "marketName",
-			Exponent:           -10,
-			MinExchanges:       uint32(1),
-			MinPriceChangePpm:  uint32(50),
-			ExchangeConfigJson: "{}",
-		},
-		pricestypes.MarketPrice{
-			Id:        0,
-			Exponent:  -10,
-			SpotPrice: 1_000, // leave this as a placeholder b/c we cannot set the price to 0
-			PnlPrice:  1_000, // leave this as a placeholder b/c we cannot set the price to 0
-		},
-	)
-	require.NoError(t, err)
 
 	for perp := range perps {
 		_, err := pc.PerpetualsKeeper.CreatePerpetual(
@@ -1142,7 +1125,7 @@ func TestGetNetNotional_Success(t *testing.T) {
 			keepertest.CreateTestLiquidityTiers(t, pc.Ctx, pc.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 			// Create a new market param and price.
-			marketId := uint32(0)
+			marketId := uint32(4)
 			_, err := pc.PricesKeeper.CreateMarket(
 				pc.Ctx,
 				pricestypes.MarketParam{
@@ -2221,9 +2204,6 @@ func TestMaybeProcessNewFundingTickEpoch_Failure(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(*testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
-
-			// Create the default markets.
-			keepertest.CreateTestMarkets(t, pc.Ctx, pc.PricesKeeper)
 
 			// Insert test funding sample.
 			keepertest.PopulateTestPremiumStore(
@@ -3451,7 +3431,7 @@ func TestSetCollateralPool_New_Failure(t *testing.T) {
 			)
 
 			require.Error(t, err)
-			require.EqualError(t, err, tc.expectedError.Error())
+			require.ErrorContains(t, err, tc.expectedError.Error())
 		})
 	}
 }
@@ -3472,9 +3452,9 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 	for i, pool := range constants.CollateralPools {
 		// Modify each field arbitrarily and
 		// verify the fields are modified in state.
-		maxCumulativeInsuranceFundDeltaPerBlock := uint64(i * 1000000)
-		multiCollateralAssets := &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}}
-		quoteAssetId := uint32(i)
+		maxCumulativeInsuranceFundDeltaPerBlock := uint64(i + 1000000)
+		multiCollateralAssets := &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{uint32(i % 2)}}
+		quoteAssetId := uint32(uint32(i % 2))
 		modifiedPool, err := pc.PerpetualsKeeper.SetCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
@@ -3560,7 +3540,7 @@ func TestSetCollateralPool_Existing_Failure(t *testing.T) {
 			)
 
 			require.Error(t, err)
-			require.EqualError(t, err, tc.expectedError.Error())
+			require.ErrorContains(t, err, tc.expectedError.Error())
 		})
 	}
 }
@@ -3713,12 +3693,14 @@ func TestIsMainCollateralPool(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(
 			name, func(t *testing.T) {
-				ctx, _, pricesKeeper, perpetualsKeeper, _, _, _, _, _, _ := keepertest.SubaccountsKeepers(
+				ctx, _, pricesKeeper, perpetualsKeeper, _, _, assetsKeeper, _, _, _ := keepertest.SubaccountsKeepers(
 					t,
 					false,
 				)
+
 				ctx = ctx.WithTxBytes(constants.TestTxBytes)
-				keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
+				prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
+				assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 				keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 

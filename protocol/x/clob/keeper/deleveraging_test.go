@@ -352,9 +352,6 @@ func TestCanDeleverageSubaccount(t *testing.T) {
 				constants.TDai.Denom,
 			).Return(sdk.NewCoin(constants.TDai.Denom, sdkmath.NewIntFromBigInt(new(big.Int).SetUint64(1_000_000_000_000))))
 
-			// Create test markets.
-			keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
-
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)

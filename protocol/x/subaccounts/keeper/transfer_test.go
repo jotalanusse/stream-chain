@@ -13,8 +13,10 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	sample_testutil "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sample"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets"
 	asstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -193,7 +195,8 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := keepertest.SubaccountsKeepers(t, true)
-			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
+			prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
+			assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
 
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
@@ -702,7 +705,8 @@ func TestTransferFundsFromSubaccountToSubaccount_Success(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := keepertest.SubaccountsKeepers(t, true)
-			keepertest.CreateTestMarkets(t, ctx, pricesKeeper)
+			prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
+			assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
 
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)

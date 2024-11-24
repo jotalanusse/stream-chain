@@ -8,7 +8,10 @@ import (
 	sdkmath "cosmossdk.io/math"
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	testapp "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/app"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	testkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/types"
 	"github.com/stretchr/testify/require"
@@ -280,7 +283,7 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			ctx, _, pricesKeeper, perpetualsKeeper, _, bankKeeper, _, ratelimitKeeper, _, _ := testkeeper.SubaccountsKeepers(
+			ctx, _, pricesKeeper, perpetualsKeeper, _, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := testkeeper.SubaccountsKeepers(
 				t,
 				true,
 			)
@@ -317,7 +320,8 @@ func TestProcessNewSDaiConversionRateUpdate(t *testing.T) {
 			k.SetSDAIPrice(ctx, tc.initialSDaiConversionRate)
 			k.SetAssetYieldIndex(ctx, keeper.ConvertStringToBigRatWithPanicOnErr(tc.initialAssetYieldIndex))
 
-			testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
+			prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
+			assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
@@ -525,7 +529,7 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			ctx, _, pricesKeeper, perpetualsKeeper, _, bankKeeper, _, ratelimitKeeper, _, _ := testkeeper.SubaccountsKeepers(
+			ctx, _, pricesKeeper, perpetualsKeeper, _, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := testkeeper.SubaccountsKeepers(
 				t,
 				true,
 			)
@@ -559,7 +563,8 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 			k.SetSDAIPrice(ctx, tc.sDaiConversionRate)
 			k.SetAssetYieldIndex(ctx, keeper.ConvertStringToBigRatWithPanicOnErr(tc.initialAssetYieldIndex))
 
-			testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
+			prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
+			assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
@@ -610,12 +615,8 @@ func TestClaimInsuranceFundYields(t *testing.T) {
 	ctx, _, pricesKeeper, perpetualsKeeper, _, bankKeeper, assetsKeeper, ratelimitKeeper, _, _ := testkeeper.SubaccountsKeepers(t, true)
 
 	// Setup
-	testkeeper.CreateTestMarkets(t, ctx, pricesKeeper)
-
-	err := testkeeper.CreateTDaiAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
-	err = testkeeper.CreateBTCAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
+	prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
+	assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
 
 	testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 	testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
@@ -624,7 +625,7 @@ func TestClaimInsuranceFundYields(t *testing.T) {
 	// Mint initial tDAI supply
 	initialTDaiSupply := big.NewInt(1_000_000_000_000) // 1,000,000 tDAI
 	tDaiCoin := sdk.NewCoin(types.TDaiDenom, sdkmath.NewIntFromBigInt(initialTDaiSupply))
-	err = bankKeeper.MintCoins(ctx, types.TDaiPoolAccount, sdk.NewCoins(tDaiCoin))
+	err := bankKeeper.MintCoins(ctx, types.TDaiPoolAccount, sdk.NewCoins(tDaiCoin))
 	require.NoError(t, err)
 
 	// Set up insurance fund balances

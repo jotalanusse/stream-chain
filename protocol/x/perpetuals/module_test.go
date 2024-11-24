@@ -10,13 +10,9 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/app/module"
 
-	pricetypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
-
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	testutil_json "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/json"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
-	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	assets_keeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
 	epochs_keeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/keeper"
 	epoch_types "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
@@ -148,30 +144,6 @@ func TestAppModuleBasic_ValidateGenesisErrBadState(t *testing.T) {
 	require.EqualError(t, err, "Ticker must be non-empty string")
 }
 
-func TestAppModuleBasic_ValidateGenesisErrBadMultiCollateral(t *testing.T) {
-	am := createAppModuleBasic(t)
-
-	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
-
-	h := json.RawMessage(`{
-		"perpetuals":[
-		   {
-			  "params":{
-				"ticker":""
-			  }
-		   }
-		],
-		"params":{
-		   "funding_rate_clamp_factor_ppm":6000000,
-		   "premium_vote_clamp_factor_ppm":60000000,
-		   "min_num_votes_per_sample":15
-		}
-	 }`)
-
-	err := am.ValidateGenesis(cdc, nil, h)
-	require.EqualError(t, err, "no supported multi collateral assets")
-}
-
 func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
 	am := createAppModuleBasic(t)
 
@@ -190,7 +162,33 @@ func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
 		   "funding_rate_clamp_factor_ppm":6000000,
 		   "premium_vote_clamp_factor_ppm":60000000,
 		   "min_num_votes_per_sample":15
-		}
+		},
+		"collateral_pools": [
+			{
+				"collateral_pool_id": 0,
+				"max_cumulative_insurance_fund_delta_per_block": 1000000,
+				"multi_collateral_assets": {
+					"multi_collateral_assets": [0]
+				},
+				"quote_asset_id": 0
+			},
+			{
+				"collateral_pool_id": 1,
+				"max_cumulative_insurance_fund_delta_per_block": 1000000,
+				"multi_collateral_assets": {
+					"multi_collateral_assets": [1]
+				},
+				"quote_asset_id": 1
+			},
+			{
+				"collateral_pool_id": 2,
+				"max_cumulative_insurance_fund_delta_per_block": 1000000,
+				"multi_collateral_assets": {
+					"multi_collateral_assets": [0]
+				},
+				"quote_asset_id": 0
+			}
+		]
 	 }`)
 
 	err := am.ValidateGenesis(cdc, nil, h)
@@ -239,13 +237,14 @@ func TestAppModuleBasic_GetQueryCmd(t *testing.T) {
 
 	cmd := am.GetQueryCmd()
 	require.Equal(t, "perpetuals", cmd.Use)
-	require.Equal(t, 6, len(cmd.Commands()))
-	require.Equal(t, "get-all-liquidity-tiers", cmd.Commands()[0].Name())
-	require.Equal(t, "get-params", cmd.Commands()[1].Name())
-	require.Equal(t, "get-premium-samples", cmd.Commands()[2].Name())
-	require.Equal(t, "get-premium-votes", cmd.Commands()[3].Name())
-	require.Equal(t, "list-perpetual", cmd.Commands()[4].Name())
-	require.Equal(t, "show-perpetual", cmd.Commands()[5].Name())
+	require.Equal(t, 7, len(cmd.Commands()))
+	require.Equal(t, "get-all-collateral-pools", cmd.Commands()[0].Name())
+	require.Equal(t, "get-all-liquidity-tiers", cmd.Commands()[1].Name())
+	require.Equal(t, "get-params", cmd.Commands()[2].Name())
+	require.Equal(t, "get-premium-samples", cmd.Commands()[3].Name())
+	require.Equal(t, "get-premium-votes", cmd.Commands()[4].Name())
+	require.Equal(t, "list-perpetual", cmd.Commands()[5].Name())
+	require.Equal(t, "show-perpetual", cmd.Commands()[6].Name())
 }
 
 func TestAppModule_Name(t *testing.T) {
@@ -275,59 +274,34 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
 
 	// The corresponding `Market` must exist, so create it.
-	am, keeper, pricesKeeper, _, assetsKeeper, ctx := createAppModuleWithKeeper(t)
-
-	if _, err := pricesKeeper.CreateMarket(
-		ctx,
-		pricetypes.MarketParam{
-			Id:                 0,
-			Pair:               constants.EthUsdPair,
-			Exponent:           -2,
-			MinExchanges:       1,
-			MinPriceChangePpm:  1_000,
-			ExchangeConfigJson: "{}",
-		},
-		pricetypes.MarketPrice{
-			Id:        0,
-			Exponent:  -2,
-			SpotPrice: 1_000,
-			PnlPrice:  1_000,
-		},
-	); err != nil {
-		t.Errorf("failed to create a market %s", err)
-	}
-
-	err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
-	err = keepertest.CreateBTCAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
+	am, keeper, _, _, _, ctx := createAppModuleWithKeeper(t)
 
 	msg := `{
 	    "collateral_pools": [
 			{
-			"collateral_pool_id": 0,
-			"max_cumulative_insurance_fund_delta_per_block": 1000000,
-			"multi_collateral_assets": {
-				"multi_collateral_assets": [0]
-			},
-			"quote_asset_id": 0
+				"collateral_pool_id": 0,
+				"max_cumulative_insurance_fund_delta_per_block": "1000000",
+				"multi_collateral_assets": {
+					"multi_collateral_assets": [0]
+				},
+				"quote_asset_id": 0
 			},
 			{
-			"collateral_pool_id": 1,
-			"max_cumulative_insurance_fund_delta_per_block": 1000000,
-			"multi_collateral_assets": {
-				"multi_collateral_assets": [1]
+				"collateral_pool_id": 1,
+				"max_cumulative_insurance_fund_delta_per_block": "1000000",
+				"multi_collateral_assets": {
+					"multi_collateral_assets": [1]
+				},
+				"quote_asset_id": 1
 			},
-			"quote_asset_id": 1
-			},
-        {
-          "collateral_pool_id": 2,
-          "max_cumulative_insurance_fund_delta_per_block": 1000000,
-          "multi_collateral_assets": {
-            "multi_collateral_assets": [0]
-          },
-          "quote_asset_id": 0
-        }
+			{
+				"collateral_pool_id": 2,
+				"max_cumulative_insurance_fund_delta_per_block": "1000000",
+				"multi_collateral_assets": {
+					"multi_collateral_assets": [0]
+				},
+				"quote_asset_id": 0
+			}
 		],
 		"perpetuals":[
 		   {
@@ -421,7 +395,7 @@ func TestAppModule_InitExportGenesis(t *testing.T) {
 			},
 			{
 			"collateral_pool_id": 2,
-			"max_cumulative_insurance_fund_delta_per_block": 1000000,
+			"max_cumulative_insurance_fund_delta_per_block": "1000000",
 			"multi_collateral_assets": {
 				"multi_collateral_assets": [0]
 			},
