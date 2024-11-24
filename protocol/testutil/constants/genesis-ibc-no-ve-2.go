@@ -225,7 +225,7 @@ const GenesisStateNoVeIBC2 = `{
           "coins": [
             {
               "denom": "ibc/DEEFE2DEFDC8EA8879923C4CCA42BB888C3CD03FF7ECFEFB1C2FEC27A732ACC8",
-              "amount": "2600000000000000000000000000000"
+              "amount": "5200000000000000000000000000000"
             }
           ]
         }
