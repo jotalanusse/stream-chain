@@ -1,9 +1,9 @@
 package types
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 var (
-	BaseCollateralPoolInsuranceFundModuleAddress = sdk.MustAccAddressFromBech32("klyra1tgrazvtlsyumzpjdlx3298ud0p2j2wgcn7jpy2")
+	BaseCollateralPoolInsuranceFundModuleAddress = authtypes.NewModuleAddress(InsuranceFundName + ":0")
 )
