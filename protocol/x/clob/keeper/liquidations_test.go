@@ -267,7 +267,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 				"SendCoins",
 				mock.Anything,
 				authtypes.NewModuleAddress(satypes.ModuleName),
-				perptypes.InsuranceFundModuleAddress,
+				perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 				mock.Anything,
 			).Return(nil)
 			// Fee collector does not have any funds.
@@ -296,7 +296,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 			mockBankKeeper.On(
 				"GetBalance",
 				mock.Anything,
-				perptypes.InsuranceFundModuleAddress,
+				perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 				constants.TDai.Denom,
 			).Return(
 				sdk.NewCoin(
@@ -4362,7 +4362,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 			mockBankKeeper.On(
 				"GetBalance",
 				mock.Anything,
-				perptypes.InsuranceFundModuleAddress,
+				perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 				constants.TDai.Denom,
 			).Return(
 				sdk.NewCoin(
@@ -5331,7 +5331,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 				"SendCoins",
 				mock.Anything,
 				authtypes.NewModuleAddress(satypes.ModuleName),
-				perptypes.InsuranceFundModuleAddress,
+				perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 				mock.Anything,
 			).Return(nil)
 			// Fee collector does not have any funds.
@@ -5360,7 +5360,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 			mockBankKeeper.On(
 				"GetBalance",
 				mock.Anything,
-				perptypes.InsuranceFundModuleAddress,
+				perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 				constants.TDai.Denom,
 			).Return(
 				sdk.NewCoin(

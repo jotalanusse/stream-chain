@@ -9,8 +9,6 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 
-	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
-
 	indexerevents "github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/events"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
@@ -173,25 +171,6 @@ func (k Keeper) GetInsuranceFundBalanceInQuoteQuantums(
 
 	balance, _, err = k.assetsKeeper.ConvertCoinToAsset(ctx, quoteAsset.Id, insuranceFundBalanceCoin)
 
-	if err != nil {
-		return nil
-	}
-
-	return balance
-}
-
-func (k Keeper) GetCrossInsuranceFundBalance(ctx sdk.Context) (balance *big.Int) {
-	tdaiAsset, exists := k.assetsKeeper.GetAsset(ctx, assettypes.AssetTDai.Id)
-	if !exists {
-		panic("GetCrossInsuranceFundBalance: TDai asset not found in state")
-	}
-	insuranceFundBalanceCoin := k.bankKeeper.GetBalance(
-		ctx,
-		perptypes.InsuranceFundModuleAddress,
-		tdaiAsset.Denom,
-	)
-
-	balance, _, err := k.assetsKeeper.ConvertCoinToAsset(ctx, tdaiAsset.Id, insuranceFundBalanceCoin)
 	if err != nil {
 		return nil
 	}

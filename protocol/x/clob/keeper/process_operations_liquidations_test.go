@@ -206,7 +206,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $250 to insurance fund for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000_000)),
 				).Return(nil).Once()
@@ -302,7 +302,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					satypes.ModuleAddress,
 					// Insurance fund covers $1 loss for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(1_000_000)),
@@ -390,7 +390,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $62.5 to insurance fund for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(62_500_000)),
 				).Return(nil).Twice()
@@ -500,7 +500,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					satypes.ModuleAddress,
 					// Insurance fund covers $0.25 loss for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000)),
@@ -613,14 +613,14 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.75 for liquidating 0.75 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(750_000)),
 				).Return(nil).Once()
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					satypes.ModuleAddress,
 					// Insurance fund covers $0.25 loss for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000)),
@@ -724,7 +724,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.378735 (capped by InsuranceFundFeePpm)
 					// for liquidating 0.75 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(378_735)),
@@ -733,7 +733,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.121265.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(121_265)),
 				).Return(nil).Once()
@@ -839,7 +839,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $125 to insurance fund for liquidating 0.5 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(125_000_000)),
 				).Return(nil).Once()
@@ -959,7 +959,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(25)),
 				).Return(nil)
 			},
@@ -1339,7 +1339,7 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					mock.Anything,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					mock.Anything,
 				).Return(nil)
 			},

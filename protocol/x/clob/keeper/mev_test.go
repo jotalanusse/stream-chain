@@ -854,7 +854,7 @@ func TestRecordMevMetrics(t *testing.T) {
 			mockBankKeeper.On(
 				"GetBalance",
 				mock.Anything,
-				perptypes.InsuranceFundModuleAddress,
+				perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 				constants.TDai.Denom,
 			).Return(
 				sdk.NewCoin(constants.TDai.Denom, sdkmath.NewIntFromBigInt(new(big.Int))),

@@ -626,7 +626,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $250 to insurance fund for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000_000)),
 				).Return(nil).Once()
@@ -719,7 +719,7 @@ func TestProcessProposerMatches_LongTerm_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					satypes.ModuleAddress,
-					perptypes.InsuranceFundModuleAddress,
+					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $250 to insurance fund for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000_000)),
 				).Return(nil).Once()
