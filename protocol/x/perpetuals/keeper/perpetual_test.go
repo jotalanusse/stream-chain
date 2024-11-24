@@ -82,7 +82,6 @@ func TestModifyPerpetual_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	numLiquidityTiers := 4
 
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 	numMarkets := keepertest.GetNumMarkets(t, pc.Ctx, pc.PricesKeeper)
 	expectedIndexerEvents := make([]*indexerevents.UpdatePerpetualEventV1, len(perps))
@@ -366,7 +365,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 	// Test setup.
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 
 	// Run tests.
@@ -392,7 +390,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 func TestGetPerpetual_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 10)
 
 	for _, perp := range perps {
@@ -479,7 +476,6 @@ func TestGetPerpetual_NotFound(t *testing.T) {
 func TestGetPerpetuals_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 10)
 
 	require.ElementsMatch(t,
@@ -575,7 +571,6 @@ func TestModifyOpenInterest_Failure(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
-			keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 			perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 
 			// Set up initial open interest
@@ -598,7 +593,6 @@ func TestModifyOpenInterest_Failure(t *testing.T) {
 func TestModifyOpenInterest_Mixed(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 
 	for _, perp := range perps {
@@ -1019,7 +1013,6 @@ func TestGetMarginRequirements_MarketNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
@@ -1052,7 +1045,6 @@ func TestGetMarginRequirements_LiquidityTierNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
@@ -1222,7 +1214,6 @@ func TestGetNetNotional_MarketNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
@@ -1392,7 +1383,6 @@ func TestGetNetCollateral_MarketNotFound(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 	perpetual := perps[0]
 
@@ -1532,7 +1522,6 @@ func TestGetSettlementPpm_PerpetualNotFound(t *testing.T) {
 func TestModifyFundingIndex_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 
 	for _, perp := range perps {
@@ -1593,7 +1582,6 @@ func TestModifyFundingIndex_IntegerOverflowUnderflow(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers and perpetuals,
-			keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 
 			// Set up intitial funding index, should succeed.
@@ -1631,7 +1619,6 @@ func TestModifyLastFundingRate_Success(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
 			// Create liquidity tiers and perpetuals,
-			keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 1)
 			err := pc.PerpetualsKeeper.ModifyLastFundingRate(pc.Ctx, tc.perpetualId, tc.lastFundingRateDelta)
 			require.NoError(t, err)
@@ -2284,7 +2271,6 @@ func TestMaybeProcessNewFundingTickEpoch_NoNewEpoch(t *testing.T) {
 
 	pc := keepertest.PerpetualsKeepers(t)
 	// Create liquidity tiers and perpetuals,
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 
 	err := pc.EpochsKeeper.CreateEpochInfo(
@@ -2425,7 +2411,6 @@ func TestGetAddPremiumVotes_Success(t *testing.T) {
 			)
 
 			// Create liquidity tiers and perpetuals,
-			keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, tc.numPerpetuals)
 
 			err := pc.EpochsKeeper.CreateEpochInfo(
@@ -2556,7 +2541,6 @@ func TestAddPremiums_Success(t *testing.T) {
 
 		// Create liquidity tiers and perpetuals,
 		numPerpetuals := 10
-		keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 		perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, numPerpetuals)
 
 		// Insert one round of premiums for all perps.
@@ -2687,7 +2671,6 @@ func TestAddPremiums_NonExistingPerpetuals(t *testing.T) {
 		}
 
 		// Create liquidity tiers and perpetuals,
-		keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 		_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 3)
 
 		err := tc.addPremiumFunc(pc.PerpetualsKeeper, pc.Ctx, newPremiums)
@@ -2952,7 +2935,6 @@ func TestMaybeProcessNewFundingSampleEpoch(t *testing.T) {
 			require.NoError(t, err)
 
 			// Create liquidity tiers and perpetuals,
-			keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 4)
 			require.NoError(t, err)
 
@@ -3650,11 +3632,11 @@ func TestIsPositionUpdatable(t *testing.T) {
 		"Updatable": {
 			perp: *perptest.GeneratePerpetual(
 				perptest.WithId(1),
-				perptest.WithMarketId(1),
+				perptest.WithMarketId(2),
 			),
 			queryPerpId: 1,
 			marketParamPrice: *pricestest.GenerateMarketParamPrice(
-				pricestest.WithId(1),
+				pricestest.WithId(2),
 				pricestest.WithSpotPriceValue(1000), // non-zero
 				pricestest.WithPnlPriceValue(1000),  // non-zero
 			),
@@ -3663,11 +3645,11 @@ func TestIsPositionUpdatable(t *testing.T) {
 		"Not updatable due to zero oracle price": {
 			perp: *perptest.GeneratePerpetual(
 				perptest.WithId(1),
-				perptest.WithMarketId(1),
+				perptest.WithMarketId(2),
 			),
 			queryPerpId: 1,
 			marketParamPrice: *pricestest.GenerateMarketParamPrice(
-				pricestest.WithId(1),
+				pricestest.WithId(2),
 				pricestest.WithSpotPriceValue(0),
 				pricestest.WithPnlPriceValue(0),
 			),
@@ -3676,11 +3658,11 @@ func TestIsPositionUpdatable(t *testing.T) {
 		"Error: Perp Id not found": {
 			perp: *perptest.GeneratePerpetual(
 				perptest.WithId(1),
-				perptest.WithMarketId(1),
+				perptest.WithMarketId(2),
 			),
 			queryPerpId: 100, // doesn't exist
 			marketParamPrice: *pricestest.GenerateMarketParamPrice(
-				pricestest.WithId(1),
+				pricestest.WithId(2),
 			),
 			expectedErr: "Perpetual does not exist",
 		},
@@ -3688,16 +3670,14 @@ func TestIsPositionUpdatable(t *testing.T) {
 
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
-			testMarket0 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(0))
 			pc := keepertest.PerpetualsKeepers(t)
-			keepertest.CreateTestPricesAndPerpetualMarkets(
+
+			keepertest.CreateTestPriceMarkets(t, pc.Ctx, pc.PricesKeeper, []pricestypes.MarketParamPrice{tc.marketParamPrice})
+			keepertest.CreatePerpetualMarkets(
 				t,
 				pc.Ctx,
 				pc.PerpetualsKeeper,
-				pc.PricesKeeper,
-				pc.AssetsKeeper,
 				[]types.Perpetual{tc.perp},
-				[]pricestypes.MarketParamPrice{testMarket0, tc.marketParamPrice},
 			)
 
 			updatable, err := pc.PerpetualsKeeper.IsPositionUpdatable(pc.Ctx, tc.queryPerpId)
@@ -3754,7 +3734,6 @@ func TestIsMainCollateralPool(t *testing.T) {
 
 func TestModifyOpenInterest_store(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
-	keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 	perps := keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, 100)
 	pc.Ctx = pc.Ctx.WithExecMode(sdk.ExecModeFinalize)
 	for _, perp := range perps {

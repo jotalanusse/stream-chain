@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"errors"
 	"math"
 	"math/big"
 	"testing"
@@ -45,25 +44,16 @@ func TestGetInsuranceFundBalanceInQuoteQuantums(t *testing.T) {
 		expectedError                error
 	}{
 		"can get zero balance": {
-			assets: []assettypes.Asset{
-				*constants.TDai,
-			},
 			perpetualId:                  0,
 			insuranceFundBalance:         new(big.Int),
 			expectedInsuranceFundBalance: big.NewInt(0),
 		},
 		"can get positive balance": {
-			assets: []assettypes.Asset{
-				*constants.TDai,
-			},
 			perpetualId:                  0,
 			insuranceFundBalance:         big.NewInt(100),
 			expectedInsuranceFundBalance: big.NewInt(100),
 		},
 		"can get greater than MaxUint64 balance": {
-			assets: []assettypes.Asset{
-				*constants.TDai,
-			},
 			perpetualId: 0,
 			insuranceFundBalance: new(big.Int).Add(
 				new(big.Int).SetUint64(math.MaxUint64),
@@ -75,25 +65,14 @@ func TestGetInsuranceFundBalanceInQuoteQuantums(t *testing.T) {
 			),
 		},
 		"can get zero balance - isolated market": {
-			assets: []assettypes.Asset{
-				*constants.TDai,
-			},
 			perpetualId:                  3, // Isolated market.
 			insuranceFundBalance:         new(big.Int),
 			expectedInsuranceFundBalance: big.NewInt(0),
 		},
 		"can get positive balance - isolated market": {
-			assets: []assettypes.Asset{
-				*constants.TDai,
-			},
 			perpetualId:                  3, // Isolated market.
 			insuranceFundBalance:         big.NewInt(100),
 			expectedInsuranceFundBalance: big.NewInt(100),
-		},
-		"panics when asset not found in state": {
-			assets:        []assettypes.Asset{},
-			perpetualId:   0,
-			expectedError: errors.New("GetInsuranceFundBalanceInQuoteQuantums: quote asset not found in state"),
 		},
 	}
 
@@ -106,7 +85,7 @@ func TestGetInsuranceFundBalanceInQuoteQuantums(t *testing.T) {
 
 			ctx := ks.Ctx.WithIsCheckTx(true)
 			// Create the default markets.
-			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
+			keepertest.CreateNonDefaultTestMarkets(t, ctx, ks.PricesKeeper)
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
@@ -229,13 +208,8 @@ func TestIsValidInsuranceFundDelta(t *testing.T) {
 			bankMock := &mocks.BankKeeper{}
 			ks := keepertest.NewClobKeepersTestContext(t, memClob, bankMock, &mocks.IndexerEventManager{}, nil)
 
-			err := keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
-			err = keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
-
 			ctx := ks.Ctx.WithIsCheckTx(true)
-			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
+			keepertest.CreateNonDefaultTestMarkets(t, ctx, ks.PricesKeeper)
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)

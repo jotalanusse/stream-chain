@@ -1430,14 +1430,6 @@ func TestPrepareCheckState(t *testing.T) {
 			ks.RatelimitKeeper.SetSDAIPrice(ctx, rate)
 			ks.RatelimitKeeper.SetAssetYieldIndex(ks.Ctx, big.NewRat(1, 1))
 
-			// Create the default markets.
-			keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
-
-			err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
-			err = keepertest.CreateBTCAsset(ctx, ks.AssetsKeeper)
-			require.NoError(t, err)
-
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
@@ -1467,7 +1459,7 @@ func TestPrepareCheckState(t *testing.T) {
 
 			// Create all CLOBs.
 			for _, clobPair := range tc.clobs {
-				_, err = ks.ClobKeeper.CreatePerpetualClobPair(
+				_, err := ks.ClobKeeper.CreatePerpetualClobPair(
 					ctx,
 					clobPair.Id,
 					clobtest.MustPerpetualId(clobPair),
@@ -1480,7 +1472,7 @@ func TestPrepareCheckState(t *testing.T) {
 			}
 
 			// Initialize the liquidations config.
-			err = ks.ClobKeeper.InitializeLiquidationsConfig(ctx, types.LiquidationsConfig_Default)
+			err := ks.ClobKeeper.InitializeLiquidationsConfig(ctx, types.LiquidationsConfig_Default)
 			require.NoError(t, err)
 
 			// Create all pre-existing stateful orders in state.

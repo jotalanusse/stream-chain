@@ -2364,12 +2364,7 @@ func setupProcessProposerOperationsTestCase(
 	}
 
 	// Create the default markets.
-	keepertest.CreateTestMarkets(t, ctx, ks.PricesKeeper)
-
-	err := keepertest.CreateTDaiAsset(ctx, ks.AssetsKeeper)
-	require.NoError(t, err)
-	err = keepertest.CreateBTCAsset(ctx, ks.AssetsKeeper)
-	require.NoError(t, err)
+	keepertest.CreateNonDefaultTestMarkets(t, ctx, ks.PricesKeeper)
 
 	// Create liquidity tiers.
 	keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
@@ -2434,7 +2429,7 @@ func setupProcessProposerOperationsTestCase(
 			).Once().Return()
 		}
 
-		_, err = ks.ClobKeeper.CreatePerpetualClobPair(
+		_, err := ks.ClobKeeper.CreatePerpetualClobPair(
 			ctx,
 			clobPair.Id,
 			clobtest.MustPerpetualId(clobPair),

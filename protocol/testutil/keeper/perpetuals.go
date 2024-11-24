@@ -24,7 +24,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
-	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -335,37 +334,12 @@ func CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(
 	return perpetuals
 }
 
-func CreateBaseAssetsAndMarkets(
-	t *testing.T,
-	ctx sdk.Context,
-	pricesKeeper *priceskeeper.Keeper,
-	assetsKeeper *assetskeeper.Keeper,
-) {
-	CreateBTCMarket(t, ctx, pricesKeeper)
-	err := CreateTDaiAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
-	err = CreateBTCAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
-}
-
-// CreateTestPricesAndPerpetualMarkets is a test utility function that creates list of given
-// prices and perpetual markets in state.
-func CreateTestPricesAndPerpetualMarkets(
+func CreatePerpetualMarkets(
 	t *testing.T,
 	ctx sdk.Context,
 	perpKeeper *keeper.Keeper,
-	pricesKeeper *priceskeeper.Keeper,
-	assetsKeeper *assetskeeper.Keeper,
 	perpetuals []types.Perpetual,
-	markets []pricestypes.MarketParamPrice,
 ) {
-	CreateTestPriceMarkets(t, ctx, pricesKeeper, markets)
-
-	err := CreateTDaiAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
-	err = CreateBTCAsset(ctx, assetsKeeper)
-	require.NoError(t, err)
-
 	// Create liquidity tiers.
 	CreateTestCollateralPools(t, ctx, perpKeeper)
 	CreateTestLiquidityTiers(t, ctx, perpKeeper)

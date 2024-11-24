@@ -33,8 +33,7 @@ func TestCreatePerpetual(t *testing.T) {
 		perptest.WithMarketId(2),
 		perptest.WithCollateralPoolId(0),
 	)
-	testMarket0 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(0))
-	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
+
 	testMarket2 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(2))
 	testCases := map[string]struct {
 		setup              func(*testing.T, sdk.Context, *perpkeeper.Keeper, *priceskeeper.Keeper, *assetskeeper.Keeper)
@@ -44,16 +43,7 @@ func TestCreatePerpetual(t *testing.T) {
 	}{
 		"Succeeds: create new perpetual (id = 1)": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
-				keepertest.CreateTestPriceMarkets(
-					t,
-					ctx,
-					pricesKeeper,
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
-				)
-				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
-				require.NoError(t, err)
-				err = keepertest.CreateBTCAsset(ctx, assetsKeeper)
-				require.NoError(t, err)
+				keepertest.CreateTestPriceMarkets(t, ctx, pricesKeeper, []pricestypes.MarketParamPrice{testMarket2})
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
 				keepertest.CreateTestCollateralPools(t, ctx, perpKeeper)
 			},
@@ -65,14 +55,11 @@ func TestCreatePerpetual(t *testing.T) {
 		},
 		"Succeeds: create new perpetual (id = 2), with existing perpetual (id = 1) which use same market id": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
-				keepertest.CreateTestPricesAndPerpetualMarkets(
+				keepertest.CreatePerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
-					pricesKeeper,
-					assetsKeeper,
 					[]types.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgCreatePerpetual{
@@ -89,16 +76,9 @@ func TestCreatePerpetual(t *testing.T) {
 				pricesKeeper *priceskeeper.Keeper,
 				assetsKeeper *assetskeeper.Keeper,
 			) {
-				keepertest.CreateTestPriceMarkets(
-					t,
-					ctx,
-					pricesKeeper,
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket2},
-				)
-				err := keepertest.CreateTDaiAsset(ctx, assetsKeeper)
-				require.NoError(t, err)
-				err = keepertest.CreateBTCAsset(ctx, assetsKeeper)
-				require.NoError(t, err)
+
+				keepertest.CreateTestPriceMarkets(t, ctx, pricesKeeper, []pricestypes.MarketParamPrice{testMarket2})
+
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
 				keepertest.CreateTestCollateralPools(t, ctx, perpKeeper)
 			},
@@ -110,14 +90,11 @@ func TestCreatePerpetual(t *testing.T) {
 		},
 		"Failure: new perpetual id already exists in state": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
-				keepertest.CreateTestPricesAndPerpetualMarkets(
+				keepertest.CreatePerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
-					pricesKeeper,
-					assetsKeeper,
 					[]types.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgCreatePerpetual{
@@ -130,24 +107,33 @@ func TestCreatePerpetual(t *testing.T) {
 		"Failure: refers to non-existing market id": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
+				keepertest.CreateTestCollateralPools(t, ctx, perpKeeper)
+			},
+			msg: &types.MsgCreatePerpetual{
+				Authority: lib.GovModuleAddress.String(),
+				Params:    testPerp3.Params,
+			},
+			expectedPerpetuals: nil,
+			expectedErr:        "Market price does not exist",
+		},
+		"Failure: refers to non-existing collateral pool": {
+			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
+				keepertest.CreateTestLiquidityTiers(t, ctx, perpKeeper)
 			},
 			msg: &types.MsgCreatePerpetual{
 				Authority: lib.GovModuleAddress.String(),
 				Params:    testPerp1.Params,
 			},
 			expectedPerpetuals: nil,
-			expectedErr:        "Market price does not exist",
+			expectedErr:        "collateral pool does not exist",
 		},
 		"Failure: invalid authority": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
-				keepertest.CreateTestPricesAndPerpetualMarkets(
+				keepertest.CreatePerpetualMarkets(
 					t,
 					ctx,
 					perpKeeper,
-					pricesKeeper,
-					assetsKeeper,
 					[]types.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 			},
 			msg: &types.MsgCreatePerpetual{

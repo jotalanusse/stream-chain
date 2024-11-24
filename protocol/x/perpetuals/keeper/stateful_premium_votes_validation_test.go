@@ -176,7 +176,6 @@ func TestPerformStatefulPremiumVotesValidation(t *testing.T) {
 				)
 			}
 
-			keepertest.CreateBaseAssetsAndMarkets(t, pc.Ctx, pc.PricesKeeper, pc.AssetsKeeper)
 			_ = keepertest.CreateCollateralPoolsAndLiquidityTiersAndNPerpetuals(t, pc.Ctx, pc.PerpetualsKeeper, pc.PricesKeeper, tc.numPerpetuals)
 
 			// Run.

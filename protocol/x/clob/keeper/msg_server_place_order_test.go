@@ -131,7 +131,7 @@ func TestPlaceOrder_Error(t *testing.T) {
 			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
 			require.NoError(t, keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper))
 			// Create test markets.
-			keepertest.CreateTestMarkets(t, ks.Ctx, ks.PricesKeeper)
+			keepertest.CreateNonDefaultTestMarkets(t, ks.Ctx, ks.PricesKeeper)
 
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)

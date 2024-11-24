@@ -11,12 +11,10 @@ import (
 	clobtest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/clob"
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
 	perptest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/perpetuals"
-	pricestest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/prices"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/memclob"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
-	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -30,8 +28,6 @@ func TestCreateClobPair(t *testing.T) {
 		perptest.WithId(1),
 		perptest.WithMarketId(1),
 	)
-	testMarket0 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(0))
-	testMarket1 := *pricestest.GenerateMarketParamPrice(pricestest.WithId(1))
 	testCases := map[string]struct {
 		setup             func(t *testing.T, ks keepertest.ClobKeepersTestContext, manager *mocks.IndexerEventManager)
 		msg               *types.MsgCreateClobPair
@@ -40,14 +36,11 @@ func TestCreateClobPair(t *testing.T) {
 	}{
 		"Succeeds: create new clob pair": {
 			setup: func(t *testing.T, ks keepertest.ClobKeepersTestContext, mockIndexerEventManager *mocks.IndexerEventManager) {
-				keepertest.CreateTestPricesAndPerpetualMarkets(
+				keepertest.CreatePerpetualMarkets(
 					t,
 					ks.Ctx,
 					ks.PerpetualsKeeper,
-					ks.PricesKeeper,
-					ks.AssetsKeeper,
 					[]perptypes.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 				mockIndexerEventManager.On("AddTxnEvent",
 					ks.Ctx,
@@ -78,14 +71,11 @@ func TestCreateClobPair(t *testing.T) {
 		},
 		"Failure: clob pair already exists": {
 			setup: func(t *testing.T, ks keepertest.ClobKeepersTestContext, mockIndexerEventManager *mocks.IndexerEventManager) {
-				keepertest.CreateTestPricesAndPerpetualMarkets(
+				keepertest.CreatePerpetualMarkets(
 					t,
 					ks.Ctx,
 					ks.PerpetualsKeeper,
-					ks.PricesKeeper,
-					ks.AssetsKeeper,
 					[]perptypes.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 				// set up mock indexer event manager to accept anything.
 				mockIndexerEventManager.On("AddTxnEvent",
@@ -106,14 +96,11 @@ func TestCreateClobPair(t *testing.T) {
 		},
 		"Failure: perpetual already associated with existing clob pair": {
 			setup: func(t *testing.T, ks keepertest.ClobKeepersTestContext, mockIndexerEventManager *mocks.IndexerEventManager) {
-				keepertest.CreateTestPricesAndPerpetualMarkets(
+				keepertest.CreatePerpetualMarkets(
 					t,
 					ks.Ctx,
 					ks.PerpetualsKeeper,
-					ks.PricesKeeper,
-					ks.AssetsKeeper,
 					[]perptypes.Perpetual{testPerp1},
-					[]pricestypes.MarketParamPrice{testMarket0, testMarket1},
 				)
 				// set up mock indexer event manager to accept anything.
 				mockIndexerEventManager.On("AddTxnEvent",
