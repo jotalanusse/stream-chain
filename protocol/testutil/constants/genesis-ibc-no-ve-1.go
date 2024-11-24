@@ -45,6 +45,17 @@ const GenesisStateNoVeIBC1 = `{
           "symbol": "TDAI",
           "asset_yield_index": "0/1",
           "max_slippage_ppm": 0
+        },
+        {
+          "atomic_resolution": -8,
+          "denom": "btc-denom",
+          "denom_exponent": "-8",
+          "has_market": true,
+          "id": 1,
+          "market_id": 0,
+          "symbol": "BTC",
+          "asset_yield_index": "1/1",
+          "max_slippage_ppm": 0
         }
       ]
     },

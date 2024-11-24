@@ -596,7 +596,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					MinNumVotesPerSample:      15,
 				},
 			},
-			expectedError: errors.New("multi collateral is empty"),
+			expectedError: errors.New("collateral asssets is empty"),
 		},
 		"invalid: multi collateral does not contain quote asset": {
 			genState: &types.GenesisState{
@@ -633,7 +633,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					MinNumVotesPerSample:      15,
 				},
 			},
-			expectedError: errors.New("multi collateral does not contain quote asset"),
+			expectedError: errors.New("multi collateral asset does not contain quote asset"),
 		},
 	}
 

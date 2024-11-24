@@ -102,7 +102,7 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			defaultFundingPpm,
 			liquidityTier,
 			0,
-			1,
+			0,
 		)
 		require.NoError(t, err)
 
@@ -481,25 +481,6 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 		*perptest.GeneratePerpetual(perptest.WithId(20)),
 		*perptest.GeneratePerpetual(perptest.WithId(1)),
 	}
-
-	_, err := pc.PricesKeeper.CreateMarket(
-		pc.Ctx,
-		pricestypes.MarketParam{
-			Id:                 0,
-			Pair:               "marketName",
-			Exponent:           -10,
-			MinExchanges:       uint32(1),
-			MinPriceChangePpm:  uint32(50),
-			ExchangeConfigJson: "{}",
-		},
-		pricestypes.MarketPrice{
-			Id:        0,
-			Exponent:  -10,
-			SpotPrice: 1_000, // leave this as a placeholder b/c we cannot set the price to 0
-			PnlPrice:  1_000, // leave this as a placeholder b/c we cannot set the price to 0
-		},
-	)
-	require.NoError(t, err)
 
 	for perp := range perps {
 		_, err := pc.PerpetualsKeeper.CreatePerpetual(
