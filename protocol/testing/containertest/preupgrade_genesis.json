@@ -135,6 +135,33 @@
             ]
           },
           {
+            "address": "klyra1qt3f40penefk5eyemv8s2zznpzpmklkffr4czn",
+            "coins": [
+              {
+                "denom": "utdai",
+                "amount": "1300000000000000000"
+              }
+            ]
+          },
+          {
+            "address": "klyra1xs5088vrxmawlyuesrn73vye988ltm6mcxecpd",
+            "coins": [
+              {
+                "denom": "utdai",
+                "amount": "1300000000000000000"
+              }
+            ]
+          },
+          {
+            "address": "klyra1daqtvgfdcsgne505p4cltcwq5cfum94a7par8n",
+            "coins": [
+              {
+                "denom": "btc-denom",
+                "amount": "100000000000000000"
+              }
+            ]
+          },
+          {
             "address": "klyra1wau5mja7j7zdavtfq9lu7ejef05hm6ffxz2hcc",
             "coins": [
               {
