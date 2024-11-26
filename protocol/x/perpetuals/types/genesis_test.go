@@ -23,19 +23,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -72,19 +72,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -129,19 +129,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -186,19 +186,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -235,19 +235,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -284,19 +284,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -333,19 +333,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -382,19 +382,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -431,19 +431,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -480,19 +480,19 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
 					{
 						CollateralPoolId:                        1,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            1,
 					},
 					{
 						CollateralPoolId:                        2,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 						QuoteAssetId:                            0,
 					},
@@ -566,7 +566,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{}},
 						QuoteAssetId:                            0,
 					},
@@ -603,7 +603,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				CollateralPools: []types.CollateralPool{
 					{
 						CollateralPoolId:                        0,
-						MaxCumulativeInsuranceFundDeltaPerBlock: 100000,
+						MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 						MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 						QuoteAssetId:                            0,
 					},

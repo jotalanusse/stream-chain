@@ -42,7 +42,7 @@ func WithQuoteAssetId(quoteAssetId uint32) CpModifierOption {
 func GenerateCollateralPool(optionalModifications ...CpModifierOption) *perptypes.CollateralPool {
 	cp := &perptypes.CollateralPool{
 		CollateralPoolId:                        0,
-		MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 		MultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{0},
 		},

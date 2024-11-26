@@ -75,19 +75,19 @@ func networkWithLiquidityTierAndPerpetualObjects(
 	collateralPools := []types.CollateralPool{
 		{
 			CollateralPoolId:                        0,
-			MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			QuoteAssetId:                            uint32(0),
 		},
 		{
 			CollateralPoolId:                        1,
-			MaxCumulativeInsuranceFundDeltaPerBlock: 2000000,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 2_000_000_000_000,
 			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 			QuoteAssetId:                            uint32(1),
 		},
 		{
 			CollateralPoolId:                        2,
-			MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+			MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 			MultiCollateralAssets:                   &types.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 			QuoteAssetId:                            0,
 		},

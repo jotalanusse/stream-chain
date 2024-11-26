@@ -28,7 +28,7 @@ func DefaultGenesis() *GenesisState {
 		CollateralPools: []CollateralPool{
 			{
 				CollateralPoolId:                        0,
-				MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 				MultiCollateralAssets: &MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},
@@ -36,7 +36,7 @@ func DefaultGenesis() *GenesisState {
 			},
 			{
 				CollateralPoolId:                        1,
-				MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 				MultiCollateralAssets: &MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{1},
 				},
@@ -44,7 +44,7 @@ func DefaultGenesis() *GenesisState {
 			},
 			{
 				CollateralPoolId:                        2,
-				MaxCumulativeInsuranceFundDeltaPerBlock: 1000000,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 				MultiCollateralAssets: &MultiCollateralAssetsArray{
 					MultiCollateralAssets: []uint32{0},
 				},

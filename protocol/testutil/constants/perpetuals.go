@@ -105,7 +105,7 @@ var LiquidityTiers = []perptypes.LiquidityTier{
 var CollateralPools = []perptypes.CollateralPool{
 	{
 		CollateralPoolId:                        0,
-		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 		MultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{0},
 		},
@@ -113,7 +113,7 @@ var CollateralPools = []perptypes.CollateralPool{
 	},
 	{
 		CollateralPoolId:                        1,
-		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 		MultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{1},
 		},
@@ -121,7 +121,7 @@ var CollateralPools = []perptypes.CollateralPool{
 	},
 	{
 		CollateralPoolId:                        2,
-		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 		MultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
 			MultiCollateralAssets: []uint32{0},
 		},
@@ -619,19 +619,19 @@ var (
 		CollateralPools: []perptypes.CollateralPool{
 			{
 				CollateralPoolId:                        0,
-				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 				MultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 				QuoteAssetId:                            0,
 			},
 			{
 				CollateralPoolId:                        1,
-				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 				MultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{1}},
 				QuoteAssetId:                            1,
 			},
 			{
 				CollateralPoolId:                        2,
-				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000,
+				MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
 				MultiCollateralAssets:                   &perptypes.MultiCollateralAssetsArray{MultiCollateralAssets: []uint32{0}},
 				QuoteAssetId:                            0,
 			},

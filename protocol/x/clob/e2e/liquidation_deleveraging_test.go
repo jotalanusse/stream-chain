@@ -61,10 +61,10 @@ func TestLiquidationConfig(t *testing.T) {
 				&constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50500_GTB10,  // Order at $50,500
 			},
 			liquidationConfig: clobtypes.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Max_Smmr,
 			},
 
 			liquidityTiers: constants.LiquidityTiers,
@@ -131,10 +131,10 @@ func TestLiquidationConfig(t *testing.T) {
 				&constants.Order_Carl_Num0_Id0_Clob0_Buy1BTC_Price49500_GTB10,  // Order at $49,500
 			},
 			liquidationConfig: clobtypes.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr,
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Max_Smmr,
 			},
 
 			liquidityTiers: constants.LiquidityTiers,
@@ -218,7 +218,16 @@ func TestLiquidationConfig(t *testing.T) {
 						genesisState.Params = constants.PerpetualsGenesisParams
 						genesisState.LiquidityTiers = tc.liquidityTiers
 						genesisState.Perpetuals = tc.perpetuals
-						genesisState.CollateralPools = constants.CollateralPools
+						genesisState.CollateralPools = []perptypes.CollateralPool{
+							{
+								CollateralPoolId:                        0,
+								MaxCumulativeInsuranceFundDeltaPerBlock: 500_000,
+								MultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
+									MultiCollateralAssets: []uint32{0},
+								},
+								QuoteAssetId: 0,
+							},
+						}
 					},
 				)
 				testapp.UpdateGenesisDocWithAppStateForModule(
@@ -717,10 +726,10 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 				&constants.Order_Dave_Num0_Id1_Clob0_Sell025BTC_Price50500_GTB11,
 			},
 			liquidationConfig: clobtypes.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr,
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Max_Smmr,
 			},
 
 			liquidityTiers: constants.LiquidityTiers,
