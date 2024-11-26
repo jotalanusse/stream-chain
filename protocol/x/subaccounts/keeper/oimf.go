@@ -58,10 +58,10 @@ func GetDeltaOpenInterestFromUpdates(
 		return nil
 	}
 
-	if len(settledUpdates) < 2 {
+	if len(settledUpdates) < 2 || len(settledUpdates) > 4 {
 		panic(
 			fmt.Sprintf(
-				types.ErrMatchUpdatesMustHaveTwoOrMoreUpdates,
+				types.ErrMatchUpdatesMustHaveTwoToFourUpdates,
 				settledUpdates,
 			),
 		)

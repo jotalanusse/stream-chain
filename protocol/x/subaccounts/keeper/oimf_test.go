@@ -50,7 +50,7 @@ func TestGetDeltaOpenInterestFromUpdates(t *testing.T) {
 					},
 				},
 			},
-			panicErr: types.ErrMatchUpdatesMustHaveTwoOrMoreUpdates,
+			panicErr: types.ErrMatchUpdatesMustHaveTwoToFourUpdates,
 		},
 		"Invalid: one of two updates contains no perp update": {
 			updateType: types.Match,
@@ -458,7 +458,7 @@ func TestGetDeltaOpenInterestFromUpdates(t *testing.T) {
 				BaseQuantums: big.NewInt(500),
 			},
 		},
-		"Valid: three routers": {
+		"Invalid: three routers": {
 			updateType: types.Match,
 			settledUpdates: []keeper.SettledUpdate{
 				{
@@ -517,10 +517,7 @@ func TestGetDeltaOpenInterestFromUpdates(t *testing.T) {
 					},
 				},
 			},
-			expectedVal: &perptypes.OpenInterestDelta{
-				PerpetualId:  1,
-				BaseQuantums: big.NewInt(500),
-			},
+			panicErr: types.ErrMatchUpdatesMustHaveTwoToFourUpdates,
 		},
 	}
 
