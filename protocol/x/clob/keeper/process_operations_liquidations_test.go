@@ -198,14 +198,14 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(10_000_000)),
 				).Return(nil)
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $250 to insurance fund for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000_000)),
@@ -283,7 +283,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(10_100_000)),
 				).Return(nil)
@@ -303,7 +303,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					// Insurance fund covers $1 loss for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(1_000_000)),
 				).Return(nil).Once()
@@ -376,7 +376,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(2_500_000)),
 				).Return(nil)
@@ -389,7 +389,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $62.5 to insurance fund for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(62_500_000)),
@@ -481,7 +481,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(2_525_000)),
 				).Return(nil)
@@ -501,7 +501,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					// Insurance fund covers $0.25 loss for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000)),
 				).Return(nil).Twice()
@@ -593,7 +593,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.Anything,
 				).Return(nil)
@@ -612,7 +612,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.75 for liquidating 0.75 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(750_000)),
@@ -621,7 +621,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					"SendCoins",
 					mock.Anything,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					// Insurance fund covers $0.25 loss for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000)),
 				).Return(nil).Once()
@@ -704,7 +704,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.Anything,
 				).Return(nil)
@@ -723,7 +723,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.378735 (capped by InsuranceFundFeePpm)
 					// for liquidating 0.75 BTC.
@@ -732,7 +732,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.121265.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(121_265)),
@@ -825,7 +825,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(5_000_000)),
 				).Return(nil)
@@ -838,7 +838,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Subaccount pays $125 to insurance fund for liquidating 0.5 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(125_000_000)),
@@ -945,7 +945,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(1)),
 				).Return(nil)
@@ -958,7 +958,7 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 				bk.On(
 					"SendCoins",
 					mock.Anything,
-					satypes.ModuleAddress,
+					satypes.CollateralPoolZeroAddress,
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(25)),
 				).Return(nil)

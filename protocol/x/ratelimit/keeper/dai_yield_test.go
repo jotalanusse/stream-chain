@@ -573,6 +573,9 @@ func TestUpdateMintStateOnSDaiConversionRateUpdate(t *testing.T) {
 
 			prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
 			assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
+
+			testkeeper.CreateNonDefaultTestMarkets(t, ctx, pricesKeeper)
+
 			testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			testkeeper.CreateTestPerpetuals(t, ctx, perpetualsKeeper)
@@ -625,6 +628,8 @@ func TestClaimInsuranceFundYields(t *testing.T) {
 	// Setup
 	prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
 	assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
+
+	testkeeper.CreateNonDefaultTestMarkets(t, ctx, pricesKeeper)
 
 	testkeeper.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 	testkeeper.CreateTestCollateralPools(t, ctx, perpetualsKeeper)

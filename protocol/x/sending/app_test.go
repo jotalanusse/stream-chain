@@ -988,14 +988,6 @@ func TestWithdrawalGating_ChainOutage(t *testing.T) {
 				genesis = testapp.DefaultGenesis()
 				testapp.UpdateGenesisDocWithAppStateForModule(
 					&genesis,
-					func(genesisState *assetstypes.GenesisState) {
-						genesisState.Assets = []assetstypes.Asset{
-							*constants.TDai,
-						}
-					},
-				)
-				testapp.UpdateGenesisDocWithAppStateForModule(
-					&genesis,
 					func(genesisState *prices.GenesisState) {
 						// Set oracle prices in the genesis.
 						pricesGenesis := constants.TestPricesGenesisState

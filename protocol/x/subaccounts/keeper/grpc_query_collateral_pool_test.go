@@ -32,7 +32,7 @@ func TestQueryCollateralPoolAddress(t *testing.T) {
 				PerpetualId: constants.BtcUsd_NoMarginRequirement.Params.Id,
 			},
 			response: &types.QueryCollateralPoolAddressResponse{
-				CollateralPoolAddress: types.ModuleAddress.String(),
+				CollateralPoolAddress: types.CollateralPoolZeroAddress.String(),
 			},
 		},
 		"Isolated perpetual": {
@@ -40,7 +40,7 @@ func TestQueryCollateralPoolAddress(t *testing.T) {
 				PerpetualId: constants.IsoUsd_IsolatedMarket.Params.Id,
 			},
 			response: &types.QueryCollateralPoolAddressResponse{
-				CollateralPoolAddress: constants.IsoCollateralPoolAddress.String(),
+				CollateralPoolAddress: types.CollateralPoolTwoAddress.String(),
 			},
 		},
 		"Perpetual not found": {
@@ -57,6 +57,7 @@ func TestQueryCollateralPoolAddress(t *testing.T) {
 			ctx, keeper, pricesKeeper, perpetualsKeeper, _, _, assetsKeeper, _, _, _ := keepertest.SubaccountsKeepers(t, true)
 			prices.InitGenesis(ctx, *pricesKeeper, constants.Prices_DefaultGenesisState)
 			assets.InitGenesis(ctx, *assetsKeeper, constants.Assets_DefaultGenesisState)
+			keepertest.CreateNonDefaultTestMarkets(t, ctx, pricesKeeper)
 			keepertest.CreateTestLiquidityTiers(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, perpetualsKeeper)
 			keepertest.CreateTestPerpetuals(t, ctx, perpetualsKeeper)

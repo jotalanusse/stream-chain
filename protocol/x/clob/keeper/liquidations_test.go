@@ -259,7 +259,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 			mockBankKeeper.On(
 				"SendCoins",
 				mock.Anything,
-				satypes.ModuleAddress,
+				satypes.CollateralPoolZeroAddress,
 				authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 				mock.Anything,
 			).Return(nil)
@@ -275,7 +275,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 				"SendCoins",
 				mock.Anything,
 				authtypes.NewModuleAddress(authtypes.FeeCollectorName),
-				satypes.ModuleAddress,
+				satypes.CollateralPoolZeroAddress,
 				mock.Anything,
 			).Return(sdkerrors.ErrInsufficientFunds)
 			mockBankKeeper.On(
@@ -5323,7 +5323,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 			mockBankKeeper.On(
 				"SendCoins",
 				mock.Anything,
-				satypes.ModuleAddress,
+				satypes.CollateralPoolZeroAddress,
 				authtypes.NewModuleAddress(authtypes.FeeCollectorName),
 				mock.Anything,
 			).Return(nil)
@@ -5339,7 +5339,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 				"SendCoins",
 				mock.Anything,
 				authtypes.NewModuleAddress(authtypes.FeeCollectorName),
-				satypes.ModuleAddress,
+				satypes.CollateralPoolZeroAddress,
 				mock.Anything,
 			).Return(sdkerrors.ErrInsufficientFunds)
 			mockBankKeeper.On(
