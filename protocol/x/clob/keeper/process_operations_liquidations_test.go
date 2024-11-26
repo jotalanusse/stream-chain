@@ -741,11 +741,10 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 			liquidationConfig: &types.LiquidationsConfig{
 				// Cap the max liquidation fee ppm so that the bankruptcy price changes
 				// in the insurance fund delta calculation.
-				InsuranceFundFeePpm:             10,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 10,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			rawOperations: []types.OperationRaw{
 				clobtest.NewShortTermOrderPlacementOperationRaw(
@@ -2202,11 +2201,10 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				),
 			},
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(999_999),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			insuranceFundBalance: math.MaxUint64,
 			expectedError:        types.ErrLiquidationExceedsMaxInsuranceLost,
@@ -2253,11 +2251,10 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				),
 			},
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(499_999),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			insuranceFundBalance: math.MaxUint64,
 			expectedError:        types.ErrLiquidationExceedsMaxInsuranceLost,
@@ -2325,11 +2322,10 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 			},
 			insuranceFundBalance: 10_000_000,
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(300_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			expectedError: types.ErrLiquidationExceedsMaxInsuranceLost,
 		},
@@ -2454,11 +2450,10 @@ func TestValidateProposerMatches_InsuranceFund(t *testing.T) {
 			},
 			insuranceFundBalance: 2_000_000, // Insurance fund has $2
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			expectedError: nil,
 			expectedProcessProposerMatchesEvents: types.ProcessProposerMatchesEvents{

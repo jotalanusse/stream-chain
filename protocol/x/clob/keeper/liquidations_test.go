@@ -610,11 +610,10 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			},
 
 			liquidationConfig: types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(50_000_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			placedMatchableOrders: []types.MatchableOrder{
 				&constants.Order_Dave_Num0_Id4_Clob1_Sell1ETH_Price3030,
@@ -665,11 +664,10 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			},
 
 			liquidationConfig: types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(500_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			placedMatchableOrders: []types.MatchableOrder{
 				&constants.Order_Dave_Num0_Id2_Clob0_Sell025BTC_Price50500_GTB12,
@@ -867,11 +865,10 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			},
 
 			liquidationConfig: types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			placedMatchableOrders: []types.MatchableOrder{
 				&constants.Order_Dave_Num0_Id2_Clob0_Sell025BTC_Price50500_GTB12,
@@ -963,11 +960,10 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			},
 
 			liquidationConfig: types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 			placedMatchableOrders: []types.MatchableOrder{
 				&constants.Order_Carl_Num0_Id3_Clob0_Buy025BTC_Price49500,
@@ -1325,7 +1321,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           2_000_000,
 					SpreadToMaintenanceMarginRatioPpm: 100_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 			// $49,998 = (49,998 / 100) subticks * 10^(QuoteCurrencyAtomicResolution - BaseCurrencyAtomicResolution).
 			// This means we should close the 0.1 BTC long with a $4,999.8 notional sell order.
@@ -1354,7 +1349,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           lib.OneMillion,
 					SpreadToMaintenanceMarginRatioPpm: 200_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 			// $49,998 = (49,998 / 100) subticks * 10^(QuoteCurrencyAtomicResolution - BaseCurrencyAtomicResolution).
 			// This means we should close the 0.1 BTC long with a $4,999.8 notional sell order.
@@ -1401,7 +1395,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           2_000_000,
 					SpreadToMaintenanceMarginRatioPpm: 100_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 
 			// $50,002 = (50,002 / 100) subticks * 10^(QuoteCurrencyAtomicResolution - BaseCurrencyAtomicResolution).
@@ -1431,7 +1424,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           lib.OneMillion,
 					SpreadToMaintenanceMarginRatioPpm: 200_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 
 			// $50,002 = (50,002 / 100) subticks * 10^(QuoteCurrencyAtomicResolution - BaseCurrencyAtomicResolution).
@@ -1573,7 +1565,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           math.MaxUint32,
 					SpreadToMaintenanceMarginRatioPpm: 100_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 
 			// $49,500 = (495 / 1) subticks * 10^(QuoteCurrencyAtomicResolution - BaseCurrencyAtomicResolution).
@@ -1602,7 +1593,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           lib.OneMillion,
 					SpreadToMaintenanceMarginRatioPpm: 1,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 
 			expectedFillablePrice: big.NewRat(4_999_999_999, 10_000_000),
@@ -1629,7 +1619,6 @@ func TestGetFillablePrice(t *testing.T) {
 					BankruptcyAdjustmentPpm:           lib.OneMillion,
 					SpreadToMaintenanceMarginRatioPpm: lib.OneMillion,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 
 			// $49,990 = (49990 / 100) subticks * 10^(QuoteCurrencyAtomicResolution - BaseCurrencyAtomicResolution).
@@ -3421,11 +3410,10 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 				&constants.PerpetualPosition_OneTenthBTCLong,
 			},
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             25_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 25_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 
 			// Bankruptcy price in quote quantums is 5,100,000,000 quote quantums.
@@ -3453,11 +3441,10 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 				&constants.PerpetualPosition_OneTenthBTCLong,
 			},
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             1_000_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 1_000_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 
 			// Bankruptcy price in quote quantums is 5,100,000,000 quote quantums.
@@ -3509,11 +3496,10 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 				&constants.PerpetualPosition_OneTenthBTCShort,
 			},
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             25_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 25_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 
 			// Bankruptcy price in quote quantums is -4,900,000,000 quote quantums.
@@ -3541,11 +3527,10 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 				&constants.PerpetualPosition_OneTenthBTCShort,
 			},
 			liquidationConfig: &types.LiquidationsConfig{
-				InsuranceFundFeePpm:             1_000_000,
-				ValidatorFeePpm:                 200_000,
-				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 1_000_000,
+				ValidatorFeePpm:     200_000,
+				LiquidityFeePpm:     800_000,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 
 			// Bankruptcy price in quote quantums is -4,900,000,000 quote quantums.
@@ -4046,11 +4031,10 @@ func TestGetBestPerpetualPositionToLiquidate(t *testing.T) {
 				constants.BtcUsd_20PercentInitial_10PercentMaintenance,
 			},
 			liquidationConfig: types.LiquidationsConfig{
-				InsuranceFundFeePpm:             5_000,
-				ValidatorFeePpm:                 0,
-				LiquidityFeePpm:                 0,
-				FillablePriceConfig:             constants.FillablePriceConfig_Default,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
+				InsuranceFundFeePpm: 5_000,
+				ValidatorFeePpm:     0,
+				LiquidityFeePpm:     0,
+				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
 
 			clobPairs: []types.ClobPair{
@@ -5730,7 +5714,6 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					BankruptcyAdjustmentPpm:           10_000_000,
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000),
 			},
 			insuranceFundDelta: big.NewInt(-500_000),
 			perpetualId:        0,
@@ -5746,7 +5729,6 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					BankruptcyAdjustmentPpm:           10_000_000,
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000),
 			},
 			insuranceFundDelta: big.NewInt(-1_100_000),
 			perpetualId:        0,
@@ -5762,7 +5744,6 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					BankruptcyAdjustmentPpm:           10_000_000,
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000),
 			},
 			insuranceFundDelta: big.NewInt(-1_000_000),
 			perpetualId:        0,
@@ -5778,7 +5759,6 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					BankruptcyAdjustmentPpm:           10_000_000,
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000),
 			},
 			insuranceFundDelta: big.NewInt(2_000_000),
 			perpetualId:        0,

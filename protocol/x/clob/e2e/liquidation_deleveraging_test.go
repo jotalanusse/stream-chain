@@ -64,8 +64,7 @@ func TestLiquidationConfig(t *testing.T) {
 				InsuranceFundFeePpm:             5_000,
 				ValidatorFeePpm:                 200_000,
 				LiquidityFeePpm:                 800_000,
-				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr,
-				MaxCumulativeInsuranceFundDelta: uint64(500_000),
+				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr
 			},
 
 			liquidityTiers: constants.LiquidityTiers,
@@ -136,7 +135,6 @@ func TestLiquidationConfig(t *testing.T) {
 				ValidatorFeePpm:                 200_000,
 				LiquidityFeePpm:                 800_000,
 				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr,
-				MaxCumulativeInsuranceFundDelta: uint64(500_000),
 			},
 
 			liquidityTiers: constants.LiquidityTiers,
@@ -723,7 +721,6 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 				ValidatorFeePpm:                 200_000,
 				LiquidityFeePpm:                 800_000,
 				FillablePriceConfig:             constants.FillablePriceConfig_Max_Smmr,
-				MaxCumulativeInsuranceFundDelta: uint64(1_000_000_000_000),
 			},
 
 			liquidityTiers: constants.LiquidityTiers,

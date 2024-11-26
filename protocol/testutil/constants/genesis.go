@@ -357,8 +357,7 @@ const GenesisState = `{
         },
         "insurance_fund_fee_ppm": 5000,
         "validator_fee_ppm": 200000,
-        "liquidity_fee_ppm": 800000,
-        "max_cumulative_insurance_fund_delta": 1000000000000
+        "liquidity_fee_ppm": 800000
       }
     },
     "crisis": {
