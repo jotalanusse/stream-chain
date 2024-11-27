@@ -1,6 +1,7 @@
 package clob_test
 
 import (
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -282,6 +283,9 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 			require.NoError(t, err)
 			require.Equal(t, tc.expectedWithdrawalsGated, exists)
 			require.Equal(t, tc.expectedNegativeTncSubaccountSeenAtBlock, negativeTncSubaccountSeenAtBlock)
+
+			fmt.Println("negativeTncSubaccountSeenAtBlock", negativeTncSubaccountSeenAtBlock)
+			fmt.Println("XXXX")
 
 			// Verify withdrawals are blocked by trying to create a transfer message that withdraws funds.
 			var msg proto.Message
