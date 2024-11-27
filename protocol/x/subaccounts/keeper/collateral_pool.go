@@ -139,6 +139,11 @@ func GetCollateralPoolStateTransition(
 	// Subtract the delta from the updated subaccount's quote currency asset position size to get the size
 	// of the quote currency asset position.
 	// NOTE Solal: can we ever has the subaccount with non 0 asset positions
+
+	if len(updatedSubaccount.AssetPositions) == 0 {
+		return nil, types.ErrFailedToUpdateSubaccounts
+	}
+
 	assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
 	assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
 
