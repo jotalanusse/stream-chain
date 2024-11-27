@@ -127,6 +127,14 @@ var CollateralPools = []perptypes.CollateralPool{
 		},
 		QuoteAssetId: 0,
 	},
+	{
+		CollateralPoolId:                        3,
+		MaxCumulativeInsuranceFundDeltaPerBlock: 1_000_000_000_000,
+		MultiCollateralAssets: &perptypes.MultiCollateralAssetsArray{
+			MultiCollateralAssets: []uint32{0},
+		},
+		QuoteAssetId: 0,
+	},
 }
 
 // Perpetual OI setup in tests
@@ -534,7 +542,7 @@ var (
 			DefaultFundingPpm: int32(0),
 			LiquidityTier:     uint32(3),
 			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(2),
+			CollateralPoolId:  uint32(3),
 		},
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),

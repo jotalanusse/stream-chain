@@ -746,6 +746,7 @@ func (k Keeper) GetBankruptcyPriceInQuoteQuantums(
 	err error,
 ) {
 	tncBig, tmmrBig, pnnvBig, pnnvadBig, pmmrBig, pmmradBig, err := k.getBankruptcyPriceCalculationInputs(ctx, subaccountId, perpetualId, deltaQuantums)
+
 	if err != nil {
 		return nil, err
 	}

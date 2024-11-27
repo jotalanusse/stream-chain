@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"fmt"
 	"math"
 	"math/big"
 	"testing"
@@ -785,6 +786,14 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 				constants.TDai.Denom,
 			).Return(sdk.NewCoin(constants.TDai.Denom, sdkmath.NewIntFromBigInt(new(big.Int).SetUint64(1_000_000_000_000))))
 
+			bankMock.On(
+				"SendCoins",
+				mock.Anything,
+				constants.CollateralPoolAddress0,
+				constants.DummyCollateralPoolAddress,
+				mock.Anything,
+			).Return(nil)
+
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
@@ -1298,6 +1307,14 @@ func TestProcessDeleveraging(t *testing.T) {
 				constants.TDai.Denom,
 			).Return(sdk.NewCoin(constants.TDai.Denom, sdkmath.NewIntFromBigInt(new(big.Int).SetUint64(1_000_000_000_000))))
 
+			bankMock.On(
+				"SendCoins",
+				mock.Anything,
+				constants.CollateralPoolAddress0,
+				constants.DummyCollateralPoolAddress,
+				mock.Anything,
+			).Return(nil)
+
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ks.Ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ks.Ctx, ks.PerpetualsKeeper)
@@ -1332,13 +1349,15 @@ func TestProcessDeleveraging(t *testing.T) {
 			ks.SubaccountsKeeper.SetSubaccount(ks.Ctx, tc.offsettingSubaccount)
 
 			bankruptcyPriceQuoteQuantums := new(big.Int)
+			var err error
 			if tc.expectedErr == nil {
-				bankruptcyPriceQuoteQuantums, err := ks.ClobKeeper.GetBankruptcyPriceInQuoteQuantums(
+				bankruptcyPriceQuoteQuantums, err = ks.ClobKeeper.GetBankruptcyPriceInQuoteQuantums(
 					ks.Ctx,
 					*tc.liquidatedSubaccount.GetId(),
 					uint32(0),
 					tc.deltaQuantums,
 				)
+
 				require.NoError(t, err)
 
 				mockIndexerEventManager.On("AddTxnEvent",
@@ -1358,7 +1377,8 @@ func TestProcessDeleveraging(t *testing.T) {
 					),
 				).Return()
 			}
-			err := ks.ClobKeeper.ProcessDeleveraging(
+
+			err = ks.ClobKeeper.ProcessDeleveraging(
 				ks.Ctx,
 				*tc.liquidatedSubaccount.GetId(),
 				*tc.offsettingSubaccount.GetId(),
@@ -1366,6 +1386,9 @@ func TestProcessDeleveraging(t *testing.T) {
 				tc.deltaQuantums,
 				bankruptcyPriceQuoteQuantums,
 			)
+
+			fmt.Println(err)
+
 			if tc.expectedErr == nil {
 				require.NoError(t, err)
 

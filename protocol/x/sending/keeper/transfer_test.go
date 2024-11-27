@@ -160,6 +160,8 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	}
 
 	err = ks.SendingKeeper.ProcessTransfer(ks.Ctx, tc.transfer)
+	fmt.Println("XXXXXXXX")
+	fmt.Println(err)
 	for subaccountId, expectedQuoteBalance := range tc.expectedSubaccountBalance {
 		subaccount := ks.SubaccountsKeeper.GetSubaccount(ks.Ctx, subaccountId)
 		require.Equal(t, expectedQuoteBalance, subaccount.GetTDaiPosition())
@@ -177,7 +179,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	}
 }
 
-func TestProcessTransfer(t *testing.T) {
+func TestProcessTransferWithinSameCollateralPool(t *testing.T) {
 	tests := map[string]TransferTestCase{
 		"Transfer succeeds": {
 			subaccounts: []satypes.Subaccount{
@@ -232,13 +234,13 @@ func TestProcessTransfer(t *testing.T) {
 		},
 		"Receiver is under collateralized (transfer still succeeds)": {
 			subaccounts: []satypes.Subaccount{
-				constants.Carl_Num0_599USD,
-				constants.Dave_Num0_1BTC_Long_50000USD,
+				constants.Carl_Num0_2BTC_Short,
+				constants.Dave_Num0_1BTC_Long_50000USD_Short,
 			},
 			transfer: &constants.Transfer_Carl_Num0_Dave_Num0_Quote_500,
 			expectedSubaccountBalance: map[satypes.SubaccountId]*big.Int{
-				constants.Carl_Num0: big.NewInt(99_000_000),
-				constants.Dave_Num0: big.NewInt(50_500_000_000),
+				constants.Carl_Num0: big.NewInt(499_500_000_000),
+				constants.Dave_Num0: big.NewInt(-49_500_000_000),
 			},
 		},
 	}

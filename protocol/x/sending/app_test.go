@@ -36,7 +36,7 @@ import (
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 )
 
-func TestMsgCreateTransfer(t *testing.T) {
+func TestMsgCreateTransferWithinDummyPool(t *testing.T) {
 	tests := map[string]struct {
 		/* Setup */
 		// Initial balance of sender subaccount.
@@ -99,14 +99,6 @@ func TestMsgCreateTransfer(t *testing.T) {
 			recipientSubaccountId: constants.Alice_Num1,
 			asset:                 *constants.TDai,
 			amount:                600_000_001,
-			deliverTxFails:        true,
-		},
-		"Failure: transfer a non-TDai asset with BTC not set as multi-collateral asset": {
-			senderInitialBalance:  100_000_000_000,
-			senderSubaccountId:    constants.Carl_BTC,
-			recipientSubaccountId: constants.Alice_Num1,
-			asset:                 *constants.BtcUsd, // non-TDai asset
-			amount:                7_000_000,
 			deliverTxFails:        true,
 		},
 		"Success: transfer a non-TDai asset": {
@@ -369,7 +361,7 @@ func TestMsgCreateTransfer(t *testing.T) {
 	}
 }
 
-func TestMsgDepositToSubaccount(t *testing.T) {
+func TestMsgDepositToSubaccountWithinDummyPoolAndAccounts(t *testing.T) {
 	tests := map[string]struct {
 		// Account address.
 		accountAccAddress sdktypes.AccAddress
@@ -419,13 +411,6 @@ func TestMsgDepositToSubaccount(t *testing.T) {
 			subaccountId:      constants.Carl_BTC,
 			quantums:          big.NewInt(7_000_000),
 			asset:             *constants.BtcUsd, // non-TDai asset
-		},
-		"Deposit a non-TDai asset and fail because of multi-collateral constraints": {
-			accountAccAddress: constants.CarlAccAddress,
-			subaccountId:      constants.Carl_BTC,
-			quantums:          big.NewInt(7_000_000),
-			asset:             *constants.BtcUsd, // non-TDai asset
-			deliverTxFails:    true,
 		},
 		"Deposit zero amount": {
 			accountAccAddress:       constants.AliceAccAddress,
@@ -619,7 +604,7 @@ func TestMsgDepositToSubaccount_NonExistentAccount(t *testing.T) {
 	testNonExistentSender(t, tApp, ctx, &msgDepositToSubaccount, randomAccount.PrivKey)
 }
 
-func TestMsgWithdrawFromSubaccount(t *testing.T) {
+func TestMsgWithdrawFromSubaccountWithinDummyPoolAndAccounts(t *testing.T) {
 	tests := map[string]struct {
 		// Account address.
 		accountAccAddress sdktypes.AccAddress
@@ -667,13 +652,6 @@ func TestMsgWithdrawFromSubaccount(t *testing.T) {
 			subaccountId:      constants.Carl_BTC,
 			quantums:          big.NewInt(7_000_000),
 			asset:             *constants.BtcUsd, // non-TDai asset
-		},
-		"Withdraw a non-TDai asset and multi collateral not supported": {
-			accountAccAddress: constants.AliceAccAddress,
-			subaccountId:      constants.Carl_BTC,
-			quantums:          big.NewInt(7_000_000),
-			asset:             *constants.BtcUsd, // non-TDai asset
-			deliverTxFails:    true,
 		},
 		"Withdraw zero amount": {
 			accountAccAddress:       constants.AliceAccAddress,

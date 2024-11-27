@@ -1,7 +1,6 @@
 package clob_test
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
 
@@ -59,7 +58,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 			subaccounts: []satypes.Subaccount{
 				constants.Carl_Num0_1BTC_Short_50000USD,
 				constants.Dave_Num0_1BTC_Long_49999USD_Short,
-				constants.Dave_Num1_10_000USD,
+				constants.Dave_Num1_10_000USD_With_BTC,
 			},
 			marketIdToOraclePriceOverride: map[uint32]uint64{
 				constants.BtcUsd.MarketId: 5_050_000_000, // $50,500 / BTC
@@ -104,7 +103,7 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 			subaccounts: []satypes.Subaccount{
 				constants.Carl_Num0_1BTC_Short_50000USD,
 				constants.Dave_Num0_1BTC_Long_50000USD_Short,
-				constants.Dave_Num1_025BTC_Long_50000USD,
+				constants.Dave_Num1_05BTC_Long_50000USD,
 			},
 
 			marketIdToOraclePriceOverride: map[uint32]uint64{
@@ -158,6 +157,13 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 						{
 							AssetId:  0,
 							Quantums: dtypes.NewInt(50_000_000_000 + 12_500_000_000),
+						},
+					},
+					PerpetualPositions: []*satypes.PerpetualPosition{
+						{
+							PerpetualId:  0,
+							Quantums:     dtypes.NewInt(25_000_000),
+							FundingIndex: dtypes.NewInt(0),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -283,9 +289,6 @@ func TestWithdrawalGating_NegativeTncSubaccount_BlocksThenUnblocks(t *testing.T)
 			require.NoError(t, err)
 			require.Equal(t, tc.expectedWithdrawalsGated, exists)
 			require.Equal(t, tc.expectedNegativeTncSubaccountSeenAtBlock, negativeTncSubaccountSeenAtBlock)
-
-			fmt.Println("negativeTncSubaccountSeenAtBlock", negativeTncSubaccountSeenAtBlock)
-			fmt.Println("XXXX")
 
 			// Verify withdrawals are blocked by trying to create a transfer message that withdraws funds.
 			var msg proto.Message
