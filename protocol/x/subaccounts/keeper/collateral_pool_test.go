@@ -36,7 +36,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			perpetuals:              nil,
 			expectedStateTransition: nil,
 		},
-		`If single non-isolated perpetual updates, nil state transition is returned`: {
+		`A perpetual position is closed`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id:                 &constants.Alice_Num0,
@@ -54,9 +54,15 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_100PercentMarginRequirement,
 			},
-			expectedStateTransition: nil,
+			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
+				SubaccountId: &constants.Alice_Num0,
+				PerpetualId:  uint32(0),
+				AssetIds:     []uint32{},
+				BigQuantums:  []*big.Int{},
+				Transition:   types.Closed,
+			},
 		},
-		`If multiple non-isolated perpetual updates, nil state transition is returned`: {
+		`Multiple perpetual positions are closed`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id:                 &constants.Alice_Num0,
@@ -79,9 +85,15 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				constants.BtcUsd_100PercentMarginRequirement,
 				constants.EthUsd_NoMarginRequirement,
 			},
-			expectedStateTransition: nil,
+			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
+				SubaccountId: &constants.Alice_Num0,
+				PerpetualId:  uint32(0),
+				AssetIds:     []uint32{},
+				BigQuantums:  []*big.Int{},
+				Transition:   types.Closed,
+			},
 		},
-		`If multiple non-isolated perpetual positions, nil state transition is returned`: {
+		`Subaccount already has perpetual positions`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id: &constants.Alice_Num0,
@@ -105,7 +117,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			},
 			expectedStateTransition: nil,
 		},
-		`If single isolated perpetual update, no perpetual position, state transition is returned for closed position`: {
+		`Position closed with asset updates`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id:                 &constants.Alice_Num0,
@@ -138,8 +150,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				Transition:   types.Closed,
 			},
 		},
-		`If single isolated perpetual update, existing perpetual position with same size, state transition is returned for
-		opened position`: {
+		`Position opened with asset updates`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id: &constants.Alice_Num0,
@@ -177,8 +188,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				Transition:   types.Opened,
 			},
 		},
-		`If single isolated perpetual update, existing perpetual position with different size, nil state transition
-		returned`: {
+		`Position size in increassed but already has perpetual position`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id: &constants.Alice_Num0,
