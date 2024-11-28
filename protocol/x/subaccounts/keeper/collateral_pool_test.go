@@ -333,7 +333,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			name, func(t *testing.T) {
 				stateTransition, err := keeper.GetCollateralPoolStateTransition(
 					tc.settledUpdateWithUpdatedSubaccount,
-					tc.perpetuals,
+					0,
 				)
 				if tc.expectedErr != nil {
 					require.Error(t, tc.expectedErr, err)

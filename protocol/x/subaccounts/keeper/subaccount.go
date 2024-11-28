@@ -435,7 +435,6 @@ func (k Keeper) UpdateSubaccounts(
 			// The subaccount in `settledUpdateWithUpdatedSubaccount` already has the perpetual updates
 			// and asset updates applied to it.
 			settledUpdateWithUpdatedSubaccount,
-			allPerps,
 		); err != nil {
 			return false, nil, err
 		}
