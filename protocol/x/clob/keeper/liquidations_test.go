@@ -485,6 +485,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 
 		// Parameters.
 		liquidationConfig     types.LiquidationsConfig
+		maxInsuranceFundLost  uint64
 		placedMatchableOrders []types.MatchableOrder
 		order                 types.LiquidationOrder
 
@@ -615,6 +616,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				LiquidityFeePpm:     0,
 				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
+			maxInsuranceFundLost: 50_000_000,
 			placedMatchableOrders: []types.MatchableOrder{
 				&constants.Order_Dave_Num0_Id4_Clob1_Sell1ETH_Price3030,
 				&constants.LiquidationOrder_Carl_Num0_Clob1_Buy1ETH_Price3030,
@@ -669,6 +671,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 				LiquidityFeePpm:     0,
 				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
+			maxInsuranceFundLost: 500_000,
 			placedMatchableOrders: []types.MatchableOrder{
 				&constants.Order_Dave_Num0_Id2_Clob0_Sell025BTC_Price50500_GTB12,
 				&constants.Order_Dave_Num0_Id0_Clob0_Sell1BTC_Price50500_GTB10,
@@ -1097,6 +1100,16 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
+
+			if tc.maxInsuranceFundLost != 0 {
+				ks.PerpetualsKeeper.SetCollateralPool(
+					ctx,
+					constants.CollateralPools[0].CollateralPoolId,
+					tc.maxInsuranceFundLost,
+					constants.CollateralPools[0].MultiCollateralAssets,
+					constants.CollateralPools[0].QuoteAssetId,
+				)
+			}
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, constants.PerpetualFeeParams))
 
@@ -5697,12 +5710,13 @@ func TestEnsurePerpetualNotAlreadyLiquidated(t *testing.T) {
 
 func TestCheckInsuranceFundLimits(t *testing.T) {
 	tests := map[string]struct {
-		perpetuals         []perptypes.Perpetual
-		liquidationsConfig types.LiquidationsConfig
-		insuranceFundDelta *big.Int
-		perpetualId        uint32
-		expectedError      error
-		expectPanic        bool
+		perpetuals           []perptypes.Perpetual
+		liquidationsConfig   types.LiquidationsConfig
+		insuranceFundDelta   *big.Int
+		maxInsuranceFundLost uint64
+		perpetualId          uint32
+		expectedError        error
+		expectPanic          bool
 	}{
 		"success - insurance fund delta within limits": {
 			perpetuals: []perptypes.Perpetual{
@@ -5715,9 +5729,10 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
 			},
-			insuranceFundDelta: big.NewInt(-500_000),
-			perpetualId:        0,
-			expectedError:      nil,
+			maxInsuranceFundLost: 1_000_000,
+			insuranceFundDelta:   big.NewInt(-500_000),
+			perpetualId:          0,
+			expectedError:        nil,
 		},
 		"failure - insurance fund delta exceeds remaining limit": {
 			perpetuals: []perptypes.Perpetual{
@@ -5730,9 +5745,10 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
 			},
-			insuranceFundDelta: big.NewInt(-1_100_000),
-			perpetualId:        0,
-			expectedError:      types.ErrLiquidationExceedsMaxInsuranceLost,
+			maxInsuranceFundLost: 1_000_000,
+			insuranceFundDelta:   big.NewInt(-1_100_000),
+			perpetualId:          0,
+			expectedError:        types.ErrLiquidationExceedsMaxInsuranceLost,
 		},
 		"success - insurance fund delta at limit": {
 			perpetuals: []perptypes.Perpetual{
@@ -5745,9 +5761,10 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
 			},
-			insuranceFundDelta: big.NewInt(-1_000_000),
-			perpetualId:        0,
-			expectedError:      nil,
+			maxInsuranceFundLost: 1_000_000,
+			insuranceFundDelta:   big.NewInt(-1_000_000),
+			perpetualId:          0,
+			expectedError:        nil,
 		},
 		"success - positive insurance fund delta": {
 			perpetuals: []perptypes.Perpetual{
@@ -5760,9 +5777,10 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					SpreadToMaintenanceMarginRatioPpm: 10_000,
 				},
 			},
-			insuranceFundDelta: big.NewInt(2_000_000),
-			perpetualId:        0,
-			expectedError:      nil,
+			maxInsuranceFundLost: 1_000_000,
+			insuranceFundDelta:   big.NewInt(2_000_000),
+			perpetualId:          0,
+			expectedError:        nil,
 		},
 	}
 
@@ -5778,6 +5796,16 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
+
+			if tc.maxInsuranceFundLost != 0 {
+				ks.PerpetualsKeeper.SetCollateralPool(
+					ctx,
+					constants.CollateralPools[0].CollateralPoolId,
+					tc.maxInsuranceFundLost,
+					constants.CollateralPools[0].MultiCollateralAssets,
+					constants.CollateralPools[0].QuoteAssetId,
+				)
+			}
 
 			// Create all perpetuals.
 			for _, p := range tc.perpetuals {
@@ -6080,7 +6108,16 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 			},
 			feeParams:                            constants.PerpetualFeeParams,
 			perpetualId:                          0,
-			expectedInsuranceFundDeltaBlockLimit: big.NewInt(1_000_000),
+			expectedInsuranceFundDeltaBlockLimit: big.NewInt(1_000_000_000_000),
+			expectedError:                        nil,
+		},
+		"perpetual returns max cummalitive insurance fund delta per block for different collateral pool": {
+			perpetuals: []perptypes.Perpetual{
+				constants.BtcUsd_SmallMarginRequirement_DangerIndex,
+			},
+			feeParams:                            constants.PerpetualFeeParams,
+			perpetualId:                          0,
+			expectedInsuranceFundDeltaBlockLimit: big.NewInt(500_000),
 			expectedError:                        nil,
 		},
 	}
@@ -6095,6 +6132,14 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 			// Create liquidity tiers.
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
+
+			ks.PerpetualsKeeper.SetCollateralPool(
+				ctx,
+				constants.CollateralPools[0].CollateralPoolId,
+				500_000,
+				constants.CollateralPools[0].MultiCollateralAssets,
+				constants.CollateralPools[0].QuoteAssetId,
+			)
 
 			require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, tc.feeParams))
 

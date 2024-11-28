@@ -233,6 +233,10 @@ func (k Keeper) TransferFeesToFeeCollectorModule(
 		fromModuleAddr, toModuleAddr = toModuleAddr, fromModuleAddr
 	}
 
+	fmt.Println("YYYY")
+	fmt.Println("fromModuleAddr", fromModuleAddr.String())
+	fmt.Println("toModuleAddr", toModuleAddr.String())
+
 	if err := k.bankKeeper.SendCoins(
 		ctx,
 		fromModuleAddr,
@@ -289,6 +293,11 @@ func (k Keeper) TransferInsuranceFundPayments(
 		// Send coins from the insurance fund to the `subaccounts` module account.
 		fromModule, toModule = toModule, fromModule
 	}
+
+	fmt.Println("XXXXX")
+	fmt.Println("insuranceFundDelta", insuranceFundDelta.String())
+	fmt.Println("fromModule", fromModule.String())
+	fmt.Println("toModule", toModule.String())
 
 	return k.bankKeeper.SendCoins(
 		ctx,

@@ -128,8 +128,6 @@ func TestPlaceOrder_Error(t *testing.T) {
 			}
 			ks.Ctx = ks.Ctx.WithLogger(mockLogger)
 
-			require.NoError(t, keepertest.CreateTDaiAsset(ks.Ctx, ks.AssetsKeeper))
-			require.NoError(t, keepertest.CreateBTCAsset(ks.Ctx, ks.AssetsKeeper))
 			// Create test markets.
 			keepertest.CreateNonDefaultTestMarkets(t, ks.Ctx, ks.PricesKeeper)
 

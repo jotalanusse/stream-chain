@@ -211,6 +211,20 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000_000)),
 				).Return(nil).Once()
 				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(4_999_000_000-250_000_000)),
+				).Return(nil).Once()
+				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(100_000_000_000-10_000_000)),
+				).Return(nil).Once()
+				bk.On(
 					"GetBalance",
 					mock.Anything,
 					authtypes.NewModuleAddress(ratelimittypes.TDaiPoolAccount),
@@ -306,6 +320,13 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					satypes.CollateralPoolZeroAddress,
 					// Insurance fund covers $1 loss for liquidating 1 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(1_000_000)),
+				).Return(nil).Once()
+				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(50_000_000_000+50_500_000_000-10_100_000)),
 				).Return(nil).Once()
 			},
 			rawOperations: []types.OperationRaw{
@@ -625,6 +646,13 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					// Insurance fund covers $0.25 loss for liquidating 0.25 BTC.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(250_000)),
 				).Return(nil).Once()
+				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(100_488_400_300)),
+				).Return(nil).Once()
 			},
 			rawOperations: []types.OperationRaw{
 				clobtest.NewShortTermOrderPlacementOperationRaw(
@@ -736,6 +764,13 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					// Pays insurance fund $0.121265.
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(121_265)),
+				).Return(nil).Once()
+				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(100_488_400_300)),
 				).Return(nil).Once()
 			},
 			liquidationConfig: &types.LiquidationsConfig{
@@ -961,6 +996,13 @@ func TestProcessProposerMatches_Liquidation_Success(t *testing.T) {
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					mock.MatchedBy(testutil_bank.MatchTDaiOfAmount(25)),
 				).Return(nil)
+				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.Anything,
+				).Return(nil).Once()
 			},
 			rawOperations: []types.OperationRaw{
 				clobtest.NewShortTermOrderPlacementOperationRaw(
