@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
@@ -428,9 +427,6 @@ func (k Keeper) TransferFundsFromSubaccountToSubaccount(
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("senderCollateralPoolAddr", senderCollateralPoolAddr.String())
-	fmt.Println("recipientCollateralPoolAddr", recipientCollateralPoolAddr.String())
 
 	// Different collateral pool address, need to do a bank send.
 	if !senderCollateralPoolAddr.Equals(recipientCollateralPoolAddr) {

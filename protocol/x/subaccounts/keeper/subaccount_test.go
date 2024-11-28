@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
 	"math"
 	"math/big"
 	"strconv"
@@ -4407,7 +4406,6 @@ func TestUpdateSubaccounts(t *testing.T) {
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			fmt.Println("name", name)
 			ctx, keeper, pricesKeeper, perpetualsKeeper, accountKeeper, bankKeeper, assetsKeeper, rateLimitKeeper, _, _ := testutil.SubaccountsKeepers(
 				t,
 				tc.msgSenderEnabled,
@@ -5553,9 +5551,13 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_SmallMarginRequirement,
 			},
-			perpetualPositions:         map[types.SubaccountId][]*types.PerpetualPosition{},
-			expectedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{},
-			expectedAssetPositions:     map[types.SubaccountId][]*types.AssetPosition{},
+			perpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
+				firstSubaccountId: {&constants.PerpetualPosition_OneHundredthBTCLong},
+			},
+			expectedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
+				firstSubaccountId: {&constants.PerpetualPosition_OneHundredthBTCLong},
+			},
+			expectedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
 				firstSubaccountId:  {},
 				secondSubaccountId: {},
@@ -5591,9 +5593,13 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_SmallMarginRequirement,
 			},
-			perpetualPositions:         map[types.SubaccountId][]*types.PerpetualPosition{},
-			expectedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{},
-			expectedAssetPositions:     map[types.SubaccountId][]*types.AssetPosition{},
+			perpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
+				firstSubaccountId: {&constants.PerpetualPosition_OneHundredthBTCLong},
+			},
+			expectedPerpetualPositions: map[types.SubaccountId][]*types.PerpetualPosition{
+				firstSubaccountId: {&constants.PerpetualPosition_OneHundredthBTCLong},
+			},
+			expectedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{},
 			expectedUpdatedAssetPositions: map[types.SubaccountId][]*types.AssetPosition{
 				firstSubaccountId:  {},
 				secondSubaccountId: {},

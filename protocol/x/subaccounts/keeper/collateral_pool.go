@@ -251,11 +251,6 @@ func (k *Keeper) transferAssetsToCollateralPool(
 			return err
 		}
 
-		fmt.Println("coinToTransfer", coinToTransfer.Amount)
-		fmt.Println("fromModuleAddr", fromModuleAddr.String())
-		fmt.Println("toModuleAddr", toModuleAddr.String())
-		fmt.Println("stateTransition.Transition", stateTransition.Transition)
-
 		if err = k.bankKeeper.SendCoins(
 			ctx,
 			fromModuleAddr,
