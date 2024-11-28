@@ -1383,6 +1383,13 @@ func TestProcessProposerMatches_Liquidation_Failure(t *testing.T) {
 					perptypes.BaseCollateralPoolInsuranceFundModuleAddress,
 					mock.Anything,
 				).Return(nil)
+				bk.On(
+					"SendCoins",
+					mock.Anything,
+					satypes.CollateralPoolZeroAddress,
+					satypes.ModuleAddress,
+					mock.Anything,
+				).Return(nil)
 			},
 			rawOperations: []types.OperationRaw{
 				clobtest.NewShortTermOrderPlacementOperationRaw(
