@@ -25,8 +25,9 @@ func TestGetSetNegativeTncSubaccountSeenAtBlock(t *testing.T) {
 		constants.BtcUsd_NoMarginRequirement.Params.Id,
 	}
 	testsuffixes := []string{
-		lib.UintToString(constants.IsoUsd_IsolatedMarket.Params.Id),
-		lib.UintToString(constants.Iso2Usd_IsolatedMarket.Params.Id),
+		lib.UintToString(constants.IsoUsd_IsolatedMarket.Params.CollateralPoolId),
+		lib.UintToString(constants.Iso2Usd_IsolatedMarket.Params.CollateralPoolId),
+		lib.UintToString(constants.BtcUsd_NoMarginRequirement.Params.CollateralPoolId),
 		types.NegativeTncSuffix,
 	}
 	tests := map[string]struct {
@@ -73,9 +74,9 @@ func TestGetSetNegativeTncSubaccountSeenAtBlock(t *testing.T) {
 			},
 
 			expectedMultiStoreWrites: []string{
-				types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + testsuffixes[0],
-				types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + testsuffixes[1],
-				types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + testsuffixes[2],
+				types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + testsuffixes[3] + ":" + testsuffixes[0],
+				types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + testsuffixes[3] + ":" + testsuffixes[1],
+				types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + testsuffixes[3] + ":" + testsuffixes[2],
 			},
 		},
 		"Block height can be updated more than once": {
@@ -284,7 +285,7 @@ func TestGetSetNegativeTncSubaccountSeenAtBlock_PanicsOnDecreasingBlock(t *testi
 func getWriteKeys(suffix string, times int) []string {
 	writeKeys := make([]string, times)
 	for i := 0; i < times; i++ {
-		writeKeys[i] = types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + suffix
+		writeKeys[i] = types.NegativeTncSubaccountForCollateralPoolSeenAtBlockKeyPrefix + types.NegativeTncSuffix + ":" + suffix
 	}
 	return writeKeys
 }
