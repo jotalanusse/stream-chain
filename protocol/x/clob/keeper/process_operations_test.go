@@ -56,8 +56,9 @@ type processProposerOperationsTestCase struct {
 	setupMockBankKeeper func(bk *mocks.BankKeeper)
 
 	// Liquidation specific setup.
-	liquidationConfig    *types.LiquidationsConfig
-	insuranceFundBalance uint64
+	liquidationConfig                       *types.LiquidationsConfig
+	maxCumulativeInsuranceFundDeltaPerBlock uint64
+	insuranceFundBalance                    uint64
 
 	// Expectations.
 	// Note that for expectedProcessProposerMatchesEvents, the OperationsProposedInLastBlock field is populated from
@@ -2369,6 +2370,16 @@ func setupProcessProposerOperationsTestCase(
 	// Create liquidity tiers.
 	keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 	keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
+
+	if tc.maxCumulativeInsuranceFundDeltaPerBlock != 0 {
+		ks.PerpetualsKeeper.SetCollateralPool(
+			ctx,
+			constants.CollateralPools[0].CollateralPoolId,
+			tc.maxCumulativeInsuranceFundDeltaPerBlock,
+			constants.CollateralPools[0].MultiCollateralAssets,
+			constants.CollateralPools[0].QuoteAssetId,
+		)
+	}
 
 	require.NotNil(t, tc.perpetualFeeParams)
 	require.NoError(t, ks.FeeTiersKeeper.SetPerpetualFeeParams(ctx, *tc.perpetualFeeParams))

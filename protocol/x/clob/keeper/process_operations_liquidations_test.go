@@ -2255,8 +2255,9 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				LiquidityFeePpm:     0,
 				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
-			insuranceFundBalance: math.MaxUint64,
-			expectedError:        types.ErrLiquidationExceedsMaxInsuranceLost,
+			maxCumulativeInsuranceFundDeltaPerBlock: 999_999,
+			insuranceFundBalance:                    math.MaxUint64,
+			expectedError:                           types.ErrLiquidationExceedsMaxInsuranceLost,
 		},
 		"Subaccount block limit: fails when insurance lost from multiple liquidation fills exceed block limit": {
 			perpetuals: []perptypes.Perpetual{
@@ -2305,8 +2306,9 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				LiquidityFeePpm:     0,
 				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
-			insuranceFundBalance: math.MaxUint64,
-			expectedError:        types.ErrLiquidationExceedsMaxInsuranceLost,
+			maxCumulativeInsuranceFundDeltaPerBlock: 499_999,
+			insuranceFundBalance:                    math.MaxUint64,
+			expectedError:                           types.ErrLiquidationExceedsMaxInsuranceLost,
 		},
 		"Liquidation checks insurance fund delta for individual fills and not the entire liquidation order": {
 			perpetuals: []perptypes.Perpetual{
@@ -2376,7 +2378,8 @@ func TestProcessProposerMatches_Liquidation_Validation_Failure(t *testing.T) {
 				LiquidityFeePpm:     0,
 				FillablePriceConfig: constants.FillablePriceConfig_Default,
 			},
-			expectedError: types.ErrLiquidationExceedsMaxInsuranceLost,
+			maxCumulativeInsuranceFundDeltaPerBlock: 300_000,
+			expectedError:                           types.ErrLiquidationExceedsMaxInsuranceLost,
 		},
 	}
 

@@ -160,8 +160,6 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 	}
 
 	err = ks.SendingKeeper.ProcessTransfer(ks.Ctx, tc.transfer)
-	fmt.Println("XXXXXXXX")
-	fmt.Println(err)
 	for subaccountId, expectedQuoteBalance := range tc.expectedSubaccountBalance {
 		subaccount := ks.SubaccountsKeeper.GetSubaccount(ks.Ctx, subaccountId)
 		require.Equal(t, expectedQuoteBalance, subaccount.GetTDaiPosition())
