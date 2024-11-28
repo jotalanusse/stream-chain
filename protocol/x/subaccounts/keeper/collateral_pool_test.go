@@ -4,6 +4,7 @@ import (
 	"math/big"
 	"testing"
 
+	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
@@ -246,7 +247,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				constants.IsoUsd_IsolatedMarket,
 			},
 			expectedStateTransition: nil,
-			expectedErr:             types.ErrFailedToUpdateSubaccounts,
+			expectedErr:             errorsmod.Wrap(types.ErrFailedToUpdateSubaccounts, "when opening a position in GetCollateralPoolStateTransition there should be only 1 asset update"),
 		},
 		`Returns error if perpetual position was opened with multiple asset updates`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
@@ -287,9 +288,9 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				constants.IsoUsd_IsolatedMarket,
 			},
 			expectedStateTransition: nil,
-			expectedErr:             types.ErrFailedToUpdateSubaccounts,
+			expectedErr:             errorsmod.Wrap(types.ErrFailedToUpdateSubaccounts, "when opening a position in GetCollateralPoolStateTransition there should be only 1 asset update"),
 		},
-		`Returns error if perpetual position was opened with non-TDai asset update`: {
+		`Returns error if perpetual position was opened with non quote asset update`: {
 			settledUpdateWithUpdatedSubaccount: keeper.SettledUpdate{
 				SettledSubaccount: types.Subaccount{
 					Id: &constants.Alice_Num0,
@@ -324,7 +325,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				constants.IsoUsd_IsolatedMarket,
 			},
 			expectedStateTransition: nil,
-			expectedErr:             types.ErrFailedToUpdateSubaccounts,
+			expectedErr:             errorsmod.Wrap(types.ErrFailedToUpdateSubaccounts, "when opening a position in GetCollateralPoolStateTransition the asset update should be for the quote asset"),
 		},
 	}
 
@@ -336,7 +337,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 					0,
 				)
 				if tc.expectedErr != nil {
-					require.Error(t, tc.expectedErr, err)
+					require.ErrorIs(t, tc.expectedErr, err)
 				} else {
 					require.NoError(t, err)
 					require.Equal(t, tc.expectedStateTransition, stateTransition)
