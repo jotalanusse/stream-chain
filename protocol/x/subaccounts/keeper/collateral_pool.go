@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"math"
 	"math/big"
 
@@ -145,6 +146,9 @@ func GetCollateralPoolStateTransition(
 	}
 
 	if settledUpdateWithUpdatedSubaccount.AssetUpdates[0].AssetId != quoteAssetId {
+		fmt.Println("OH NO")
+		fmt.Println(settledUpdateWithUpdatedSubaccount.AssetUpdates[0].AssetId)
+		fmt.Println(quoteAssetId)
 		return nil, errorsmod.Wrap(types.ErrFailedToUpdateSubaccounts, "when opening a position in GetCollateralPoolStateTransition the asset update should be for the quote asset")
 	}
 
@@ -303,7 +307,12 @@ func (k *Keeper) getQuoteAssetId(
 		return math.MaxUint32, nil
 	}
 
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, subaccount.PerpetualPositions[0].PerpetualId)
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, subaccount.PerpetualPositions[0].PerpetualId)
+	if err != nil {
+		return 0, err
+	}
+
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
 	if err != nil {
 		return 0, err
 	}
