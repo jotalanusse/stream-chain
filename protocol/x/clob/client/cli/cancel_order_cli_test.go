@@ -495,15 +495,30 @@ func (s *CancelOrderIntegrationTestSuite) TestCLICancelMatchingOrders() {
 	)
 
 	// Check that the `subaccounts` module account has expected remaining TDAI balance.
+	collateralPoolAddress := satypes.ModuleName + ":0"
+
 	saModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(
 		val,
 		s.network.Config.Codec,
 		satypes.ModuleName,
 	)
+
 	s.Require().NoError(err)
 	s.Require().Equal(
-		int64(cancelsInitialSubaccountModuleAccBalance-takerFee-makerFee),
+		cancelsInitialSubaccountModuleAccBalance-initialQuoteBalance-initialQuoteBalance,
 		saModuleTDaiBalance,
+	)
+
+	collateralPoolModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(
+		val,
+		s.network.Config.Codec,
+		collateralPoolAddress,
+	)
+
+	s.Require().NoError(err)
+	s.Require().Equal(
+		initialQuoteBalance+initialQuoteBalance-takerFee-makerFee,
+		collateralPoolModuleTDaiBalance,
 	)
 
 	distrModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(

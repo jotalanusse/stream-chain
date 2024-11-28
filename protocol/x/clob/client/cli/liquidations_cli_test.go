@@ -38,12 +38,11 @@ import (
 
 var (
 	liqTestMakerOrderQuantums                = satypes.BaseQuantums(100_000_000) // 1 BTC.
-	liqTestInitialSubaccountModuleAccBalance = int64(
-		10_000 * constants.QuoteBalance_OneDollar, // $10,000.
-	)
-	liqTestSubaccountNumberZero = uint32(0)
-	liqTestSubaccountNumberOne  = uint32(1)
-	liqTestUnixSocketAddress    = "/tmp/liquidations_cli_test.sock"
+	liqTestInitialSubaccountModuleAccBalance = int64(1_000_000_000_000)
+	liqTestSubaccountZeroInitialBalance      = int64(100_000_000_000)
+	liqTestSubaccountNumberZero              = uint32(0)
+	liqTestSubaccountNumberOne               = uint32(1)
+	liqTestUnixSocketAddress                 = "/tmp/liquidations_cli_test.sock"
 )
 
 type LiquidationsIntegrationTestSuite struct {
@@ -128,7 +127,7 @@ func (s *LiquidationsIntegrationTestSuite) SetupSuite() {
 	s.cfg.GenesisState[types.ModuleName] = buf
 
 	// Set the balances in the genesis state.
-	s.cfg.GenesisState[banktypes.ModuleName] = cli_testutil.CreateBankGenesisState(
+	s.cfg.GenesisState[banktypes.ModuleName] = cli_testutil.CreateBankGenesisStateForLiquidationTest(
 		s.T(),
 		s.cfg,
 	)
@@ -281,22 +280,37 @@ func (s *LiquidationsIntegrationTestSuite) TestCLILiquidations() {
 	s.Require().Empty(subaccountOne.PerpetualPositions)
 
 	// Check that the `subaccounts` module account has expected remaining TDai balance.
+	collateralPoolAddress := satypes.ModuleName + ":0"
+
 	saModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(
 		val,
 		s.network.Config.Codec,
 		satypes.ModuleName,
 	)
+
 	s.Require().NoError(err)
 	s.Require().Equal(
-		initialSubaccountModuleAccBalance-makerFee-liquidationFee,
+		liqTestInitialSubaccountModuleAccBalance-liqTestSubaccountZeroInitialBalance+subaccountOne.GetTDaiPosition().Int64(),
 		saModuleTDaiBalance,
+	)
+
+	collateralPoolModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(
+		val,
+		s.network.Config.Codec,
+		collateralPoolAddress,
+	)
+
+	s.Require().NoError(err)
+	s.Require().Equal(
+		liqTestInitialSubaccountModuleAccBalance+liqTestSubaccountZeroInitialBalance-subaccountOne.GetTDaiPosition().Int64()-liquidationFee-makerFee,
+		collateralPoolModuleTDaiBalance,
 	)
 
 	// Check that the insurance fund has expected TDai balance.
 	insuranceFundBalance, err := testutil_bank.GetModuleAccTDaiBalance(
 		val,
 		s.network.Config.Codec,
-		perptypes.InsuranceFundName,
+		perptypes.InsuranceFundName+":0",
 	)
 
 	s.Require().NoError(err)

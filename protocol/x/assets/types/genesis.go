@@ -22,6 +22,16 @@ var (
 		AssetYieldIndex:  "1/1",
 		MaxSlippagePpm:   uint32(0),
 	}
+	AssetBtc = Asset{
+		Id:               1,
+		Symbol:           "BTC",
+		Denom:            "btc-denom",
+		DenomExponent:    int32(-8),
+		HasMarket:        true,
+		MarketId:         uint32(0),
+		AtomicResolution: int32(-8),
+		MaxSlippagePpm:   uint32(0),
+	}
 )
 
 // DefaultGenesis returns the default Capability genesis state
@@ -29,6 +39,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Assets: []Asset{
 			AssetTDai,
+			AssetBtc,
 		},
 	}
 }

@@ -282,15 +282,31 @@ func (s *PlaceOrderIntegrationTestSuite) TestCLIPlaceOrder() {
 	s.Require().Equal(new(big.Int).Neg(quantums.ToBigInt()), subaccountOne.PerpetualPositions[0].GetBigQuantums())
 
 	// Check that the `subaccounts` module account has expected remaining TDai balance.
+
+	collateralPoolAddress := satypes.ModuleName + ":0"
+
 	saModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(
 		val,
 		s.network.Config.Codec,
 		satypes.ModuleName,
 	)
+
 	s.Require().NoError(err)
 	s.Require().Equal(
-		initialSubaccountModuleAccBalance-makerFee-takerFee,
+		initialSubaccountModuleAccBalance-initialQuoteBalance-initialQuoteBalance,
 		saModuleTDaiBalance,
+	)
+
+	collateralPoolModuleTDaiBalance, err := testutil_bank.GetModuleAccTDaiBalance(
+		val,
+		s.network.Config.Codec,
+		collateralPoolAddress,
+	)
+
+	s.Require().NoError(err)
+	s.Require().Equal(
+		initialQuoteBalance+initialQuoteBalance-takerFee-makerFee,
+		collateralPoolModuleTDaiBalance,
 	)
 
 	// Check that the `distribution` module account has expected remaining TDai balance.

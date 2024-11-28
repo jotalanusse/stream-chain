@@ -24,5 +24,5 @@ func TestAllCollateralPools(t *testing.T) {
 
 	var resp types.QueryAllCollateralPoolsResponse
 	require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-	require.Equal(t, 2, len(resp.CollateralPools))
+	require.Equal(t, 3, len(resp.CollateralPools))
 }
