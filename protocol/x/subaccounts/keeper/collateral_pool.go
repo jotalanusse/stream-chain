@@ -25,7 +25,7 @@ func (k Keeper) checkCollateralPoolConstraints(
 	perpIdToCollateralPoolId := getPerpIdToCollateralPoolIdMap(perpetuals)
 
 	for i, u := range settledUpdates {
-		result, err := isValidCollateralPoolUpdates(u, perpIdToCollateralPoolId)
+		result, err := IsValidCollateralPoolUpdates(u, perpIdToCollateralPoolId)
 		if err != nil {
 			return false, nil, err
 		}
@@ -40,14 +40,14 @@ func (k Keeper) checkCollateralPoolConstraints(
 }
 
 // Checks whether the perpetual updates to a settled subaccount violates constraints for the
-// collateral pool. This function assumes the settled subaccount is valid and does not violate the
-// the constraints.
+// collateral pool. This function assumes the settled subaccount had the updates applied to it already.
 // The constraint being checked is:
 //   - there cannot be updates for multiple collateral pools
 //   - a subaccount with a position in a collateral pool cannot have updates for perpetuals in other
 //     collateral pools
 //   - a subaccount with no positions cannot be updated to have positions in multiple collateral pools
-func isValidCollateralPoolUpdates(
+
+func IsValidCollateralPoolUpdates(
 	settledUpdate SettledUpdate,
 	perpIdToCollateralPoolId map[uint32]uint32,
 ) (types.UpdateResult, error) {
@@ -56,7 +56,12 @@ func isValidCollateralPoolUpdates(
 		return types.Success, nil
 	}
 
-	collateralPoolIdBeingUpdated := perpIdToCollateralPoolId[settledUpdate.PerpetualUpdates[0].PerpetualId]
+	collateralPoolIdBeingUpdated, exists := perpIdToCollateralPoolId[settledUpdate.PerpetualUpdates[0].PerpetualId]
+	if !exists {
+		return types.UpdateCausedError, errorsmod.Wrap(
+			perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.PerpetualUpdates[0].PerpetualId),
+		)
+	}
 
 	for _, perpetualUpdate := range settledUpdate.PerpetualUpdates[1:] {
 		collateralPoolId, exists := perpIdToCollateralPoolId[perpetualUpdate.PerpetualId]
@@ -74,7 +79,24 @@ func isValidCollateralPoolUpdates(
 		return types.Success, nil
 	}
 
-	collateralPoolId := perpIdToCollateralPoolId[settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId]
+	collateralPoolId, exists := perpIdToCollateralPoolId[settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId]
+	if !exists {
+		return types.UpdateCausedError, errorsmod.Wrap(
+			perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId),
+		)
+	}
+
+	for _, perpetualPosition := range settledUpdate.SettledSubaccount.PerpetualPositions[1:] {
+		collateralPoolIdTemp, exists := perpIdToCollateralPoolId[perpetualPosition.PerpetualId]
+		if !exists {
+			return types.UpdateCausedError, errorsmod.Wrap(
+				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(perpetualPosition.PerpetualId),
+			)
+		}
+		if collateralPoolId != collateralPoolIdTemp {
+			return types.ViolatesCollateralPoolConstraints, nil
+		}
+	}
 
 	if collateralPoolId != collateralPoolIdBeingUpdated {
 		return types.ViolatesCollateralPoolConstraints, nil

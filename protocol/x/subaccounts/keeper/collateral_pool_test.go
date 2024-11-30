@@ -346,3 +346,272 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 		)
 	}
 }
+
+func TestIsValidCollateralPoolUpdates(t *testing.T) {
+	tests := map[string]struct {
+		// Parameters
+		settledUpdate            keeper.SettledUpdate
+		perpIdToCollateralPoolId map[uint32]uint32
+		expectedResult           types.UpdateResult
+		expectedErr              error
+	}{
+		"Success: no updates": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates:  []types.PerpetualUpdate{},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{},
+			expectedResult:           types.Success,
+		},
+		"Success: single perpetual update": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+			},
+			expectedResult: types.Success,
+		},
+		"Success: multiple perpetual updates from same collateral pool": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+					{
+						PerpetualId:      1,
+						BigQuantumsDelta: big.NewInt(200),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+				1: 0,
+			},
+			expectedResult: types.Success,
+		},
+		"Success: update existing position in same collateral pool": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(200),
+						},
+					},
+				},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+			},
+			expectedResult: types.Success,
+		},
+		"Success: close position": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(-100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+			},
+			expectedResult: types.Success,
+		},
+		"Failure: perpetual does not exist": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      999,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+			},
+			expectedResult: types.UpdateCausedError,
+			expectedErr:    errorsmod.Wrap(perptypes.ErrPerpetualDoesNotExist, "999"),
+		},
+		"Failure: perpetual does not exist in loop": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+					{
+						PerpetualId:      999,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+			},
+			expectedResult: types.UpdateCausedError,
+			expectedErr:    errorsmod.Wrap(perptypes.ErrPerpetualDoesNotExist, "999"),
+		},
+		"Failure: updates to close positionsfor multiple collateral pools": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+					{
+						PerpetualId:      1,
+						BigQuantumsDelta: big.NewInt(200),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+				1: 1,
+			},
+			expectedResult: types.ViolatesCollateralPoolConstraints,
+		},
+		"Failure: update existing position with different collateral pool": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(100),
+						},
+					},
+				},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      1,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+				1: 1,
+			},
+			expectedResult: types.ViolatesCollateralPoolConstraints,
+		},
+		"Failure: updates to open positions for multiple collateral pools": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(100),
+						},
+						{
+							PerpetualId: 2,
+							Quantums:    dtypes.NewInt(100),
+						},
+					},
+				},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      0,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+					{
+						PerpetualId:      1,
+						BigQuantumsDelta: big.NewInt(200),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+				1: 0,
+				2: 1,
+			},
+			expectedResult: types.ViolatesCollateralPoolConstraints,
+		},
+		"Failure: updates are for a different collateral pool that remaining positions are in": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(100),
+						},
+						{
+							PerpetualId: 1,
+							Quantums:    dtypes.NewInt(100),
+						},
+					},
+				},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      2,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+				1: 0,
+				2: 1,
+			},
+			expectedResult: types.ViolatesCollateralPoolConstraints,
+		},
+		"Success: add position to existing collateral pool": {
+			settledUpdate: keeper.SettledUpdate{
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(100),
+						},
+					},
+				},
+				PerpetualUpdates: []types.PerpetualUpdate{
+					{
+						PerpetualId:      1,
+						BigQuantumsDelta: big.NewInt(100),
+					},
+				},
+			},
+			perpIdToCollateralPoolId: map[uint32]uint32{
+				0: 0,
+				1: 0,
+			},
+			expectedResult: types.Success,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			result, err := keeper.IsValidCollateralPoolUpdates(
+				tc.settledUpdate,
+				tc.perpIdToCollateralPoolId,
+			)
+
+			if tc.expectedErr != nil {
+				require.ErrorIs(t, err, tc.expectedErr)
+			} else {
+				require.NoError(t, err)
+			}
+			require.Equal(t, tc.expectedResult, result)
+		})
+	}
+}
