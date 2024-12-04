@@ -553,6 +553,9 @@ message UpdatePerpetualEventV1 {
   // The danger index is used to prioritze certain accounts and positions in
   // liquidations
   uint32 danger_index_ppm = 6;
+
+  // The perp yield index of this perpetual market
+  string perp_yield_index = 7;
 }
 
 // UpdateYieldParamsV1 message contains all the information about an update

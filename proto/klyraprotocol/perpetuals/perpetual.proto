@@ -30,6 +30,11 @@ message Perpetual {
                              "protocol/dtypes.SerializableInt",
     (gogoproto.nullable) = false
   ];
+
+  // The current yield index is determined by the cumulative
+  // all-time history of the yield mechanism. Starts at 0.
+  // This string should always be converted big.Rat.
+  string yield_index = 5;
 }
 
 message MultiCollateralAssetsArray {
