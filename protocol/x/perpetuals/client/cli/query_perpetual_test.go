@@ -4,6 +4,7 @@ package cli_test
 
 import (
 	"fmt"
+	"math/big"
 	"testing"
 
 	tmcli "github.com/cometbft/cometbft/libs/cli"
@@ -108,6 +109,7 @@ func networkWithLiquidityTierAndPerpetualObjects(
 			},
 			FundingIndex:    dtypes.ZeroInt(),
 			OpenInterest:    dtypes.ZeroInt(),
+			YieldIndex:      big.NewRat(0, 1).String(),
 			LastFundingRate: dtypes.ZeroInt(),
 		}
 		nullify.Fill(&perpetual) //nolint:staticcheck

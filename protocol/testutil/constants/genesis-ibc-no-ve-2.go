@@ -991,7 +991,8 @@ const GenesisStateNoVeIBC2 = `{
             "liquidity_tier": 0,
             "market_id": 0,
             "ticker": "BTC-USD"
-          }
+          },
+          "yield_index": "0/1"
         },
         {
           "params": {
@@ -1001,7 +1002,8 @@ const GenesisStateNoVeIBC2 = `{
             "liquidity_tier": 0,
             "market_id": 1,
             "ticker": "ETH-USD"
-          }
+          },
+          "yield_index": "0/1"
         }
       ]
     },

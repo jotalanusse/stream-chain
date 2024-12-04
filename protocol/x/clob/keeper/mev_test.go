@@ -894,6 +894,7 @@ func TestRecordMevMetrics(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -1281,6 +1282,7 @@ func TestGetMidPrices(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}

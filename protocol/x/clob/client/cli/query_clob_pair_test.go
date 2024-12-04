@@ -4,6 +4,7 @@ package cli_test
 
 import (
 	"fmt"
+	"math/big"
 	"strconv"
 	"testing"
 
@@ -51,6 +52,7 @@ func networkWithClobPairObjects(t *testing.T, n int) (*network.Network, []types.
 					LiquidityTier: 0,
 				},
 				FundingIndex: dtypes.ZeroInt(),
+				YieldIndex:   big.NewRat(0, 1).String(),
 			},
 		)
 	}

@@ -334,6 +334,7 @@ func TestPlacePerpetualLiquidation(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -450,6 +451,7 @@ func TestPlacePerpetualLiquidation_validateLiquidationAgainstClobPairStatus(t *t
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -1128,6 +1130,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 					perpetual.Params.LiquidityTier,
 					perpetual.Params.DangerIndexPpm,
 					perpetual.Params.CollateralPoolId,
+					perpetual.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -1697,6 +1700,7 @@ func TestGetFillablePrice(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -2546,6 +2550,7 @@ func TestPlacePerpetualLiquidation_Deleveraging(t *testing.T) {
 					perpetual.Params.LiquidityTier,
 					perpetual.Params.DangerIndexPpm,
 					perpetual.Params.CollateralPoolId,
+					perpetual.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -2872,6 +2877,7 @@ func TestIsLiquidatable(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -3298,6 +3304,7 @@ func TestGetBankruptcyPriceInQuoteQuantums(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -3774,6 +3781,7 @@ func TestGetLiquidationInsuranceFundFeeAndRemainingAvailableCollateral(t *testin
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -4147,6 +4155,7 @@ func TestGetBestPerpetualPositionToLiquidate(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -4389,6 +4398,7 @@ func TestMaybeGetLiquidationOrder(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -5397,6 +5407,7 @@ func TestLiquidateSubaccountsAgainstOrderbookInternal(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -5571,6 +5582,7 @@ func TestGetBestPerpetualPositionToLiquidateMultiplePositions(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -5672,6 +5684,7 @@ func TestEnsurePerpetualNotAlreadyLiquidated(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -5819,6 +5832,7 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -5901,6 +5915,7 @@ func TestIsMainCollateralPoolError_InLiquidateSubaccountsAgainstOrderbookInterna
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					"0/1",
 				)
 				require.NoError(t, err)
 			}
@@ -5990,6 +6005,7 @@ func TestPlacePerpetualLiquidation_InLiquidateSubaccountsAgainstOrderbookInterna
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					"0/1",
 				)
 				require.NoError(t, err)
 			}
@@ -6155,6 +6171,7 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					"0/1",
 				)
 				require.NoError(t, err)
 			}

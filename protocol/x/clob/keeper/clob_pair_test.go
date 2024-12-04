@@ -128,6 +128,7 @@ func TestCreatePerpetualClobPair_FailsWithPerpetualAssociatedWithExistingClobPai
 		perp.Params.LiquidityTier,
 		perp.Params.DangerIndexPpm,
 		perp.Params.CollateralPoolId,
+		perp.YieldIndex,
 	)
 	require.NoError(t, err)
 

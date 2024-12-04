@@ -70,6 +70,7 @@ func assertPerpetualtUpdateEventsInIndexerBlock(
 			perp.Params.GetAtomicResolution(),
 			perp.Params.GetLiquidityTier(),
 			perp.Params.GetDangerIndexPpm(),
+			perp.YieldIndex,
 		)
 
 		for _, event := range perpetualEvents {
@@ -114,6 +115,7 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			AtomicResolution: item.Params.AtomicResolution,
 			LiquidityTier:    liquidityTier,
 			DangerIndexPpm:   uint32(0),
+			PerpYieldIndex:   "0/1",
 		}
 
 		// Verify updatedp perpetual in store.
@@ -297,6 +299,7 @@ func TestCreatePerpetual_Failure(t *testing.T) {
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
 				tc.collateralPoolId,
+				tc.yieldIndex,
 			)
 
 			require.Error(t, err)
@@ -431,6 +434,7 @@ func TestHasPerpetual(t *testing.T) {
 			perps[perp].Params.LiquidityTier,
 			perps[perp].Params.DangerIndexPpm,
 			perps[perp].Params.CollateralPoolId,
+			perps[perp].YieldIndex,
 		)
 		require.NoError(t, err)
 	}
@@ -493,6 +497,7 @@ func TestGetAllPerpetuals_Sorted(t *testing.T) {
 			perps[perp].Params.LiquidityTier,
 			perps[perp].Params.DangerIndexPpm,
 			perps[perp].Params.CollateralPoolId,
+			perps[perp].YieldIndex,
 		)
 		require.NoError(t, err)
 	}
@@ -920,6 +925,7 @@ func TestGetMarginRequirements_Success(t *testing.T) {
 				0,                               // LiquidityTier
 				0,
 				0,
+				"0/1",
 			)
 			require.NoError(t, err)
 
@@ -1137,6 +1143,7 @@ func TestGetNetNotional_Success(t *testing.T) {
 				0,                               // LiquidityTier
 				0,
 				0,
+				"0/1",
 			)
 			require.NoError(t, err)
 
@@ -1306,6 +1313,7 @@ func TestGetNetCollateral_Success(t *testing.T) {
 				0,
 				0,
 				0,
+				"0/1",
 			)
 			require.NoError(t, err)
 
@@ -2050,6 +2058,7 @@ func TestMaybeProcessNewFundingTickEpoch_ProcessNewEpoch(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 				oldPerps[i] = perp

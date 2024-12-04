@@ -149,6 +149,7 @@ func TestPlaceOrder_Error(t *testing.T) {
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
 				perpetual.Params.CollateralPoolId,
+				perpetual.YieldIndex,
 			)
 			require.NoError(t, err)
 
@@ -320,6 +321,7 @@ func TestPlaceOrder_Success(t *testing.T) {
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
 				perpetual.Params.CollateralPoolId,
+				perpetual.YieldIndex,
 			)
 			require.NoError(t, err)
 

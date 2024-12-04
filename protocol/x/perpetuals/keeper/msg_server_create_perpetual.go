@@ -34,6 +34,7 @@ func (k msgServer) CreatePerpetual(
 		msg.Params.LiquidityTier,
 		msg.Params.DangerIndexPpm,
 		msg.Params.CollateralPoolId,
+		"0/1", // yield index should be initialised at 0 to start increment
 	)
 	if err != nil {
 		return &types.MsgCreatePerpetualResponse{}, err

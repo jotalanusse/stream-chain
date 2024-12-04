@@ -182,6 +182,7 @@ func TestGetCollateralPool(t *testing.T) {
 						p.Params.LiquidityTier,
 						p.Params.DangerIndexPpm,
 						p.Params.CollateralPoolId,
+						p.YieldIndex,
 					)
 					require.NoError(t, err)
 				}
@@ -6005,6 +6006,7 @@ func TestUpdateSubaccounts_WithdrawalsBlocked(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 
@@ -7144,6 +7146,7 @@ func TestCanUpdateSubaccounts(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}
@@ -7573,6 +7576,7 @@ func TestGetNetCollateralAndMarginRequirements(t *testing.T) {
 					p.Params.LiquidityTier,
 					p.Params.DangerIndexPpm,
 					p.Params.CollateralPoolId,
+					p.YieldIndex,
 				)
 				require.NoError(t, err)
 			}

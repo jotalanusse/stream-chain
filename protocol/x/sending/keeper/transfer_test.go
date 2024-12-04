@@ -144,6 +144,7 @@ func runProcessTransferTest(t *testing.T, tc TransferTestCase) {
 			p.Params.LiquidityTier,
 			p.Params.DangerIndexPpm,
 			p.Params.CollateralPoolId,
+			p.YieldIndex,
 		)
 		require.NoError(t, err)
 	}
@@ -282,6 +283,7 @@ func TestProcessTransfer_CreateRecipientAccount(t *testing.T) {
 			p.Params.LiquidityTier,
 			p.Params.DangerIndexPpm,
 			p.Params.CollateralPoolId,
+			p.YieldIndex,
 		)
 		require.NoError(t, err)
 	}

@@ -65,6 +65,7 @@ func (k Keeper) CreatePerpetual(
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
 	collateralPoolId uint32,
+	yieldIndex string,
 ) (types.Perpetual, error) {
 	// Check if perpetual exists.
 	if k.HasPerpetual(ctx, id) {
@@ -88,6 +89,7 @@ func (k Keeper) CreatePerpetual(
 		},
 		FundingIndex:    dtypes.ZeroInt(),
 		OpenInterest:    dtypes.ZeroInt(),
+		YieldIndex:      yieldIndex,
 		LastFundingRate: dtypes.ZeroInt(),
 	}
 
@@ -160,6 +162,7 @@ func (k Keeper) ModifyPerpetual(
 				perpetual.Params.AtomicResolution,
 				perpetual.Params.LiquidityTier,
 				perpetual.Params.DangerIndexPpm,
+				perpetual.YieldIndex,
 			),
 		),
 	)
