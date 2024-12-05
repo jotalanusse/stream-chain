@@ -95,6 +95,11 @@ func (k Keeper) UpdateMintStateOnSDaiConversionRateUpdate(ctx sdk.Context) error
 		return err
 	}
 
+	err = k.perpetualsKeeper.UpdateYieldIndexToNewMint(ctx, tDaiSupplyDenomAmountBeforeNewEpoch, tDaiDenomAmountMinted)
+	if err != nil {
+		return err
+	}
+
 	// Emit indexer event
 	sDAIPrice, found := k.GetSDAIPrice(ctx)
 	if !found {

@@ -23,6 +23,7 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
+	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	epochstypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/epochs/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	pricestypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/types"
@@ -611,6 +612,153 @@ func (k Keeper) GetRemoveSampleTailsFunc(
 
 		return premiums[bottomRemoval:end]
 	}
+}
+
+func (k Keeper) UpdateYieldIndexToNewMint(
+	ctx sdk.Context,
+	totalTDaiPreMint *big.Int,
+	totalTDaiMinted *big.Int,
+) error {
+	if totalTDaiPreMint == nil {
+		return types.ErrTotalTDaiPreMintIsNil
+	}
+
+	if totalTDaiMinted == nil {
+		return types.ErrTotalTDaiMintedIsNil
+	}
+
+	if totalTDaiMinted.Cmp(big.NewInt(0)) == 0 {
+		return nil
+	}
+
+	if totalTDaiPreMint.Cmp(big.NewInt(0)) == 0 {
+		return types.ErrMintedTDaiFromNoPreexistingTDai
+	}
+
+	allPerps := k.GetAllPerpetuals(ctx)
+
+	for _, perp := range allPerps {
+
+		collateralPool, err := k.GetCollateralPool(ctx, perp.Params.CollateralPoolId)
+		if err != nil {
+			return err
+		}
+
+		if collateralPool.QuoteAssetId != assettypes.AssetTDai.Id {
+			continue
+		}
+
+		modifiedPerp, err := k.CalculateNewTotalYieldIndex(
+			ctx,
+			totalTDaiPreMint,
+			totalTDaiMinted,
+			perp,
+		)
+		if err != nil {
+			return err
+		}
+
+		err = k.ValidateAndSetPerpetual(ctx, modifiedPerp)
+		if err != nil {
+			return err
+		}
+
+		k.GetIndexerEventManager().AddTxnEvent(
+			ctx,
+			indexerevents.SubtypeUpdatePerpetual,
+			indexerevents.UpdatePerpetualEventVersion,
+			indexer_manager.GetBytes(
+				indexerevents.NewUpdatePerpetualEventV1(
+					modifiedPerp.Params.Id,
+					modifiedPerp.Params.Ticker,
+					modifiedPerp.Params.MarketId,
+					modifiedPerp.Params.AtomicResolution,
+					modifiedPerp.Params.LiquidityTier,
+					modifiedPerp.Params.DangerIndexPpm,
+					modifiedPerp.YieldIndex,
+				),
+			),
+		)
+	}
+
+	return nil
+}
+
+func (k Keeper) CalculateNewTotalYieldIndex(
+	ctx sdk.Context,
+	totalTDaiPreMint *big.Int,
+	totalTDaiMinted *big.Int,
+	perp types.Perpetual,
+) (
+	types.Perpetual,
+	error,
+) {
+	marketPrice, err := k.pricesKeeper.GetMarketPrice(ctx, perp.Params.MarketId)
+	if err != nil {
+		return types.Perpetual{}, err
+	}
+
+	// Calculate yield index for this epoch
+	currEpochYieldIndex, err := k.CalculateYieldIndexForEpoch(ctx, totalTDaiPreMint, totalTDaiMinted, marketPrice, perp)
+	if err != nil {
+		return types.Perpetual{}, err
+	}
+
+	// Get current cumulative yield index
+	cumulativeYieldIndex, err := perp.GetYieldIndexAsRat()
+	if err != nil {
+		return types.Perpetual{}, err
+	}
+
+	newYieldIndex := new(big.Rat).Add(cumulativeYieldIndex, currEpochYieldIndex)
+
+	perp.YieldIndex = newYieldIndex.String()
+
+	return perp, nil
+}
+
+func (k Keeper) CalculateYieldIndexForEpoch(
+	ctx sdk.Context,
+	totalTDaiPreMint *big.Int,
+	totalTDaiMinted *big.Int,
+	marketPrice pricestypes.MarketPrice,
+	perpetual types.Perpetual,
+) (
+	yieldIndex *big.Rat,
+	err error,
+) {
+	if totalTDaiPreMint == nil || totalTDaiPreMint.Cmp(big.NewInt(0)) == 0 {
+		return nil, types.ErrTotalTDaiPreMintIsNil
+	}
+
+	if totalTDaiMinted == nil {
+		return nil, types.ErrTotalTDaiMintedIsNil
+	}
+
+	if perpetual.Params.MarketId != marketPrice.Id {
+		return nil, errorsmod.Wrapf(types.ErrPerpAndPriceMarketsMismatched, "Perpetual Market Id: %v. Price Market Id: %v.", perpetual.Params.MarketId, marketPrice.Id)
+	}
+
+	quoteCurrencyAtomicResolution, err := k.clobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetual.Params.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	oneBaseQuantum := big.NewInt(1)
+
+	priceForOneBaseQuantum := lib.BaseToQuoteQuantums(
+		oneBaseQuantum,
+		perpetual.Params.AtomicResolution,
+		quoteCurrencyAtomicResolution,
+		marketPrice.PnlPrice,
+		marketPrice.Exponent,
+	)
+
+	totalDaiMintedTimesPrice := new(big.Int).Mul(totalTDaiMinted, priceForOneBaseQuantum)
+
+	yieldIndex = new(big.Rat).SetFrac(totalDaiMintedTimesPrice, totalTDaiPreMint)
+
+	return yieldIndex, nil
 }
 
 // MaybeProcessNewFundingTickEpoch processes funding ticks if the current block
@@ -1286,6 +1434,11 @@ func (k Keeper) setPerpetual(
 	ctx sdk.Context,
 	perpetual types.Perpetual,
 ) {
+
+	if perpetual.YieldIndex == "" {
+		perpetual.YieldIndex = "0/1"
+	}
+
 	b := k.cdc.MustMarshal(&perpetual)
 	perpetualStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.PerpetualKeyPrefix))
 	perpetualStore.Set(lib.Uint32ToKey(perpetual.Params.Id), b)
@@ -1296,6 +1449,11 @@ func (k Keeper) ValidateAndSetPerpetual(
 	ctx sdk.Context,
 	perpetual types.Perpetual,
 ) error {
+
+	if perpetual.YieldIndex == "" {
+		perpetual.YieldIndex = "0/1"
+	}
+
 	if err := k.validatePerpetual(
 		ctx,
 		&perpetual,
@@ -1381,6 +1539,20 @@ func (k Keeper) validatePerpetual(
 	// Validate `collateralPool` exists.
 	if !k.HasCollateralPool(ctx, perpetual.Params.CollateralPoolId) {
 		return errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, lib.UintToString(perpetual.Params.CollateralPoolId))
+	}
+
+	if perpetual.YieldIndex == "" {
+		return types.ErrYieldIndexDoesNotExist
+	}
+
+	yieldIndex, err := perpetual.GetYieldIndexAsRat()
+
+	if err != nil {
+		return err
+	}
+
+	if yieldIndex.Cmp(big.NewRat(0, 1)) == -1 {
+		return types.ErrYieldIndexNegative
 	}
 
 	return nil

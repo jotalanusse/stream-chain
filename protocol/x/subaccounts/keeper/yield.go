@@ -1,8 +1,10 @@
 package keeper
 
 import (
+	"fmt"
 	"math/big"
 
+	errorsmod "cosmossdk.io/errors"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
@@ -210,6 +212,130 @@ func calculateAssetYieldInQuoteQuantums(
 	newAssetAmount := new(big.Rat).Mul(assetAmount, yieldIndexQuotient)
 	newYieldRat := new(big.Rat).Sub(newAssetAmount, assetAmount)
 
+	newYield = lib.BigRatRound(newYieldRat, false)
+
+	return newYield, nil
+}
+
+// -------------------PERP YIELD --------------------------
+
+func getYieldFromPerpPositions(
+	subaccount types.Subaccount,
+	perpIdToPerp map[uint32]perptypes.Perpetual,
+) (
+	totalNewPerpYield *big.Int,
+	newPerpetualPositions []*types.PerpetualPosition,
+	err error,
+) {
+	totalNewPerpYield = big.NewInt(0)
+	newPerpetualPositions = []*types.PerpetualPosition{}
+
+	for _, perpetualPosition := range subaccount.PerpetualPositions {
+		perpetual, found := perpIdToPerp[perpetualPosition.PerpetualId]
+		if !found {
+			return nil,
+				nil,
+				errorsmod.Wrap(
+					perptypes.ErrPerpetualDoesNotExist, lib.UintToString(perpetualPosition.PerpetualId),
+				)
+		}
+
+		perpYield, perpYieldIndex, err := calculateNewPerpYield(perpetual, perpetualPosition)
+		if err != nil {
+			return nil, nil, err
+		}
+		totalNewPerpYield = new(big.Int).Add(totalNewPerpYield, perpYield)
+
+		newPerpetualPosition := types.PerpetualPosition{
+			PerpetualId:  perpetualPosition.PerpetualId,
+			Quantums:     perpetualPosition.Quantums,
+			FundingIndex: perpetualPosition.FundingIndex,
+			YieldIndex:   perpYieldIndex.String(),
+		}
+		newPerpetualPositions = append(newPerpetualPositions, &newPerpetualPosition)
+	}
+	return totalNewPerpYield, newPerpetualPositions, nil
+}
+
+func calculateNewPerpYield(
+	perpetual perptypes.Perpetual,
+	perpetualPosition *types.PerpetualPosition,
+) (
+	newPerpYield *big.Int,
+	perpYieldIndex *big.Rat,
+	err error,
+) {
+	perpYieldIndex, err = getCurrentYieldIndexForPerp(perpetual)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	newPerpYield, err = calculatePerpetualYieldInQuoteQuantums(perpetualPosition, perpYieldIndex)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return newPerpYield, perpYieldIndex, nil
+}
+
+func getCurrentYieldIndexForPerp(
+	perp perptypes.Perpetual,
+) (
+	yieldIndex *big.Rat,
+	err error,
+) {
+	if perp.YieldIndex == "" {
+		fmt.Println("perp.YieldIndex is empty in getCurrentYieldIndexForPerp")
+		return nil, types.ErrPerpYieldIndexUninitialized
+	}
+
+	generalYieldIndex, success := new(big.Rat).SetString(perp.YieldIndex)
+	if !success {
+		return nil, types.ErrRatConversion
+	}
+	return generalYieldIndex, nil
+}
+
+func calculatePerpetualYieldInQuoteQuantums(
+	perpPosition *types.PerpetualPosition,
+	generalYieldIndex *big.Rat,
+) (
+	newYield *big.Int,
+	err error,
+) {
+	if perpPosition == nil {
+		return nil, types.ErrPositionIsNil
+	}
+
+	if generalYieldIndex == nil {
+		return nil, types.ErrGlobaYieldIndexNil
+	}
+
+	if generalYieldIndex.Cmp(big.NewRat(0, 1)) < 0 {
+		return nil, types.ErrGlobalYieldIndexNegative
+	}
+
+	if generalYieldIndex.Cmp(big.NewRat(0, 1)) == 0 {
+		return big.NewInt(0), nil
+	}
+
+	if perpPosition.YieldIndex == "" {
+		fmt.Println("perpPosition.YieldIndex is empty in calculatePerpetualYieldInQuoteQuantums")
+		return nil, types.ErrPerpYieldIndexUninitialized
+	}
+
+	currentYieldIndex, success := new(big.Rat).SetString(perpPosition.YieldIndex)
+	if !success {
+		return nil, types.ErrRatConversion
+	}
+
+	if generalYieldIndex.Cmp(currentYieldIndex) < 0 {
+		return nil, types.ErrGeneralYieldIndexSmallerThanYieldIndexInSubaccount
+	}
+
+	yieldIndexDifference := new(big.Rat).Sub(generalYieldIndex, currentYieldIndex)
+	perpAmount := new(big.Rat).SetInt(perpPosition.GetBigQuantums())
+	newYieldRat := new(big.Rat).Mul(perpAmount, yieldIndexDifference)
 	newYield = lib.BigRatRound(newYieldRat, false)
 
 	return newYield, nil

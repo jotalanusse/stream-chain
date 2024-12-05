@@ -42,6 +42,7 @@ type BlockTimeKeeper interface {
 }
 
 type PerpetualsKeeper interface {
+	UpdateYieldIndexToNewMint(ctx sdk.Context, totalTDaiPreMint *big.Int, totalTDaiMinted *big.Int) error
 	GetAllPerpetuals(ctx sdk.Context) (list []perptypes.Perpetual)
 	GetInsuranceFundModuleAddress(ctx sdk.Context, perpetualId uint32) (sdk.AccAddress, error)
 }
