@@ -537,6 +537,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 						{
 							PerpetualId: 0,
 							Quantums:    dtypes.NewInt(50_000_000), // 0.5 BTC
+							YieldIndex:  big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -550,6 +551,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 						{
 							PerpetualId: 0,
 							Quantums:    dtypes.NewInt(50_000_000), // 0.5 BTC
+							YieldIndex:  big.NewRat(0, 1).String(),
 						},
 					},
 					AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -746,6 +748,7 @@ func TestOffsetSubaccountPerpetualPosition(t *testing.T) {
 							PerpetualId:  1,
 							Quantums:     dtypes.NewInt(1_000_000_000), // 1 ETH
 							FundingIndex: dtypes.NewInt(0),
+							YieldIndex:   big.NewRat(0, 1).String(),
 						},
 					},
 					AssetPositions: keepertest.CreateTDaiAssetPosition(
@@ -1178,6 +1181,7 @@ func TestProcessDeleveraging(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(-90_000_000), // -0.9 BTC
 						FundingIndex: dtypes.ZeroInt(),
+						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1194,6 +1198,7 @@ func TestProcessDeleveraging(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(90_000_000), // 0.9 BTC
 						FundingIndex: dtypes.ZeroInt(),
+						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1228,10 +1233,12 @@ func TestProcessDeleveraging(t *testing.T) {
 					{
 						PerpetualId: 0,
 						Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
+						YieldIndex:  big.NewRat(0, 1).String(),
 					},
 					{
 						PerpetualId: 1,
 						Quantums:    dtypes.NewInt(-10_000_000_000), // -10 ETH
+						YieldIndex:  big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1252,6 +1259,7 @@ func TestProcessDeleveraging(t *testing.T) {
 						PerpetualId:  1,
 						Quantums:     dtypes.NewInt(-10_000_000_000), // -10 ETH
 						FundingIndex: dtypes.ZeroInt(),
+						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: big.NewRat(1, 1).String(),
@@ -1690,6 +1698,7 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 					{
 						PerpetualId: 0,
 						Quantums:    dtypes.NewInt(-100_000_000), // -1 BTC
+						YieldIndex:  big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: "1/1",
@@ -1710,6 +1719,7 @@ func TestProcessDeleveraging_Rounding(t *testing.T) {
 					{
 						PerpetualId: 0,
 						Quantums:    dtypes.NewInt(100_000_000),
+						YieldIndex:  big.NewRat(0, 1).String(),
 					},
 				},
 				AssetYieldIndex: "1/1",

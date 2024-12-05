@@ -216,6 +216,7 @@ func TestDepositYieldToSubaccount(t *testing.T) {
 					PerpetualId:  uint32(3),
 					Quantums:     dtypes.NewInt(100_000_000),
 					FundingIndex: dtypes.NewInt(0),
+					YieldIndex:   big.NewRat(0, 1).String(),
 				},
 			},
 
@@ -438,9 +439,8 @@ func TestAddYieldToSubaccount(t *testing.T) {
 			},
 			expectedAssetPositions: []*types.AssetPosition{
 				{
-					AssetId:    uint32(0),
-					Quantums:   dtypes.NewInt(100_000_000),
-					YieldIndex: big.NewRat(0, 1).String(),
+					AssetId:  uint32(0),
+					Quantums: dtypes.NewInt(100_000_000),
 				},
 			},
 		},
@@ -1235,6 +1235,30 @@ func TestAddYieldToSubaccount(t *testing.T) {
 			},
 
 			expectedErr: types.ErrGeneralYieldIndexSmallerThanYieldIndexInSubaccount,
+		},
+		"Failure: Tries to add yield when subaccount has perp position that is not in perpIdToPerp map": {
+			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(100_000_000_000)),
+			subaccountAssetYieldIndex: big.NewRat(1, 1).String(),
+			globalAssetYieldIndex:     big.NewRat(1, 1),
+			availableYield:            big.NewInt(1_000_000_000_000_000_000),
+			perpetuals: []perptypes.Perpetual{
+				constants.BtcUsd_NoMarginRequirement,
+			},
+			perpetualPositions: []*types.PerpetualPosition{
+				{
+					PerpetualId:  uint32(0),
+					Quantums:     dtypes.NewInt(-1_000_000_000),
+					FundingIndex: dtypes.NewInt(0),
+					YieldIndex:   big.NewRat(0, 1).String(),
+				},
+			},
+			PerpIdToPerp: map[uint32]perptypes.Perpetual{
+				1: constants.BtcUsd_NoMarginRequirement,
+			},
+
+			expectedErr: errorsmod.Wrap(
+				perptypes.ErrPerpetualDoesNotExist, "0",
+			),
 		},
 	}
 	for name, tc := range tests {
