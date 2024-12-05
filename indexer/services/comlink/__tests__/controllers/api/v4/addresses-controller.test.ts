@@ -106,6 +106,7 @@ describe('addresses-controller#V4', () => {
               createdAtHeight: testConstants.defaultPerpetualPosition.createdAtHeight,
               exitPrice: null,
               closedAt: null,
+              perpYieldIndex: testConstants.defaultPerpetualPosition.perpYieldIndex,
             },
           },
           assetPositions: {
@@ -268,6 +269,7 @@ describe('addresses-controller#V4', () => {
                 createdAtHeight: testConstants.defaultPerpetualPosition.createdAtHeight,
                 exitPrice: null,
                 closedAt: null,
+                perpYieldIndex: testConstants.defaultPerpetualPosition.perpYieldIndex,
               },
             },
             assetPositions: {
@@ -421,6 +423,7 @@ describe('addresses-controller#V4', () => {
                   createdAtHeight: testConstants.defaultPerpetualPosition.createdAtHeight,
                   exitPrice: null,
                   closedAt: null,
+                  perpYieldIndex: testConstants.defaultPerpetualPosition.perpYieldIndex,
                 },
               },
               assetPositions: {

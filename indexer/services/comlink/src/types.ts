@@ -95,6 +95,7 @@ export interface PerpetualPositionResponseObject {
   sumClose: string;
   netFunding: string;
   unrealizedPnl: string;
+  perpYieldIndex: string;
   closedAt?: IsoString | null;
   exitPrice?: string | null;
 }
@@ -258,6 +259,7 @@ export interface PerpetualMarketResponseObject {
   openInterestLowerCap?: string;
   openInterestUpperCap?: string;
   baseOpenInterest: string;
+  perpYieldIndex: string;
 }
 
 /* ------- ORDERBOOK TYPES ------- */

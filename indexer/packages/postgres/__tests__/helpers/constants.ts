@@ -57,6 +57,7 @@ export const defaultAddress: string = 'klyra1n88uc38xhjgxzw9nwre4ep2c8ga4fjxcttp
 export const blockedAddress: string = 'klyra1f9k5qldwmqrnwy8hcgp4fw6heuvszt35xeeywp';
 export const zeroAssetYieldIndex: string = '0/1';
 export const oneAssetYieldIndex: string = '1/1';
+export const defaultZeroPerpYieldIndex: string = '0/1';
 
 // ============== Subaccounts ==============
 
@@ -199,6 +200,7 @@ export const defaultPerpetualMarket: PerpetualMarketCreateObject = {
   stepBaseQuantums: 10,
   liquidityTierId: 0,
   baseOpenInterest: '100000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 export const defaultPerpetualMarket2: PerpetualMarketCreateObject = {
   id: '1',
@@ -218,6 +220,7 @@ export const defaultPerpetualMarket2: PerpetualMarketCreateObject = {
   stepBaseQuantums: 1,
   liquidityTierId: 0,
   baseOpenInterest: '100000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 export const defaultPerpetualMarket3: PerpetualMarketCreateObject = {
   id: '2',
@@ -237,6 +240,7 @@ export const defaultPerpetualMarket3: PerpetualMarketCreateObject = {
   stepBaseQuantums: 1,
   liquidityTierId: 0,
   baseOpenInterest: '100000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 
 export const isolatedPerpetualMarket: PerpetualMarketCreateObject = {
@@ -257,6 +261,7 @@ export const isolatedPerpetualMarket: PerpetualMarketCreateObject = {
   stepBaseQuantums: 1,
   liquidityTierId: 0,
   baseOpenInterest: '100000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 
 export const isolatedPerpetualMarket2: PerpetualMarketCreateObject = {
@@ -277,6 +282,7 @@ export const isolatedPerpetualMarket2: PerpetualMarketCreateObject = {
   stepBaseQuantums: 1,
   liquidityTierId: 0,
   baseOpenInterest: '100000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 
 // ============== Orders ==============
@@ -453,6 +459,7 @@ export const defaultPerpetualPosition: PerpetualPositionCreateObject = {
   openEventId: defaultTendermintEventId,
   lastEventId: defaultTendermintEventId2,
   settledFunding: '200000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 
 export const defaultPerpetualPositionId: string = PerpetualPositionTable.uuid(
@@ -475,6 +482,7 @@ export const isolatedPerpetualPosition: PerpetualPositionCreateObject = {
   openEventId: defaultTendermintEventId,
   lastEventId: defaultTendermintEventId2,
   settledFunding: '200000',
+  perpYieldIndex: defaultZeroPerpYieldIndex,
 };
 
 export const isolatedPerpetualPositionId: string = PerpetualPositionTable.uuid(

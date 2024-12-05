@@ -55,6 +55,8 @@ import {
   defaultPreviousHeight,
   defaultTime,
   defaultTxHash,
+  defaultZeroPerpYieldIndex,
+  onePerpYieldIndex,
 } from '../helpers/constants';
 import { updateBlockCache } from '../../src/caches/block-cache';
 import { createPostgresFunctions } from '../../src/helpers/postgres/postgres-functions';
@@ -94,6 +96,7 @@ describe('subaccountUpdateHandler', () => {
     openEventId: testConstants.defaultTendermintEventId,
     lastEventId: testConstants.defaultTendermintEventId,
     settledFunding: '-200000',
+    perpYieldIndex: defaultZeroPerpYieldIndex,
   };
 
   const defaultAssetPosition: AssetPositionCreateObject = {
@@ -199,6 +202,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingPayment))),
+        perpYieldIndex: defaultZeroPerpYieldIndex,
       }],
     });
 
@@ -244,6 +248,7 @@ describe('subaccountUpdateHandler', () => {
       openEventId: tendermintEventId,
       lastEventId: tendermintEventId,
       settledFunding,
+      perpYieldIndex: defaultZeroPerpYieldIndex,
     }));
 
     const updatedPerpetualPositionSubaccountKafkaObject:
@@ -279,6 +284,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingPayment))),
+        perpYieldIndex: defaultZeroPerpYieldIndex,
       }],
     });
 
@@ -308,6 +314,7 @@ describe('subaccountUpdateHandler', () => {
       side: PositionSide.LONG,
       status: PerpetualPositionStatus.OPEN,
       settledFunding,
+      perpYieldIndex: defaultZeroPerpYieldIndex,
     }));
     const updatedPerpetualPositionSubaccountKafkaObject:
     UpdatedPerpetualPositionSubaccountKafkaObject = annotateWithPnl(
@@ -337,6 +344,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingPayment))),
+        perpYieldIndex: onePerpYieldIndex,
       }],
     });
 
@@ -364,6 +372,7 @@ describe('subaccountUpdateHandler', () => {
       side: PositionSide.LONG,
       status: PerpetualPositionStatus.OPEN,
       settledFunding,
+      perpYieldIndex: onePerpYieldIndex,
     }));
     const updatedPerpetualPositionSubaccountKafkaObject:
     UpdatedPerpetualPositionSubaccountKafkaObject = annotateWithPnl(
@@ -393,6 +402,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingPayment))),
+        perpYieldIndex: onePerpYieldIndex,
       }],
     });
 
@@ -422,6 +432,7 @@ describe('subaccountUpdateHandler', () => {
       side: PositionSide.LONG,
       status: PerpetualPositionStatus.OPEN,
       settledFunding,
+      perpYieldIndex: onePerpYieldIndex,
     }));
     const updatedPerpetualPositionSubaccountKafkaObject:
     UpdatedPerpetualPositionSubaccountKafkaObject = annotateWithPnl(
@@ -450,6 +461,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingPayment))),
+        perpYieldIndex: onePerpYieldIndex,
       }],
     });
 
@@ -485,6 +497,7 @@ describe('subaccountUpdateHandler', () => {
       size: '0',
       status: PerpetualPositionStatus.CLOSED,
       settledFunding: '-201000',  // existing settledFunding = -200000, new position funding payment = -1000.
+      perpYieldIndex: onePerpYieldIndex,
     }));
 
     const newPosition: PerpetualPositionFromDatabase | undefined = await
@@ -497,6 +510,7 @@ describe('subaccountUpdateHandler', () => {
       size: perpetualSize,
       maxSize: perpetualSize,
       settledFunding: '0',  // settledFunding of new opened position is 0.
+      perpYieldIndex: onePerpYieldIndex,
     }));
     const closedPositionSubaccountKafkaObject:
     UpdatedPerpetualPositionSubaccountKafkaObject = annotateWithPnl(
@@ -532,6 +546,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingPayment))),
+        perpYieldIndex: defaultZeroPerpYieldIndex,
       }],
     });
 
@@ -727,6 +742,7 @@ describe('subaccountUpdateHandler', () => {
         perpetualId: testConstants.defaultPerpetualMarket.id,
         quantums: bytesToBase64(bigIntToBytes(BigInt('0'))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
+        perpYieldIndex: defaultZeroPerpYieldIndex,
       }],
     });
 
@@ -801,6 +817,7 @@ describe('subaccountUpdateHandler', () => {
         quantums: bytesToBase64(bigIntToBytes(BigInt(sizeInQuantums))),
         fundingIndex: bytesToBase64(bigIntToBytes(BigInt(fundingIndex))),
         fundingPayment: bytesToBase64(bigIntToBytes(BigInt(fundingInQuantums))),
+        perpYieldIndex: defaultZeroPerpYieldIndex,
       }],
       updatedAssetPositions: [{
         assetId: testConstants.defaultAsset3.id,
@@ -845,6 +862,7 @@ describe('subaccountUpdateHandler', () => {
       openEventId: tendermintEventId,
       lastEventId: tendermintEventId,
       settledFunding: fundingPayment,
+      perpYieldIndex: defaultZeroPerpYieldIndex,
     }));
     const perpetualPositionSubaccountKafkaObject:
     UpdatedPerpetualPositionSubaccountKafkaObject = annotateWithPnl(
