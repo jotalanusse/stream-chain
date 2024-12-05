@@ -100,10 +100,17 @@ func AddYieldToSubaccount(
 	totalNewYieldInQuantums *big.Int,
 	err error,
 ) {
-	totalNewYieldInQuantums, err = getYieldFromAssetPositions(subaccount, assetYieldIndex)
+	assetYield, err := getYieldFromAssetPositions(subaccount, assetYieldIndex)
 	if err != nil {
 		return types.Subaccount{}, nil, err
 	}
+
+	totalNewPerpYield, newPerpetualPositions, err := getYieldFromPerpPositions(subaccount, perpIdToPerp)
+	if err != nil {
+		return types.Subaccount{}, nil, err
+	}
+
+	totalNewYieldInQuantums = new(big.Int).Add(assetYield, totalNewPerpYield)
 
 	totalNewYieldInQuantums = HandleInsufficientYieldDueToNegativeTNC(totalNewYieldInQuantums, availableYieldInQuantums)
 
@@ -111,7 +118,7 @@ func AddYieldToSubaccount(
 	newSubaccount := types.Subaccount{
 		Id:                 subaccount.Id,
 		AssetPositions:     subaccount.AssetPositions,
-		PerpetualPositions: subaccount.PerpetualPositions,
+		PerpetualPositions: newPerpetualPositions,
 		MarginEnabled:      subaccount.MarginEnabled,
 		AssetYieldIndex:    assetYieldIndexString,
 	}
@@ -308,7 +315,7 @@ func calculatePerpetualYieldInQuoteQuantums(
 	}
 
 	if generalYieldIndex == nil {
-		return nil, types.ErrGlobaYieldIndexNil
+		return nil, types.ErrGlobalYieldIndexNil
 	}
 
 	if generalYieldIndex.Cmp(big.NewRat(0, 1)) < 0 {

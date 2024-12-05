@@ -468,6 +468,13 @@ func (k Keeper) UpdateSubaccounts(
 		if u.SettledSubaccount.AssetYieldIndex == "" {
 			return false, nil, errors.New("asset yield index is not set")
 		}
+
+		for _, perp := range u.SettledSubaccount.PerpetualPositions {
+			if perp.YieldIndex == "" {
+				return false, nil, errors.New("perp yield index is not set")
+			}
+		}
+
 		k.SetSubaccount(ctx, u.SettledSubaccount)
 		// Below access is safe because for all updated subaccounts' IDs, this map
 		// is populated as GetSettledSubaccount() is called in getSettledUpdates().
@@ -675,6 +682,7 @@ func getNewPerpPositionWithFundingRateUpdate(
 		PerpetualId:  perpetualPosition.PerpetualId,
 		Quantums:     perpetualPosition.Quantums,
 		FundingIndex: dtypes.NewIntFromBigInt(newFundingIndex),
+		YieldIndex:   perpetualPosition.YieldIndex,
 	}
 
 	return bigNetSettlementPpm, newPerpetualPosition, nil
