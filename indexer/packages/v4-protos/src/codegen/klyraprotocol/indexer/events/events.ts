@@ -1390,6 +1390,9 @@ export interface UpdatePerpetualEventV1 {
    */
 
   dangerIndexPpm: number;
+  /** The perp yield index of this perpetual market */
+
+  perpYieldIndex: string;
 }
 /**
  * UpdatePerpetualEventV1 message contains all the information about an update
@@ -1435,6 +1438,9 @@ export interface UpdatePerpetualEventV1SDKType {
    */
 
   danger_index_ppm: number;
+  /** The perp yield index of this perpetual market */
+
+  perp_yield_index: string;
 }
 /**
  * UpdateYieldParamsV1 message contains all the information about an update
@@ -3473,7 +3479,8 @@ function createBaseUpdatePerpetualEventV1(): UpdatePerpetualEventV1 {
     marketId: 0,
     atomicResolution: 0,
     liquidityTier: 0,
-    dangerIndexPpm: 0
+    dangerIndexPpm: 0,
+    perpYieldIndex: ""
   };
 }
 
@@ -3501,6 +3508,10 @@ export const UpdatePerpetualEventV1 = {
 
     if (message.dangerIndexPpm !== 0) {
       writer.uint32(48).uint32(message.dangerIndexPpm);
+    }
+
+    if (message.perpYieldIndex !== "") {
+      writer.uint32(58).string(message.perpYieldIndex);
     }
 
     return writer;
@@ -3539,6 +3550,10 @@ export const UpdatePerpetualEventV1 = {
           message.dangerIndexPpm = reader.uint32();
           break;
 
+        case 7:
+          message.perpYieldIndex = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3556,6 +3571,7 @@ export const UpdatePerpetualEventV1 = {
     message.atomicResolution = object.atomicResolution ?? 0;
     message.liquidityTier = object.liquidityTier ?? 0;
     message.dangerIndexPpm = object.dangerIndexPpm ?? 0;
+    message.perpYieldIndex = object.perpYieldIndex ?? "";
     return message;
   }
 
