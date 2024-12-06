@@ -56,38 +56,23 @@ func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
 	earnsTdaiYield bool,
 	err error,
 ) {
-	if len(subaccount.AssetPositions) == 0 && len(subaccount.PerpetualPositions) == 0 {
-		return false, nil
-	}
 
-	if subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) == 0 {
-		if len(subaccount.PerpetualPositions) == 0 {
-			return false, nil
-		}
-		// all perpetuals in a subaccount have the same supported collateral assets
+	if len(subaccount.PerpetualPositions) > 0 {
 		perpetualPosition := subaccount.PerpetualPositions[0]
 		perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
 		if err != nil {
 			return false, err
 		}
+
 		collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
 		if err != nil {
 			return false, err
 		}
 
-		found := false
-		for _, asset := range collateralPool.MultiCollateralAssets.MultiCollateralAssets {
-			if asset == assettypes.AssetTDai.Id {
-				found = true
-				break
-			}
-		}
-		if !found {
-			return false, nil
-		}
+		return collateralPool.QuoteAssetId == assettypes.AssetTDai.Id, nil
 	}
 
-	return true, nil
+	return subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) != 0, nil
 }
 
 func AddYieldToSubaccount(
