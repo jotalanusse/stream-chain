@@ -1110,7 +1110,7 @@ func TestPlacePerpetualLiquidation_PreexistingLiquidation(t *testing.T) {
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			if tc.maxInsuranceFundLost != 0 {
-				ks.PerpetualsKeeper.SetCollateralPool(
+				ks.PerpetualsKeeper.UpsertCollateralPool(
 					ctx,
 					constants.CollateralPools[0].CollateralPoolId,
 					tc.maxInsuranceFundLost,
@@ -5830,7 +5830,7 @@ func TestCheckInsuranceFundLimits(t *testing.T) {
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 			if tc.maxInsuranceFundLost != 0 {
-				ks.PerpetualsKeeper.SetCollateralPool(
+				ks.PerpetualsKeeper.UpsertCollateralPool(
 					ctx,
 					constants.CollateralPools[0].CollateralPoolId,
 					tc.maxInsuranceFundLost,
@@ -6168,7 +6168,7 @@ func TestGetInsuranceFundDeltaBlockLimit(t *testing.T) {
 			keepertest.CreateTestLiquidityTiers(t, ctx, ks.PerpetualsKeeper)
 			keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
-			ks.PerpetualsKeeper.SetCollateralPool(
+			ks.PerpetualsKeeper.UpsertCollateralPool(
 				ctx,
 				constants.CollateralPools[0].CollateralPoolId,
 				500_000,

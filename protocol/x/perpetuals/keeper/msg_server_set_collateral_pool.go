@@ -23,7 +23,7 @@ func (k msgServer) SetCollateralPool(
 
 	ctx := lib.UnwrapSDKContext(goCtx, types.ModuleName)
 
-	if _, err := k.Keeper.SetCollateralPool(
+	if _, err := k.Keeper.UpsertCollateralPool(
 		ctx,
 		msg.CollateralPool.CollateralPoolId,
 		msg.CollateralPool.MaxCumulativeInsuranceFundDeltaPerBlock,

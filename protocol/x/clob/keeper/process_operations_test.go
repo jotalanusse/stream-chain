@@ -2404,7 +2404,7 @@ func setupProcessProposerOperationsTestCase(
 	keepertest.CreateTestCollateralPools(t, ctx, ks.PerpetualsKeeper)
 
 	if tc.maxCumulativeInsuranceFundDeltaPerBlock != 0 {
-		ks.PerpetualsKeeper.SetCollateralPool(
+		ks.PerpetualsKeeper.UpsertCollateralPool(
 			ctx,
 			constants.CollateralPools[0].CollateralPoolId,
 			tc.maxCumulativeInsuranceFundDeltaPerBlock,
