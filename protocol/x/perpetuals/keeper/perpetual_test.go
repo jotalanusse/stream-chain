@@ -103,7 +103,6 @@ func TestModifyPerpetual_Success(t *testing.T) {
 			defaultFundingPpm,
 			liquidityTier,
 			0,
-			0,
 		)
 		require.NoError(t, err)
 
@@ -355,26 +354,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 			dangerIndexPpm:    0,
 			expectedError:     errorsmod.Wrap(types.ErrLiquidityTierDoesNotExist, fmt.Sprint(999)),
 		},
-		"Collateral pool doesn't exist": {
-			id:                0,
-			ticker:            "ticker",
-			marketId:          0,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			collateralPoolId:  9999,
-			expectedError:     errorsmod.Wrap(types.ErrCollateralPoolDoesNotExist, fmt.Sprint(9999)),
-		},
-		"Modified collateral pool of existing perpetual": {
-			id:                0,
-			ticker:            "ticker",
-			marketId:          0,
-			defaultFundingPpm: 0,
-			liquidityTier:     0,
-			dangerIndexPpm:    0,
-			collateralPoolId:  1,
-			expectedError:     types.ErrCannotChangeCollateralPoolOfExistingPerpetual,
-		},
 	}
 
 	// Test setup.
@@ -393,7 +372,6 @@ func TestModifyPerpetual_Failure(t *testing.T) {
 				tc.defaultFundingPpm,
 				tc.liquidityTier,
 				tc.dangerIndexPpm,
-				tc.collateralPoolId,
 			)
 
 			require.Error(t, err)
