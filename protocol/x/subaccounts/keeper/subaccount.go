@@ -144,9 +144,8 @@ func (k Keeper) GetAllSubaccount(ctx sdk.Context) (list []types.Subaccount) {
 }
 
 // GetCollateralPoolAddressFromSubaccountId returns the collateral pool address for a subaccount
-// based on the subaccount's perpetual positions. If the subaccount holds a position in an isolated
-// market, the collateral pool address will be the isolated market's pool address. Otherwise, the
-// collateral pool address will be the module's pool address.
+// based on the subaccount's perpetual positions. If the subaccount has no perpetual positions open,
+// the default collateral pool address is the module's pool address.
 func (k Keeper) GetCollateralPoolAddressFromSubaccountId(ctx sdk.Context, subaccountId types.SubaccountId) (
 	sdk.AccAddress,
 	error,
@@ -167,8 +166,8 @@ func (k Keeper) getCollateralPoolAddressFromSubaccount(ctx sdk.Context, subaccou
 	return k.GetCollateralPoolAddressFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
 }
 
-// GetCollateralPoolForSubaccountWithPerpetuals returns the collateral pool address based on the
-// perpetual passed in as an argument.
+// GetCollateralPoolAddressFromPerpetualId returns the collateral pool address based on the
+// perpetual ID passed in as an argument.
 func (k Keeper) GetCollateralPoolAddressFromPerpetualId(ctx sdk.Context, perpetualId uint32) (sdk.AccAddress, error) {
 	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
 	if err != nil {
@@ -176,6 +175,25 @@ func (k Keeper) GetCollateralPoolAddressFromPerpetualId(ctx sdk.Context, perpetu
 	}
 
 	return authtypes.NewModuleAddress(types.ModuleName + ":" + lib.UintToString(perpetual.Params.CollateralPoolId)), nil
+}
+
+// GetCollateralPoolFromSubaccount returns the collateral pool for a corresponding subaccount
+func (k Keeper) GetCollateralPoolFromSubaccount(ctx sdk.Context, subaccount types.Subaccount) (
+	perptypes.CollateralPool,
+	error,
+) {
+	perpetualPosition := subaccount.PerpetualPositions[0]
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
+	if err != nil {
+		return perptypes.CollateralPool{}, err
+	}
+
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return perptypes.CollateralPool{}, err
+	}
+
+	return collateralPool, nil
 }
 
 // ForEachSubaccount performs a callback across all subaccounts.
@@ -301,7 +319,7 @@ func (k Keeper) fetchParamsToSettleSubaccount(
 	err error,
 ) {
 
-	earnsTdaiYield, err = k.CheckIfSubaccountEarnsTdaiYield(ctx, subaccount)
+	earnsTdaiYield, err = k.DoesSubaccountEarnTDaiYield(ctx, subaccount)
 	if err != nil {
 		return nil, nil, nil, false, 0, err
 	}
