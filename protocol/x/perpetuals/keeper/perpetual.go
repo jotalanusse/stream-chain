@@ -130,16 +130,11 @@ func (k Keeper) ModifyPerpetual(
 	defaultFundingPpm int32,
 	liquidityTier uint32,
 	dangerIndexPpm uint32,
-	collateralPoolId uint32,
 ) (types.Perpetual, error) {
 	// Get perpetual.
 	perpetual, err := k.GetPerpetual(ctx, id)
 	if err != nil {
 		return perpetual, err
-	}
-
-	if perpetual.Params.CollateralPoolId != collateralPoolId {
-		return perpetual, types.ErrCannotChangeCollateralPoolOfExistingPerpetual
 	}
 
 	// Modify perpetual.
