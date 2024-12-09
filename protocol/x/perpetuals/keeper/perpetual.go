@@ -138,13 +138,16 @@ func (k Keeper) ModifyPerpetual(
 		return perpetual, err
 	}
 
+	if perpetual.Params.CollateralPoolId != collateralPoolId {
+		return perpetual, types.ErrCannotChangeCollateralPoolOfExistingPerpetual
+	}
+
 	// Modify perpetual.
 	perpetual.Params.Ticker = ticker
 	perpetual.Params.MarketId = marketId
 	perpetual.Params.DefaultFundingPpm = defaultFundingPpm
 	perpetual.Params.LiquidityTier = liquidityTier
 	perpetual.Params.DangerIndexPpm = dangerIndexPpm
-	perpetual.Params.CollateralPoolId = collateralPoolId
 	// Store the modified perpetual.
 	if err := k.ValidateAndSetPerpetual(ctx, perpetual); err != nil {
 		return types.Perpetual{}, err
