@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
@@ -30,6 +29,7 @@ func (k Keeper) ClaimYieldForSubaccountFromIdAndSetNewState(
 	if err != nil {
 		return err
 	}
+
 	if !earnsTdaiYield {
 		return types.ErrNoYieldToClaim
 	}
@@ -57,22 +57,22 @@ func (k Keeper) CheckIfSubaccountEarnsTdaiYield(
 	err error,
 ) {
 
-	if len(subaccount.PerpetualPositions) > 0 {
-		perpetualPosition := subaccount.PerpetualPositions[0]
-		perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
-		if err != nil {
-			return false, err
-		}
-
-		collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
-		if err != nil {
-			return false, err
-		}
-
-		return collateralPool.QuoteAssetId == assettypes.AssetTDai.Id, nil
+	if len(subaccount.PerpetualPositions) == 0 {
+		return subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) != 0, nil
 	}
 
-	return subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) != 0, nil
+	perpetualPosition := subaccount.PerpetualPositions[0]
+	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
+	if err != nil {
+		return false, err
+	}
+
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	if err != nil {
+		return false, err
+	}
+
+	return collateralPool.QuoteAssetId == assettypes.AssetTDai.Id, nil
 }
 
 func AddYieldToSubaccount(
@@ -277,7 +277,6 @@ func getCurrentYieldIndexForPerp(
 	err error,
 ) {
 	if perp.YieldIndex == "" {
-		fmt.Println("perp.YieldIndex is empty in getCurrentYieldIndexForPerp")
 		return nil, types.ErrPerpYieldIndexUninitialized
 	}
 
@@ -312,7 +311,6 @@ func calculatePerpetualYieldInQuoteQuantums(
 	}
 
 	if perpPosition.YieldIndex == "" {
-		fmt.Println("perpPosition.YieldIndex is empty in calculatePerpetualYieldInQuoteQuantums")
 		return nil, types.ErrPerpYieldIndexUninitialized
 	}
 
