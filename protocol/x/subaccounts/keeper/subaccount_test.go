@@ -191,7 +191,7 @@ func TestGetCollateralPool(t *testing.T) {
 				subaccount := createNSubaccount(keeper, ctx, 1, big.NewInt(1_000))[0]
 				subaccount.PerpetualPositions = tc.perpetualPositions
 				keeper.SetSubaccount(ctx, subaccount)
-				collateralPoolAddr, err := keeper.GetCollateralPoolForSubaccount(ctx, *subaccount.Id)
+				collateralPoolAddr, err := keeper.GetCollateralPoolAddressFromSubaccountId(ctx, *subaccount.Id)
 				require.NoError(t, err)
 				require.Equal(t, tc.expectedAddress, collateralPoolAddr)
 			},
