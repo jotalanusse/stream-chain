@@ -215,7 +215,7 @@ func CreateTestLiquidityTiers(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 
 func CreateTestCollateralPools(t *testing.T, ctx sdk.Context, k *keeper.Keeper) {
 	for _, cp := range constants.CollateralPools {
-		_, err := k.SetCollateralPool(ctx,
+		_, err := k.UpsertCollateralPool(ctx,
 			cp.CollateralPoolId,
 			cp.MaxCumulativeInsuranceFundDeltaPerBlock,
 			cp.MultiCollateralAssets,

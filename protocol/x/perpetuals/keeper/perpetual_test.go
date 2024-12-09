@@ -3281,7 +3281,7 @@ func TestGetAllCollateralPools_Sorted(t *testing.T) {
 	}
 
 	for _, pool := range pools {
-		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+		_, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
 			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
@@ -3318,7 +3318,7 @@ func TestHasCollateralPool(t *testing.T) {
 	}
 
 	for _, pool := range pools {
-		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+		_, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
 			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
@@ -3341,7 +3341,7 @@ func TestCreateCollateralPool_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	for _, pool := range constants.CollateralPools {
 		// Create CollateralPool without error.
-		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+		_, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
 			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
@@ -3363,7 +3363,7 @@ func TestCreateCollateralPool_Success(t *testing.T) {
 	}
 }
 
-func TestSetCollateralPool_New_Failure(t *testing.T) {
+func TestUpsertCollateralPool_New_Failure(t *testing.T) {
 	tests := map[string]struct {
 		collateralPoolId                        uint32
 		maxCumulativeInsuranceFundDeltaPerBlock uint64
@@ -3400,7 +3400,7 @@ func TestSetCollateralPool_New_Failure(t *testing.T) {
 	// Run tests.
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			_, err := pc.PerpetualsKeeper.SetCollateralPool(
+			_, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 				pc.Ctx,
 				tc.collateralPoolId,
 				tc.maxCumulativeInsuranceFundDeltaPerBlock,
@@ -3417,7 +3417,7 @@ func TestSetCollateralPool_New_Failure(t *testing.T) {
 func TestModifyCollateralPool_Success(t *testing.T) {
 	pc := keepertest.PerpetualsKeepers(t)
 	for _, pool := range constants.CollateralPools {
-		_, err := pc.PerpetualsKeeper.SetCollateralPool(
+		_, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
 			pool.MaxCumulativeInsuranceFundDeltaPerBlock,
@@ -3442,7 +3442,7 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 			}
 		}
 		quoteAssetId := pool.QuoteAssetId
-		modifiedPool, err := pc.PerpetualsKeeper.SetCollateralPool(
+		modifiedPool, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 			pc.Ctx,
 			pool.CollateralPoolId,
 			maxCumulativeInsuranceFundDeltaPerBlock,
@@ -3480,7 +3480,7 @@ func TestModifyCollateralPool_Success(t *testing.T) {
 	}
 }
 
-func TestSetCollateralPool_Existing_Failure(t *testing.T) {
+func TestUpsertCollateralPool_Existing_Failure(t *testing.T) {
 	tests := map[string]struct {
 		collateralPoolId                        uint32
 		maxCumulativeInsuranceFundDeltaPerBlock uint64
@@ -3518,7 +3518,7 @@ func TestSetCollateralPool_Existing_Failure(t *testing.T) {
 	// Run tests.
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			_, err := pc.PerpetualsKeeper.SetCollateralPool(
+			_, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 				pc.Ctx,
 				tc.collateralPoolId,
 				tc.maxCumulativeInsuranceFundDeltaPerBlock,

@@ -104,7 +104,7 @@ type PerpetualsKeeper interface {
 		liquidityTier LiquidityTier,
 		err error,
 	)
-	SetCollateralPool(
+	UpsertCollateralPool(
 		ctx sdk.Context,
 		collateralPoolId uint32,
 		maxCumulativeInsuranceFundDeltaPerBlock uint64,

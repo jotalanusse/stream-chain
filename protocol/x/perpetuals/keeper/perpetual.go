@@ -1786,9 +1786,9 @@ func (k Keeper) HasCollateralPool(
 	return cpStore.Has(lib.Uint32ToKey(id))
 }
 
-// `SetCollateralPool` sets a collateral pool in the store (i.e. updates if `id` exists and creates otherwise).
+// `UpsertCollateralPool` creates or updates a collateral pool in the store (i.e. updates if `id` exists and creates otherwise).
 // Returns an error if any of its fields fails validation.
-func (k Keeper) SetCollateralPool(
+func (k Keeper) UpsertCollateralPool(
 	ctx sdk.Context,
 	collateralPoolId uint32,
 	maxCumulativeInsuranceFundDeltaPerBlock uint64,
@@ -1820,7 +1820,7 @@ func (k Keeper) SetCollateralPool(
 	}
 
 	// Set collateral pool in store.
-	k.setCollateralPool(ctx, collateralPool)
+	k.writeCollateralPoolToStore(ctx, collateralPool)
 
 	return collateralPool, nil
 }
@@ -1910,8 +1910,8 @@ func (k Keeper) GetAllCollateralPools(ctx sdk.Context) (list []types.CollateralP
 	return list
 }
 
-// `setCollateralPool` sets a collateral pool in store.
-func (k Keeper) setCollateralPool(
+// `writeCollateralPoolToStore` writes a collateral pool in store.
+func (k Keeper) writeCollateralPoolToStore(
 	ctx sdk.Context,
 	collateralPool types.CollateralPool,
 ) {

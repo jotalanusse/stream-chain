@@ -411,34 +411,6 @@ func (_m *PerpetualsKeeper) SendOIUpdatesToIndexer(ctx types.Context) {
 	_m.Called(ctx)
 }
 
-// SetCollateralPool provides a mock function with given fields: ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId
-func (_m *PerpetualsKeeper) SetCollateralPool(ctx types.Context, collateralPoolId uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, multiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.CollateralPool, error) {
-	ret := _m.Called(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
-
-	if len(ret) == 0 {
-		panic("no return value specified for SetCollateralPool")
-	}
-
-	var r0 perpetualstypes.CollateralPool
-	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.CollateralPool, error)); ok {
-		return rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
-	}
-	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.CollateralPool); ok {
-		r0 = rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
-	} else {
-		r0 = ret.Get(0).(perpetualstypes.CollateralPool)
-	}
-
-	if rf, ok := ret.Get(1).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
-		r1 = rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // SetLiquidityTier provides a mock function with given fields: ctx, id, name, initialMarginPpm, maintenanceFractionPpm, impactNotional, openInterestLowerCap, openInterestUpperCap
 func (_m *PerpetualsKeeper) SetLiquidityTier(ctx types.Context, id uint32, name string, initialMarginPpm uint32, maintenanceFractionPpm uint32, impactNotional uint64, openInterestLowerCap uint64, openInterestUpperCap uint64) (perpetualstypes.LiquidityTier, error) {
 	ret := _m.Called(ctx, id, name, initialMarginPpm, maintenanceFractionPpm, impactNotional, openInterestLowerCap, openInterestUpperCap)
@@ -483,6 +455,34 @@ func (_m *PerpetualsKeeper) SetParams(ctx types.Context, params perpetualstypes.
 	}
 
 	return r0
+}
+
+// UpsertCollateralPool provides a mock function with given fields: ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId
+func (_m *PerpetualsKeeper) UpsertCollateralPool(ctx types.Context, collateralPoolId uint32, maxCumulativeInsuranceFundDeltaPerBlock uint64, multiCollateralAssets *perpetualstypes.MultiCollateralAssetsArray, quoteAssetId uint32) (perpetualstypes.CollateralPool, error) {
+	ret := _m.Called(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpsertCollateralPool")
+	}
+
+	var r0 perpetualstypes.CollateralPool
+	var r1 error
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) (perpetualstypes.CollateralPool, error)); ok {
+		return rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	}
+	if rf, ok := ret.Get(0).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) perpetualstypes.CollateralPool); ok {
+		r0 = rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	} else {
+		r0 = ret.Get(0).(perpetualstypes.CollateralPool)
+	}
+
+	if rf, ok := ret.Get(1).(func(types.Context, uint32, uint64, *perpetualstypes.MultiCollateralAssetsArray, uint32) error); ok {
+		r1 = rf(ctx, collateralPoolId, maxCumulativeInsuranceFundDeltaPerBlock, multiCollateralAssets, quoteAssetId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // ValidateAndSetPerpetual provides a mock function with given fields: ctx, perpetual

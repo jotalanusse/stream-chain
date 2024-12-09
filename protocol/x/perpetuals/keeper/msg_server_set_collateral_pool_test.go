@@ -131,7 +131,7 @@ func TestSetCollateralPool(t *testing.T) {
 
 			pc := keepertest.NewClobKeepersTestContext(t, memClob, &mocks.BankKeeper{}, mockIndexerEventManager, nil)
 
-			initialCp, err := pc.PerpetualsKeeper.SetCollateralPool(
+			initialCp, err := pc.PerpetualsKeeper.UpsertCollateralPool(
 				pc.Ctx,
 				testCp.CollateralPoolId,
 				testCp.MaxCumulativeInsuranceFundDeltaPerBlock,
