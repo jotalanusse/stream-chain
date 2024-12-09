@@ -3,7 +3,6 @@ package keeper
 import (
 	"errors"
 	"fmt"
-	"math"
 	"math/big"
 	"math/rand"
 	"time"
@@ -336,17 +335,11 @@ func (k Keeper) fetchParamsToSettleSubaccount(
 		return nil, nil, nil, false, 0, err
 	}
 
-	// the quote asset should never be used if there are no perpetual positions
-	// we default it to max uint32 to trigger an error if it is used as the asset will not exist
-	quoteAssetId = math.MaxUint32
-
-	if len(subaccount.PerpetualPositions) > 0 {
-
-		collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
-		if err != nil {
-			return nil, nil, nil, false, 0, err
-		}
-		quoteAssetId = collateralPool.QuoteAssetId
+	// The quote asset should never be used if there are no perpetual positions.
+	// We default it to max uint32 to trigger an error if it is used as the asset will not exist.
+	quoteAssetId, err = k.getQuoteAssetId(ctx, subaccount)
+	if err != nil {
+		return nil, nil, nil, false, 0, err
 	}
 
 	return perpIdToPerp, assetYieldIndex, availableYield, earnsTdaiYield, quoteAssetId, nil

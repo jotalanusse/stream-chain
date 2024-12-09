@@ -61,12 +61,12 @@ func (k Keeper) DoesSubaccountEarnTDaiYield(
 		return subaccount.GetTDaiPosition().Cmp(big.NewInt(0)) != 0, nil
 	}
 
-	collateralPool, err := k.GetCollateralPoolFromSubaccount(ctx, subaccount)
+	quoteAssetId, err := k.getQuoteAssetId(ctx, subaccount)
 	if err != nil {
 		return false, err
 	}
 
-	return collateralPool.QuoteAssetId == assettypes.AssetTDai.Id, nil
+	return quoteAssetId == assettypes.AssetTDai.Id, nil
 }
 
 func AddYieldToSubaccount(
