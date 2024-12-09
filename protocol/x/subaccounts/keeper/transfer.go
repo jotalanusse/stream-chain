@@ -113,7 +113,7 @@ func (k Keeper) DepositFundsFromAccountToSubaccount(
 		return err
 	}
 
-	collateralPoolAddr, err := k.GetCollateralPoolForSubaccount(ctx, toSubaccountId)
+	collateralPoolAddr, err := k.GetCollateralPoolAddressFromSubaccountId(ctx, toSubaccountId)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func (k Keeper) WithdrawFundsFromSubaccountToAccount(
 		return err
 	}
 
-	collateralPoolAddr, err := k.GetCollateralPoolForSubaccount(ctx, fromSubaccountId)
+	collateralPoolAddr, err := k.GetCollateralPoolAddressFromSubaccountId(ctx, fromSubaccountId)
 	if err != nil {
 		return err
 	}
@@ -418,12 +418,12 @@ func (k Keeper) TransferFundsFromSubaccountToSubaccount(
 		return err
 	}
 
-	senderCollateralPoolAddr, err := k.GetCollateralPoolForSubaccount(ctx, senderSubaccountId)
+	senderCollateralPoolAddr, err := k.GetCollateralPoolAddressFromSubaccountId(ctx, senderSubaccountId)
 	if err != nil {
 		return err
 	}
 
-	recipientCollateralPoolAddr, err := k.GetCollateralPoolForSubaccount(ctx, recipientSubaccountId)
+	recipientCollateralPoolAddr, err := k.GetCollateralPoolAddressFromSubaccountId(ctx, recipientSubaccountId)
 	if err != nil {
 		return err
 	}

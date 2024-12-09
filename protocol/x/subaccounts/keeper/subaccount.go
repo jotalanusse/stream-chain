@@ -143,11 +143,11 @@ func (k Keeper) GetAllSubaccount(ctx sdk.Context) (list []types.Subaccount) {
 	return
 }
 
-// GetCollateralPoolForSubaccount returns the collateral pool address for a subaccount
+// GetCollateralPoolAddressFromSubaccountId returns the collateral pool address for a subaccount
 // based on the subaccount's perpetual positions. If the subaccount holds a position in an isolated
 // market, the collateral pool address will be the isolated market's pool address. Otherwise, the
 // collateral pool address will be the module's pool address.
-func (k Keeper) GetCollateralPoolForSubaccount(ctx sdk.Context, subaccountId types.SubaccountId) (
+func (k Keeper) GetCollateralPoolAddressFromSubaccountId(ctx sdk.Context, subaccountId types.SubaccountId) (
 	sdk.AccAddress,
 	error,
 ) {

@@ -359,7 +359,7 @@ func (k Keeper) DepositYieldToSubaccount(
 		return err
 	}
 
-	collateralPoolAddr, err := k.GetCollateralPoolForSubaccount(ctx, subaccountId)
+	collateralPoolAddr, err := k.GetCollateralPoolAddressFromSubaccountId(ctx, subaccountId)
 	if err != nil {
 		return err
 	}
