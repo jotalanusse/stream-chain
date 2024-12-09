@@ -152,10 +152,10 @@ func (k Keeper) GetCollateralPoolAddressFromSubaccountId(ctx sdk.Context, subacc
 	error,
 ) {
 	subaccount := k.GetSubaccount(ctx, subaccountId)
-	return k.getCollateralPoolForSubaccount(ctx, subaccount)
+	return k.getCollateralPoolAddressFromSubaccount(ctx, subaccount)
 }
 
-func (k Keeper) getCollateralPoolForSubaccount(ctx sdk.Context, subaccount types.Subaccount) (
+func (k Keeper) getCollateralPoolAddressFromSubaccount(ctx sdk.Context, subaccount types.Subaccount) (
 	sdk.AccAddress,
 	error,
 ) {
