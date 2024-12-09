@@ -234,11 +234,7 @@ func (k Keeper) persistMatchedOrders(
 		bigTakerQuoteBalanceDelta.Sub(bigTakerQuoteBalanceDelta, liquidityFeeQuoteQuantums)
 	}
 
-	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
-	if err != nil {
-		panic(fmt.Sprintf("persistMatchedOrders: failed to get perpetual %v", err))
-	}
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		panic(fmt.Sprintf("persistMatchedOrders: failed to get collateral pool %v", err))
 	}

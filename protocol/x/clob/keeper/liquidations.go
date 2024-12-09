@@ -1268,13 +1268,7 @@ func (k Keeper) GetMaxQuantumsInsuranceDelta(
 }
 
 func (k Keeper) GetInsuranceFundDeltaBlockLimit(ctx sdk.Context, perpetualId uint32) (*big.Int, error) {
-
-	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
-	if err != nil {
-		return big.NewInt(0), err
-	}
-
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return big.NewInt(0), err
 	}

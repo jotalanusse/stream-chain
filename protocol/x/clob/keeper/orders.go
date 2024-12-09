@@ -1041,14 +1041,11 @@ func (k Keeper) AddOrderToOrderbookSubaccountUpdatesCheck(
 
 	// Retrieve the associated `PerpetualId` for the `ClobPair`.
 	perpetualId := clobPair.MustGetPerpetualId()
-	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
-	if err != nil {
-		panic(fmt.Sprintf("AddOrderToOrderbookSubaccountUpdatesCheck: failed to get perpetual %v", err))
-	}
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		panic(fmt.Sprintf("AddOrderToOrderbookSubaccountUpdatesCheck: failed to get collateral pool %v", err))
 	}
+
 	quoteAssetId := collateralPool.QuoteAssetId
 
 	iterateOverOpenOrdersStart := time.Now()

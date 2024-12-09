@@ -91,6 +91,10 @@ type PerpetualsKeeper interface {
 		collateralPool perptypes.CollateralPool,
 		err error,
 	)
+	GetCollateralPoolFromPerpetualId(ctx sdk.Context, perpetualId uint32) (
+		collateralPool perptypes.CollateralPool,
+		err error,
+	)
 }
 
 type ClobKeeper interface {

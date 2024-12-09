@@ -329,12 +329,7 @@ func (k *Keeper) getQuoteAssetId(
 		return math.MaxUint32, nil
 	}
 
-	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, subaccount.PerpetualPositions[0].PerpetualId)
-	if err != nil {
-		return 0, err
-	}
-
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
 	if err != nil {
 		return 0, err
 	}

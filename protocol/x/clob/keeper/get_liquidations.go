@@ -122,8 +122,7 @@ func (k Keeper) GetQuoteCurrencyAtomicResolution(ctx sdk.Context, subaccount sat
 		return assettypes.AssetTDai.AtomicResolution, nil
 	}
 
-	perpetual := perpetuals[subaccount.PerpetualPositions[0].PerpetualId]
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
 	if err != nil {
 		return 0, err
 	}

@@ -183,12 +183,8 @@ func (k Keeper) GetCollateralPoolFromSubaccount(ctx sdk.Context, subaccount type
 	error,
 ) {
 	perpetualPosition := subaccount.PerpetualPositions[0]
-	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualPosition.PerpetualId)
-	if err != nil {
-		return perptypes.CollateralPool{}, err
-	}
 
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, perpetualPosition.PerpetualId)
 	if err != nil {
 		return perptypes.CollateralPool{}, err
 	}
@@ -345,8 +341,8 @@ func (k Keeper) fetchParamsToSettleSubaccount(
 	quoteAssetId = math.MaxUint32
 
 	if len(subaccount.PerpetualPositions) > 0 {
-		perpetual := perpIdToPerp[subaccount.PerpetualPositions[0].PerpetualId]
-		collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+
+		collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
 		if err != nil {
 			return nil, nil, nil, false, 0, err
 		}

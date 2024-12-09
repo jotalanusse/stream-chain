@@ -1768,6 +1768,17 @@ func (k Keeper) setLiquidityTier(
 
 /* === COLLATERAL POOL FUNCTIONS === */
 
+func (k Keeper) GetCollateralPoolFromPerpetualId(ctx sdk.Context, perpetualId uint32) (
+	collateralPool types.CollateralPool,
+	err error,
+) {
+	perpetual, err := k.GetPerpetual(ctx, perpetualId)
+	if err != nil {
+		return collateralPool, err
+	}
+	return k.GetCollateralPool(ctx, perpetual.Params.CollateralPoolId)
+}
+
 // HasCollateralPool checks if a collateral pool exists in the store.
 func (k Keeper) HasCollateralPool(
 	ctx sdk.Context,
