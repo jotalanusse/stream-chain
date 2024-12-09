@@ -89,7 +89,7 @@ type SubaccountsKeeper interface {
 		perpetualId uint32,
 		assetId uint32,
 	) error
-	GetCollateralPoolFromPerpetualId(
+	GetCollateralPoolAddressFromPerpetualId(
 		ctx sdk.Context,
 		perpetualId uint32,
 	) (sdk.AccAddress, error)

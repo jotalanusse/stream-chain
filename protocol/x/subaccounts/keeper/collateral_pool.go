@@ -216,7 +216,7 @@ func (k *Keeper) transferAssetsToCollateralPool(
 		)
 	}
 
-	CollateralPoolAddr, err := k.GetCollateralPoolFromPerpetualId(ctx, stateTransition.PerpetualId)
+	CollateralPoolAddr, err := k.GetCollateralPoolAddressFromPerpetualId(ctx, stateTransition.PerpetualId)
 	if err != nil {
 		return err
 	}

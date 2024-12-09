@@ -218,7 +218,7 @@ func (k Keeper) TransferFeesToFeeCollectorModule(
 		return err
 	}
 
-	collateralPoolAddr, err := k.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
+	collateralPoolAddr, err := k.GetCollateralPoolAddressFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return err
 	}
@@ -274,7 +274,7 @@ func (k Keeper) TransferInsuranceFundPayments(
 
 	// Determine the sender and receiver.
 	// Send coins from `subaccounts` to the `insurance_fund` module account by default.
-	fromModule, err := k.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
+	fromModule, err := k.GetCollateralPoolAddressFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		panic(err)
 	}
@@ -322,7 +322,7 @@ func (k Keeper) TransferLiquidityFee(
 
 	// Determine the sender and receiver.
 	// Send coins from `subaccounts` to the `insurance_fund` module account by default.
-	fromModule, err := k.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
+	fromModule, err := k.GetCollateralPoolAddressFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		panic(err)
 	}
@@ -360,7 +360,7 @@ func (k Keeper) TransferValidatorFee(
 
 	// Determine the sender and receiver.
 	// Send coins from `subaccounts` to the `insurance_fund` module account by default.
-	fromModule, err := k.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
+	fromModule, err := k.GetCollateralPoolAddressFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		panic(err)
 	}

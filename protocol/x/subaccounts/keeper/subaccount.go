@@ -164,12 +164,12 @@ func (k Keeper) getCollateralPoolAddressFromSubaccount(ctx sdk.Context, subaccou
 		return types.ModuleAddress, nil
 	}
 
-	return k.GetCollateralPoolFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
+	return k.GetCollateralPoolAddressFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
 }
 
 // GetCollateralPoolForSubaccountWithPerpetuals returns the collateral pool address based on the
 // perpetual passed in as an argument.
-func (k Keeper) GetCollateralPoolFromPerpetualId(ctx sdk.Context, perpetualId uint32) (sdk.AccAddress, error) {
+func (k Keeper) GetCollateralPoolAddressFromPerpetualId(ctx sdk.Context, perpetualId uint32) (sdk.AccAddress, error) {
 	perpetual, err := k.perpetualsKeeper.GetPerpetual(ctx, perpetualId)
 	if err != nil {
 		return nil, err
