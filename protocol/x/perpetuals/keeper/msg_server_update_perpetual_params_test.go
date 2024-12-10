@@ -57,7 +57,7 @@ func TestUpdatePerpetualParams(t *testing.T) {
 				},
 			},
 		},
-		"Success: modify all params except atomic resolution": {
+		"Success: modify all params except atomic resolution and collateral pool": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
 				keepertest.CreatePerpetualMarkets(
 					t,
@@ -76,7 +76,7 @@ func TestUpdatePerpetualParams(t *testing.T) {
 					AtomicResolution:  testPerp.Params.AtomicResolution,
 					DefaultFundingPpm: 2_007,
 					LiquidityTier:     101,
-					CollateralPoolId:  1,
+					CollateralPoolId:  testPerp.Params.CollateralPoolId,
 				},
 			},
 		},
@@ -101,29 +101,6 @@ func TestUpdatePerpetualParams(t *testing.T) {
 				},
 			},
 			expectedErr: "Perpetual does not exist",
-		},
-		"Failure: new collateral pool id is not existing": {
-			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
-				keepertest.CreatePerpetualMarkets(
-					t,
-					ctx,
-					perpKeeper,
-					[]types.Perpetual{testPerp},
-				)
-			},
-			msg: &types.MsgUpdatePerpetualParams{
-				Authority: lib.GovModuleAddress.String(),
-				PerpetualParams: types.PerpetualParams{
-					Id:                testPerp.Params.Id,
-					Ticker:            "DUMMY-USD",
-					MarketId:          testPerp.Params.MarketId,
-					AtomicResolution:  testPerp.Params.AtomicResolution,
-					DefaultFundingPpm: testPerp.Params.DefaultFundingPpm,
-					LiquidityTier:     5,
-					CollateralPoolId:  9999,
-				},
-			},
-			expectedErr: "collateral pool does not exist",
 		},
 		"Failure: updates to non-existing market id": {
 			setup: func(t *testing.T, ctx sdk.Context, perpKeeper *perpkeeper.Keeper, pricesKeeper *priceskeeper.Keeper, assetsKeeper *assetskeeper.Keeper) {
