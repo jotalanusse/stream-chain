@@ -3884,6 +3884,9 @@ func TestCalculateYieldIndexForEpoch(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
+			pc.PerpetualsKeeper.SetPerpetualForTest(pc.Ctx, tc.perpetual)
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
+
 			yieldIndex, err := pc.PerpetualsKeeper.CalculateYieldIndexForEpoch(
 				pc.Ctx,
 				tc.totalTDaiPreMint,
@@ -3906,6 +3909,24 @@ func TestCalculateYieldIndexForEpoch(t *testing.T) {
 }
 
 func TestCalculateNewTotalYieldIndex(t *testing.T) {
+	testId := uint32(999)
+	testTicker := "TEST-USD"
+	testBasePerpetual := types.Perpetual{
+		Params: types.PerpetualParams{
+			Id:                testId,
+			Ticker:            testTicker,
+			MarketId:          testId,
+			AtomicResolution:  constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.AtomicResolution,
+			DefaultFundingPpm: constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.DefaultFundingPpm,
+			LiquidityTier:     constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.LiquidityTier,
+			DangerIndexPpm:    constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.DangerIndexPpm,
+			CollateralPoolId:  constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.CollateralPoolId,
+		},
+		FundingIndex: constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
+		OpenInterest: constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+		YieldIndex:   constants.BtcUsd_0DefaultFunding_6AtomicResolution.YieldIndex,
+	}
+
 	testCases := map[string]struct {
 		totalTDaiPreMint *big.Int
 		totalTDaiMinted  *big.Int
@@ -3918,17 +3939,17 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 			totalTDaiPreMint: big.NewInt(100_000_000_000_000),
 			totalTDaiMinted:  big.NewInt(5_000_000_000),
 			marketPrice: pricestypes.MarketPrice{
-				Id:        0,
+				Id:        testId,
 				Exponent:  -5,
 				SpotPrice: 100_000,
 				PnlPrice:  100_000,
 			},
-			perpetual:   constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+			perpetual:   testBasePerpetual,
 			expectedErr: nil,
 			expectedPerp: types.Perpetual{
-				Params:       constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params,
-				FundingIndex: constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-				OpenInterest: constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+				Params:       testBasePerpetual.Params,
+				FundingIndex: testBasePerpetual.FundingIndex,
+				OpenInterest: testBasePerpetual.OpenInterest,
 				YieldIndex:   big.NewRat(1, 20_000).String(),
 			},
 		},
@@ -3936,22 +3957,22 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 			totalTDaiPreMint: big.NewInt(100_000_000_000_000),
 			totalTDaiMinted:  big.NewInt(5_000_000_000),
 			marketPrice: pricestypes.MarketPrice{
-				Id:        0,
+				Id:        testId,
 				Exponent:  -2,
 				SpotPrice: 200,
 				PnlPrice:  200,
 			},
 			perpetual: types.Perpetual{
-				Params:       constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params,
-				FundingIndex: constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-				OpenInterest: constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+				Params:       testBasePerpetual.Params,
+				FundingIndex: testBasePerpetual.FundingIndex,
+				OpenInterest: testBasePerpetual.OpenInterest,
 				YieldIndex:   big.NewRat(1, 20_000).String(),
 			},
 			expectedErr: nil,
 			expectedPerp: types.Perpetual{
-				Params:       constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params,
-				FundingIndex: constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-				OpenInterest: constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+				Params:       testBasePerpetual.Params,
+				FundingIndex: testBasePerpetual.FundingIndex,
+				OpenInterest: testBasePerpetual.OpenInterest,
 				YieldIndex:   big.NewRat(3, 20_000).String(),
 			},
 		},
@@ -3959,51 +3980,51 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 			totalTDaiPreMint: big.NewInt(0),
 			totalTDaiMinted:  big.NewInt(500_000_000),
 			marketPrice: pricestypes.MarketPrice{
-				Id:        0,
+				Id:        testId,
 				Exponent:  -5,
 				SpotPrice: 12345,
 				PnlPrice:  12345,
 			},
-			perpetual:   constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+			perpetual:   testBasePerpetual,
 			expectedErr: types.ErrTotalTDaiPreMintIsNil,
 		},
 		"Failure: total tDai pre-mint is nil": {
 			totalTDaiPreMint: nil,
 			totalTDaiMinted:  big.NewInt(500_000_000),
 			marketPrice: pricestypes.MarketPrice{
-				Id:        0,
+				Id:        testId,
 				Exponent:  -5,
 				SpotPrice: 12345,
 				PnlPrice:  12345,
 			},
-			perpetual:   constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+			perpetual:   testBasePerpetual,
 			expectedErr: types.ErrTotalTDaiPreMintIsNil,
 		},
 		"Failure: total tDai minted is nil": {
 			totalTDaiPreMint: big.NewInt(100_000_000),
 			totalTDaiMinted:  nil,
 			marketPrice: pricestypes.MarketPrice{
-				Id:        0,
+				Id:        testId,
 				Exponent:  -5,
 				SpotPrice: 12345,
 				PnlPrice:  12345,
 			},
-			perpetual:   constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+			perpetual:   testBasePerpetual,
 			expectedErr: types.ErrTotalTDaiMintedIsNil,
 		},
 		"Failure: perp yield index malformed and cannot be parsed": {
 			totalTDaiPreMint: big.NewInt(100_000_000),
 			totalTDaiMinted:  nil,
 			marketPrice: pricestypes.MarketPrice{
-				Id:        0,
+				Id:        testId,
 				Exponent:  -5,
 				SpotPrice: 12345,
 				PnlPrice:  12345,
 			},
 			perpetual: types.Perpetual{
-				Params:       constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params,
-				FundingIndex: constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-				OpenInterest: constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+				Params:       testBasePerpetual.Params,
+				FundingIndex: testBasePerpetual.FundingIndex,
+				OpenInterest: testBasePerpetual.OpenInterest,
 				YieldIndex:   "malformed",
 			},
 			expectedErr: types.ErrTotalTDaiMintedIsNil,
@@ -4012,12 +4033,12 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 			totalTDaiPreMint: big.NewInt(100_000_000),
 			totalTDaiMinted:  nil,
 			marketPrice: pricestypes.MarketPrice{
-				Id:        1,
+				Id:        testId + 1,
 				Exponent:  -5,
 				SpotPrice: 12345,
 				PnlPrice:  12345,
 			},
-			perpetual:   constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+			perpetual:   testBasePerpetual,
 			expectedErr: types.ErrTotalTDaiMintedIsNil,
 		},
 	}
@@ -4025,6 +4046,9 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
+			pc.PerpetualsKeeper.SetPerpetualForTest(pc.Ctx, tc.perpetual)
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
+
 			_, err := pc.PricesKeeper.CreateMarket(
 				pc.Ctx,
 				pricestypes.MarketParam{
@@ -4064,6 +4088,42 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 }
 
 func TestUpdateYieldIndexToNewMint(t *testing.T) {
+	testId1 := uint32(999)
+	testTicker1 := "TEST1-USD"
+	testBasePerpetual1 := types.Perpetual{
+		Params: types.PerpetualParams{
+			Id:                testId1,
+			Ticker:            testTicker1,
+			MarketId:          testId1,
+			AtomicResolution:  constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.AtomicResolution,
+			DefaultFundingPpm: constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.DefaultFundingPpm,
+			LiquidityTier:     constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.LiquidityTier,
+			DangerIndexPpm:    constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.DangerIndexPpm,
+			CollateralPoolId:  constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params.CollateralPoolId,
+		},
+		FundingIndex: constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
+		OpenInterest: constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+		YieldIndex:   constants.BtcUsd_0DefaultFunding_6AtomicResolution.YieldIndex,
+	}
+
+	testId2 := uint32(1000)
+	testTicker2 := "TEST2-USD"
+	testBasePerpetual2 := types.Perpetual{
+		Params: types.PerpetualParams{
+			Id:                testId2,
+			Ticker:            testTicker2,
+			MarketId:          testId2,
+			AtomicResolution:  constants.EthUsd_0DefaultFunding_6AtomicResolution.Params.AtomicResolution,
+			DefaultFundingPpm: constants.EthUsd_0DefaultFunding_6AtomicResolution.Params.DefaultFundingPpm,
+			LiquidityTier:     constants.EthUsd_0DefaultFunding_6AtomicResolution.Params.LiquidityTier,
+			DangerIndexPpm:    constants.EthUsd_0DefaultFunding_6AtomicResolution.Params.DangerIndexPpm,
+			CollateralPoolId:  constants.EthUsd_0DefaultFunding_6AtomicResolution.Params.CollateralPoolId,
+		},
+		FundingIndex: constants.EthUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
+		OpenInterest: constants.EthUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
+		YieldIndex:   constants.EthUsd_0DefaultFunding_6AtomicResolution.YieldIndex,
+	}
+
 	testCases := map[string]struct {
 		totalTDaiPreMint *big.Int
 		totalTDaiMinted  *big.Int
@@ -4077,21 +4137,21 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 			totalTDaiMinted:  big.NewInt(5_000_000_000),
 			markets: []pricestypes.MarketPrice{
 				{
-					Id:        0,
+					Id:        testId1,
 					Exponent:  -5,
 					SpotPrice: 100_000,
 					PnlPrice:  100_000,
 				},
 			},
 			perps: []types.Perpetual{
-				constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+				testBasePerpetual1,
 			},
 			expectedPerps: []types.Perpetual{
 				{
-					Params:          constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params,
-					FundingIndex:    constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-					OpenInterest:    constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
-					LastFundingRate: constants.BtcUsd_0DefaultFunding_6AtomicResolution.LastFundingRate,
+					Params:          testBasePerpetual1.Params,
+					FundingIndex:    testBasePerpetual1.FundingIndex,
+					OpenInterest:    testBasePerpetual1.OpenInterest,
+					LastFundingRate: testBasePerpetual1.LastFundingRate,
 					YieldIndex:      big.NewRat(1, 20_000).String(),
 				},
 			},
@@ -4102,35 +4162,35 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 			totalTDaiMinted:  big.NewInt(5_000_000_000),
 			markets: []pricestypes.MarketPrice{
 				{
-					Id:        0,
+					Id:        testId1,
 					Exponent:  -5,
 					SpotPrice: 100_000,
 					PnlPrice:  100_000,
 				},
 				{
-					Id:        1,
+					Id:        testId2,
 					Exponent:  -5,
 					SpotPrice: 200_000,
 					PnlPrice:  200_000,
 				},
 			},
 			perps: []types.Perpetual{
-				constants.BtcUsd_0DefaultFunding_6AtomicResolution,
-				constants.EthUsd_0DefaultFunding_6AtomicResolution,
+				testBasePerpetual1,
+				testBasePerpetual2,
 			},
 			expectedPerps: []types.Perpetual{
 				{
-					Params:          constants.BtcUsd_0DefaultFunding_6AtomicResolution.Params,
-					FundingIndex:    constants.BtcUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-					OpenInterest:    constants.BtcUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
-					LastFundingRate: constants.BtcUsd_0DefaultFunding_6AtomicResolution.LastFundingRate,
+					Params:          testBasePerpetual1.Params,
+					FundingIndex:    testBasePerpetual1.FundingIndex,
+					OpenInterest:    testBasePerpetual1.OpenInterest,
+					LastFundingRate: testBasePerpetual1.LastFundingRate,
 					YieldIndex:      big.NewRat(1, 20_000).String(),
 				},
 				{
-					Params:          constants.EthUsd_0DefaultFunding_6AtomicResolution.Params,
-					FundingIndex:    constants.EthUsd_0DefaultFunding_6AtomicResolution.FundingIndex,
-					OpenInterest:    constants.EthUsd_0DefaultFunding_6AtomicResolution.OpenInterest,
-					LastFundingRate: constants.BtcUsd_0DefaultFunding_6AtomicResolution.LastFundingRate,
+					Params:          testBasePerpetual2.Params,
+					FundingIndex:    testBasePerpetual2.FundingIndex,
+					OpenInterest:    testBasePerpetual2.OpenInterest,
+					LastFundingRate: testBasePerpetual2.LastFundingRate,
 					YieldIndex:      big.NewRat(1, 10_000).String(),
 				},
 			},
@@ -4141,14 +4201,14 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 			totalTDaiMinted:  big.NewInt(500_000_000),
 			markets: []pricestypes.MarketPrice{
 				{
-					Id:        0,
+					Id:        testId1,
 					Exponent:  -5,
 					SpotPrice: 12345,
 					PnlPrice:  12345,
 				},
 			},
 			perps: []types.Perpetual{
-				constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+				testBasePerpetual1,
 			},
 			expectedErr: types.ErrTotalTDaiPreMintIsNil,
 		},
@@ -4157,14 +4217,14 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 			totalTDaiMinted:  big.NewInt(500_000_000),
 			markets: []pricestypes.MarketPrice{
 				{
-					Id:        0,
+					Id:        testId1,
 					Exponent:  -5,
 					SpotPrice: 12345,
 					PnlPrice:  12345,
 				},
 			},
 			perps: []types.Perpetual{
-				constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+				testBasePerpetual1,
 			},
 			expectedErr: types.ErrTotalTDaiPreMintIsNil,
 		},
@@ -4173,14 +4233,14 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 			totalTDaiMinted:  nil,
 			markets: []pricestypes.MarketPrice{
 				{
-					Id:        0,
+					Id:        testId1,
 					Exponent:  -5,
 					SpotPrice: 12345,
 					PnlPrice:  12345,
 				},
 			},
 			perps: []types.Perpetual{
-				constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+				testBasePerpetual1,
 			},
 			expectedErr: types.ErrTotalTDaiMintedIsNil,
 		},
@@ -4189,14 +4249,14 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 			totalTDaiMinted:  big.NewInt(1),
 			markets: []pricestypes.MarketPrice{
 				{
-					Id:        0,
+					Id:        testId1,
 					Exponent:  -5,
 					SpotPrice: 12345,
 					PnlPrice:  12345,
 				},
 			},
 			perps: []types.Perpetual{
-				constants.BtcUsd_0DefaultFunding_6AtomicResolution,
+				testBasePerpetual1,
 			},
 			expectedErr: types.ErrTotalTDaiMintedIsNil,
 		},
@@ -4205,6 +4265,7 @@ func TestUpdateYieldIndexToNewMint(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			pc := keepertest.PerpetualsKeepers(t)
+			keepertest.CreateTestCollateralPools(t, pc.Ctx, pc.PerpetualsKeeper)
 
 			for _, market := range tc.markets {
 				_, err := pc.PricesKeeper.CreateMarket(
