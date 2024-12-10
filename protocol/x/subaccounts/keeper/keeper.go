@@ -18,7 +18,6 @@ type (
 		assetsKeeper        types.AssetsKeeper
 		bankKeeper          types.BankKeeper
 		perpetualsKeeper    types.PerpetualsKeeper
-		ClobKeeper          types.ClobKeeper
 		ratelimitKeeper     types.RatelimitKeeper
 		blocktimeKeeper     types.BlocktimeKeeper
 		indexerEventManager indexer_manager.IndexerEventManager
@@ -31,7 +30,6 @@ func NewKeeper(
 	assetsKeeper types.AssetsKeeper,
 	bankKeeper types.BankKeeper,
 	perpetualsKeeper types.PerpetualsKeeper,
-	clobKeeper types.ClobKeeper,
 	ratelimitKeeper types.RatelimitKeeper,
 	blocktimeKeeper types.BlocktimeKeeper,
 	indexerEventManager indexer_manager.IndexerEventManager,
@@ -42,7 +40,6 @@ func NewKeeper(
 		assetsKeeper:        assetsKeeper,
 		bankKeeper:          bankKeeper,
 		perpetualsKeeper:    perpetualsKeeper,
-		ClobKeeper:          clobKeeper,
 		ratelimitKeeper:     ratelimitKeeper,
 		blocktimeKeeper:     blocktimeKeeper,
 		indexerEventManager: indexerEventManager,

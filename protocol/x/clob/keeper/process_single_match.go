@@ -122,7 +122,7 @@ func (k Keeper) ProcessSingleMatch(
 
 	// Update subaccount total quantums liquidated and total insurance fund lost for liquidation orders.
 	if matchWithOrders.TakerOrder.IsLiquidation() {
-		quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+		quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 		if err != nil {
 			return false, takerUpdateResult, makerUpdateResult, nil, err
 		}

@@ -95,9 +95,6 @@ type PerpetualsKeeper interface {
 		collateralPool perptypes.CollateralPool,
 		err error,
 	)
-}
-
-type ClobKeeper interface {
 	GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error)
 }
 

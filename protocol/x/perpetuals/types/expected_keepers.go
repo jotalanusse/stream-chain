@@ -34,10 +34,6 @@ type PerpetualsClobKeeper interface {
 		isActive bool,
 		err error,
 	)
-	GetQuoteCurrencyAtomicResolutionFromPerpetualId(
-		ctx sdk.Context,
-		perpetualId uint32,
-	) (int32, error)
 }
 
 // EpochsKeeper defines the expected epochs keeper to get epoch info.

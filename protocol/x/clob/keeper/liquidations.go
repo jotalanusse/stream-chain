@@ -342,7 +342,7 @@ func (k Keeper) handleLiquidationMetrics(
 		labels,
 	)
 
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return
 	}
@@ -617,7 +617,7 @@ func (k Keeper) getFillablePriceCalculationInputs(
 		return nil, nil, nil, nil, 0, 0, nil, types.ErrInvalidPerpetualPositionSizeDelta
 	}
 
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return nil, nil, nil, nil, 0, 0, nil, err
 	}
@@ -810,7 +810,7 @@ func (k Keeper) getBankruptcyPriceCalculationInputs(
 	pmmradBig *big.Int,
 	err error,
 ) {
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
 	}

@@ -14,7 +14,6 @@ import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/log"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib/metrics"
-	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	heap "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/heap"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/types"
 	satypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -96,7 +95,7 @@ func (k Keeper) MaybeDeleverageSubaccount(
 		labels...,
 	)
 
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return new(big.Int), err
 	}
@@ -488,7 +487,7 @@ func (k Keeper) getDeleveragingQuoteQuantumsDelta(
 	deltaQuantums *big.Int,
 	isFinalSettlement bool,
 ) (deltaQuoteQuantums *big.Int, err error) {
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return nil, err
 	}
@@ -505,19 +504,6 @@ func (k Keeper) getDeleveragingQuoteQuantumsDelta(
 		perpetualId,
 		deltaQuantums,
 	)
-}
-
-func (k *Keeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error) {
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
-	if err != nil {
-		return 0, err
-	}
-
-	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, collateralPool.QuoteAssetId)
-	if !exists {
-		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual Id %+v", perpetualId)
-	}
-	return quoteAsset.AtomicResolution, nil
 }
 
 // ProcessDeleveraging processes a deleveraging operation by closing both the liquidated subaccount's
@@ -624,7 +610,7 @@ func (k Keeper) ProcessDeleveraging(
 		return updateErr
 	}
 
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		return err
 	}

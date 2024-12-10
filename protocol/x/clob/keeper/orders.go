@@ -1143,7 +1143,7 @@ func (k Keeper) GetOraclePriceSubticksRat(ctx sdk.Context, clobPair types.ClobPa
 		panic(errorsmod.Wrapf(err, "perpetual ID = (%d)", perpetualId))
 	}
 
-	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
+	quoteCurrencyAtomicResolution, err := k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualId)
 	if err != nil {
 		panic(err)
 	}

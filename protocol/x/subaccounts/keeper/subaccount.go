@@ -1109,13 +1109,13 @@ func (k Keeper) internalGetNetCollateralAndMarginRequirements(
 
 	quoteCurrencyAtomicResolution := assettypes.AssetTDai.AtomicResolution
 	if len(perpetualSizes) > 0 {
-		quoteCurrencyAtomicResolution, err = k.ClobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualSizes[0].GetId())
+		quoteCurrencyAtomicResolution, err = k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetualSizes[0].GetId())
 		if err != nil {
 			return big.NewInt(0), big.NewInt(0), big.NewInt(0), err
 		}
 	} else {
 		if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {
-			quoteCurrencyAtomicResolution, err = k.ClobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, settledUpdate.SettledSubaccount.PerpetualPositions[0].GetId())
+			quoteCurrencyAtomicResolution, err = k.perpetualsKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, settledUpdate.SettledSubaccount.PerpetualPositions[0].GetId())
 			if err != nil {
 				return big.NewInt(0), big.NewInt(0), big.NewInt(0), err
 			}

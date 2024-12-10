@@ -926,7 +926,6 @@ func New(
 		app.AssetsKeeper,
 		app.BankKeeper,
 		app.PerpetualsKeeper,
-		&app.ClobKeeper,
 		app.RatelimitKeeper,
 		app.BlockTimeKeeper,
 		app.IndexerEventManager,

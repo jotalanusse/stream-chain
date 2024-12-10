@@ -6,7 +6,6 @@ import (
 
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/mock"
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/constants"
 
@@ -19,7 +18,6 @@ import (
 	asskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
 	assettypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
 	blocktimekeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/blocktime/keeper"
-	clobkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/clob/keeper"
 	perpskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/keeper"
 	priceskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/prices/keeper"
 	ratelimitkeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/ratelimit/keeper"
@@ -67,26 +65,6 @@ func SubaccountsKeepers(
 		bankKeeper, _ = createBankKeeper(stateStore, db, cdc, accountKeeper)
 		ratelimitKeeper, _ = createRatelimitKeeper(stateStore, db, cdc, blocktimeKeeper, bankKeeper, perpetualsKeeper, assetsKeeper, transientStoreKey, msgSenderEnabled)
 
-		memClob := &mocks.MemClob{}
-		memClob.On("SetClobKeeper", mock.Anything).Return()
-
-		clobKeeper, _, _ := createClobKeeper(
-			stateStore,
-			db,
-			cdc,
-			memClob,
-			assetsKeeper,
-			blocktimeKeeper,
-			bankKeeper,
-			nil,
-			perpetualsKeeper,
-			pricesKeeper,
-			nil,
-			keeper,
-			nil,
-			nil,
-		)
-
 		keeper, storeKey = createSubaccountsKeeper(
 			stateStore,
 			db,
@@ -94,7 +72,6 @@ func SubaccountsKeepers(
 			assetsKeeper,
 			bankKeeper,
 			perpetualsKeeper,
-			clobKeeper,
 			ratelimitKeeper,
 			blocktimeKeeper,
 			transientStoreKey,
@@ -117,7 +94,6 @@ func createSubaccountsKeeper(
 	ak *asskeeper.Keeper,
 	bk types.BankKeeper,
 	pk *perpskeeper.Keeper,
-	clobKeeper *clobkeeper.Keeper,
 	rlk *ratelimitkeeper.Keeper,
 	btk *blocktimekeeper.Keeper,
 	transientStoreKey storetypes.StoreKey,
@@ -137,7 +113,6 @@ func createSubaccountsKeeper(
 		ak,
 		bk,
 		pk,
-		clobKeeper,
 		rlk,
 		btk,
 		mockIndexerEventsManager,

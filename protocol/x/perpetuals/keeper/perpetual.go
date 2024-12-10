@@ -525,7 +525,7 @@ func (k Keeper) sampleAllPerpetuals(ctx sdk.Context) (
 			panic(types.ErrLiquidityTierDoesNotExist)
 		}
 
-		quoteCurrencyAtomicResolution, err := k.clobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perp.Params.Id)
+		quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perp.Params.Id)
 		if err != nil {
 			panic(err)
 		}
@@ -737,7 +737,7 @@ func (k Keeper) CalculateYieldIndexForEpoch(
 		return nil, errorsmod.Wrapf(types.ErrPerpAndPriceMarketsMismatched, "Perpetual Market Id: %v. Price Market Id: %v.", perpetual.Params.MarketId, marketPrice.Id)
 	}
 
-	quoteCurrencyAtomicResolution, err := k.clobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetual.Params.Id)
+	quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perpetual.Params.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -888,7 +888,7 @@ func (k Keeper) MaybeProcessNewFundingTickEpoch(ctx sdk.Context) {
 		}
 
 		if bigFundingRatePpm.Sign() != 0 {
-			quoteCurrencyAtomicResolution, err := k.clobKeeper.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perp.Params.Id)
+			quoteCurrencyAtomicResolution, err := k.GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx, perp.Params.Id)
 			if err != nil {
 				panic(err)
 			}
@@ -1765,6 +1765,19 @@ func (k Keeper) setLiquidityTier(
 }
 
 /* === COLLATERAL POOL FUNCTIONS === */
+
+func (k Keeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx sdk.Context, perpetualId uint32) (int32, error) {
+	collateralPool, err := k.GetCollateralPoolFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		return 0, err
+	}
+
+	quoteAsset, exists := k.assetsKeeper.GetAsset(ctx, collateralPool.QuoteAssetId)
+	if !exists {
+		return 0, errorsmod.Wrapf(assettypes.ErrAssetDoesNotExist, "Quote asset not found for perpetual Id %+v", perpetualId)
+	}
+	return quoteAsset.AtomicResolution, nil
+}
 
 func (k Keeper) GetCollateralPoolFromPerpetualId(ctx sdk.Context, perpetualId uint32) (
 	collateralPool types.CollateralPool,

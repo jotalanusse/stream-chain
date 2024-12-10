@@ -10,7 +10,6 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/indexer/indexer_manager"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
-	"github.com/stretchr/testify/mock"
 
 	storetypes "cosmossdk.io/store/types"
 	assetskeeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
@@ -92,25 +91,7 @@ func SendingKeepersWithSubaccountsKeeper(t testing.TB, saKeeper types.Subaccount
 			transientStoreKey,
 			true,
 		)
-		memClob := &mocks.MemClob{}
-		memClob.On("SetClobKeeper", mock.Anything).Return()
 
-		clobKeeper, _, _ := createClobKeeper(
-			stateStore,
-			db,
-			cdc,
-			memClob,
-			ks.AssetsKeeper,
-			blockTimeKeeper,
-			ks.BankKeeper,
-			nil,
-			ks.PerpetualsKeeper,
-			ks.PricesKeeper,
-			nil,
-			nil,
-			nil,
-			nil,
-		)
 		if saKeeper == nil {
 			ks.SubaccountsKeeper, _ = createSubaccountsKeeper(
 				stateStore,
@@ -119,7 +100,6 @@ func SendingKeepersWithSubaccountsKeeper(t testing.TB, saKeeper types.Subaccount
 				ks.AssetsKeeper,
 				ks.BankKeeper,
 				ks.PerpetualsKeeper,
-				clobKeeper,
 				ks.RatelimitKeeper,
 				blockTimeKeeper,
 				transientStoreKey,

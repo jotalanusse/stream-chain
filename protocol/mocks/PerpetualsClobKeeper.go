@@ -41,34 +41,6 @@ func (_m *PerpetualsClobKeeper) GetPricePremiumForPerpetual(ctx types.Context, p
 	return r0, r1
 }
 
-// GetQuoteCurrencyAtomicResolutionFromPerpetualId provides a mock function with given fields: ctx, perpetualId
-func (_m *PerpetualsClobKeeper) GetQuoteCurrencyAtomicResolutionFromPerpetualId(ctx types.Context, perpetualId uint32) (int32, error) {
-	ret := _m.Called(ctx, perpetualId)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GetQuoteCurrencyAtomicResolutionFromPerpetualId")
-	}
-
-	var r0 int32
-	var r1 error
-	if rf, ok := ret.Get(0).(func(types.Context, uint32) (int32, error)); ok {
-		return rf(ctx, perpetualId)
-	}
-	if rf, ok := ret.Get(0).(func(types.Context, uint32) int32); ok {
-		r0 = rf(ctx, perpetualId)
-	} else {
-		r0 = ret.Get(0).(int32)
-	}
-
-	if rf, ok := ret.Get(1).(func(types.Context, uint32) error); ok {
-		r1 = rf(ctx, perpetualId)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // IsPerpetualClobPairActive provides a mock function with given fields: ctx, perpetualId
 func (_m *PerpetualsClobKeeper) IsPerpetualClobPairActive(ctx types.Context, perpetualId uint32) (bool, error) {
 	ret := _m.Called(ctx, perpetualId)

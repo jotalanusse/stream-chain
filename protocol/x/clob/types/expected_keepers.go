@@ -182,6 +182,13 @@ type PerpetualsKeeper interface {
 		collateralPool perpetualsmoduletypes.CollateralPool,
 		err error,
 	)
+	GetQuoteCurrencyAtomicResolutionFromPerpetualId(
+		ctx sdk.Context,
+		perpetualId uint32,
+	) (
+		int32,
+		error,
+	)
 }
 
 type PricesKeeper interface {
