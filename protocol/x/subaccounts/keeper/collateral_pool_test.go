@@ -422,7 +422,14 @@ func TestIsValidCollateralPoolUpdates(t *testing.T) {
 		},
 		"Success: close position": {
 			settledUpdate: keeper.SettledUpdate{
-				SettledSubaccount: types.Subaccount{},
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(100),
+						},
+					},
+				},
 				PerpetualUpdates: []types.PerpetualUpdate{
 					{
 						PerpetualId:      0,
@@ -473,11 +480,18 @@ func TestIsValidCollateralPoolUpdates(t *testing.T) {
 		},
 		"Failure: updates to close positionsfor multiple collateral pools": {
 			settledUpdate: keeper.SettledUpdate{
-				SettledSubaccount: types.Subaccount{},
+				SettledSubaccount: types.Subaccount{
+					PerpetualPositions: []*types.PerpetualPosition{
+						{
+							PerpetualId: 0,
+							Quantums:    dtypes.NewInt(100),
+						},
+					},
+				},
 				PerpetualUpdates: []types.PerpetualUpdate{
 					{
 						PerpetualId:      0,
-						BigQuantumsDelta: big.NewInt(100),
+						BigQuantumsDelta: big.NewInt(-100),
 					},
 					{
 						PerpetualId:      1,
@@ -511,38 +525,6 @@ func TestIsValidCollateralPoolUpdates(t *testing.T) {
 			perpIdToCollateralPoolId: map[uint32]uint32{
 				0: 0,
 				1: 1,
-			},
-			expectedResult: types.ViolatesCollateralPoolConstraints,
-		},
-		"Failure: updates to open positions for multiple collateral pools": {
-			settledUpdate: keeper.SettledUpdate{
-				SettledSubaccount: types.Subaccount{
-					PerpetualPositions: []*types.PerpetualPosition{
-						{
-							PerpetualId: 0,
-							Quantums:    dtypes.NewInt(100),
-						},
-						{
-							PerpetualId: 2,
-							Quantums:    dtypes.NewInt(100),
-						},
-					},
-				},
-				PerpetualUpdates: []types.PerpetualUpdate{
-					{
-						PerpetualId:      0,
-						BigQuantumsDelta: big.NewInt(100),
-					},
-					{
-						PerpetualId:      1,
-						BigQuantumsDelta: big.NewInt(200),
-					},
-				},
-			},
-			perpIdToCollateralPoolId: map[uint32]uint32{
-				0: 0,
-				1: 0,
-				2: 1,
 			},
 			expectedResult: types.ViolatesCollateralPoolConstraints,
 		},

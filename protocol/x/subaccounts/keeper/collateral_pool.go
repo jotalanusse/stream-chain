@@ -40,7 +40,7 @@ func (k Keeper) checkCollateralPoolConstraints(
 }
 
 // Checks whether the perpetual updates to a settled subaccount violates constraints for the
-// collateral pool. This function assumes the settled subaccount had the updates applied to it already.
+// collateral pool. This function does not assumes the settled subaccount had the updates applied to it already.
 // The constraint being checked is:
 //   - there cannot be updates for multiple collateral pools
 //   - a subaccount with a position in a collateral pool cannot have updates for perpetuals in other
@@ -84,18 +84,6 @@ func IsValidCollateralPoolUpdates(
 		return types.UpdateCausedError, errorsmod.Wrap(
 			perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId),
 		)
-	}
-
-	for _, perpetualPosition := range settledUpdate.SettledSubaccount.PerpetualPositions[1:] {
-		collateralPoolIdTemp, exists := perpIdToCollateralPoolId[perpetualPosition.PerpetualId]
-		if !exists {
-			return types.UpdateCausedError, errorsmod.Wrap(
-				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(perpetualPosition.PerpetualId),
-			)
-		}
-		if collateralPoolId != collateralPoolIdTemp {
-			return types.ViolatesCollateralPoolConstraints, nil
-		}
 	}
 
 	if collateralPoolId != collateralPoolIdBeingUpdated {
