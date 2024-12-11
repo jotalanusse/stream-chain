@@ -141,6 +141,16 @@ func TestClaimYieldForSubaccount(t *testing.T) {
 			collateralPoolTDaiBalances: map[string]int64{
 				types.CollateralPoolZeroAddress.String(): 100_000_000_000,
 			},
+			perpetualPositions: []*types.PerpetualPosition{
+				{
+					PerpetualId:  uint32(0),
+					Quantums:     dtypes.NewInt(1_000_000_000),
+					FundingIndex: dtypes.NewInt(0),
+					YieldIndex:   big.NewRat(0, 1).String(),
+				},
+			},
+			msgClaimYieldForSubaccount: types.MsgClaimYieldForSubaccount{Id: &defaultSubaccountId},
+			expectedAssetYieldIndex:    big.NewRat(1, 1).String(),
 			perpetuals: []perptypes.Perpetual{
 				{
 					Params:       constants.BtcUsd_NoMarginRequirement.Params,
@@ -165,7 +175,7 @@ func TestClaimYieldForSubaccount(t *testing.T) {
 			},
 			expectedTDaiYieldPoolBalance: big.NewInt(199_000_000_000),
 			expectedCollateralPoolTDaiBalances: map[string]int64{
-				types.CollateralPoolZeroAddress.String(): 100_000_000_000,
+				types.CollateralPoolZeroAddress.String(): 101_000_000_000,
 			},
 		},
 		"Successfully claims yield for one perp with asset position existing but not claiming yield": {

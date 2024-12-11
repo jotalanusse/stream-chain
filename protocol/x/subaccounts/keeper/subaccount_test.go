@@ -3099,7 +3099,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 			globalAssetYieldIndex:     big.NewRat(1, 1),
 			fundsInTDaiPool:           big.NewInt(200_000_000_000),
 			collateralPoolTDaiBalances: map[string]int64{
-				types.ModuleAddress.String(): 100_000_000_000,
+				types.CollateralPoolZeroAddress.String(): 100_000_000_000,
 			},
 			perpetuals: []perptypes.Perpetual{
 				{
@@ -3149,7 +3149,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 			},
 			expectedTDaiYieldPoolBalance: big.NewInt(199_000_000_000),
 			expectedCollateralPoolTDaiBalances: map[string]int64{
-				types.ModuleAddress.String(): 101_000_000_000,
+				types.CollateralPoolZeroAddress.String(): 101_000_000_000,
 			},
 			msgSenderEnabled: true,
 		},
@@ -4042,7 +4042,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 			globalAssetYieldIndex: big.NewRat(5, 4),
 			fundsInTDaiPool:       big.NewInt(1_200_000_000_000),
 			collateralPoolTDaiBalances: map[string]int64{
-				types.ModuleAddress.String(): 1_000_000_000_000,
+				types.CollateralPoolZeroAddress.String(): 1_000_000_000_000,
 			},
 			subaccountAssetYieldIndex: constants.AssetYieldIndex_Zero,
 			assetPositions:            testutil.CreateTDaiAssetPosition(big.NewInt(100_000_000_000)),
@@ -4139,7 +4139,7 @@ func TestUpdateSubaccounts(t *testing.T) {
 			expectedAssetYieldIndex:      big.NewRat(5, 4).String(),
 			expectedTDaiYieldPoolBalance: big.NewInt(1_175_360_714_286),
 			expectedCollateralPoolTDaiBalances: map[string]int64{
-				types.ModuleAddress.String(): 1_024_639_285_714,
+				types.CollateralPoolZeroAddress.String(): 1_024_639_285_714,
 			},
 			msgSenderEnabled: true,
 		},
