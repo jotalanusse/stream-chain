@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"math"
 	"math/big"
 
@@ -24,8 +23,8 @@ func (k Keeper) checkCollateralPoolConstraints(
 	successPerUpdate = make([]types.UpdateResult, len(settledUpdates))
 	perpIdToCollateralPoolId := getPerpIdToCollateralPoolIdMap(perpetuals)
 
-	for i, u := range settledUpdates {
-		result, err := IsValidCollateralPoolUpdates(u, perpIdToCollateralPoolId)
+	for i, update := range settledUpdates {
+		result, err := IsValidCollateralPoolUpdate(update, perpIdToCollateralPoolId)
 		if err != nil {
 			return false, nil, err
 		}
@@ -47,7 +46,7 @@ func (k Keeper) checkCollateralPoolConstraints(
 //     collateral pools
 //   - a subaccount with no positions cannot be updated to have positions in multiple collateral pools
 
-func IsValidCollateralPoolUpdates(
+func IsValidCollateralPoolUpdate(
 	settledUpdate SettledUpdate,
 	perpIdToCollateralPoolId map[uint32]uint32,
 ) (types.UpdateResult, error) {
@@ -93,6 +92,40 @@ func IsValidCollateralPoolUpdates(
 	return types.Success, nil
 }
 
+// computeAndExecuteCollateralTransfer computes collateral transfers resulting from updates to
+// a subaccount and executes the collateral transfer using `x/bank`.`
+// The input `settledUpdate` must have an updated subaccount (`settledUpdate.SettledSubaccount`),
+// so all the updates must have been applied already to the subaccount.
+// Note: This uses the `x/bank` keeper and modifies `x/bank` state.
+func (k *Keeper) computeAndExecuteCollateralTransfer(
+	ctx sdk.Context,
+	settledUpdateWithUpdatedSubaccount SettledUpdate,
+) error {
+
+	quoteAssetId, err := k.getQuoteAssetId(ctx, settledUpdateWithUpdatedSubaccount.SettledSubaccount)
+	if err != nil {
+		return err
+	}
+
+	// The subaccount in `settledUpdateWithUpdatedSubaccount` already has the perpetual updates
+	// and asset updates applied to it.
+	stateTransition, err := GetCollateralPoolStateTransition(
+		settledUpdateWithUpdatedSubaccount,
+		quoteAssetId,
+	)
+	if err != nil {
+		return err
+	}
+	if err := k.transferAssetsToCollateralPool(
+		ctx,
+		stateTransition,
+	); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // GetCollateralPoolStateTransition checks whether a perpetual position will be opened or closed for
 // a subaccount and therefore whether we need to transfer between the dummy collateral pool and the
 // collateral pool for the perpetual.
@@ -102,87 +135,40 @@ func IsValidCollateralPoolUpdates(
 func GetCollateralPoolStateTransition(
 	settledUpdateWithUpdatedSubaccount SettledUpdate,
 	quoteAssetId uint32,
-) (*types.IsolatedPerpetualPositionStateTransition, error) {
+) (*types.CollateralTransferPerpetualPositionStateTransition, error) {
 
 	if len(settledUpdateWithUpdatedSubaccount.PerpetualUpdates) == 0 {
 		return nil, nil
 	}
 	updatedSubaccount := settledUpdateWithUpdatedSubaccount.SettledSubaccount
 
-	// If the updated subaccount does not have any perpetual positions, then all positions have been close
-	// and we transfer all collateral back to the dummy pool.
 	if len(updatedSubaccount.PerpetualPositions) == 0 {
-
-		assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
-		assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
-
-		for _, assetPosition := range updatedSubaccount.AssetPositions {
-			assetIds = append(assetIds, assetPosition.AssetId)
-			assetSizes = append(assetSizes, assetPosition.GetBigQuantums())
-		}
-
-		return &types.IsolatedPerpetualPositionStateTransition{
-			SubaccountId: updatedSubaccount.Id,
-			PerpetualId:  settledUpdateWithUpdatedSubaccount.PerpetualUpdates[0].PerpetualId,
-			AssetIds:     assetIds,
-			BigQuantums:  assetSizes,
-			Transition:   types.Closed,
-		}, nil
+		return getCollateralPoolStateTransitionForAllPerpPositionsClosed(
+			updatedSubaccount,
+			settledUpdateWithUpdatedSubaccount.PerpetualUpdates[0].PerpetualId,
+		), nil
 	}
 
-	// Check if there were existing perpetual positions on the subaccount.
-	if len(updatedSubaccount.PerpetualPositions) != len(settledUpdateWithUpdatedSubaccount.PerpetualUpdates) {
+	areAllPositionsNew := areAllSubaccountPerpPositionsNew(
+		updatedSubaccount.PerpetualPositions,
+		settledUpdateWithUpdatedSubaccount.PerpetualUpdates,
+	)
+	if !areAllPositionsNew {
 		return nil, nil
 	}
 
-	allPositionsAreNew := true
-	for i, perpetualUpdate := range settledUpdateWithUpdatedSubaccount.PerpetualUpdates {
-		if perpetualUpdate.GetBigQuantums().Cmp(updatedSubaccount.PerpetualPositions[i].GetBigQuantums()) != 0 {
-			allPositionsAreNew = false
-			break
-		}
+	err := getErrorFromInvalidAssetUpdateForNewPerpPosition(
+		settledUpdateWithUpdatedSubaccount.AssetUpdates,
+		quoteAssetId,
+	)
+	if err != nil {
+		return nil, err
 	}
 
-	if !allPositionsAreNew {
-		return nil, nil
-	}
-
-	// Collateral equal to the quote currency asset position before the update was applied needs to be transferred.
-	// Subtract the delta from the updated subaccount's quote currency asset position size to get the size
-	// of the quote currency asset position.
-
-	if len(settledUpdateWithUpdatedSubaccount.AssetUpdates) != 1 {
-		return nil, errorsmod.Wrap(types.ErrFailedToUpdateSubaccounts, "when opening a position in GetCollateralPoolStateTransition there should be only 1 asset update")
-	}
-
-	if settledUpdateWithUpdatedSubaccount.AssetUpdates[0].AssetId != quoteAssetId {
-		fmt.Println("OH NO")
-		fmt.Println(settledUpdateWithUpdatedSubaccount.AssetUpdates[0].AssetId)
-		fmt.Println(quoteAssetId)
-		return nil, errorsmod.Wrap(types.ErrFailedToUpdateSubaccounts, "when opening a position in GetCollateralPoolStateTransition the asset update should be for the quote asset")
-	}
-
-	assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
-	assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
-
-	for _, assetPosition := range updatedSubaccount.AssetPositions {
-		assetIds = append(assetIds, assetPosition.AssetId)
-
-		if assetPosition.AssetId == quoteAssetId {
-			assetSizes = append(assetSizes, new(big.Int).Sub(assetPosition.GetBigQuantums(), settledUpdateWithUpdatedSubaccount.AssetUpdates[0].GetBigQuantums()))
-		} else {
-			assetSizes = append(assetSizes, assetPosition.GetBigQuantums())
-		}
-	}
-
-	return &types.IsolatedPerpetualPositionStateTransition{
-		SubaccountId: updatedSubaccount.Id,
-		PerpetualId:  settledUpdateWithUpdatedSubaccount.PerpetualUpdates[0].PerpetualId,
-		AssetIds:     assetIds,
-		BigQuantums:  assetSizes,
-		Transition:   types.Opened,
-	}, nil
-
+	return getCollateralPoolStateTransitionForAllPerpPositionsOpened(
+		settledUpdateWithUpdatedSubaccount,
+		quoteAssetId,
+	), nil
 }
 
 // transferAssetsToCollateralPool transfers collateral between a collateral pool and the dummy
@@ -190,7 +176,7 @@ func GetCollateralPoolStateTransition(
 // Note: This uses the `x/bank` keeper and modifies `x/bank` state.
 func (k *Keeper) transferAssetsToCollateralPool(
 	ctx sdk.Context,
-	stateTransition *types.IsolatedPerpetualPositionStateTransition,
+	stateTransition *types.CollateralTransferPerpetualPositionStateTransition,
 ) error {
 	// No collateral to transfer if no state transition.
 	if stateTransition == nil {
@@ -274,35 +260,109 @@ func (k *Keeper) transferAssetsToCollateralPool(
 	return nil
 }
 
-// computeAndExecuteCollateralTransfer computes collateral transfers resulting from updates to
-// a subaccount and executes the collateral transfer using `x/bank`.`
-// The input `settledUpdate` must have an updated subaccount (`settledUpdate.SettledSubaccount`),
-// so all the updates must have been applied already to the subaccount.
-// Note: This uses the `x/bank` keeper and modifies `x/bank` state.
-func (k *Keeper) computeAndExecuteCollateralTransfer(
-	ctx sdk.Context,
+// getCollateralPoolStateTransitionForAllPerpPositionsClosed creates a state
+// transition for a subaccount that has all perpetual positions closed.
+// All collateral is transferred back to the dummy pool.
+func getCollateralPoolStateTransitionForAllPerpPositionsClosed(
+	updatedSubaccount types.Subaccount,
+	perpetualId uint32,
+) *types.CollateralTransferPerpetualPositionStateTransition {
+
+	assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
+	assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
+
+	for _, assetPosition := range updatedSubaccount.AssetPositions {
+		assetIds = append(assetIds, assetPosition.AssetId)
+		assetSizes = append(assetSizes, assetPosition.GetBigQuantums())
+	}
+
+	return &types.CollateralTransferPerpetualPositionStateTransition{
+		SubaccountId: updatedSubaccount.Id,
+		PerpetualId:  perpetualId,
+		AssetIds:     assetIds,
+		BigQuantums:  assetSizes,
+		Transition:   types.Closed,
+	}
+}
+
+// getCollateralPoolStateTransitionForAllPerpPositionsOpened creates a state
+// transition for a subaccount that opens all perpetual positions.
+// Collateral is transffered to the respecitive collateral pool.
+//
+// The amount of collateral transferred equals the quote currency asset
+// position before the update was applied. We subtract the asset update
+// amount from the updated subaccount's quote currency asset position size
+// to get the amount of collateral to transfer.
+func getCollateralPoolStateTransitionForAllPerpPositionsOpened(
 	settledUpdateWithUpdatedSubaccount SettledUpdate,
+	quoteAssetId uint32,
+) *types.CollateralTransferPerpetualPositionStateTransition {
+
+	updatedSubaccount := settledUpdateWithUpdatedSubaccount.SettledSubaccount
+
+	assetIds := make([]uint32, 0, len(updatedSubaccount.AssetPositions))
+	assetSizes := make([]*big.Int, 0, len(updatedSubaccount.AssetPositions))
+
+	for _, assetPosition := range updatedSubaccount.AssetPositions {
+		assetIds = append(assetIds, assetPosition.AssetId)
+
+		if assetPosition.AssetId == quoteAssetId {
+			trueAssetSize := new(big.Int).Sub(
+				assetPosition.GetBigQuantums(),
+				settledUpdateWithUpdatedSubaccount.AssetUpdates[0].GetBigQuantums(),
+			)
+			assetSizes = append(assetSizes, trueAssetSize)
+		} else {
+			assetSizes = append(assetSizes, assetPosition.GetBigQuantums())
+		}
+	}
+
+	return &types.CollateralTransferPerpetualPositionStateTransition{
+		SubaccountId: updatedSubaccount.Id,
+		PerpetualId:  settledUpdateWithUpdatedSubaccount.PerpetualUpdates[0].PerpetualId,
+		AssetIds:     assetIds,
+		BigQuantums:  assetSizes,
+		Transition:   types.Opened,
+	}
+}
+
+func areAllSubaccountPerpPositionsNew(
+	subaccountPerpetualPositions []*types.PerpetualPosition,
+	perpetualUpdates []types.PerpetualUpdate,
+) bool {
+
+	if len(subaccountPerpetualPositions) != len(perpetualUpdates) {
+		return false
+	}
+
+	allPositionsAreNew := true
+	for i, perpetualUpdate := range perpetualUpdates {
+		if perpetualUpdate.GetBigQuantums().Cmp(subaccountPerpetualPositions[i].GetBigQuantums()) != 0 {
+			allPositionsAreNew = false
+			break
+		}
+	}
+
+	return allPositionsAreNew
+}
+
+func getErrorFromInvalidAssetUpdateForNewPerpPosition(
+	assetUpdates []types.AssetUpdate,
+	quoteAssetId uint32,
 ) error {
 
-	quoteAssetId, err := k.getQuoteAssetId(ctx, settledUpdateWithUpdatedSubaccount.SettledSubaccount)
-	if err != nil {
-		return err
+	if len(assetUpdates) != 1 {
+		return errorsmod.Wrap(
+			types.ErrFailedToUpdateSubaccounts,
+			"when opening new position in a new collateral pool there should be only 1 asset update",
+		)
 	}
 
-	// The subaccount in `settledUpdateWithUpdatedSubaccount` already has the perpetual updates
-	// and asset updates applied to it.
-	stateTransition, err := GetCollateralPoolStateTransition(
-		settledUpdateWithUpdatedSubaccount,
-		quoteAssetId,
-	)
-	if err != nil {
-		return err
-	}
-	if err := k.transferAssetsToCollateralPool(
-		ctx,
-		stateTransition,
-	); err != nil {
-		return err
+	if assetUpdates[0].AssetId != quoteAssetId {
+		return errorsmod.Wrap(
+			types.ErrFailedToUpdateSubaccounts,
+			"when opening a new position in a new collateral pool the asset update should be for the quote asset",
+		)
 	}
 
 	return nil
@@ -317,7 +377,10 @@ func (k *Keeper) getQuoteAssetId(
 		return math.MaxUint32, nil
 	}
 
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(ctx, subaccount.PerpetualPositions[0].PerpetualId)
+	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(
+		ctx,
+		subaccount.PerpetualPositions[0].PerpetualId,
+	)
 	if err != nil {
 		return 0, err
 	}

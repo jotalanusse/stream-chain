@@ -21,7 +21,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 		perpetuals                         []perptypes.Perpetual
 
 		// expectation
-		expectedStateTransition *types.IsolatedPerpetualPositionStateTransition
+		expectedStateTransition *types.CollateralTransferPerpetualPositionStateTransition
 		expectedErr             error
 	}{
 		`If no perpetual updates, nil state transition is returned`: {
@@ -55,7 +55,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			perpetuals: []perptypes.Perpetual{
 				constants.BtcUsd_100PercentMarginRequirement,
 			},
-			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
+			expectedStateTransition: &types.CollateralTransferPerpetualPositionStateTransition{
 				SubaccountId: &constants.Alice_Num0,
 				PerpetualId:  uint32(0),
 				AssetIds:     []uint32{},
@@ -86,7 +86,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 				constants.BtcUsd_100PercentMarginRequirement,
 				constants.EthUsd_NoMarginRequirement,
 			},
-			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
+			expectedStateTransition: &types.CollateralTransferPerpetualPositionStateTransition{
 				SubaccountId: &constants.Alice_Num0,
 				PerpetualId:  uint32(0),
 				AssetIds:     []uint32{},
@@ -143,7 +143,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			perpetuals: []perptypes.Perpetual{
 				constants.IsoUsd_IsolatedMarket,
 			},
-			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
+			expectedStateTransition: &types.CollateralTransferPerpetualPositionStateTransition{
 				SubaccountId: &constants.Alice_Num0,
 				PerpetualId:  uint32(3),
 				AssetIds:     []uint32{assettypes.AssetTDai.Id},
@@ -181,7 +181,7 @@ func TestGetCollateralPoolStateTransition(t *testing.T) {
 			perpetuals: []perptypes.Perpetual{
 				constants.IsoUsd_IsolatedMarket,
 			},
-			expectedStateTransition: &types.IsolatedPerpetualPositionStateTransition{
+			expectedStateTransition: &types.CollateralTransferPerpetualPositionStateTransition{
 				SubaccountId: &constants.Alice_Num0,
 				PerpetualId:  uint32(3),
 				AssetIds:     []uint32{assettypes.AssetTDai.Id},
@@ -583,7 +583,7 @@ func TestIsValidCollateralPoolUpdates(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := keeper.IsValidCollateralPoolUpdates(
+			result, err := keeper.IsValidCollateralPoolUpdate(
 				tc.settledUpdate,
 				tc.perpIdToCollateralPoolId,
 			)
