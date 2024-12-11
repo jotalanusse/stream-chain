@@ -50,27 +50,19 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		return types.Success, nil
 	}
 
-	collateralPoolId := uint32(0)
-
-	if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {
-		params, exists := perpIdToParams[settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId]
-		if !exists {
-			return types.UpdateCausedError, errorsmod.Wrap(
-				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId),
-			)
-		}
-
-		collateralPoolId = params.CollateralPoolId
-	} else if len(settledUpdate.PerpetualUpdates) > 0 {
-		params, exists := perpIdToParams[settledUpdate.PerpetualUpdates[0].PerpetualId]
-		if !exists {
-			return types.UpdateCausedError, errorsmod.Wrap(
-				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.PerpetualUpdates[0].PerpetualId),
-			)
-		}
-
-		collateralPoolId = params.CollateralPoolId
+	collateralPoolId, err := GetSubaccountCollateralPoolId(settledUpdate, perpIdToParams)
+	if err != nil {
+		return types.UpdateCausedError, err
 	}
+
+	return k.EnsureValidAssetUpdates(ctx, settledUpdate, collateralPoolId)
+}
+
+func (k Keeper) EnsureValidAssetUpdates(
+	ctx sdk.Context,
+	settledUpdate SettledUpdate,
+	collateralPoolId uint32,
+) (types.UpdateResult, error) {
 
 	collateralPool, err := k.perpetualsKeeper.GetCollateralPool(ctx, collateralPoolId)
 	if err != nil {
@@ -85,6 +77,36 @@ func (k Keeper) isValidMultiCollateralUpdate(
 	}
 
 	return types.Success, nil
+}
+
+func GetSubaccountCollateralPoolId(
+	settledUpdate SettledUpdate,
+	perpIdToParams map[uint32]perptypes.PerpetualParams,
+) (uint32, error) {
+	if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {
+		params, exists := perpIdToParams[settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId]
+		if !exists {
+			return 0, errorsmod.Wrap(
+				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId),
+			)
+		}
+
+		return params.CollateralPoolId, nil
+	} else if len(settledUpdate.PerpetualUpdates) > 0 {
+		params, exists := perpIdToParams[settledUpdate.PerpetualUpdates[0].PerpetualId]
+		if !exists {
+			return 0, errorsmod.Wrap(
+				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.PerpetualUpdates[0].PerpetualId),
+			)
+		}
+
+		return params.CollateralPoolId, nil
+	}
+
+	return 0, errorsmod.Wrap(
+		perptypes.ErrPerpetualDoesNotExist,
+		"no perpetuals available in subaccount during getSubaccountCollateralPoolId",
+	)
 }
 
 func getPerpIdToParams(
