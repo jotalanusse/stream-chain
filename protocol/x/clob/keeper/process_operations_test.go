@@ -1125,6 +1125,7 @@ func TestProcessProposerOperations(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(-100_000_000 + 50_000_000),
 						FundingIndex: dtypes.ZeroInt(),
+						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 				constants.Dave_Num0: {
@@ -1132,6 +1133,7 @@ func TestProcessProposerOperations(t *testing.T) {
 						PerpetualId:  0,
 						Quantums:     dtypes.NewInt(100_000_000 - 50_000_000),
 						FundingIndex: dtypes.ZeroInt(),
+						YieldIndex:   big.NewRat(0, 1).String(),
 					},
 				},
 			},
