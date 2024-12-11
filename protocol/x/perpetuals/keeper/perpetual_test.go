@@ -3908,7 +3908,7 @@ func TestCalculateYieldIndexForEpoch(t *testing.T) {
 	}
 }
 
-func TestCalculateNewTotalYieldIndex(t *testing.T) {
+func TestGeneratePerpetualWithUpdatedYieldIndex(t *testing.T) {
 	testId := uint32(999)
 	testTicker := "TEST-USD"
 	testBasePerpetual := types.Perpetual{
@@ -4068,7 +4068,7 @@ func TestCalculateNewTotalYieldIndex(t *testing.T) {
 			)
 			require.NoError(t, err)
 
-			resultPerp, err := pc.PerpetualsKeeper.CalculateNewTotalYieldIndex(
+			resultPerp, err := pc.PerpetualsKeeper.GeneratePerpetualWithUpdatedYieldIndex(
 				pc.Ctx,
 				tc.totalTDaiPreMint,
 				tc.totalTDaiMinted,

@@ -646,7 +646,7 @@ func (k Keeper) UpdateYieldIndexToNewMint(
 			continue
 		}
 
-		modifiedPerp, err := k.CalculateNewTotalYieldIndex(
+		modifiedPerp, err := k.GeneratePerpetualWithUpdatedYieldIndex(
 			ctx,
 			totalTDaiPreMint,
 			totalTDaiMinted,
@@ -682,7 +682,7 @@ func (k Keeper) UpdateYieldIndexToNewMint(
 	return nil
 }
 
-func (k Keeper) CalculateNewTotalYieldIndex(
+func (k Keeper) GeneratePerpetualWithUpdatedYieldIndex(
 	ctx sdk.Context,
 	totalTDaiPreMint *big.Int,
 	totalTDaiMinted *big.Int,
