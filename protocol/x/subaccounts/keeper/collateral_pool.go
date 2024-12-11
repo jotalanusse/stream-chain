@@ -262,7 +262,7 @@ func (k *Keeper) transferAssetsToCollateralPool(
 
 // getCollateralPoolStateTransitionForAllPerpPositionsClosed creates a state
 // transition for a subaccount that has all perpetual positions closed.
-// All collateral is transferred back to the dummy pool.
+// All collateral of a subaccount is transferred back to the dummy pool.
 func getCollateralPoolStateTransitionForAllPerpPositionsClosed(
 	updatedSubaccount types.Subaccount,
 	perpetualId uint32,
@@ -287,12 +287,14 @@ func getCollateralPoolStateTransitionForAllPerpPositionsClosed(
 
 // getCollateralPoolStateTransitionForAllPerpPositionsOpened creates a state
 // transition for a subaccount that opens all perpetual positions.
-// Collateral is transffered to the respecitive collateral pool.
+// All collateral of a subaccount is transferred to the respective
+// collateral pool.
 //
-// The amount of collateral transferred equals the quote currency asset
-// position before the update was applied. We subtract the asset update
-// amount from the updated subaccount's quote currency asset position size
-// to get the amount of collateral to transfer.
+// For the quote asset, the amount of collateral transferred equals
+// the quote currency asset position before the update was applied.
+// We subtract the asset update amount from the updated subaccount's
+// quote currency asset position size to get the amount of collateral to transfer.
+// For other assets, the entire asset position of a subaccount is transferred.
 func getCollateralPoolStateTransitionForAllPerpPositionsOpened(
 	settledUpdateWithUpdatedSubaccount SettledUpdate,
 	quoteAssetId uint32,
