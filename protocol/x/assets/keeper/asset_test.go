@@ -826,7 +826,7 @@ func TestGetNetCollateralWithSlippage(t *testing.T) {
 				MaxSlippagePpm:   uint32(10_000), // 1%
 			},
 			bigQuantums:    big.NewInt(1_000_000),
-			expectedResult: big.NewInt(990_099),
+			expectedResult: big.NewInt(990_000),
 		},
 		"success - BTC with no slippage": {
 			asset: types.Asset{
@@ -854,7 +854,7 @@ func TestGetNetCollateralWithSlippage(t *testing.T) {
 				MaxSlippagePpm:   uint32(10_000), // 1%
 			},
 			bigQuantums:    big.NewInt(1_000_000),
-			expectedResult: big.NewInt(495_049_504),
+			expectedResult: big.NewInt(495_000_000),
 		},
 		"success - BTC with large slippage": {
 			asset: types.Asset{
@@ -868,7 +868,7 @@ func TestGetNetCollateralWithSlippage(t *testing.T) {
 				MaxSlippagePpm:   uint32(500_000), // 50%
 			},
 			bigQuantums:    big.NewInt(1_000_000),
-			expectedResult: big.NewInt(333_333_333),
+			expectedResult: big.NewInt(250_000_000),
 		},
 	}
 

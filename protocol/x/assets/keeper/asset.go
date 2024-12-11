@@ -243,19 +243,12 @@ func (k Keeper) GetSlippageAdjustedQuoteQuantums(
 		exponent,
 	)
 
-	slippageNormalizer := new(big.Rat).SetFrac(
-		big.NewInt(1_000_000+int64(asset.MaxSlippagePpm)),
-		big.NewInt(1_000_000),
-	)
-
-	normalizedQuoteQuantums := new(big.Rat).Quo(
-		new(big.Rat).SetInt(bigQuoteQuantums),
-		slippageNormalizer,
-	)
-
 	return new(big.Int).Div(
-		normalizedQuoteQuantums.Num(),
-		normalizedQuoteQuantums.Denom(),
+		new(big.Int).Mul(
+			bigQuoteQuantums,
+			big.NewInt(1_000_000-int64(asset.MaxSlippagePpm)),
+		),
+		big.NewInt(1_000_000),
 	), nil
 }
 
