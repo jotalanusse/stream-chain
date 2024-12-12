@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	errorsmod "cosmossdk.io/errors"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -50,7 +48,7 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		return types.Success, nil
 	}
 
-	collateralPoolId, err := GetSubaccountCollateralPoolId(settledUpdate, perpIdToParams)
+	collateralPoolId, err := getSubaccountCollateralPoolIdForSettledUpdate(settledUpdate, perpIdToParams)
 	if err != nil {
 		return types.UpdateCausedError, err
 	}
@@ -77,34 +75,4 @@ func (k Keeper) isValidAssetUpdate(
 	}
 
 	return types.Success, nil
-}
-
-func GetSubaccountCollateralPoolId(
-	settledUpdate SettledUpdate,
-	perpIdToParams map[uint32]perptypes.PerpetualParams,
-) (uint32, error) {
-	if len(settledUpdate.SettledSubaccount.PerpetualPositions) > 0 {
-		params, exists := perpIdToParams[settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId]
-		if !exists {
-			return 0, errorsmod.Wrap(
-				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.SettledSubaccount.PerpetualPositions[0].PerpetualId),
-			)
-		}
-
-		return params.CollateralPoolId, nil
-	} else if len(settledUpdate.PerpetualUpdates) > 0 {
-		params, exists := perpIdToParams[settledUpdate.PerpetualUpdates[0].PerpetualId]
-		if !exists {
-			return 0, errorsmod.Wrap(
-				perptypes.ErrPerpetualDoesNotExist, lib.UintToString(settledUpdate.PerpetualUpdates[0].PerpetualId),
-			)
-		}
-
-		return params.CollateralPoolId, nil
-	}
-
-	return 0, errorsmod.Wrap(
-		perptypes.ErrPerpetualDoesNotExist,
-		"no perpetuals available in subaccount during getSubaccountCollateralPoolId",
-	)
 }
