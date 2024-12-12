@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"math"
 	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
@@ -368,36 +367,4 @@ func getErrorFromInvalidAssetUpdateForNewPerpPosition(
 	}
 
 	return nil
-}
-
-func (k *Keeper) getQuoteAssetId(
-	ctx sdk.Context,
-	subaccount types.Subaccount,
-) (uint32, error) {
-
-	if len(subaccount.PerpetualPositions) == 0 {
-		return math.MaxUint32, nil
-	}
-
-	collateralPool, err := k.perpetualsKeeper.GetCollateralPoolFromPerpetualId(
-		ctx,
-		subaccount.PerpetualPositions[0].PerpetualId,
-	)
-	if err != nil {
-		return 0, err
-	}
-
-	return collateralPool.QuoteAssetId, nil
-}
-
-func getPerpIdToCollateralPoolIdMap(
-	perpetuals []perptypes.Perpetual,
-) map[uint32]uint32 {
-	var perpIdToCollateralPoolId = make(map[uint32]uint32)
-
-	for _, perpetual := range perpetuals {
-		perpIdToCollateralPoolId[perpetual.GetId()] = perpetual.Params.CollateralPoolId
-	}
-
-	return perpIdToCollateralPoolId
 }
