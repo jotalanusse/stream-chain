@@ -1156,29 +1156,6 @@ func TestPlaceLongTermOrder(t *testing.T) {
 									Version:             indexerevents.SubaccountUpdateEventVersion,
 								},
 								{
-									Subtype: indexerevents.SubtypeSubaccountUpdate,
-									DataBytes: indexer_manager.GetBytes(
-										indexerevents.NewSubaccountUpdateEvent(
-											&satypes.SubaccountId{
-												Owner:  authtypes.NewModuleAddress("NULL_ROUTER_ADDRESS").String(),
-												Number: 0,
-											},
-											nil,
-											[]*satypes.AssetPosition{
-												{
-													AssetId:  0,
-													Quantums: dtypes.NewInt(50_000_000), // taker fee of .5% + router fee of .1%
-												},
-											},
-											nil, // no funding payments
-											constants.AssetYieldIndex_Zero,
-										),
-									),
-									OrderingWithinBlock: &indexer_manager.IndexerTendermintEvent_TransactionIndex{},
-									EventIndex:          2,
-									Version:             indexerevents.SubaccountUpdateEventVersion,
-								},
-								{
 									Subtype: indexerevents.SubtypeOrderFill,
 									DataBytes: indexer_manager.GetBytes(
 										indexerevents.NewOrderFillEvent(
@@ -1192,7 +1169,7 @@ func TestPlaceLongTermOrder(t *testing.T) {
 										),
 									),
 									OrderingWithinBlock: &indexer_manager.IndexerTendermintEvent_TransactionIndex{},
-									EventIndex:          3,
+									EventIndex:          2,
 									Version:             indexerevents.OrderFillEventVersion,
 								},
 								{
