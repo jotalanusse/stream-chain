@@ -507,10 +507,10 @@ var (
 		6003,
 		"Router fee ppm is invalid",
 	)
-	ErrInvalidRouterSubaccountId = errorsmod.Register(
+	ErrInvalidRouterOwner = errorsmod.Register(
 		ModuleName,
 		6004,
-		"Router subaccount ID is invalid",
+		"Router owner is invalid",
 	)
 
 	// Errors for unimplemented and disabled functionality.

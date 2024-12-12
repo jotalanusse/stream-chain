@@ -61,10 +61,6 @@ export class Composer {
       number: subaccountNumber,
     };
 
-    const routerSubaccountId: SubaccountId = {
-      owner: routerFeeOwner,
-    };
-
     const orderId: OrderId = {
       subaccountId,
       clientId,
@@ -82,7 +78,7 @@ export class Composer {
       reduceOnly,
       clientMetadata: clientMetadata ?? 0,
       routerFeePpm,
-      routerSubaccountId,
+      routerFeeOwner,
       conditionType,
       conditionalOrderTriggerSubticks,
     };

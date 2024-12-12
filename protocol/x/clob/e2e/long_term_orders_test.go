@@ -495,15 +495,12 @@ func TestPlaceLongTermOrder(t *testing.T) {
 				OrderFlags:   clobtypes.OrderIdFlags_LongTerm,
 				ClobPairId:   0,
 			},
-			Side:         clobtypes.Order_SIDE_BUY,
-			Quantums:     10_000_000_000, // 1 BTC, assuming atomic resolution of -10
-			Subticks:     500_000_000,    // 50k tDAI / BTC, assuming QCE of -8
-			GoodTilOneof: &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
-			RouterFeePpm: 1_000,
-			RouterSubaccountId: &satypes.SubaccountId{
-				Owner:  authtypes.NewModuleAddress("NULL_ROUTER_ADDRESS").String(),
-				Number: 0,
-			},
+			Side:           clobtypes.Order_SIDE_BUY,
+			Quantums:       10_000_000_000, // 1 BTC, assuming atomic resolution of -10
+			Subticks:       500_000_000,    // 50k tDAI / BTC, assuming QCE of -8
+			GoodTilOneof:   &clobtypes.Order_GoodTilBlockTime{GoodTilBlockTime: 5},
+			RouterFeePpm:   1_000,
+			RouterFeeOwner: authtypes.NewModuleAddress("NULL_ROUTER_ADDRESS").String(),
 		},
 	)
 	LongTermPlaceOrder_Alice_Num0_Id0_Clob0_Buy2_Price50000_GTBT5 := *clobtypes.NewMsgPlaceOrder(

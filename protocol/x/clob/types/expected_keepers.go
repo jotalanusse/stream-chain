@@ -77,6 +77,13 @@ type SubaccountsKeeper interface {
 		perpetualId uint32,
 		assetId uint32,
 	) error
+	TransferRouterFee(
+		ctx sdk.Context,
+		routerFeeQuoteQuantums *big.Int,
+		routerFeeOwner string,
+		perpetualId uint32,
+		assetId uint32,
+	) error
 	TransferLiquidityFee(
 		ctx sdk.Context,
 		liquidityFeeQuoteQuantums *big.Int,

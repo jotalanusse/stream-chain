@@ -297,6 +297,45 @@ func (k Keeper) TransferInsuranceFundPayments(
 	)
 }
 
+func (k Keeper) TransferRouterFee(
+	ctx sdk.Context,
+	routerFeeQuoteQuantums *big.Int,
+	routerFeeOwner string,
+	perpetualId uint32,
+	assetId uint32,
+) error {
+	if routerFeeQuoteQuantums.Sign() < 0 {
+		return errorsmod.Wrap(types.ErrAssetTransferQuantumsNotPositive, "Router fee quote quantums cannot be negative")
+	}
+
+	if routerFeeQuoteQuantums.Sign() == 0 {
+		return nil
+	}
+
+	_, coinToTransfer, err := k.assetsKeeper.ConvertAssetToCoin(
+		ctx,
+		assetId,
+		new(big.Int).Abs(routerFeeQuoteQuantums),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// Determine the sender and receiver.
+	// Send coins from `subaccounts` to the `insurance_fund` module account by default.
+	fromModule, err := k.GetCollateralPoolAddressFromPerpetualId(ctx, perpetualId)
+	if err != nil {
+		panic(err)
+	}
+
+	return k.bankKeeper.SendCoins(
+		ctx,
+		fromModule,
+		sdk.MustAccAddressFromBech32(routerFeeOwner),
+		[]sdk.Coin{coinToTransfer},
+	)
+}
+
 func (k Keeper) TransferLiquidityFee(
 	ctx sdk.Context,
 	liquidityFeeQuoteQuantums *big.Int,

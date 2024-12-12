@@ -333,7 +333,7 @@ type IndexerOrder struct {
 	ConditionalOrderTriggerSubticks uint64 `protobuf:"varint,11,opt,name=conditional_order_trigger_subticks,json=conditionalOrderTriggerSubticks,proto3" json:"conditional_order_trigger_subticks,omitempty"`
 	// Router fee ppm for the order.
 	RouterFeePpm int32 `protobuf:"varint,12,opt,name=router_fee_ppm,json=routerFeePpm,proto3" json:"router_fee_ppm,omitempty"`
-	// Router fee subaccount owner.
+	// Router fee owner.
 	RouterFeeOwner string `protobuf:"bytes,13,opt,name=router_fee_owner,json=routerFeeOwner,proto3" json:"router_fee_owner,omitempty"`
 }
 

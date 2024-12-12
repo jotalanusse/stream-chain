@@ -275,31 +275,6 @@ func (k Keeper) persistMatchedOrders(
 		},
 	}
 
-	if !isTakerLiquidation {
-		if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          collateralPool.QuoteAssetId,
-						BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
-					},
-				},
-				SubaccountId: *matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId,
-			})
-		}
-		if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          collateralPool.QuoteAssetId,
-						BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
-					},
-				},
-				SubaccountId: *matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId,
-			})
-		}
-	}
-
 	// Apply the update.
 	success, successPerUpdate, err := k.subaccountsKeeper.UpdateSubaccounts(
 		ctx,
@@ -332,6 +307,19 @@ func (k Keeper) persistMatchedOrders(
 				successPerUpdate,
 			),
 		)
+	}
+
+	if !isTakerLiquidation {
+		if matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner != "" && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
+			if err := k.subaccountsKeeper.TransferRouterFee(ctx, bigRouterTakerFeeQuoteQuantums, matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner, perpetualId, collateralPool.QuoteAssetId); err != nil {
+				return takerUpdateResult, makerUpdateResult, err
+			}
+		}
+		if matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner != "" && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
+			if err := k.subaccountsKeeper.TransferRouterFee(ctx, bigRouterMakerFeeQuoteQuantums, matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner, perpetualId, collateralPool.QuoteAssetId); err != nil {
+				return takerUpdateResult, makerUpdateResult, err
+			}
+		}
 	}
 
 	if err := k.subaccountsKeeper.TransferInsuranceFundPayments(ctx, insuranceFundDelta, perpetualId, collateralPool.QuoteAssetId); err != nil {
@@ -588,10 +576,10 @@ func (k Keeper) calculateFees(ctx sdk.Context, matchWithOrders *types.MatchWithO
 			return 0, 0, 0, 0, nil, nil, nil, err
 		}
 	} else {
-		if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil {
+		if matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner != "" {
 			routerTakerFeePpm = matchWithOrders.TakerOrder.MustGetOrder().RouterFeePpm
 		}
-		if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil {
+		if matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner != "" {
 			routerMakerFeePpm = matchWithOrders.MakerOrder.MustGetOrder().RouterFeePpm
 		}
 	}

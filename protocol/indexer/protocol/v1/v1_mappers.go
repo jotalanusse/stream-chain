@@ -138,10 +138,10 @@ func OrderToIndexerOrder(
 }
 
 func HandleEmptyRouterSubaccountIdForOwner(order clobtypes.Order) string {
-	if order.RouterSubaccountId == nil {
+	if order.RouterFeeOwner == "" {
 		return authtypes.NewModuleAddress("NULL_ROUTER_ADDRESS").String()
 	}
-	return order.RouterSubaccountId.Owner
+	return order.RouterFeeOwner
 }
 
 func orderToIndexerOrder_GoodTilBlock(
