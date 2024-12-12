@@ -21,8 +21,8 @@ func (k Keeper) checkMultiCollateralAssetConstraints(
 	successPerUpdate = make([]types.UpdateResult, len(settledUpdates))
 	perpIdToMarketType := getPerpIdToParams(perpetuals)
 
-	for i, u := range settledUpdates {
-		result, err := k.isValidMultiCollateralUpdate(ctx, u, perpIdToMarketType)
+	for i, update := range settledUpdates {
+		result, err := k.isValidMultiCollateralUpdate(ctx, update, perpIdToMarketType)
 		if err != nil {
 			return false, nil, err
 		}
@@ -55,10 +55,10 @@ func (k Keeper) isValidMultiCollateralUpdate(
 		return types.UpdateCausedError, err
 	}
 
-	return k.EnsureValidAssetUpdates(ctx, settledUpdate, collateralPoolId)
+	return k.isValidAssetUpdate(ctx, settledUpdate, collateralPoolId)
 }
 
-func (k Keeper) EnsureValidAssetUpdates(
+func (k Keeper) isValidAssetUpdate(
 	ctx sdk.Context,
 	settledUpdate SettledUpdate,
 	collateralPoolId uint32,
@@ -107,28 +107,4 @@ func GetSubaccountCollateralPoolId(
 		perptypes.ErrPerpetualDoesNotExist,
 		"no perpetuals available in subaccount during getSubaccountCollateralPoolId",
 	)
-}
-
-func getPerpIdToParams(
-	perpetuals []perptypes.Perpetual,
-) map[uint32]perptypes.PerpetualParams {
-	var perpIdToMarketType = make(map[uint32]perptypes.PerpetualParams)
-
-	for _, perpetual := range perpetuals {
-		perpIdToMarketType[perpetual.GetId()] = perpetual.Params
-	}
-
-	return perpIdToMarketType
-}
-
-func getValidAssetIdMap(
-	assetIds []uint32,
-) (assetIdsMap map[uint32]struct{}) {
-
-	assetIdsMap = make(map[uint32]struct{})
-	for _, asset := range assetIds {
-		assetIdsMap[asset] = struct{}{}
-	}
-
-	return assetIdsMap
 }
