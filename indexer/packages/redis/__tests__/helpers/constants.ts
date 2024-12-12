@@ -79,7 +79,7 @@ export const defaultOrder: IndexerOrder = {
   conditionType: IndexerOrder_ConditionType.CONDITION_TYPE_UNSPECIFIED,
   conditionalOrderTriggerSubticks: Long.fromValue(0, true),
   routerFeePpm: 0,
-  routerFeeSubaccountOwner: 'klyra1xxxxxx',
+  routerFeeOwner: 'klyra1xxxxxx',
 };
 export const defaultOrderGoodTilBlockTime: IndexerOrder = {
   ...defaultOrder,
@@ -194,7 +194,7 @@ export const isolatedMarketOrder: IndexerOrder = {
   conditionType: IndexerOrder_ConditionType.CONDITION_TYPE_UNSPECIFIED,
   conditionalOrderTriggerSubticks: Long.fromValue(0, true),
   routerFeePpm: 0,
-  routerFeeSubaccountOwner: 'klyra1xxxxxx',
+  routerFeeOwner: 'klyra1xxxxxx',
 };
 
 export const isolatedMarketOrderUuid: string = OrderTable.orderIdToUuid(isolatedMarketOrderId);

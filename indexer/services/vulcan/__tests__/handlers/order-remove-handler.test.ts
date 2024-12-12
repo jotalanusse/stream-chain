@@ -398,8 +398,8 @@ describe('OrderRemoveHandler', () => {
             updatedAtHeight: removedOrder.updatedAtHeight,
             clientMetadata: removedRedisOrder.order!.clientMetadata.toString(),
             routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-            routerFeeSubaccountOwner:
-              removedRedisOrder.order!.routerFeeSubaccountOwner,
+            routerFeeOwner:
+              removedRedisOrder.order!.routerFeeOwner,
             triggerPrice,
           },
         ],
@@ -542,8 +542,8 @@ describe('OrderRemoveHandler', () => {
             updatedAtHeight: removedOrder.updatedAtHeight,
             clientMetadata: removedRedisOrder.order!.clientMetadata.toString(),
             routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-            routerFeeSubaccountOwner:
-              removedRedisOrder.order!.routerFeeSubaccountOwner,
+            routerFeeOwner:
+              removedRedisOrder.order!.routerFeeOwner,
             triggerPrice,
           },
         ],
@@ -686,8 +686,8 @@ describe('OrderRemoveHandler', () => {
             updatedAtHeight: removedOrder.updatedAtHeight,
             clientMetadata: removedRedisOrder.order!.clientMetadata.toString(),
             routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-            routerFeeSubaccountOwner:
-              removedRedisOrder.order!.routerFeeSubaccountOwner,
+            routerFeeOwner:
+              removedRedisOrder.order!.routerFeeOwner,
             triggerPrice,
           }],
         };
@@ -831,8 +831,8 @@ describe('OrderRemoveHandler', () => {
             updatedAtHeight: removedOrder.updatedAtHeight,
             clientMetadata: removedRedisOrder.order!.clientMetadata.toString(),
             routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-            routerFeeSubaccountOwner:
-              removedRedisOrder.order!.routerFeeSubaccountOwner,
+            routerFeeOwner:
+              removedRedisOrder.order!.routerFeeOwner,
             triggerPrice,
           }],
         };
@@ -1144,7 +1144,7 @@ describe('OrderRemoveHandler', () => {
           updatedAtHeight: removedOrder.updatedAtHeight,
           clientMetadata: removedOrder.clientMetadata.toString(),
           routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-          routerFeeSubaccountOwner: removedRedisOrder.order!.routerFeeSubaccountOwner,
+          routerFeeOwner: removedRedisOrder.order!.routerFeeOwner,
           triggerPrice,
         }],
       };
@@ -1263,7 +1263,7 @@ describe('OrderRemoveHandler', () => {
           updatedAtHeight: removedOrder.updatedAtHeight,
           clientMetadata: removedOrder.clientMetadata.toString(),
           routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-          routerFeeSubaccountOwner: removedRedisOrder.order!.routerFeeSubaccountOwner,
+          routerFeeOwner: removedRedisOrder.order!.routerFeeOwner,
           triggerPrice,
         }],
       };
@@ -1390,7 +1390,7 @@ describe('OrderRemoveHandler', () => {
           updatedAtHeight: removedOrder.updatedAtHeight,
           clientMetadata: removedOrder.clientMetadata.toString(),
           routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-          routerFeeSubaccountOwner: removedRedisOrder.order!.routerFeeSubaccountOwner,
+          routerFeeOwner: removedRedisOrder.order!.routerFeeOwner,
           triggerPrice,
         }],
       };
@@ -1533,7 +1533,7 @@ describe('OrderRemoveHandler', () => {
           updatedAtHeight: removedOrder.updatedAtHeight,
           clientMetadata: removedOrder.clientMetadata.toString(),
           routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-          routerFeeSubaccountOwner: removedRedisOrder.order!.routerFeeSubaccountOwner,
+          routerFeeOwner: removedRedisOrder.order!.routerFeeOwner,
           triggerPrice,
         }],
       };
@@ -1672,8 +1672,8 @@ describe('OrderRemoveHandler', () => {
             updatedAtHeight: removedOrder.updatedAtHeight,
             clientMetadata: testConstants.defaultOrderGoodTilBlockTime.clientMetadata.toString(),
             routerFeePpm: removedRedisOrder.order!.routerFeePpm.toString(),
-            routerFeeSubaccountOwner:
-              removedRedisOrder.order!.routerFeeSubaccountOwner,
+            routerFeeOwner:
+              removedRedisOrder.order!.routerFeeOwner,
           },
         ],
       };

@@ -334,7 +334,7 @@ export const defaultOrderGoodTilBlockTime: OrderCreateObject = {
   goodTilBlockTime: '2023-01-22T00:00:00.000Z',
   createdAtHeight: '1',
   orderFlags: ORDER_FLAG_LONG_TERM.toString(),
-  routerFeeSubaccountOwner: 'klyra1xxxxxx',
+  routerFeeOwner: 'klyra1xxxxxx',
 };
 
 export const defaultConditionalOrder: OrderCreateObject = {
@@ -343,7 +343,7 @@ export const defaultConditionalOrder: OrderCreateObject = {
   clientId: '3',
   orderFlags: ORDER_FLAG_CONDITIONAL.toString(),
   triggerPrice: '19000',
-  routerFeeSubaccountOwner: 'klyra1xxxxxx',
+  routerFeeOwner: 'klyra1xxxxxx',
 };
 
 export const defaultOrderId: string = OrderTable.uuid(

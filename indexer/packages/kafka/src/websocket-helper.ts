@@ -87,7 +87,7 @@ export function generateSubaccountMessageContents(
         ...(updatedAtHeight && { updatedAtHeight }),
         clientMetadata: redisOrder.order!.clientMetadata.toString(),
         routerFeePpm: redisOrder.order!.routerFeePpm.toString(),
-        routerFeeSubaccountOwner: redisOrder.order!.routerFeeSubaccountOwner ?? undefined,
+        routerFeeOwner: redisOrder.order!.routerFeeOwner ?? undefined,
         triggerPrice: getTriggerPrice(redisOrder.order!, perpetualMarket),
       },
     ],

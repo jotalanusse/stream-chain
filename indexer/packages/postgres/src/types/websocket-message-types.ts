@@ -126,7 +126,7 @@ export interface OrderSubaccountMessageContents {
   createdAtHeight?: string;
   clientMetadata: string;
   routerFeePpm: string;
-  routerFeeSubaccountOwner?: string;
+  routerFeeOwner?: string;
 }
 
 export interface FillSubaccountMessageContents {

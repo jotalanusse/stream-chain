@@ -261,7 +261,7 @@ export const defaultMakerOrder: IndexerOrder = {
   conditionType: IndexerOrder_ConditionType.CONDITION_TYPE_UNSPECIFIED,
   conditionalOrderTriggerSubticks: Long.fromValue(0, true),
   routerFeePpm: 0,
-  routerFeeSubaccountOwner: 'klyra1xxxxxx',
+  routerFeeOwner: 'klyra1xxxxxx',
 };
 export const defaultTakerOrder: IndexerOrder = {
   orderId: defaultOrderId2,
@@ -275,7 +275,7 @@ export const defaultTakerOrder: IndexerOrder = {
   conditionType: IndexerOrder_ConditionType.CONDITION_TYPE_UNSPECIFIED,
   conditionalOrderTriggerSubticks: Long.fromValue(0, true),
   routerFeePpm: 0,
-  routerFeeSubaccountOwner: 'klyra1xxxxxx',
+  routerFeeOwner: 'klyra1xxxxxx',
 };
 export const defaultLiquidationOrder: LiquidationOrderV1 = {
   liquidated: defaultSubaccountId,

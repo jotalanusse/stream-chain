@@ -2848,7 +2848,7 @@ func main() {
     "clientMetadata": "string",
     "triggerPrice": "string",
     "routerFeePpm": "string",
-    "routerFeeSubaccountOwner": "string",
+    "routerFeeOwner": "string",
     "timeInForce": "GTT",
     "status": "OPEN",
     "postOnly": true,
@@ -2890,7 +2890,7 @@ Status Code **200**
 |» clientMetadata|string|true|none|none|
 |» triggerPrice|string|false|none|none|
 |» routerFeePpm|string|true|none|none|
-|» routerFeeSubaccountOwner|string|false|none|none|
+|» routerFeeOwner|string|false|none|none|
 |» timeInForce|[APITimeInForce](#schemaapitimeinforce)|true|none|none|
 |» status|any|true|none|none|
 
@@ -3142,7 +3142,7 @@ func main() {
     "clientMetadata": "string",
     "triggerPrice": "string",
     "routerFeePpm": "string",
-    "routerFeeSubaccountOwner": "string",
+    "routerFeeOwner": "string",
     "timeInForce": "GTT",
     "status": "OPEN",
     "postOnly": true,
@@ -3184,7 +3184,7 @@ Status Code **200**
 |» clientMetadata|string|true|none|none|
 |» triggerPrice|string|false|none|none|
 |» routerFeePpm|string|true|none|none|
-|» routerFeeSubaccountOwner|string|false|none|none|
+|» routerFeeOwner|string|false|none|none|
 |» timeInForce|[APITimeInForce](#schemaapitimeinforce)|true|none|none|
 |» status|any|true|none|none|
 
@@ -3407,7 +3407,7 @@ func main() {
   "clientMetadata": "string",
   "triggerPrice": "string",
   "routerFeePpm": "string",
-  "routerFeeSubaccountOwner": "string",
+  "routerFeeOwner": "string",
   "timeInForce": "GTT",
   "status": "OPEN",
   "postOnly": true,
@@ -6259,7 +6259,7 @@ or
   "clientMetadata": "string",
   "triggerPrice": "string",
   "routerFeePpm": "string",
-  "routerFeeSubaccountOwner": "string",
+  "routerFeeOwner": "string",
   "timeInForce": "GTT",
   "status": "OPEN",
   "postOnly": true,
@@ -6292,7 +6292,7 @@ or
 |clientMetadata|string|true|none|none|
 |triggerPrice|string|false|none|none|
 |routerFeePpm|string|true|none|none|
-|routerFeeSubaccountOwner|string|false|none|none|
+|routerFeeOwner|string|false|none|none|
 |timeInForce|[APITimeInForce](#schemaapitimeinforce)|true|none|none|
 |status|[APIOrderStatus](#schemaapiorderstatus)|true|none|none|
 |postOnly|boolean|true|none|none|

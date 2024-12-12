@@ -376,7 +376,7 @@ export class Post {
     conditionType: Order_ConditionType = Order_ConditionType.CONDITION_TYPE_UNSPECIFIED,
     conditionalOrderTriggerSubticks: Long = Long.fromInt(0),
     routerFeePpm: number = 0,
-    routerFeeSubaccountOwner: string = "",
+    routerFeeOwner: string = "",
     broadcastMode?: BroadcastMode
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
@@ -397,7 +397,7 @@ export class Post {
         conditionType,
         conditionalOrderTriggerSubticks,
         routerFeePpm,
-        routerFeeSubaccountOwner
+        routerFeeOwner
       );
       resolve([msg]);
     });
@@ -438,7 +438,7 @@ export class Post {
         Order_ConditionType.CONDITION_TYPE_UNSPECIFIED,
       placeOrder.conditionalOrderTriggerSubticks ?? Long.fromInt(0),
       placeOrder.routerFeePpm,
-      placeOrder.routerFeeSubaccountOwner,
+      placeOrder.routerFeeOwner,
       broadcastMode
     );
   }

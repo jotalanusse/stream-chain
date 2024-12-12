@@ -160,7 +160,7 @@ func orderToIndexerOrder_GoodTilBlock(
 		ConditionType:                   OrderConditionTypeToIndexerOrderConditionType(order.ConditionType),
 		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks,
 		RouterFeePpm:                    order.RouterFeePpm,
-		RouterFeeSubaccountOwner:        HandleEmptyRouterSubaccountIdForOwner(order),
+		RouterFeeOwner:                  HandleEmptyRouterSubaccountIdForOwner(order),
 	}
 }
 
@@ -180,7 +180,7 @@ func orderToIndexerOrder_GoodTilBlockTime(
 		ConditionType:                   OrderConditionTypeToIndexerOrderConditionType(order.ConditionType),
 		ConditionalOrderTriggerSubticks: order.ConditionalOrderTriggerSubticks,
 		RouterFeePpm:                    order.RouterFeePpm,
-		RouterFeeSubaccountOwner:        HandleEmptyRouterSubaccountIdForOwner(order),
+		RouterFeeOwner:                  HandleEmptyRouterSubaccountIdForOwner(order),
 	}
 }
 

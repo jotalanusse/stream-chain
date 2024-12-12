@@ -1222,7 +1222,7 @@ function expectWebsocketMessagesSent(
           ...(isStateful && { updatedAtHeight: dbOrder.updatedAtHeight }),
           clientMetadata: redisOrder.order!.clientMetadata.toString(),
           routerFeePpm: redisOrder.order!.routerFeePpm.toString(),
-          routerFeeSubaccountOwner: redisOrder.order!.routerFeeSubaccountOwner,
+          routerFeeOwner: redisOrder.order!.routerFeeOwner,
           triggerPrice: getTriggerPrice(redisOrder.order!, perpetualMarket),
         },
       ],

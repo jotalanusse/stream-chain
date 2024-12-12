@@ -58,7 +58,7 @@ BEGIN
         order_record."updatedAt" = block_time;
         order_record."updatedAtHeight" = block_height;
         order_record."routerFeePpm" = coalesce((order_->'routerFeePpm')::bigint, 0);
-        order_record."routerFeeSubaccountOwner" = order_->>'routerFeeSubaccountOwner';
+        order_record."routerFeeOwner" = order_->>'routerFeeOwner';
 
         CASE
             WHEN event_data->'conditionalOrderPlacement' IS NOT NULL THEN
@@ -88,7 +88,7 @@ BEGIN
             "goodTilBlockTime" = EXCLUDED."goodTilBlockTime",
             "clientMetadata" = EXCLUDED."clientMetadata",
             "routerFeePpm" = EXCLUDED."routerFeePpm",
-            "routerFeeSubaccountOwner" = EXCLUDED."routerFeeSubaccountOwner",
+            "routerFeeOwner" = EXCLUDED."routerFeeOwner",
             "createdAtHeight" = EXCLUDED."createdAtHeight",
             "updatedAt" = EXCLUDED."updatedAt",
             "updatedAtHeight" = EXCLUDED."updatedAtHeight",

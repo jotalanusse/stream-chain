@@ -584,7 +584,7 @@ export interface IndexerOrder {
   routerFeePpm: number;
   /** Router fee subaccount owner. */
 
-  routerFeeSubaccountOwner: string;
+  routerFeeOwner: string;
   /** Router fee subaccount number. */
 
   routerFeeSubaccountNumber: number;
@@ -663,7 +663,7 @@ export interface IndexerOrderSDKType {
   router_fee_ppm: number;
   /** Router fee subaccount owner. */
 
-  router_fee_subaccount_owner: string;
+  router_fee_owner: string;
   /** Router fee subaccount number. */
 
   router_fee_subaccount_number: number;
@@ -758,7 +758,7 @@ function createBaseIndexerOrder(): IndexerOrder {
     conditionType: 0,
     conditionalOrderTriggerSubticks: Long.UZERO,
     routerFeePpm: 0,
-    routerFeeSubaccountOwner: "",
+    routerFeeOwner: "",
     routerFeeSubaccountNumber: 0
   };
 }
@@ -813,8 +813,8 @@ export const IndexerOrder = {
       writer.uint32(96).int32(message.routerFeePpm);
     }
 
-    if (message.routerFeeSubaccountOwner !== "") {
-      writer.uint32(106).string(message.routerFeeSubaccountOwner);
+    if (message.routerFeeOwner !== "") {
+      writer.uint32(106).string(message.routerFeeOwner);
     }
 
     if (message.routerFeeSubaccountNumber !== 0) {
@@ -882,7 +882,7 @@ export const IndexerOrder = {
           break;
 
         case 13:
-          message.routerFeeSubaccountOwner = reader.string();
+          message.routerFeeOwner = reader.string();
           break;
 
         case 14:
@@ -912,7 +912,7 @@ export const IndexerOrder = {
     message.conditionType = object.conditionType ?? 0;
     message.conditionalOrderTriggerSubticks = object.conditionalOrderTriggerSubticks !== undefined && object.conditionalOrderTriggerSubticks !== null ? Long.fromValue(object.conditionalOrderTriggerSubticks) : Long.UZERO;
     message.routerFeePpm = object.routerFeePpm ?? 0;
-    message.routerFeeSubaccountOwner = object.routerFeeSubaccountOwner ?? "";
+    message.routerFeeOwner = object.routerFeeOwner ?? "";
     message.routerFeeSubaccountNumber = object.routerFeeSubaccountNumber ?? 0;
     return message;
   }

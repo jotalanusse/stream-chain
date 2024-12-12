@@ -181,7 +181,7 @@ export interface OrderSubaccountMessageContents {
   createdAtHeight?: string;
   clientMetadata: string;
   routerFeePpm: string;
-  routerFeeSubaccountOwner?: string;
+  routerFeeOwner?: string;
   triggerPrice?: string;
   updatedAt?: IsoString;
   updatedAtHeight?: string;

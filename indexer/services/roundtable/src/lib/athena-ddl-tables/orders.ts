@@ -24,7 +24,7 @@ const RAW_TABLE_COLUMNS: string = `
   \`createdAtHeight\` bigint,
   \`clientMetadata\` bigint,
   \`routerFeePpm\` bigint,
-  \`routerFeeSubaccountOwner\` string,
+  \`routerFeeOwner\` string,
 `;
 const TABLE_COLUMNS: string = `
   "id",
@@ -45,7 +45,7 @@ const TABLE_COLUMNS: string = `
   "createdAtHeight",
   "clientMetadata",
   "routerFeePpm",
-  "routerFeeSubaccountOwner",
+  "routerFeeOwner",
 `;
 
 export function generateRawTable(tablePrefix: string, rdsExportIdentifier: string): string {
