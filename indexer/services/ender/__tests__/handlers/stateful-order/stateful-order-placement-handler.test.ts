@@ -180,7 +180,6 @@ describe('statefulOrderPlacementHandler', () => {
       clientMetadata: '0',
       routerFeePpm: '0',
       routerFeeSubaccountOwner: 'klyra1xxxxxx',
-      routerFeeSubaccountNumber: '0',
       triggerPrice: null,
       updatedAt: defaultDateTime.toISO() ?? '',
       updatedAtHeight: defaultHeight.toString(),
@@ -240,7 +239,6 @@ describe('statefulOrderPlacementHandler', () => {
       clientMetadata: '0',
       routerFeePpm: '0',
       routerFeeSubaccountOwner: 'klyra1xxxxxx',
-      routerFeeSubaccountNumber: '0',
       updatedAt: defaultDateTime.toISO() ?? '',
       updatedAtHeight: '0',
     });
@@ -270,7 +268,6 @@ describe('statefulOrderPlacementHandler', () => {
       clientMetadata: '0',
       routerFeePpm: '0',
       routerFeeSubaccountOwner: 'klyra1xxxxxx',
-      routerFeeSubaccountNumber: '0',
       triggerPrice: null,
       updatedAt: defaultDateTime.toISO() ?? '',
       updatedAtHeight: defaultHeight.toString(),

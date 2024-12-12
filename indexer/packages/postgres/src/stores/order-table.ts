@@ -68,7 +68,6 @@ export async function findAll(
     clientMetadata,
     routerFeePpm,
     routerFeeSubaccountOwner,
-    routerFeeSubaccountNumber,
     triggerPrice,
   }: OrderQueryConfig,
   requiredFields: QueryableField[],
@@ -94,7 +93,6 @@ export async function findAll(
       clientMetadata,
       routerFeePpm,
       routerFeeSubaccountOwner,
-      routerFeeSubaccountNumber,
     } as QueryConfig,
     requiredFields,
   );
@@ -162,10 +160,6 @@ export async function findAll(
 
   if (routerFeeSubaccountOwner !== undefined) {
     baseQuery = baseQuery.where(OrderColumns.routerFeeSubaccountOwner, routerFeeSubaccountOwner);
-  }
-
-  if (routerFeeSubaccountNumber !== undefined) {
-    baseQuery = baseQuery.where(OrderColumns.routerFeeSubaccountNumber, routerFeeSubaccountNumber);
   }
 
   if (triggerPrice !== undefined) {

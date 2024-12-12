@@ -67,7 +67,6 @@ export interface OrderCreateObject {
   clientMetadata: string;
   routerFeePpm: string;
   routerFeeSubaccountOwner?: string;
-  routerFeeSubaccountNumber?: string;
   triggerPrice?: string;
 }
 
@@ -90,7 +89,6 @@ export interface OrderUpdateObject {
   clientMetadata?: string;
   routerFeePpm?: string;
   routerFeeSubaccountOwner?: string;
-  routerFeeSubaccountNumber?: string;
   triggerPrice?: string;
 }
 
@@ -119,5 +117,4 @@ export enum OrderColumns {
   triggerPrice = 'triggerPrice',
   routerFeePpm = 'routerFeePpm',
   routerFeeSubaccountOwner = 'routerFeeSubaccountOwner',
-  routerFeeSubaccountNumber = 'routerFeeSubaccountNumber',
 }

@@ -157,8 +157,6 @@ message IndexerOrder {
 
   // Router fee subaccount owner.
   string router_fee_subaccount_owner = 13 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
-  // Router fee subaccount number.
-  uint32 router_fee_subaccount_number = 14;
 }
 
 // Status of the CLOB.

@@ -51,7 +51,6 @@ export interface IPlaceOrder extends IBasicOrder {
   conditionalOrderTriggerSubticks?: Long,
   routerFeePpm?: number,
   routerFeeSubaccountOwner?: string,
-  routerFeeSubaccountNumber?: number,
 }
 
 export interface ICancelOrder extends IBasicOrder {

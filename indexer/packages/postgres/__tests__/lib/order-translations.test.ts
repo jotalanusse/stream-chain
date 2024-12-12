@@ -63,7 +63,6 @@ describe('orderTranslations', () => {
         conditionalOrderTriggerSubticks: Long.fromValue(0, true),
         routerFeePpm: 0,
         routerFeeSubaccountOwner: 'klyra1xxxxxx',
-        routerFeeSubaccountNumber: 0,
       };
       const indexerOrder: IndexerOrder = await convertToIndexerOrder(
         order,
@@ -101,7 +100,6 @@ describe('orderTranslations', () => {
       conditionalOrderTriggerSubticks: Long.fromValue(190_000_000, true),
       routerFeePpm: 0,
       routerFeeSubaccountOwner: 'klyra1xxxxxx',
-      routerFeeSubaccountNumber: 0,
     };
     const indexerOrder: IndexerOrder = await convertToIndexerOrder(
       order,

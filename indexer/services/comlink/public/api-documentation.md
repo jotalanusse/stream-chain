@@ -2849,7 +2849,6 @@ func main() {
     "triggerPrice": "string",
     "routerFeePpm": "string",
     "routerFeeSubaccountOwner": "string",
-    "routerFeeSubaccountNumber": "string",
     "timeInForce": "GTT",
     "status": "OPEN",
     "postOnly": true,
@@ -2892,7 +2891,6 @@ Status Code **200**
 |» triggerPrice|string|false|none|none|
 |» routerFeePpm|string|true|none|none|
 |» routerFeeSubaccountOwner|string|false|none|none|
-|» routerFeeSubaccountNumber|string|false|none|none|
 |» timeInForce|[APITimeInForce](#schemaapitimeinforce)|true|none|none|
 |» status|any|true|none|none|
 
@@ -3145,7 +3143,6 @@ func main() {
     "triggerPrice": "string",
     "routerFeePpm": "string",
     "routerFeeSubaccountOwner": "string",
-    "routerFeeSubaccountNumber": "string",
     "timeInForce": "GTT",
     "status": "OPEN",
     "postOnly": true,
@@ -3188,7 +3185,6 @@ Status Code **200**
 |» triggerPrice|string|false|none|none|
 |» routerFeePpm|string|true|none|none|
 |» routerFeeSubaccountOwner|string|false|none|none|
-|» routerFeeSubaccountNumber|string|false|none|none|
 |» timeInForce|[APITimeInForce](#schemaapitimeinforce)|true|none|none|
 |» status|any|true|none|none|
 
@@ -3412,7 +3408,6 @@ func main() {
   "triggerPrice": "string",
   "routerFeePpm": "string",
   "routerFeeSubaccountOwner": "string",
-  "routerFeeSubaccountNumber": "string",
   "timeInForce": "GTT",
   "status": "OPEN",
   "postOnly": true,
@@ -6265,7 +6260,6 @@ or
   "triggerPrice": "string",
   "routerFeePpm": "string",
   "routerFeeSubaccountOwner": "string",
-  "routerFeeSubaccountNumber": "string",
   "timeInForce": "GTT",
   "status": "OPEN",
   "postOnly": true,
@@ -6299,7 +6293,6 @@ or
 |triggerPrice|string|false|none|none|
 |routerFeePpm|string|true|none|none|
 |routerFeeSubaccountOwner|string|false|none|none|
-|routerFeeSubaccountNumber|string|false|none|none|
 |timeInForce|[APITimeInForce](#schemaapitimeinforce)|true|none|none|
 |status|[APIOrderStatus](#schemaapiorderstatus)|true|none|none|
 |postOnly|boolean|true|none|none|

@@ -700,9 +700,6 @@
           "routerFeeSubaccountOwner": {
             "type": "string"
           },
-          "routerFeeSubaccountNumber": {
-            "type": "string"
-          },
           "timeInForce": {
             "$ref": "#/components/schemas/APITimeInForce"
           },

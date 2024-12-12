@@ -296,7 +296,6 @@ export async function placeOrder(payload: string): Promise<string> {
 
     const routerFeePpm = json.routerFeePpm ?? 0;
     const routerFeeSubaccountOwner = json.routerFeeSubaccountOwner;
-    const routerFeeSubaccountNumber = json.routerFeeSubaccountNumber;
 
     const subaccount = new SubaccountInfo(wallet, subaccountNumber);
     const tx = await client.placeOrder(
@@ -317,7 +316,6 @@ export async function placeOrder(payload: string): Promise<string> {
       currentHeight,
       routerFeePpm,
       routerFeeSubaccountOwner,
-      routerFeeSubaccountNumber
     );
     return encodeJson(tx);
   } catch (error) {
@@ -781,8 +779,7 @@ export async function signRawPlaceOrder(
   goodTilBlockTime: number,
   clientMetadata: number,
   routerFeePpm: number = 0,
-  routerFeeSubaccountOwner: string = "",
-  routerFeeSubaccountNumber: number = 0
+  routerFeeSubaccountOwner: string = ""
 ): Promise<string> {
   try {
     const client = globalThis.client;
@@ -814,8 +811,7 @@ export async function signRawPlaceOrder(
         undefined,
         undefined,
         routerFeePpm,
-        routerFeeSubaccountOwner,
-        routerFeeSubaccountNumber
+        routerFeeSubaccountOwner
       );
       resolve([msg]);
     });
@@ -841,8 +837,7 @@ export async function signPlaceOrder(
   postOnly: boolean,
   reduceOnly: boolean,
   routerFeePpm: number = 0,
-  routerFeeSubaccountOwner: string = "",
-  routerFeeSubaccountNumber: number = 0
+  routerFeeSubaccountOwner: string = ""
 ): Promise<string> {
   try {
     const client = globalThis.client;
@@ -871,8 +866,7 @@ export async function signPlaceOrder(
       postOnly,
       reduceOnly,
       routerFeePpm,
-      routerFeeSubaccountOwner,
-      routerFeeSubaccountNumber
+      routerFeeSubaccountOwner
     );
     return signed;
   } catch (error) {

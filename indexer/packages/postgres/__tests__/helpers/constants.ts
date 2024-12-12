@@ -335,7 +335,6 @@ export const defaultOrderGoodTilBlockTime: OrderCreateObject = {
   createdAtHeight: '1',
   orderFlags: ORDER_FLAG_LONG_TERM.toString(),
   routerFeeSubaccountOwner: 'klyra1xxxxxx',
-  routerFeeSubaccountNumber: '0',
 };
 
 export const defaultConditionalOrder: OrderCreateObject = {
@@ -345,7 +344,6 @@ export const defaultConditionalOrder: OrderCreateObject = {
   orderFlags: ORDER_FLAG_CONDITIONAL.toString(),
   triggerPrice: '19000',
   routerFeeSubaccountOwner: 'klyra1xxxxxx',
-  routerFeeSubaccountNumber: '0',
 };
 
 export const defaultOrderId: string = OrderTable.uuid(

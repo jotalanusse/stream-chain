@@ -408,7 +408,6 @@ describe('request-transformer', () => {
           clientMetadata: redisOrder.order!.clientMetadata.toString(),
           subaccountNumber: redisOrder.order!.orderId!.subaccountId!.number,
           routerFeePpm: '0',
-          routerFeeSubaccountNumber: '0',
           routerFeeSubaccountOwner: 'klyra1xxxxxx',
         });
       },

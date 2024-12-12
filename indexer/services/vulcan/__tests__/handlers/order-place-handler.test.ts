@@ -1223,7 +1223,6 @@ function expectWebsocketMessagesSent(
           clientMetadata: redisOrder.order!.clientMetadata.toString(),
           routerFeePpm: redisOrder.order!.routerFeePpm.toString(),
           routerFeeSubaccountOwner: redisOrder.order!.routerFeeSubaccountOwner,
-          routerFeeSubaccountNumber: redisOrder.order!.routerFeeSubaccountNumber.toString(),
           triggerPrice: getTriggerPrice(redisOrder.order!, perpetualMarket),
         },
       ],

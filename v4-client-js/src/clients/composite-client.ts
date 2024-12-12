@@ -279,7 +279,6 @@ export class CompositeClient {
     reduceOnly: boolean,
     routerFeePpm: number = 0,
     routerFeeSubaccountOwner: string = '',
-    routerFeeSubaccountNumber: number = 0,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.placeShortTermOrderMessage(
@@ -294,7 +293,6 @@ export class CompositeClient {
         reduceOnly,
         routerFeePpm,
         routerFeeSubaccountOwner,
-        routerFeeSubaccountNumber,
       );
       msg.then((it) => resolve([it])).catch((err) => {
         console.log(err);
@@ -363,7 +361,6 @@ export class CompositeClient {
     currentHeight?: number,
     routerFeePpm?: number,
     routerFeeSubaccountOwner?: string,
-    routerFeeSubaccountNumber?: number,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.placeOrderMessage(
@@ -385,7 +382,6 @@ export class CompositeClient {
         currentHeight,
         routerFeePpm,
         routerFeeSubaccountOwner,
-        routerFeeSubaccountNumber,
       );
       msg.then((it) => resolve([it])).catch((err) => {
         console.log(err);
@@ -450,7 +446,6 @@ export class CompositeClient {
     currentHeight?: number,
     routerFeePpm?: number,
     routerFeeSubaccountOwner?: string,
-    routerFeeSubaccountNumber?: number,
   ): Promise<EncodeObject> {
     const orderFlags = calculateOrderFlags(type, timeInForce);
 
@@ -489,7 +484,6 @@ export class CompositeClient {
 
     const finalRouterFeePpm = routerFeePpm ?? 0;
     const finalRouterFeeSubaccountOwner = routerFeeSubaccountOwner ?? '';
-    const finalRouterFeeSubaccountNumber = routerFeeSubaccountNumber ?? 0;
 
     const clientMetadata = calculateClientMetadata(type);
     const conditionalType = calculateConditionType(type);
@@ -517,7 +511,6 @@ export class CompositeClient {
       conditionalOrderTriggerSubticks,
       finalRouterFeePpm,
       finalRouterFeeSubaccountOwner,
-      finalRouterFeeSubaccountNumber,
     );
   }
 
@@ -575,7 +568,6 @@ export class CompositeClient {
     reduceOnly: boolean,
     routerFeePpm: number = 0,
     routerFeeSubaccountOwner: string = '',
-    routerFeeSubaccountNumber: number = 0,
   ): Promise<EncodeObject> {
     await this.validateGoodTilBlock(goodTilBlock);
 
@@ -617,7 +609,6 @@ export class CompositeClient {
       Long.fromInt(0), // Short term orders cannot be conditional.
       routerFeePpm,
       routerFeeSubaccountOwner,
-      routerFeeSubaccountNumber,
     );
   }
 
@@ -973,7 +964,6 @@ export class CompositeClient {
     reduceOnly: boolean,
     routerFeePpm?: number,
     routerFeeSubaccountOwner?: string,
-    routerFeeSubaccountNumber?: number,
   ): Promise<string> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.placeOrderMessage(
@@ -995,7 +985,6 @@ export class CompositeClient {
         undefined,
         undefined,
         routerFeeSubaccountOwner,
-        routerFeeSubaccountNumber,
       );
       msg.then((it) => resolve([it])).catch((err) => {
         console.log(err);

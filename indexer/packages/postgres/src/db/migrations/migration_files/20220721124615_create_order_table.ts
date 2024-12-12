@@ -65,7 +65,6 @@ export async function up(knex: Knex): Promise<void> {
       table.bigInteger('clientMetadata').notNullable();
       table.bigInteger('routerFeePpm').notNullable();
       table.string('routerFeeSubaccountOwner').nullable();
-      table.bigInteger('routerFeeSubaccountNumber').nullable();
 
       // Foreign
       table.foreign('subaccountId').references('subaccounts.id');

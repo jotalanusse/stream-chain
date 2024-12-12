@@ -70,7 +70,6 @@ export interface OrderFromDatabase extends IdBasedModelFromDatabase {
   triggerPrice?: string;
   routerFeePpm: string;
   routerFeeSubaccountOwner?: string;
-  routerFeeSubaccountNumber?: string;
 }
 
 export interface PerpetualMarketFromDatabase {
