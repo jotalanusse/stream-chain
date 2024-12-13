@@ -436,13 +436,7 @@ func (k Keeper) UpdateSubaccounts(
 		perpIdToYieldIndex[perp.Params.Id] = perp.YieldIndex
 	}
 
-	UpdatePerpetualPositions(
-		settledUpdates,
-		perpIdToFundingIndex,
-		perpIdToYieldIndex,
-	)
-
-	UpdateAssetPositions(settledUpdates)
+	UpdateSubaccountPositions(settledUpdates, perpIdToFundingIndex, perpIdToYieldIndex)
 
 	// Perform yield claim in by transferring appropriate x/bank coin amount
 	for _, update := range settledUpdates {
