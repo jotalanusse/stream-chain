@@ -601,7 +601,7 @@ func GetSettledSubaccountWithPerpetuals(
 	err error,
 ) {
 	totalNetSettlementPpm := big.NewInt(0)
-	newPerpetualPositions := []*types.PerpetualPosition{}
+	updatedFundingIndexPerpPositions := []*types.PerpetualPosition{}
 	fundingPayments = make(map[uint32]dtypes.SerializableInt)
 
 	var subaccountWithYield types.Subaccount = subaccount
@@ -618,6 +618,10 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 	}
 
+	if len(subaccountWithYield.PerpetualPositions) == 0 {
+		return subaccountWithYield, fundingPayments, totalNewYield, nil
+	}
+
 	// Iterate through and settle all perpetual positions.
 	for _, perpetualPosition := range subaccountWithYield.PerpetualPositions {
 		perpetual, found := perpetuals[perpetualPosition.PerpetualId]
@@ -631,7 +635,7 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 
 		/* Calculate Funding Rates*/
-		bigNetSettlementPpm, newPerpetualPosition, err := getNewPerpPositionWithFundingRateUpdate(perpetual, perpetualPosition)
+		bigNetSettlementPpm, updatedFundingIndexPerpPosition, err := getNewPerpPositionWithFundingRateUpdate(perpetual, perpetualPosition)
 		if err != nil {
 			return types.Subaccount{}, nil, nil, err
 		}
@@ -644,26 +648,25 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 
 		totalNetSettlementPpm.Add(totalNetSettlementPpm, bigNetSettlementPpm)
-		newPerpetualPositions = append(newPerpetualPositions, &newPerpetualPosition)
+		updatedFundingIndexPerpPositions = append(updatedFundingIndexPerpPositions, &updatedFundingIndexPerpPosition)
 	}
 
 	newSubaccount := types.Subaccount{
 		Id:                 subaccountWithYield.Id,
 		AssetPositions:     subaccountWithYield.AssetPositions,
-		PerpetualPositions: newPerpetualPositions,
+		PerpetualPositions: updatedFundingIndexPerpPositions,
 		MarginEnabled:      subaccountWithYield.MarginEnabled,
 		AssetYieldIndex:    subaccountWithYield.AssetYieldIndex,
 	}
 
-	if len(subaccountWithYield.PerpetualPositions) > 0 {
-		totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
+	totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
 
-		newQuoteAssetPosition := newSubaccount.GetAssetPosition(quoteAssetId)
-		newQuoteAssetPosition.Add(newQuoteAssetPosition, totalNetSettlement)
+	newQuoteAssetPosition := newSubaccount.GetAssetPosition(quoteAssetId)
+	newQuoteAssetPosition.Add(newQuoteAssetPosition, totalNetSettlement)
 
-		// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
-		newSubaccount.SetAssetPosition(newQuoteAssetPosition, quoteAssetId)
-	}
+	// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
+	newSubaccount.SetAssetPosition(newQuoteAssetPosition, quoteAssetId)
+
 	return newSubaccount, fundingPayments, totalNewYield, nil
 }
 

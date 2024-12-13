@@ -84,7 +84,7 @@ func AddYieldToSubaccount(
 		return types.Subaccount{}, nil, err
 	}
 
-	totalNewPerpYield, newPerpetualPositions, err := getYieldFromPerpPositions(subaccount, perpIdToPerp)
+	totalNewPerpYield, updatedYieldIndexPerpPosition, err := getYieldFromPerpPositions(subaccount, perpIdToPerp)
 	if err != nil {
 		return types.Subaccount{}, nil, err
 	}
@@ -97,7 +97,7 @@ func AddYieldToSubaccount(
 	newSubaccount := types.Subaccount{
 		Id:                 subaccount.Id,
 		AssetPositions:     subaccount.AssetPositions,
-		PerpetualPositions: newPerpetualPositions,
+		PerpetualPositions: updatedYieldIndexPerpPosition,
 		MarginEnabled:      subaccount.MarginEnabled,
 		AssetYieldIndex:    assetYieldIndexString,
 	}
