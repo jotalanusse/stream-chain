@@ -624,6 +624,10 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 	}
 
+	if len(subaccountWithYield.PerpetualPositions) == 0 {
+		return subaccountWithYield, fundingPayments, totalNewYield, nil
+	}
+
 	// Iterate through and settle all perpetual positions.
 	for _, perpetualPosition := range subaccountWithYield.PerpetualPositions {
 		perpetual, found := perpetuals[perpetualPosition.PerpetualId]
@@ -661,15 +665,14 @@ func GetSettledSubaccountWithPerpetuals(
 		AssetYieldIndex:    subaccountWithYield.AssetYieldIndex,
 	}
 
-	if len(subaccountWithYield.PerpetualPositions) > 0 {
-		totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
+	totalNetSettlement := totalNetSettlementPpm.Div(totalNetSettlementPpm, lib.BigIntOneMillion())
 
-		newQuoteAssetPosition := newSubaccount.GetAssetPosition(quoteAssetId)
-		newQuoteAssetPosition.Add(newQuoteAssetPosition, totalNetSettlement)
+	newQuoteAssetPosition := newSubaccount.GetAssetPosition(quoteAssetId)
+	newQuoteAssetPosition.Add(newQuoteAssetPosition, totalNetSettlement)
 
-		// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
-		newSubaccount.SetAssetPosition(newQuoteAssetPosition, quoteAssetId)
-	}
+	// TODO(CLOB-993): Remove this function and use `UpdateAssetPositions` instead.
+	newSubaccount.SetAssetPosition(newQuoteAssetPosition, quoteAssetId)
+
 	return newSubaccount, fundingPayments, totalNewYield, nil
 }
 
