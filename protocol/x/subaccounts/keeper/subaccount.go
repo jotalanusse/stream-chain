@@ -607,7 +607,7 @@ func GetSettledSubaccountWithPerpetuals(
 	err error,
 ) {
 	totalNetSettlementPpm := big.NewInt(0)
-	newPerpetualPositions := []*types.PerpetualPosition{}
+	updatedFundingIndexPerpPositions := []*types.PerpetualPosition{}
 	fundingPayments = make(map[uint32]dtypes.SerializableInt)
 
 	var subaccountWithYield types.Subaccount = subaccount
@@ -650,13 +650,13 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 
 		totalNetSettlementPpm.Add(totalNetSettlementPpm, bigNetSettlementPpm)
-		newPerpetualPositions = append(newPerpetualPositions, &updatedFundingIndexPerpPosition)
+		updatedFundingIndexPerpPositions = append(updatedFundingIndexPerpPositions, &updatedFundingIndexPerpPosition)
 	}
 
 	newSubaccount := types.Subaccount{
 		Id:                 subaccountWithYield.Id,
 		AssetPositions:     subaccountWithYield.AssetPositions,
-		PerpetualPositions: newPerpetualPositions,
+		PerpetualPositions: updatedFundingIndexPerpPositions,
 		MarginEnabled:      subaccountWithYield.MarginEnabled,
 		AssetYieldIndex:    subaccountWithYield.AssetYieldIndex,
 	}
