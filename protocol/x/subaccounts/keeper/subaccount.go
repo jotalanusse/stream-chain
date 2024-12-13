@@ -637,7 +637,7 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 
 		/* Calculate Funding Rates*/
-		bigNetSettlementPpm, newPerpetualPosition, err := getNewPerpPositionWithFundingRateUpdate(perpetual, perpetualPosition)
+		bigNetSettlementPpm, updatedFundingIndexPerpPosition, err := getNewPerpPositionWithFundingRateUpdate(perpetual, perpetualPosition)
 		if err != nil {
 			return types.Subaccount{}, nil, nil, err
 		}
@@ -650,7 +650,7 @@ func GetSettledSubaccountWithPerpetuals(
 		}
 
 		totalNetSettlementPpm.Add(totalNetSettlementPpm, bigNetSettlementPpm)
-		newPerpetualPositions = append(newPerpetualPositions, &newPerpetualPosition)
+		newPerpetualPositions = append(newPerpetualPositions, &updatedFundingIndexPerpPosition)
 	}
 
 	newSubaccount := types.Subaccount{
