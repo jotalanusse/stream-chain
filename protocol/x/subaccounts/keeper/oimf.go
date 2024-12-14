@@ -108,8 +108,8 @@ func GetDeltaOpenInterestFromUpdates(
 
 	updatedPerpId := perpUpdate0.PerpetualId
 
-	if (perpUpdate0.BigQuantumsDelta.Sign()*perpUpdate1.BigQuantumsDelta.Sign() > 0) ||
-		perpUpdate0.BigQuantumsDelta.CmpAbs(perpUpdate1.BigQuantumsDelta) != 0 {
+	if areBothPerpUpdatesOnSameSide(perpUpdate0, perpUpdate1) ||
+		arePerpUpdatesDifferentSize(perpUpdate0, perpUpdate1) {
 		panic(
 			fmt.Sprintf(
 				types.ErrMatchUpdatesInvalidSize,
@@ -135,4 +135,18 @@ func GetDeltaOpenInterestFromUpdates(
 		PerpetualId:  updatedPerpId,
 		BaseQuantums: baseQuantumsDelta,
 	}
+}
+
+func areBothPerpUpdatesOnSameSide(
+	perpUpdate0 types.PerpetualUpdate,
+	perpUpdate1 types.PerpetualUpdate,
+) bool {
+	return perpUpdate0.BigQuantumsDelta.Sign()*perpUpdate1.BigQuantumsDelta.Sign() > 0
+}
+
+func arePerpUpdatesDifferentSize(
+	perpUpdate0 types.PerpetualUpdate,
+	perpUpdate1 types.PerpetualUpdate,
+) bool {
+	return perpUpdate0.BigQuantumsDelta.CmpAbs(perpUpdate1.BigQuantumsDelta) != 0
 }
