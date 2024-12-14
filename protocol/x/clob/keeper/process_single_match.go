@@ -180,10 +180,6 @@ func (k Keeper) persistMatchedOrders(
 	bigTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
 	bigMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
 
-	fmt.Println("Big fill quote quantums: ", bigFillQuoteQuantums)
-	fmt.Println("routerTakerFeePpm: ", routerTakerFeePpm)
-	fmt.Println("routerMakerFeePpm: ", routerMakerFeePpm)
-
 	bigRouterTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerTakerFeePpm, true)
 	bigRouterMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerMakerFeePpm, true)
 
@@ -274,7 +270,19 @@ func (k Keeper) persistMatchedOrders(
 		takerRouter := matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId
 		makerRouter := matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId
 
-		if takerRouter != nil && makerRouter != nil && *takerRouter == *makerRouter {
+		hasTakerRouter := takerRouter != nil
+		hasMakerRouter := makerRouter != nil
+		hasSameRouter := hasTakerRouter && hasMakerRouter && *takerRouter == *makerRouter
+
+		if hasTakerRouter && bigRouterTakerFeeQuoteQuantums.Sign() == -1 {
+			panic(fmt.Sprintf("Taker router fee is negative: %v", bigRouterTakerFeeQuoteQuantums))
+		}
+
+		if hasMakerRouter && bigRouterMakerFeeQuoteQuantums.Sign() == -1 {
+			panic(fmt.Sprintf("Maker router fee is negative: %v", bigRouterMakerFeeQuoteQuantums))
+		}
+
+		if hasSameRouter {
 			totalRouterFee := new(big.Int).Add(bigRouterTakerFeeQuoteQuantums, bigRouterMakerFeeQuoteQuantums)
 			if totalRouterFee.Sign() != 0 {
 				updates = append(updates, satypes.Update{
@@ -288,7 +296,7 @@ func (k Keeper) persistMatchedOrders(
 				})
 			}
 		} else {
-			if takerRouter != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
+			if hasTakerRouter && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
 				updates = append(updates, satypes.Update{
 					AssetUpdates: []satypes.AssetUpdate{
 						{
@@ -299,7 +307,7 @@ func (k Keeper) persistMatchedOrders(
 					SubaccountId: *takerRouter,
 				})
 			}
-			if makerRouter != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
+			if hasMakerRouter && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
 				updates = append(updates, satypes.Update{
 					AssetUpdates: []satypes.AssetUpdate{
 						{
