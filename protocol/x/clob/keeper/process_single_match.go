@@ -180,10 +180,6 @@ func (k Keeper) persistMatchedOrders(
 	bigTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, takerFeePpm, true)
 	bigMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, makerFeePpm, true)
 
-	fmt.Println("Big fill quote quantums: ", bigFillQuoteQuantums)
-	fmt.Println("routerTakerFeePpm: ", routerTakerFeePpm)
-	fmt.Println("routerMakerFeePpm: ", routerMakerFeePpm)
-
 	bigRouterTakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerTakerFeePpm, true)
 	bigRouterMakerFeeQuoteQuantums := lib.BigIntMulSignedPpm(bigFillQuoteQuantums, routerMakerFeePpm, true)
 
@@ -271,29 +267,57 @@ func (k Keeper) persistMatchedOrders(
 	}
 
 	if !isTakerLiquidation {
-		if matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
-			fmt.Printf("bigRouterTakerFeeQuoteQuantums: %v\n", bigRouterTakerFeeQuoteQuantums)
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
-					},
-				},
-				SubaccountId: *matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId,
-			})
+		takerRouter := matchWithOrders.TakerOrder.MustGetOrder().RouterSubaccountId
+		makerRouter := matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId
+
+		hasTakerRouter := takerRouter != nil
+		hasMakerRouter := makerRouter != nil
+		hasSameRouter := hasTakerRouter && hasMakerRouter && *takerRouter == *makerRouter
+
+		if hasTakerRouter && bigRouterTakerFeeQuoteQuantums.Sign() == -1 {
+			panic(fmt.Sprintf("Taker router fee is negative: %v", bigRouterTakerFeeQuoteQuantums))
 		}
-		if matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId != nil && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
-			fmt.Printf("bigRouterMakerFeeQuoteQuantums: %v\n", bigRouterMakerFeeQuoteQuantums)
-			updates = append(updates, satypes.Update{
-				AssetUpdates: []satypes.AssetUpdate{
-					{
-						AssetId:          assettypes.AssetTDai.Id,
-						BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
+
+		if hasMakerRouter && bigRouterMakerFeeQuoteQuantums.Sign() == -1 {
+			panic(fmt.Sprintf("Maker router fee is negative: %v", bigRouterMakerFeeQuoteQuantums))
+		}
+
+		if hasSameRouter {
+			totalRouterFee := new(big.Int).Add(bigRouterTakerFeeQuoteQuantums, bigRouterMakerFeeQuoteQuantums)
+			if totalRouterFee.Sign() != 0 {
+				updates = append(updates, satypes.Update{
+					AssetUpdates: []satypes.AssetUpdate{
+						{
+							AssetId:          assettypes.AssetTDai.Id,
+							BigQuantumsDelta: totalRouterFee,
+						},
 					},
-				},
-				SubaccountId: *matchWithOrders.MakerOrder.MustGetOrder().RouterSubaccountId,
-			})
+					SubaccountId: *takerRouter,
+				})
+			}
+		} else {
+			if hasTakerRouter && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
+				updates = append(updates, satypes.Update{
+					AssetUpdates: []satypes.AssetUpdate{
+						{
+							AssetId:          assettypes.AssetTDai.Id,
+							BigQuantumsDelta: bigRouterTakerFeeQuoteQuantums,
+						},
+					},
+					SubaccountId: *takerRouter,
+				})
+			}
+			if hasMakerRouter && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
+				updates = append(updates, satypes.Update{
+					AssetUpdates: []satypes.AssetUpdate{
+						{
+							AssetId:          assettypes.AssetTDai.Id,
+							BigQuantumsDelta: bigRouterMakerFeeQuoteQuantums,
+						},
+					},
+					SubaccountId: *makerRouter,
+				})
+			}
 		}
 	}
 
