@@ -27,6 +27,13 @@ var (
 		Quantums:    dtypes.NewInt(100_000_000), // 1 BTC, $50,000 notional.
 		YieldIndex:  big.NewRat(0, 1).String(),
 	}
+
+	PerpetualPosition_OneETHLong_BTCQuote = satypes.PerpetualPosition{
+		PerpetualId: 6,
+		Quantums:    dtypes.NewInt(100_000_000), // 1 BTC, $50,000 notional.
+		YieldIndex:  big.NewRat(0, 1).String(),
+	}
+
 	PerpetualPosition_OneBTCShort = satypes.PerpetualPosition{
 		PerpetualId: 0,
 		Quantums:    dtypes.NewInt(-100_000_000), // 1 BTC, -$50,000 notional.

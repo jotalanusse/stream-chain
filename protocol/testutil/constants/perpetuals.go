@@ -737,6 +737,7 @@ var TestMarketPerpetuals = []perptypes.Perpetual{
 	},
 	IsoUsd_IsolatedMarket,
 	Iso2Usd_IsolatedMarket,
+	IsoBtc_IsolatedMarket,
 }
 
 // AddPremiumVotes messages.
