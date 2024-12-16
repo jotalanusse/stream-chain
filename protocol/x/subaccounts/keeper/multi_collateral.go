@@ -20,7 +20,7 @@ func (k Keeper) checkMultiCollateralAssetConstraints(
 	perpIdToMarketType := getPerpIdToParams(perpetuals)
 
 	for i, update := range settledUpdates {
-		result, err := k.isValidMultiCollateralUpdate(ctx, update, perpIdToMarketType)
+		result, err := k.IsValidMultiCollateralUpdate(ctx, update, perpIdToMarketType)
 		if err != nil {
 			return false, nil, err
 		}
@@ -34,7 +34,7 @@ func (k Keeper) checkMultiCollateralAssetConstraints(
 	return success, successPerUpdate, nil
 }
 
-func (k Keeper) isValidMultiCollateralUpdate(
+func (k Keeper) IsValidMultiCollateralUpdate(
 	ctx sdk.Context,
 	settledUpdate SettledUpdate,
 	perpIdToParams map[uint32]perptypes.PerpetualParams,

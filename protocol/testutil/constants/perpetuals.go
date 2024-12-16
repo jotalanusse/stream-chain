@@ -170,406 +170,486 @@ var Perpetuals_GenesisState_ParamsOnly = perptypes.GenesisState{
 
 // Perpetual objects.
 var (
+	BtcUsd_InvalidMarketId_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD invalid market Id",
+		MarketId:          uint32(9999),
+		AtomicResolution:  int32(-10),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(0),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
 	BtcUsd_InvalidMarketId = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD invalid market Id",
-			MarketId:          uint32(9999),
-			AtomicResolution:  int32(-10),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(0),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
-		FundingIndex: dtypes.ZeroInt(),
-		OpenInterest: dtypes.ZeroInt(),
-		YieldIndex:   big.NewRat(0, 1).String(),
-	}
-	BtcUsd_0DefaultFunding_0AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 0 percent default funding, 0 atomic resolution",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(0),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(2),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
-		FundingIndex: dtypes.ZeroInt(),
-		OpenInterest: dtypes.ZeroInt(),
-		YieldIndex:   big.NewRat(0, 1).String(),
-	}
-	BtcUsd_0DefaultFunding_6AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 0 percent default funding, -6 atomic resolution",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-6),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(2),
-			CollateralPoolId:  uint32(0),
-		},
-		FundingIndex: dtypes.ZeroInt(),
-		OpenInterest: dtypes.ZeroInt(),
-		YieldIndex:   big.NewRat(0, 1).String(),
-	}
-	BtcUsd_NegativeDefaultFunding_10AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD -0.001 percent percent default funding",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-10),
-			DefaultFundingPpm: int32(-1_000),
-			LiquidityTier:     uint32(1),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
-		FundingIndex: dtypes.ZeroInt(),
-		OpenInterest: dtypes.ZeroInt(),
-		YieldIndex:   big.NewRat(0, 1).String(),
-	}
-	BtcUsd_0DefaultFunding_10AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 0 percent default funding",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-10),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(1),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
-		FundingIndex: dtypes.ZeroInt(),
-		OpenInterest: dtypes.ZeroInt(),
-		YieldIndex:   big.NewRat(0, 1).String(),
-	}
-	BtcUsd_0DefaultFunding_10AtomicResolution_20IM_18MM = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 0 percent default funding, 20% IM, 18% MM",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-10),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(6),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
-		FundingIndex: dtypes.ZeroInt(),
-		OpenInterest: dtypes.ZeroInt(),
-		YieldIndex:   big.NewRat(0, 1).String(),
-	}
-	BtcUsd_0_001Percent_DefaultFunding_10AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                10000,
-			Ticker:            "BTC-USD 0.001 percent default funding",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-10),
-			DefaultFundingPpm: int32(1000), // 0.001%
-			LiquidityTier:     uint32(1),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_InvalidMarketId_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
 
+	BtcUsd_0DefaultFunding_0AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 0 percent default funding, 0 atomic resolution",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(0),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(2),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_0DefaultFunding_0AtomicResolution = perptypes.Perpetual{
+		Params:       BtcUsd_0DefaultFunding_0AtomicResolution_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
+	BtcUsd_0DefaultFunding_6AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 0 percent default funding, -6 atomic resolution",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-6),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(2),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_0DefaultFunding_6AtomicResolution = perptypes.Perpetual{
+		Params:       BtcUsd_0DefaultFunding_6AtomicResolution_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
+	BtcUsd_NegativeDefaultFunding_10AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD -0.001 percent percent default funding",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-10),
+		DefaultFundingPpm: int32(-1_000),
+		LiquidityTier:     uint32(1),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_NegativeDefaultFunding_10AtomicResolution = perptypes.Perpetual{
+		Params:       BtcUsd_NegativeDefaultFunding_10AtomicResolution_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
+	BtcUsd_0DefaultFunding_10AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 0 percent default funding",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-10),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(1),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_0DefaultFunding_10AtomicResolution = perptypes.Perpetual{
+		Params:       BtcUsd_0DefaultFunding_10AtomicResolution_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
+	BtcUsd_0DefaultFunding_10AtomicResolution_20IM_18MM_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 0 percent default funding, 20% IM, 18% MM",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-10),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(6),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_0_001Percent_DefaultFunding_10AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                10000,
+		Ticker:            "BTC-USD 0.001 percent default funding",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-10),
+		DefaultFundingPpm: int32(1000), // 0.001%
+		LiquidityTier:     uint32(1),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_0DefaultFunding_10AtomicResolution_20IM_18MM = perptypes.Perpetual{
+		Params:       BtcUsd_0DefaultFunding_10AtomicResolution_20IM_18MM_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
+	BtcUsd_0_001Percent_DefaultFunding_10AtomicResolution = perptypes.Perpetual{
+		Params:       BtcUsd_0_001Percent_DefaultFunding_10AtomicResolution_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
+	BtcUsd_SmallMarginRequirement_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD small margin requirement",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(8),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_SmallMarginRequirement_DangerIndex_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD small margin requirement",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(8),
+		DangerIndexPpm:    uint32(1),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_SmallMarginRequirement_Isolated_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD small margin requirement",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(8),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(2),
+	}
+
 	BtcUsd_SmallMarginRequirement = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD small margin requirement",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(8),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_SmallMarginRequirement_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	BtcUsd_SmallMarginRequirement_DangerIndex = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD small margin requirement",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(8),
-			DangerIndexPpm:    uint32(1),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_SmallMarginRequirement_DangerIndex_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	BtcUsd_SmallMarginRequirement_Isolated = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD small margin requirement",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(8),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(2),
-		},
+		Params:       BtcUsd_SmallMarginRequirement_Isolated_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	BtcUsd_100PercentMarginRequirement_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 100% margin requirement",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(0),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_50PercentInitial_40PercentMaintenance_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 50/40 margin requirements",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(4),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
 	BtcUsd_100PercentMarginRequirement = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 100% margin requirement",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(0),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_100PercentMarginRequirement_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	BtcUsd_50PercentInitial_40PercentMaintenance = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 50/40 margin requirements",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(4),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_50PercentInitial_40PercentMaintenance_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	BtcUsd_20PercentInitial_10PercentMaintenance_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 20/10 margin requirements",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	// Note: These share the same params
+	BtcUsd_20PercentInitial_10PercentMaintenance_OpenInterest1_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 20/10 margin requirements",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
 	BtcUsd_20PercentInitial_10PercentMaintenance = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 20/10 margin requirements",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_20PercentInitial_10PercentMaintenance_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	BtcUsd_20PercentInitial_10PercentMaintenance_OpenInterest1 = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 20/10 margin requirements",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_20PercentInitial_10PercentMaintenance_OpenInterest1_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.NewInt(100_000_000),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	BtcUsd_20PercentInitial_10PercentMaintenance_OpenInterest2_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 20/10 margin requirements",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	BtcUsd_20PercentInitial_10PercentMaintenance_25mmLowerCap_50mmUpperCap_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 20/10 margin requirements",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(9),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
 	BtcUsd_20PercentInitial_10PercentMaintenance_OpenInterest2 = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 20/10 margin requirements",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_20PercentInitial_10PercentMaintenance_OpenInterest2_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.NewInt(200_000_000),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	BtcUsd_20PercentInitial_10PercentMaintenance_25mmLowerCap_50mmUpperCap = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD 20/10 margin requirements",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(9),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_20PercentInitial_10PercentMaintenance_25mmLowerCap_50mmUpperCap_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	BtcUsd_NoMarginRequirement_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD no margin requirement",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(7),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	EthUsd_0DefaultFunding_6AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD default fundingm, -9 atomic resolution",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-6),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(5),
+		CollateralPoolId:  uint32(0),
+	}
+
 	BtcUsd_NoMarginRequirement = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                0,
-			Ticker:            "BTC-USD no margin requirement",
-			MarketId:          uint32(0),
-			AtomicResolution:  int32(-8),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(7),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       BtcUsd_NoMarginRequirement_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	EthUsd_0DefaultFunding_6AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD default fundingm, -9 atomic resolution",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-6),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(5),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       EthUsd_0DefaultFunding_6AtomicResolution_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	EthUsd_0DefaultFunding_9AtomicResolution_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD default fundingm, -9 atomic resolution",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(5),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	EthUsd_NoMarginRequirement_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD no margin requirement",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(7),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
 	EthUsd_0DefaultFunding_9AtomicResolution = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD default fundingm, -9 atomic resolution",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(5),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       EthUsd_0DefaultFunding_9AtomicResolution_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	EthUsd_NoMarginRequirement = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD no margin requirement",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(7),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       EthUsd_NoMarginRequirement_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	EthUsd_20PercentInitial_10PercentMaintenance_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD 20/10 margin requirements",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	EthUsd_20PercentInitial_10PercentMaintenance_DangerIndex_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD 20/10 margin requirements",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(1),
+		CollateralPoolId:  uint32(0),
+	}
+
 	EthUsd_20PercentInitial_10PercentMaintenance = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD 20/10 margin requirements",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       EthUsd_20PercentInitial_10PercentMaintenance_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	EthUsd_20PercentInitial_10PercentMaintenance_DangerIndex = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD 20/10 margin requirements",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(1),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       EthUsd_20PercentInitial_10PercentMaintenance_DangerIndex_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	EthUsd_20PercentInitial_10PercentMaintenance_Isolated_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD 20/10 margin requirements",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(2),
+	}
+
+	EthUsd_100PercentMarginRequirement_Params = perptypes.PerpetualParams{
+		Id:                1,
+		Ticker:            "ETH-USD 100/100 margin requirements",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(0),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
 	EthUsd_20PercentInitial_10PercentMaintenance_Isolated = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD 20/10 margin requirements",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(2),
-		},
+		Params:       EthUsd_20PercentInitial_10PercentMaintenance_Isolated_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	EthUsd_100PercentMarginRequirement = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                1,
-			Ticker:            "ETH-USD 100/100 margin requirements",
-			MarketId:          uint32(1),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(0),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       EthUsd_100PercentMarginRequirement_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	SolUsd_20PercentInitial_10PercentMaintenance_Params = perptypes.PerpetualParams{
+		Id:                2,
+		Ticker:            "SOL-USD 20/10 margin requirements",
+		MarketId:          uint32(2),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(0),
+	}
+
+	IsoUsd_IsolatedMarket_Params = perptypes.PerpetualParams{
+		Id:                3,
+		Ticker:            "ISO-USD",
+		MarketId:          uint32(3),
+		AtomicResolution:  int32(-9),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(2),
+	}
+
 	SolUsd_20PercentInitial_10PercentMaintenance = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                2,
-			Ticker:            "SOL-USD 20/10 margin requirements",
-			MarketId:          uint32(2),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(0),
-		},
+		Params:       SolUsd_20PercentInitial_10PercentMaintenance_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
 	IsoUsd_IsolatedMarket = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                3,
-			Ticker:            "ISO-USD",
-			MarketId:          uint32(3),
-			AtomicResolution:  int32(-9),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(2),
-		},
+		Params:       IsoUsd_IsolatedMarket_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	Iso2Usd_IsolatedMarket_Params = perptypes.PerpetualParams{
+		Id:                4,
+		Ticker:            "ISO2-USD",
+		MarketId:          uint32(4),
+		AtomicResolution:  int32(-7),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(3),
+	}
+
 	Iso2Usd_IsolatedMarket = perptypes.Perpetual{
-		Params: perptypes.PerpetualParams{
-			Id:                4,
-			Ticker:            "ISO2-USD",
-			MarketId:          uint32(4),
-			AtomicResolution:  int32(-7),
-			DefaultFundingPpm: int32(0),
-			LiquidityTier:     uint32(3),
-			DangerIndexPpm:    uint32(0),
-			CollateralPoolId:  uint32(3),
-		},
+		Params:       Iso2Usd_IsolatedMarket_Params,
 		FundingIndex: dtypes.ZeroInt(),
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
