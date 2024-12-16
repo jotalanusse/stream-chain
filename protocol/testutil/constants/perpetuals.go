@@ -259,6 +259,24 @@ var (
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
 
+	BtcUsd_0DefaultFunding_10AtomicResolution_UniqueCollatPool_Params = perptypes.PerpetualParams{
+		Id:                0,
+		Ticker:            "BTC-USD 0 percent default funding",
+		MarketId:          uint32(0),
+		AtomicResolution:  int32(-10),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(1),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(1),
+	}
+
+	BtcUsd_0DefaultFunding_10AtomicResolution_UniqueCollatPool = perptypes.Perpetual{
+		Params:       BtcUsd_0DefaultFunding_10AtomicResolution_UniqueCollatPool_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
+
 	BtcUsd_0DefaultFunding_10AtomicResolution_20IM_18MM_Params = perptypes.PerpetualParams{
 		Id:                0,
 		Ticker:            "BTC-USD 0 percent default funding, 20% IM, 18% MM",
