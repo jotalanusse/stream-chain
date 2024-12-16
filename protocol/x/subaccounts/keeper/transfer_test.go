@@ -508,7 +508,7 @@ func TestWithdrawFundsFromSubaccountToAccount_DepositFundsFromAccountToSubaccoun
 
 			require.Equal(t,
 				tc.assetPositions[0].GetBigQuantums(),
-				updatedSubaccount.GetTDaiPosition(),
+				updatedSubaccount.GetAssetPosition(tc.asset.Id),
 			)
 
 			// Check the subaccount module balance stays the same.

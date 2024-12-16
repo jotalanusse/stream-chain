@@ -672,6 +672,24 @@ var (
 		OpenInterest: dtypes.ZeroInt(),
 		YieldIndex:   big.NewRat(0, 1).String(),
 	}
+
+	IsoBtc_IsolatedMarket_Params = perptypes.PerpetualParams{
+		Id:                6,
+		Ticker:            "ISO-BTC",
+		MarketId:          uint32(1),
+		AtomicResolution:  int32(-8),
+		DefaultFundingPpm: int32(0),
+		LiquidityTier:     uint32(3),
+		DangerIndexPpm:    uint32(0),
+		CollateralPoolId:  uint32(1),
+	}
+
+	IsoBtc_IsolatedMarket = perptypes.Perpetual{
+		Params:       IsoBtc_IsolatedMarket_Params,
+		FundingIndex: dtypes.ZeroInt(),
+		OpenInterest: dtypes.ZeroInt(),
+		YieldIndex:   big.NewRat(0, 1).String(),
+	}
 )
 
 var TestMarketPerpetuals = []perptypes.Perpetual{
