@@ -43,6 +43,39 @@ func TestGetDeltaOpenInterestFromUpdates(t *testing.T) {
 			},
 			panicErr: types.ErrMatchUpdatesMustHaveTwoUpdates,
 		},
+		"Invalid: 3 updates": {
+			updateType: types.Match,
+			settledUpdates: []keeper.SettledUpdate{
+				{
+					SettledSubaccount: types.Subaccount{},
+					PerpetualUpdates: []types.PerpetualUpdate{
+						{
+							PerpetualId:      0,
+							BigQuantumsDelta: big.NewInt(1_000),
+						},
+					},
+				},
+				{
+					SettledSubaccount: types.Subaccount{},
+					PerpetualUpdates: []types.PerpetualUpdate{
+						{
+							PerpetualId:      0,
+							BigQuantumsDelta: big.NewInt(1_000),
+						},
+					},
+				},
+				{
+					SettledSubaccount: types.Subaccount{},
+					PerpetualUpdates: []types.PerpetualUpdate{
+						{
+							PerpetualId:      0,
+							BigQuantumsDelta: big.NewInt(1_000),
+						},
+					},
+				},
+			},
+			panicErr: types.ErrMatchUpdatesMustHaveTwoUpdates,
+		},
 		"Invalid: one of the updates contains no perp update": {
 			updateType: types.Match,
 			settledUpdates: []keeper.SettledUpdate{

@@ -57,7 +57,7 @@ func GetDeltaOpenInterestFromUpdates(
 	if updateType != types.Match {
 		return nil
 	}
-	if len(settledUpdates) != 2 && len(settledUpdates) != 3 {
+	if len(settledUpdates) != 2 {
 		panic(
 			fmt.Sprintf(
 				types.ErrMatchUpdatesMustHaveTwoUpdates,
