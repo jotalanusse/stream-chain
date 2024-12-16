@@ -4,6 +4,7 @@ import (
 	"math"
 
 	errorsmod "cosmossdk.io/errors"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/dtypes"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
 	perptypes "github.com/StreamFinance-Protocol/stream-chain/protocol/x/perpetuals/types"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/subaccounts/types"
@@ -70,7 +71,7 @@ func getSubaccountCollateralPoolIdForSettledUpdate(
 func getPerpIdToCollateralPoolIdMap(
 	perpetuals []perptypes.Perpetual,
 ) map[uint32]uint32 {
-	var perpIdToCollateralPoolId = make(map[uint32]uint32)
+	perpIdToCollateralPoolId := make(map[uint32]uint32)
 
 	for _, perpetual := range perpetuals {
 		perpIdToCollateralPoolId[perpetual.GetId()] = perpetual.Params.CollateralPoolId
@@ -82,13 +83,33 @@ func getPerpIdToCollateralPoolIdMap(
 func getPerpIdToParams(
 	perpetuals []perptypes.Perpetual,
 ) map[uint32]perptypes.PerpetualParams {
-	var perpIdToMarketType = make(map[uint32]perptypes.PerpetualParams)
+	perpIdToParams := make(map[uint32]perptypes.PerpetualParams)
 
 	for _, perpetual := range perpetuals {
-		perpIdToMarketType[perpetual.GetId()] = perpetual.Params
+		perpIdToParams[perpetual.GetId()] = perpetual.Params
 	}
 
-	return perpIdToMarketType
+	return perpIdToParams
+}
+
+func getPerpIdToFundingIndex(
+	allPerps []perptypes.Perpetual,
+) map[uint32]dtypes.SerializableInt {
+	perpIdToFundingIndex := make(map[uint32]dtypes.SerializableInt)
+	for _, perp := range allPerps {
+		perpIdToFundingIndex[perp.GetId()] = perp.FundingIndex
+	}
+	return perpIdToFundingIndex
+}
+
+func getPerpIdToYieldIndex(
+	allPerps []perptypes.Perpetual,
+) map[uint32]string {
+	perpIdToYieldIndex := make(map[uint32]string)
+	for _, perp := range allPerps {
+		perpIdToYieldIndex[perp.GetId()] = perp.YieldIndex
+	}
+	return perpIdToYieldIndex
 }
 
 func getValidAssetIdMap(
