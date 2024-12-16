@@ -310,14 +310,48 @@ func (k Keeper) persistMatchedOrders(
 	}
 
 	if !isTakerLiquidation {
-		if matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner != "" && bigRouterTakerFeeQuoteQuantums.Sign() != 0 {
-			if err := k.subaccountsKeeper.TransferRouterFee(ctx, bigRouterTakerFeeQuoteQuantums, matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner, perpetualId, collateralPool.QuoteAssetId); err != nil {
-				return takerUpdateResult, makerUpdateResult, err
+		if matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner != "" {
+			bigRouterTakeFeeQuoteQuantumsSign := bigRouterTakerFeeQuoteQuantums.Sign()
+
+			if bigRouterTakeFeeQuoteQuantumsSign == -1 {
+				panic("Router taker fee is negative")
 			}
+
+			if bigRouterTakeFeeQuoteQuantumsSign == 1 {
+				err := k.subaccountsKeeper.TransferRouterFee(
+					ctx,
+					bigRouterTakerFeeQuoteQuantums,
+					matchWithOrders.TakerOrder.MustGetOrder().RouterFeeOwner,
+					perpetualId,
+					collateralPool.QuoteAssetId,
+				)
+
+				if err != nil {
+					return takerUpdateResult, makerUpdateResult, err
+				}
+			}
+
 		}
-		if matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner != "" && bigRouterMakerFeeQuoteQuantums.Sign() != 0 {
-			if err := k.subaccountsKeeper.TransferRouterFee(ctx, bigRouterMakerFeeQuoteQuantums, matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner, perpetualId, collateralPool.QuoteAssetId); err != nil {
-				return takerUpdateResult, makerUpdateResult, err
+
+		if matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner != "" {
+			bigRouterMakerFeeQuoteQuantumsSign := bigRouterMakerFeeQuoteQuantums.Sign()
+
+			if bigRouterMakerFeeQuoteQuantumsSign == -1 {
+				panic("Router maker fee is negative")
+			}
+
+			if bigRouterMakerFeeQuoteQuantumsSign == 1 {
+				err := k.subaccountsKeeper.TransferRouterFee(
+					ctx,
+					bigRouterMakerFeeQuoteQuantums,
+					matchWithOrders.MakerOrder.MustGetOrder().RouterFeeOwner,
+					perpetualId,
+					collateralPool.QuoteAssetId,
+				)
+
+				if err != nil {
+					return takerUpdateResult, makerUpdateResult, err
+				}
 			}
 		}
 	}
