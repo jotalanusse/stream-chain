@@ -310,6 +310,16 @@ message AssetCreateEventV1 {
   sint32 atomic_resolution = 5;
 }
 
+// NameCreateEventV1 message contains all the information about an new Name on
+// the Klyra chain.
+message NameCreateEventV1 {
+  // Unique, sequentially-generated.
+  uint32 id = 1;
+
+  // The actual name
+  string name = 2;
+}
+
 // Deprecated. See PerpetualMarketCreateEventV2 for the most up to date message
 // for the event to create a new Perpetual Market.
 message PerpetualMarketCreateEventV1 {

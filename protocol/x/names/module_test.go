@@ -1,4 +1,4 @@
-package assets_test
+package names_test
 
 import (
 	"bytes"
@@ -13,8 +13,8 @@ import (
 
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/mocks"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets"
-	assets_keeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names"
+	names_keeper "github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/keeper"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createAppModule(t *testing.T) assets.AppModule {
+func createAppModule(t *testing.T) names.AppModule {
 	am, _, _ := createAppModuleWithKeeper(t)
 	return am
 }
@@ -31,21 +31,21 @@ func createAppModule(t *testing.T) assets.AppModule {
 // Returns the keeper and context along with the AppModule.
 // This is useful for tests which want to write/read state
 // to/from the keeper.
-func createAppModuleWithKeeper(t *testing.T) (assets.AppModule, *assets_keeper.Keeper, sdk.Context) {
+func createAppModuleWithKeeper(t *testing.T) (names.AppModule, *names_keeper.Keeper, sdk.Context) {
 	appCodec := codec.NewProtoCodec(module.InterfaceRegistry)
 
-	ctx, keeper, _, _, _, _ := keeper.AssetsKeepers(t, true)
+	ctx, keeper, _, _, _, _ := keeper.NamesKeepers(t, true)
 
-	return assets.NewAppModule(
+	return names.NewAppModule(
 		appCodec,
 		*keeper,
 	), keeper, ctx
 }
 
-func createAppModuleBasic(t *testing.T) assets.AppModuleBasic {
+func createAppModuleBasic(t *testing.T) names.AppModuleBasic {
 	appCodec := codec.NewProtoCodec(module.InterfaceRegistry)
 
-	appModule := assets.NewAppModuleBasic(appCodec)
+	appModule := names.NewAppModuleBasic(appCodec)
 	require.NotNil(t, appModule)
 
 	return appModule
@@ -54,7 +54,7 @@ func createAppModuleBasic(t *testing.T) assets.AppModuleBasic {
 func TestAppModuleBasic_Name(t *testing.T) {
 	am := createAppModuleBasic(t)
 
-	require.Equal(t, "assets", am.Name())
+	require.Equal(t, "names", am.Name())
 }
 
 func TestAppModuleBasic_RegisterCodecLegacyAmino(t *testing.T) {
@@ -66,7 +66,7 @@ func TestAppModuleBasic_RegisterCodecLegacyAmino(t *testing.T) {
 	var buf bytes.Buffer
 	err := cdc.Amino.PrintTypes(&buf)
 	require.NoError(t, err)
-	require.NotContains(t, buf.String(), "Msg") // assets does not support any messages.
+	require.NotContains(t, buf.String(), "Msg") // names does not support any messages.
 }
 
 func TestAppModuleBasic_RegisterInterfaces(t *testing.T) {
@@ -90,10 +90,7 @@ func TestAppModuleBasic_DefaultGenesis(t *testing.T) {
 	json, err := result.MarshalJSON()
 	require.NoError(t, err)
 
-	expected := `{"assets":[{"id":0,"symbol":"TDAI","denom":`
-	expected += `"utdai",`
-	expected += `"denom_exponent":-6,"has_market":false,`
-	expected += `"market_id":0,"atomic_resolution":-6,"asset_yield_index":"1/1"}]}`
+	expected := `{"names":[{"id":0,"name":"Jota"}]}`
 	require.Equal(t, expected, string(json))
 }
 
@@ -105,18 +102,18 @@ func TestAppModuleBasic_ValidateGenesisErrInvalidJSON(t *testing.T) {
 	h := json.RawMessage(`{"missingClosingQuote: true}`)
 
 	err := am.ValidateGenesis(cdc, nil, h)
-	require.EqualError(t, err, "failed to unmarshal assets genesis state: unexpected EOF")
+	require.EqualError(t, err, "failed to unmarshal names genesis state: unexpected EOF")
 }
 
-func TestAppModuleBasic_ValidateGenesisErrBadState_NoAsset(t *testing.T) {
+func TestAppModuleBasic_ValidateGenesisErrBadState_NoName(t *testing.T) {
 	am := createAppModuleBasic(t)
 
 	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
 
-	h := json.RawMessage(`{"assets": []}`)
+	h := json.RawMessage(`{"names": []}`)
 
 	err := am.ValidateGenesis(cdc, nil, h)
-	require.EqualError(t, err, "No asset found in genesis state")
+	require.EqualError(t, err, "No name found in genesis state")
 }
 
 func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
@@ -124,9 +121,7 @@ func TestAppModuleBasic_ValidateGenesis(t *testing.T) {
 
 	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
 
-	msg := `{"assets":[{"id":0,"symbol":"TDAI","denom":`
-	msg += `"utdai"`
-	msg += `,"denom_exponent":-6,"has_market":false,"atomic_resolution":-6,"asset_yield_index":"1/1"}]}`
+	msg := `{"names":[{"id":0,"name":"Jota"}]}`
 	h := json.RawMessage(msg)
 
 	err := am.ValidateGenesis(cdc, nil, h)
@@ -142,7 +137,7 @@ func TestAppModuleBasic_RegisterGRPCGatewayRoutes(t *testing.T) {
 
 	// No query routes defined.
 	recorder := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", "/klyraprotocol/assets", nil)
+	req, err := http.NewRequest("GET", "/klyraprotocol/names", nil)
 	require.NoError(t, err)
 	router.ServeHTTP(recorder, req)
 	require.Equal(t, 404, recorder.Code)
@@ -152,7 +147,7 @@ func TestAppModuleBasic_GetTxCmd(t *testing.T) {
 	am := createAppModuleBasic(t)
 
 	cmd := am.GetTxCmd()
-	require.Equal(t, "assets", cmd.Use)
+	require.Equal(t, "names", cmd.Use)
 	require.Equal(t, 0, len(cmd.Commands()))
 }
 
@@ -160,13 +155,13 @@ func TestAppModuleBasic_GetQueryCmd(t *testing.T) {
 	am := createAppModuleBasic(t)
 
 	cmd := am.GetQueryCmd()
-	require.Equal(t, "assets", cmd.Use)
+	require.Equal(t, "names", cmd.Use)
 	require.Len(t, cmd.Commands(), 0)
 }
 
 func TestAppModule_Name(t *testing.T) {
 	am := createAppModule(t)
-	require.Equal(t, "assets", am.Name())
+	require.Equal(t, "names", am.Name())
 }
 
 func TestAppModule_RegisterServices(t *testing.T) {
@@ -190,30 +185,22 @@ func TestAppModule_RegisterServices(t *testing.T) {
 func TestAppModule_InitExportGenesis(t *testing.T) {
 	am, keeper, ctx := createAppModuleWithKeeper(t)
 	cdc := codec.NewProtoCodec(module.InterfaceRegistry)
-	msg := `{"assets":[{"id":0,"symbol":"TDAI","denom":`
-	msg += `"utdai",`
-	msg += `"denom_exponent":-6,"has_market":false,"atomic_resolution":-6,"asset_yield_index":"1/1"}]}`
+	msg := `{"names":[{"id":0,"name":"Jota"}]}`
 	gs := json.RawMessage(msg)
 
 	am.InitGenesis(ctx, cdc, gs)
 
-	assets := keeper.GetAllAssets(ctx)
-	require.Equal(t, 1, len(assets))
+	names := keeper.GetAllNames(ctx)
+	require.Equal(t, 1, len(names))
 
-	require.Equal(t, uint32(0), assets[0].Id)
+	require.Equal(t, uint32(0), names[0].Id)
 	require.Equal(t,
-		"utdai",
-		assets[0].Denom,
+		"Jota",
+		names[0].Name,
 	)
-	require.False(t, assets[0].HasMarket)
-	require.Equal(t, uint32(0), assets[0].MarketId)
-	require.Equal(t, int32(-6), assets[0].AtomicResolution)
 
 	genesisJson := am.ExportGenesis(ctx, cdc)
-	expected := `{"assets":[{"id":0,"symbol":"TDAI","denom":`
-	expected += `"utdai",`
-	expected += `"denom_exponent":-6,"has_market":false,`
-	expected += `"market_id":0,"atomic_resolution":-6,"asset_yield_index":"1/1"}]}`
+	expected := `{"names":[{"id":0,"name":"Jota"}]}`
 	require.Equal(t, expected, string(genesisJson))
 }
 

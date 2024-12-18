@@ -12,6 +12,7 @@ const (
 	SubtypeFundingValues      = "funding_values"
 	SubtypeStatefulOrder      = "stateful_order"
 	SubtypeAsset              = "asset"
+	SubtypeName               = "name"
 	SubtypePerpetualMarket    = "perpetual_market"
 	SubtypeLiquidityTier      = "liquidity_tier"
 	SubtypeUpdatePerpetual    = "update_perpetual"
@@ -30,6 +31,7 @@ const (
 	FundingValuesEventVersion     uint32 = 1
 	StatefulOrderEventVersion     uint32 = 1
 	AssetEventVersion             uint32 = 1
+	NameEventVersion              uint32 = 1
 	PerpetualMarketEventVersion   uint32 = 2
 	LiquidityTierEventVersion     uint32 = 2
 	UpdatePerpetualEventVersion   uint32 = 1
@@ -47,6 +49,7 @@ var OnChainEventSubtypes = []string{
 	SubtypeFundingValues,
 	SubtypeStatefulOrder,
 	SubtypeAsset,
+	SubtypeName,
 	SubtypePerpetualMarket,
 	SubtypeLiquidityTier,
 	SubtypeUpdatePerpetual,

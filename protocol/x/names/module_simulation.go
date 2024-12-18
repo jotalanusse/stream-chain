@@ -1,9 +1,9 @@
-package assets
+package names
 
 import (
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/sample"
-	assetssimulation "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/simulation"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	namessimulation "github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/simulation"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/types/module"
@@ -14,7 +14,7 @@ import (
 // avoid unused import issue
 var (
 	_ = sample.AccAddress
-	_ = assetssimulation.FindAccount
+	_ = namessimulation.FindAccount
 	_ = sims.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
@@ -31,12 +31,12 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
-	assetsGenesis := types.GenesisState{
-		Assets: []types.Asset{
-			types.AssetTDai,
+	namesGenesis := types.GenesisState{
+		Names: []types.Name{
+			types.NameJota,
 		},
 	}
-	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&assetsGenesis)
+	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&namesGenesis)
 }
 
 // RegisterStoreDecoder registers a decoder

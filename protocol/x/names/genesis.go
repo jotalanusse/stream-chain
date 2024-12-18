@@ -1,8 +1,8 @@
-package assets
+package names
 
 import (
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/keeper"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -11,17 +11,11 @@ import (
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	k.InitializeForGenesis(ctx)
 
-	for _, asset := range genState.Assets {
-		_, err := k.CreateAsset(
+	for _, name := range genState.Names {
+		_, err := k.CreateName(
 			ctx,
-			asset.Id,
-			asset.Symbol,
-			asset.Denom,
-			asset.DenomExponent,
-			asset.HasMarket,
-			asset.MarketId,
-			asset.AtomicResolution,
-			asset.AssetYieldIndex,
+			name.Id,
+			name.Name,
 		)
 		if err != nil {
 			panic(err)
@@ -32,6 +26,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 // ExportGenesis returns the capability module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
-	genesis.Assets = k.GetAllAssets(ctx)
+	genesis.Names = k.GetAllNames(ctx)
 	return genesis
 }

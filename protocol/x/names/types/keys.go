@@ -3,7 +3,7 @@ package types
 // Module name and store keys
 const (
 	// ModuleName defines the module name
-	ModuleName = "assets"
+	ModuleName = "names"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -11,6 +11,6 @@ const (
 
 // State
 const (
-	// AssetKeyPrefix is the prefix to retrieve all Assets
-	AssetKeyPrefix = "Asset:"
+	// NameKeyPrefix is the prefix to retrieve all Names
+	NameKeyPrefix = "Name:"
 )

@@ -3,8 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,164 +17,75 @@ func TestGenesisState_Validate(t *testing.T) {
 		},
 		"valid genesis state": {
 			genState: &types.GenesisState{
-				Assets: []types.Asset{
+				Names: []types.Name{
 					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        false,
-						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
-						AssetYieldIndex:  "1/1",
-					},
-					{
-						Id:               1,
-						Symbol:           "BTC",
-						Denom:            "btc-denom",
-						HasMarket:        true,
-						MarketId:         0,
-						AtomicResolution: int32(-6),
-						AssetYieldIndex:  "1/1",
+						Id:   0,
+						Name: types.NameJota.Name,
 					},
 				},
 			},
 		},
 		"empty genesis state": {
 			genState: &types.GenesisState{
-				Assets: []types.Asset{},
+				Names: []types.Name{},
 			},
-			expectedErr: types.ErrNoAssetInGenesis,
+			expectedErr: types.ErrNoNameInGenesis,
 		},
-		"asset[0] not tdai": {
+		"name[0] not jota": {
 			genState: &types.GenesisState{
-				Assets: []types.Asset{
+				Names: []types.Name{
 					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        true,
-						MarketId:         0,
-						AtomicResolution: int32(-6),
-						AssetYieldIndex:  "1/1",
+						Id:   0,
+						Name: types.NameSolal.Name,
 					},
 				},
 			},
-			expectedErr: types.ErrTDaiMustBeAssetZero,
+			expectedErr: types.ErrJotaMustBeNameZero,
 		},
-		"asset[0] is modified tdai": {
+		"duplicated name id": {
 			genState: &types.GenesisState{
-				Assets: []types.Asset{
+				Names: []types.Name{
 					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        true,
-						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
-						AssetYieldIndex:  "1/1",
+						Id:   0,
+						Name: types.NameJota.Name,
+					},
+					{
+						Id:   0,
+						Name: types.NameSolal.Name,
 					},
 				},
 			},
-			expectedErr: types.ErrTDaiMustBeAssetZero,
+			expectedErr: types.ErrNameIdAlreadyExists,
 		},
-		"duplicated asset id": {
+		"duplicated name": {
 			genState: &types.GenesisState{
-				Assets: []types.Asset{
+				Names: []types.Name{
 					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        false,
-						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
-						AssetYieldIndex:  "1/1",
+						Id:   0,
+						Name: types.NameJota.Name,
 					},
 					{
-						Id:               0,
-						Denom:            "BTC",
-						HasMarket:        true,
-						MarketId:         0,
-						AtomicResolution: int32(-6),
-						AssetYieldIndex:  "1/1",
+						Id:   1,
+						Name: types.NameJota.Name,
 					},
 				},
 			},
-			expectedErr: types.ErrAssetIdAlreadyExists,
+			expectedErr: types.ErrNameNameAlreadyExists,
 		},
-		"duplicated denom": {
+		"gaps in name id": {
 			genState: &types.GenesisState{
-				Assets: []types.Asset{
+				Names: []types.Name{
 					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        false,
-						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
-						AssetYieldIndex:  "1/1",
+						Id:   0,
+						Name: types.NameJota.Name,
 					},
 					{
-						Id:               1,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        true,
-						MarketId:         0,
-						AtomicResolution: int32(-6),
-						AssetYieldIndex:  "1/1",
+						Id:   2,
+						Name: types.NameSolal.Name,
 					},
 				},
 			},
-			expectedErr: types.ErrAssetDenomAlreadyExists,
-		},
-		"gaps in asset id": {
-			genState: &types.GenesisState{
-				Assets: []types.Asset{
-					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        false,
-						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
-						AssetYieldIndex:  "1/1",
-					},
-					{
-						Id:               2,
-						Denom:            "BTC",
-						HasMarket:        true,
-						MarketId:         0,
-						AtomicResolution: int32(-6),
-						AssetYieldIndex:  "1/1",
-					},
-				},
-			},
-			expectedErr: types.ErrGapFoundInAssetId,
-		},
-		"MarketId non-zero when HasMarket is false": {
-			genState: &types.GenesisState{
-				Assets: []types.Asset{
-					{
-						Id:               0,
-						Symbol:           types.AssetTDai.Symbol,
-						Denom:            types.AssetTDai.Denom,
-						DenomExponent:    types.AssetTDai.DenomExponent,
-						HasMarket:        false,
-						AtomicResolution: lib.QuoteCurrencyAtomicResolution,
-						AssetYieldIndex:  "1/1",
-					},
-					{
-						Id:               1,
-						Denom:            "USDT",
-						HasMarket:        false,
-						MarketId:         1,
-						AtomicResolution: int32(-6),
-						AssetYieldIndex:  "1/1",
-					},
-				},
-			},
-			expectedErr: types.ErrInvalidMarketId,
+			expectedErr: types.ErrGapFoundInNameId,
 		},
 	}
 	for name, tc := range tests {

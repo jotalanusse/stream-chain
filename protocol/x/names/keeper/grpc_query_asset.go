@@ -6,34 +6,34 @@ import (
 
 	"cosmossdk.io/store/prefix"
 	"github.com/StreamFinance-Protocol/stream-chain/protocol/lib"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 // TODO(CLOB-863) Add tests for these endpoints.
-func (k Keeper) AllAssets(
+func (k Keeper) AllNames(
 	c context.Context,
-	req *types.QueryAllAssetsRequest,
-) (*types.QueryAllAssetsResponse, error) {
+	req *types.QueryAllNamesRequest,
+) (*types.QueryAllNamesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var assets []types.Asset
+	var names []types.Name
 	ctx := lib.UnwrapSDKContext(c, types.ModuleName)
 
 	store := ctx.KVStore(k.storeKey)
-	assetStore := prefix.NewStore(store, []byte(types.AssetKeyPrefix))
+	nameStore := prefix.NewStore(store, []byte(types.NameKeyPrefix))
 
-	pageRes, err := query.Paginate(assetStore, req.Pagination, func(key []byte, value []byte) error {
-		var asset types.Asset
-		if err := k.cdc.Unmarshal(value, &asset); err != nil {
+	pageRes, err := query.Paginate(nameStore, req.Pagination, func(key []byte, value []byte) error {
+		var name types.Name
+		if err := k.cdc.Unmarshal(value, &name); err != nil {
 			return err
 		}
 
-		assets = append(assets, asset)
+		names = append(names, name)
 		return nil
 	})
 
@@ -41,16 +41,16 @@ func (k Keeper) AllAssets(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllAssetsResponse{Asset: assets, Pagination: pageRes}, nil
+	return &types.QueryAllNamesResponse{Name: names, Pagination: pageRes}, nil
 }
 
-func (k Keeper) Asset(c context.Context, req *types.QueryAssetRequest) (*types.QueryAssetResponse, error) {
+func (k Keeper) Name(c context.Context, req *types.QueryNameRequest) (*types.QueryNameResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 	ctx := lib.UnwrapSDKContext(c, types.ModuleName)
 
-	val, exists := k.GetAsset(
+	val, exists := k.GetName(
 		ctx,
 		req.Id,
 	)
@@ -60,11 +60,11 @@ func (k Keeper) Asset(c context.Context, req *types.QueryAssetRequest) (*types.Q
 			status.Error(
 				codes.NotFound,
 				fmt.Sprintf(
-					"Asset id %+v not found.",
+					"Name id %+v not found.",
 					req.Id,
 				),
 			)
 	}
 
-	return &types.QueryAssetResponse{Asset: val}, nil
+	return &types.QueryNameResponse{Name: val}, nil
 }

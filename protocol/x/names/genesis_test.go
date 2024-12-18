@@ -1,34 +1,35 @@
-package assets_test
+package names_test
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	keepertest "github.com/StreamFinance-Protocol/stream-chain/protocol/testutil/keeper"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/keeper"
-	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/keeper"
+	"github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {
 	expected := types.DefaultGenesis()
-	ctx, k, _, _, _, _ := keepertest.AssetsKeepers(t, true)
-	assets.InitGenesis(ctx, *k, *expected)
-	assertAssetCreateEventsInIndexerBlock(t, k, ctx, len(expected.Assets))
-	actual := assets.ExportGenesis(ctx, *k)
+	ctx, k, _, _, _, _ := keepertest.NamesKeepers(t, true)
+	names.InitGenesis(ctx, *k, *expected)
+	assertNameCreateEventsInIndexerBlock(t, k, ctx, len(expected.Names))
+	actual := names.ExportGenesis(ctx, *k)
 	require.NotNil(t, actual)
-	require.ElementsMatch(t, actual.Assets, expected.Assets)
+	require.ElementsMatch(t, actual.Names, expected.Names)
 }
 
-// assertAssetCreateEventsInIndexerBlock checks that the number of asset create events
+// assertNameCreateEventsInIndexerBlock checks that the number of name create events
 // included in the Indexer block kafka message.
-func assertAssetCreateEventsInIndexerBlock(
+func assertNameCreateEventsInIndexerBlock(
 	t *testing.T,
 	k *keeper.Keeper,
 	ctx sdk.Context,
-	numAssets int,
+	numNames int,
 ) {
-	assetEvents := keepertest.GetAssetCreateEventsFromIndexerBlock(ctx, k)
-	require.Len(t, assetEvents, numAssets)
+	nameEvents := keepertest.GetNameCreateEventsFromIndexerBlock(ctx, k)
+	require.Len(t, nameEvents, numNames)
 }
