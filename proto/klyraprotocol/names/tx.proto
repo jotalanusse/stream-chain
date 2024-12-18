@@ -1,9 +1,9 @@
 syntax = "proto3";
-package klyraprotocol.assets;
+package klyraprotocol.names;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types";
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types";
 import "cosmos/msg/v1/msg.proto";
 // Msg defines the Msg service.
 service Msg {

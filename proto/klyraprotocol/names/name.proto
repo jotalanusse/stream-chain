@@ -1,0 +1,14 @@
+syntax = "proto3";
+package klyraprotocol.names;
+
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types";
+
+// Name defines a single unique name.
+message Name {
+
+  // Unique, sequentially-generated.
+  uint32 id = 1;
+
+  // The name itself.
+  string name = 2;
+}

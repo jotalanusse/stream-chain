@@ -1,12 +1,12 @@
 syntax = "proto3";
-package klyraprotocol.assets;
+package klyraprotocol.names;
 
 import "gogoproto/gogo.proto";
-import "klyraprotocol/assets/asset.proto";
+import "klyraprotocol/names/name.proto";
 
-option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types";
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types";
 
-// GenesisState defines the assets module's genesis state.
+// GenesisState defines the names module's genesis state.
 message GenesisState {
-  repeated Asset assets = 1 [ (gogoproto.nullable) = false ];
+  repeated Name names = 1 [ (gogoproto.nullable) = false ];
 }

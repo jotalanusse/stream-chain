@@ -1,39 +1,39 @@
 syntax = "proto3";
-package klyraprotocol.assets;
+package klyraprotocol.names;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "klyraprotocol/assets/asset.proto";
+import "klyraprotocol/names/name.proto";
 
-option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/assets/types";
+option go_package = "github.com/StreamFinance-Protocol/stream-chain/protocol/x/names/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // Queries a Asset by id.
-  rpc Asset(QueryAssetRequest) returns (QueryAssetResponse) {
-    option (google.api.http).get = "/klyraprotocol/assets/asset/{id}";
+  // Queries a Name by id.
+  rpc Name(QueryNameRequest) returns (QueryNameResponse) {
+    option (google.api.http).get = "/klyraprotocol/names/name/{id}";
   }
 
-  // Queries a list of Asset items.
-  rpc AllAssets(QueryAllAssetsRequest) returns (QueryAllAssetsResponse) {
-    option (google.api.http).get = "/klyraprotocol/assets/asset";
+  // Queries a list of Name items.
+  rpc AllNames(QueryAllNamesRequest) returns (QueryAllNamesResponse) {
+    option (google.api.http).get = "/klyraprotocol/names/name";
   }
 }
 
-// Queries an Asset by id.
-message QueryAssetRequest { uint32 id = 1; }
+// Queries a Name by id.
+message QueryNameRequest { uint32 id = 1; }
 
-// QueryAssetResponse is response type for the Asset RPC method.
-message QueryAssetResponse { Asset asset = 1 [ (gogoproto.nullable) = false ]; }
+// QueryNameResponse is response type for the Name RPC method.
+message QueryNameResponse { Name name = 1 [ (gogoproto.nullable) = false ]; }
 
-// Queries a list of Asset items.
-message QueryAllAssetsRequest {
+// Queries a list of Name items.
+message QueryAllNamesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-// QueryAllAssetsResponse is response type for the AllAssets RPC method.
-message QueryAllAssetsResponse {
-  repeated Asset asset = 1 [ (gogoproto.nullable) = false ];
+// QueryAllNamesResponse is response type for the AllNames RPC method.
+message QueryAllNamesResponse {
+  repeated Name name = 1 [ (gogoproto.nullable) = false ];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
